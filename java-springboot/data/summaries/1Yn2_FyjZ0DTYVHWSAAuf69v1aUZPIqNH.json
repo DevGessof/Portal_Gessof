@@ -1,0 +1,63 @@
+{
+  "titulo": "Documentar API y sus Métodos con Swagger siguiendo Estándar OpenAPI",
+  "resumen": "Documentación completa de endpoints REST usando anotaciones @Operation, @ApiResponse, @Parameter y @Tag. Se documenta cada método del controller con descripción, respuestas posibles (200, 404, 500), parámetros, y se agrupan endpoints por tags. Documentación profesional lista para consumo.",
+  "puntosClave": [
+    "@Tag a nivel de clase controller para agrupar endpoints",
+    "@Operation en cada método: summary y description",
+    "@ApiResponses para documentar posibles respuestas:",
+    "  - @ApiResponse(responseCode = \"200\", description = \"Éxito\")",
+    "  - @ApiResponse(responseCode = \"404\", description = \"No encontrado\")",
+    "  - @ApiResponse(responseCode = \"500\", description = \"Error servidor\")",
+    "@Parameter para documentar parámetros de path/query:",
+    "  - description, example, required",
+    "@RequestBody para documentar body de petición POST/PUT",
+    "Incluir content con @Content y schema para respuestas",
+    "Documentar headers si son necesarios con @Header",
+    "Especificar mediaType: application/json",
+    "Cada endpoint debe tener al menos summary claro",
+    "Aplicar en todos los controllers del microservicio"
+  ],
+  "conceptos": [
+    {
+      "nombre": "@Tag",
+      "descripcion": "Anotación para agrupar endpoints relacionados bajo una etiqueta"
+    },
+    {
+      "nombre": "@Operation",
+      "descripcion": "Documenta operación individual (endpoint) con summary y description"
+    },
+    {
+      "nombre": "@ApiResponses",
+      "descripcion": "Contenedor de múltiples @ApiResponse para documentar respuestas posibles"
+    },
+    {
+      "nombre": "@ApiResponse",
+      "descripcion": "Documenta una respuesta específica con código HTTP y descripción"
+    },
+    {
+      "nombre": "@Parameter",
+      "descripcion": "Documenta parámetro de path, query o header"
+    },
+    {
+      "nombre": "@RequestBody",
+      "descripcion": "Documenta cuerpo de petición POST/PUT con descripción y ejemplo"
+    },
+    {
+      "nombre": "@Content",
+      "descripcion": "Define contenido de respuesta con mediaType y schema"
+    },
+    {
+      "nombre": "summary",
+      "descripcion": "Resumen corto de operación (aparece en lista de endpoints)"
+    },
+    {
+      "nombre": "description",
+      "descripcion": "Descripción detallada de operación o parámetro"
+    },
+    {
+      "nombre": "responseCode",
+      "descripcion": "Código HTTP de respuesta (200, 201, 400, 404, 500)"
+    }
+  ],
+  "codigoEjemplo": "// CustomerRestController.java - Documentado\npackage com.paymentchange.customer.controller;\n\nimport io.swagger.v3.oas.annotations.Operation;\nimport io.swagger.v3.oas.annotations.Parameter;\nimport io.swagger.v3.oas.annotations.media.Content;\nimport io.swagger.v3.oas.annotations.media.Schema;\nimport io.swagger.v3.oas.annotations.responses.ApiResponse;\nimport io.swagger.v3.oas.annotations.responses.ApiResponses;\nimport io.swagger.v3.oas.annotations.tags.Tag;\nimport org.springframework.http.ResponseEntity;\nimport org.springframework.web.bind.annotation.*;\nimport java.util.List;\n\n@RestController\n@RequestMapping(\"/api/v1/customer\")\n@Tag(name = \"Customer\", description = \"API para gestión de clientes\")\npublic class CustomerRestController {\n    \n    @Autowired\n    private CustomerService customerService;\n    \n    @Operation(\n        summary = \"Listar todos los clientes\",\n        description = \"Obtiene lista completa de clientes registrados en el sistema\"\n    )\n    @ApiResponses(value = {\n        @ApiResponse(\n            responseCode = \"200\",\n            description = \"Lista obtenida exitosamente\",\n            content = @Content(\n                mediaType = \"application/json\",\n                schema = @Schema(implementation = Customer.class)\n            )\n        ),\n        @ApiResponse(\n            responseCode = \"500\",\n            description = \"Error interno del servidor\"\n        )\n    })\n    @GetMapping\n    public ResponseEntity<List<Customer>> findAll() {\n        return ResponseEntity.ok(customerService.findAll());\n    }\n    \n    @Operation(\n        summary = \"Obtener cliente por ID\",\n        description = \"Busca y retorna un cliente específico por su identificador único\"\n    )\n    @ApiResponses(value = {\n        @ApiResponse(\n            responseCode = \"200\",\n            description = \"Cliente encontrado\",\n            content = @Content(\n                mediaType = \"application/json\",\n                schema = @Schema(implementation = Customer.class)\n            )\n        ),\n        @ApiResponse(\n            responseCode = \"404\",\n            description = \"Cliente no encontrado\",\n            content = @Content(\n                mediaType = \"application/json\",\n                schema = @Schema(implementation = ErrorResponse.class)\n            )\n        )\n    })\n    @GetMapping(\"/{id}\")\n    public ResponseEntity<Customer> findById(\n        @Parameter(\n            description = \"ID del cliente a buscar\",\n            example = \"1\",\n            required = true\n        )\n        @PathVariable Long id) {\n        return ResponseEntity.ok(customerService.findById(id));\n    }\n    \n    @Operation(\n        summary = \"Crear nuevo cliente\",\n        description = \"Registra un nuevo cliente en el sistema con validación de datos\"\n    )\n    @ApiResponses(value = {\n        @ApiResponse(\n            responseCode = \"201\",\n            description = \"Cliente creado exitosamente\"\n        ),\n        @ApiResponse(\n            responseCode = \"400\",\n            description = \"Datos de entrada inválidos\"\n        )\n    })\n    @PostMapping\n    public ResponseEntity<Customer> create(\n        @io.swagger.v3.oas.annotations.parameters.RequestBody(\n            description = \"Datos del cliente a crear\",\n            required = true,\n            content = @Content(\n                schema = @Schema(implementation = Customer.class)\n            )\n        )\n        @RequestBody Customer customer) {\n        Customer saved = customerService.create(customer);\n        return ResponseEntity.status(HttpStatus.CREATED).body(saved);\n    }\n}"
+}

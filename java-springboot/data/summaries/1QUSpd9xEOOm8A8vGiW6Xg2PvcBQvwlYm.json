@@ -1,0 +1,67 @@
+{
+  "titulo": "Qué es OAuth2, Single Sign-On, Roles y Flujo OAuth2 Completo",
+  "resumen": "Explicación detallada de OAuth2, diferentes grant types, concepto de Single Sign-On, y flujo completo de autorización. Se comparan flows: Authorization Code, Client Credentials, Password Grant, y se explica cuándo usar cada uno. Se introduce concepto de roles y scopes.",
+  "puntosClave": [
+    "OAuth2: framework de autorización, NO de autenticación",
+    "Roles OAuth2:",
+    "  - Resource Owner: usuario dueño de recursos",
+    "  - Client: aplicación que accede a recursos",
+    "  - Authorization Server: emite tokens (Keycloak)",
+    "  - Resource Server: API protegida (microservicios)",
+    "Grant Types (flujos de autorización):",
+    "1. Authorization Code: apps web con backend (más seguro)",
+    "2. Implicit: apps SPA (deprecated, usar PKCE)",
+    "3. Resource Owner Password Credentials: usuario + password directo",
+    "4. Client Credentials: machine-to-machine (microservicios)",
+    "Single Sign-On (SSO):",
+    "  - Usuario se autentica una vez",
+    "  - Token válido para múltiples aplicaciones",
+    "  - Logout centralizado",
+    "Scopes: permisos granulares (read, write, admin)",
+    "Roles: grupos de permisos asignados a usuarios",
+    "OpenID Connect añade id_token con info del usuario"
+  ],
+  "conceptos": [
+    {
+      "nombre": "OAuth2 Roles",
+      "descripcion": "Resource Owner, Client, Authorization Server, Resource Server"
+    },
+    {
+      "nombre": "Authorization Code Flow",
+      "descripcion": "Flujo más seguro para apps web con backend"
+    },
+    {
+      "nombre": "Client Credentials Flow",
+      "descripcion": "Flujo para comunicación service-to-service"
+    },
+    {
+      "nombre": "Password Grant Flow",
+      "descripcion": "Cliente envía username/password directamente (menos seguro)"
+    },
+    {
+      "nombre": "PKCE (Proof Key for Code Exchange)",
+      "descripcion": "Extensión de Authorization Code para apps públicas (SPA, mobile)"
+    },
+    {
+      "nombre": "Single Sign-On (SSO)",
+      "descripcion": "Autenticarse una vez, acceder a múltiples aplicaciones"
+    },
+    {
+      "nombre": "Scope",
+      "descripcion": "Permiso granular que limita acceso a recursos"
+    },
+    {
+      "nombre": "Role",
+      "descripcion": "Conjunto de permisos asignados a usuario o grupo"
+    },
+    {
+      "nombre": "id_token",
+      "descripcion": "JWT de OpenID Connect con información del usuario autenticado"
+    },
+    {
+      "nombre": "access_token",
+      "descripcion": "JWT que permite acceder a recursos protegidos"
+    }
+  ],
+  "codigoEjemplo": null
+}

@@ -1,0 +1,61 @@
+{
+  "titulo": "Configurar Balanceador de Carga del Cliente con Spring Cloud LoadBalancer",
+  "resumen": "Implementación explícita de Spring Cloud LoadBalancer para gestionar múltiples instancias de un servicio. Se prueba escalado horizontal ejecutando múltiples instancias de Product en puertos diferentes, y se valida distribución de carga mediante logs. Se explica diferencia entre client-side y server-side load balancing.",
+  "puntosClave": [
+    "Spring Cloud LoadBalancer: solución de balanceo del lado del cliente",
+    "Reemplaza a Ribbon (deprecado) de Netflix",
+    "Requiere anotación @LoadBalanced en WebClient.Builder bean",
+    "Algoritmo por defecto: Round-Robin (secuencial)",
+    "Probar escalado: ejecutar Product en puertos 8082, 8083, 8084",
+    "Todas las instancias se registran en Eureka con mismo nombre",
+    "Customer distribuye peticiones entre las 3 instancias automáticamente",
+    "Verificar en logs qué instancia respondió cada petición",
+    "Si una instancia cae, LoadBalancer la excluye automáticamente",
+    "Client-side: cliente decide, Server-side: load balancer externo (nginx)",
+    "Ventaja client-side: no hay single point of failure",
+    "Configurar zona, peso, estrategia personalizada si es necesario"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Spring Cloud LoadBalancer",
+      "descripcion": "Librería para balanceo de carga del lado del cliente integrada con Eureka"
+    },
+    {
+      "nombre": "@LoadBalanced",
+      "descripcion": "Anotación que habilita balanceo de carga en RestTemplate o WebClient.Builder"
+    },
+    {
+      "nombre": "Client-Side Load Balancing",
+      "descripcion": "Cliente obtiene lista de instancias y decide a cuál llamar"
+    },
+    {
+      "nombre": "Server-Side Load Balancing",
+      "descripcion": "Load balancer externo (nginx, HAProxy) distribuye tráfico"
+    },
+    {
+      "nombre": "Round-Robin Algorithm",
+      "descripcion": "Distribuye peticiones secuencialmente: instancia1 → instancia2 → instancia3 → instancia1..."
+    },
+    {
+      "nombre": "Ribbon (Deprecado)",
+      "descripcion": "Anterior solución de Netflix para balanceo, reemplazada por LoadBalancer"
+    },
+    {
+      "nombre": "Escalado Horizontal",
+      "descripcion": "Agregar más instancias del mismo servicio para manejar más carga"
+    },
+    {
+      "nombre": "Instance Health",
+      "descripcion": "LoadBalancer solo envía tráfico a instancias marcadas UP en Eureka"
+    },
+    {
+      "nombre": "Sticky Session",
+      "descripcion": "Dirigir peticiones del mismo cliente siempre a la misma instancia"
+    },
+    {
+      "nombre": "Weighted Load Balancing",
+      "descripcion": "Distribuir más tráfico a instancias con mayor capacidad (peso)"
+    }
+  ],
+  "codigoEjemplo": "// WebClientConfig.java - Configuración con LoadBalancer\n@Configuration\npublic class WebClientConfig {\n    \n    @Bean\n    @LoadBalanced  // ✅ CRÍTICO: habilita balanceo de carga\n    public WebClient.Builder webClientBuilder() {\n        return WebClient.builder();\n    }\n    \n    @Bean\n    public WebClient productWebClient(WebClient.Builder builder) {\n        return builder\n            .baseUrl(\"http://product-service\")\n            .build();\n    }\n}\n\n# Ejecutar múltiples instancias de Product:\n# Terminal 1:\njava -jar product-service.jar --server.port=8082\n\n# Terminal 2:\njava -jar product-service.jar --server.port=8083\n\n# Terminal 3:\njava -jar product-service.jar --server.port=8084\n\n# Eureka muestra:\n# PRODUCT-SERVICE: 3 instances\n# - instance1:8082 (UP)\n# - instance2:8083 (UP)\n# - instance3:8084 (UP)\n\n# Al llamar Customer → Product repetidamente:\n# Request 1 → product-service:8082\n# Request 2 → product-service:8083\n# Request 3 → product-service:8084\n# Request 4 → product-service:8082 (vuelta al inicio)\n\n# application.yml - Configuración avanzada de LoadBalancer\nspring:\n  cloud:\n    loadbalancer:\n      ribbon:\n        enabled: false  # Deshabilitar Ribbon\n      configurations: default\n      \n# Configurar zonas para preferencia\neureka:\n  instance:\n    metadata-map:\n      zone: zone1\n  client:\n    prefer-same-zone-eureka: true"
+}

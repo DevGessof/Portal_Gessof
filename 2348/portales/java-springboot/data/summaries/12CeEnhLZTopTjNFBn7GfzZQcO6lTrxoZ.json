@@ -1,0 +1,57 @@
+{
+  "titulo": "Activar/Desactivar Swagger y Recomendaciones al Descargar Código",
+  "resumen": "Configuración de Swagger mediante properties para habilitar/deshabilitar en diferentes entornos. Se explica por qué NO usar Swagger en producción (falta de seguridad). Incluye guía completa de buenas prácticas al descargar código fuente: verificar versiones de framework, JDK, dependencias y propiedades del proyecto antes de compilar.",
+  "puntosClave": [
+    "Desactivar Swagger en producción por seguridad (sin autenticación)",
+    "Propiedad: springdoc.swagger-ui.enabled=false en application.properties",
+    "Activar en desarrollo: springdoc.swagger-ui.enabled=true (o eliminar propiedad)",
+    "Al descargar código: SIEMPRE abrir pom.xml primero",
+    "Verificar versión de Spring Boot y actualizarla si es necesaria",
+    "Verificar versión de JDK según requisitos del framework",
+    "Revisar versiones de otras dependencias (Lombok, Swagger, etc.)",
+    "Ir a Properties del proyecto → Compile → verificar JDK configurado",
+    "Activar 'Compile on Save' para compilación automática",
+    "Ejecutar Clean and Build después de actualizar versiones",
+    "Detener procesos en Output antes de reiniciar (evitar error de puerto ocupado)",
+    "Revisar log de compilación para detectar problemas de versiones"
+  ],
+  "conceptos": [
+    {
+      "nombre": "application.properties",
+      "descripcion": "Archivo de configuración donde se definen propiedades de Spring Boot (puerto, BD, features)"
+    },
+    {
+      "nombre": "Entorno de Desarrollo vs Producción",
+      "descripcion": "Desarrollo: con herramientas debug. Producción: optimizado, seguro, sin tools de desarrollo"
+    },
+    {
+      "nombre": "springdoc.swagger-ui.enabled",
+      "descripcion": "Propiedad que activa (true) o desactiva (false) la interfaz de Swagger"
+    },
+    {
+      "nombre": "Seguridad en Producción",
+      "descripcion": "Buena práctica de no exponer herramientas sin autenticación en ambientes productivos"
+    },
+    {
+      "nombre": "Clean and Build",
+      "descripcion": "Limpia archivos compilados y recompila todo el proyecto desde cero"
+    },
+    {
+      "nombre": "Compile on Save",
+      "descripcion": "Opción que recompila automáticamente al guardar cambios en archivos"
+    },
+    {
+      "nombre": "Compatibilidad de Versiones",
+      "descripcion": "Relación entre Spring Boot, JDK y dependencias que deben coincidir"
+    },
+    {
+      "nombre": "Puerto Ocupado",
+      "descripcion": "Error cuando se intenta iniciar el servidor en un puerto ya en uso"
+    },
+    {
+      "nombre": "Actualización de Framework",
+      "descripcion": "Proceso de migrar de Spring Boot 2.x a 3.x actualizando también JDK y dependencias"
+    }
+  ],
+  "codigoEjemplo": "# application.properties\n\n# Desactivar Swagger (recomendado en producción)\nspringdoc.swagger-ui.enabled=false\n\n# Activar Swagger (desarrollo/testing)\nspringdoc.swagger-ui.enabled=true\n\n# Otras configuraciones útiles\nserver.port=8080\nspring.application.name=customer-service\n\n# Configuración H2 (opcional, para ver consola)\nspring.h2.console.enabled=true\nspring.h2.console.path=/h2-console"
+}

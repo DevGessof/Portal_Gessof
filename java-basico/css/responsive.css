@@ -1,0 +1,137 @@
+/**
+ * RESPONSIVE CSS - PORTAL APIGEE X
+ * =================================
+ * Media queries para tablet y móvil
+ */
+
+/* Tablet (768px) */
+@media (max-width: 768px) {
+    .main-nav-tabs {
+        padding: 0 1rem;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .hero {
+        padding: 2rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero-stats {
+        flex-wrap: wrap;
+    }
+
+    .grid-modules {
+        grid-template-columns: 1fr;
+    }
+
+    .videos-grid {
+        gap: 1rem;
+    }
+
+    .video-card {
+        flex: 0 0 250px;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 2% auto;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .objetivos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .materiales-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Móvil (480px) */
+@media (max-width: 480px) {
+    .main-content {
+        padding: 0 1rem 2rem;
+    }
+
+    .hero {
+        padding: 1.5rem;
+    }
+
+    .hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .hero-stats {
+        gap: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .video-card {
+        flex: 0 0 200px;
+    }
+
+    .modal-content {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .modal-header {
+        padding: 1rem;
+    }
+
+    .modal-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .carousel-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+
+    .carousel-btn.prev {
+        left: -10px;
+    }
+
+    .carousel-btn.next {
+        right: -10px;
+    }
+
+    .main-nav-tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .seccion-title {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .search-input {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+}

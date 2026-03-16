@@ -1,0 +1,249 @@
+================================================================================
+                    CURSO DE APIGEE - SECCIÓN 5
+              POLÍTICAS DE SEGURIDAD Y AUTENTICACIÓN OAUTH 2.0
+              RESÚMENES DIDÁCTICOS DE CADA VIDEO DEL CURSO
+================================================================================
+
+Instructor: Eduardo Celedonio
+Elaborado por: Claude (Asistente AI)
+Fecha: 2 de enero de 2026
+
+================================================================================
+
+
+VIDEO 1: POLÍTICA BASIC AUTHENTICATION
+================================================================================
+
+La política Basic Authentication permite trabajar con credenciales codificadas en Base64, que es un formato estándar usado en autenticación HTTP.
+
+**¿Qué hace esta política?**
+
+Tiene dos funciones principales: ENCODE (codificar) y DECODE (decodificar). La función ENCODE toma un usuario y contraseña y los convierte en un código Base64 que se coloca en el header Authorization. Por ejemplo, si tienes usuario "Jacinto" y contraseña "test1234", los codifica como "Basic SmFjaW50bzp0ZXN0MTIzNA==". La función DECODE hace lo contrario: lee ese código del header y extrae el usuario y contraseña originales.
+
+**Preparando el proxy**
+
+En el video se crea un proxy llamado "sec-example-v1" para probar políticas de seguridad. Antes de agregar las políticas, se crea un Property Set (archivo de propiedades) llamado "User.properties" donde se guardan credenciales de prueba: username=Jacinto y password=test1234. Los Property Sets son útiles para almacenar configuraciones que puedes cambiar sin modificar el código del proxy.
+
+**Configurando ENCODE**
+
+Se crea la primera política llamada "BA-Encode" que lee el usuario y contraseña del Property Set usando la sintaxis "propertyset.User.username" y "propertyset.User.password". Esta política genera el código Base64 y lo coloca en el header "Authorization" del request. Es importante notar que los valores pueden venir de otras fuentes como query parameters o headers, no solo de Property Sets.
+
+**Configurando DECODE**
+
+La segunda política "BA-Decode" hace el proceso inverso. Lee el header "Authorization" que contiene el código Base64, lo decodifica y separa el usuario y contraseña. En este caso, los valores decodificados se guardan como query parameters para que viajen al backend. Ambas políticas se agregan al PreFlow en orden: primero ENCODE y luego DECODE.
+
+**Probando en Debug**
+
+Al hacer una petición y ver el Debug, puedes observar cómo la política ENCODE crea el header Authorization con el valor codificado. Inmediatamente después, la política DECODE lee ese header, extrae "Jacinto" y "test1234", y los inyecta como query parameters. Esta política es útil cuando necesitas integrar con APIs antiguas que usan Basic Authentication.
+
+**Lo que debes entender**
+
+Basic Authentication es un método simple de autenticación donde las credenciales viajan codificadas en Base64. Apigee te permite tanto generar estos códigos como leerlos y extraer las credenciales. Los Property Sets son archivos de configuración que te ayudan a separar datos del código, haciendo más fácil el mantenimiento.
+
+
+================================================================================
+
+
+VIDEO 2: POLÍTICA JSON THREAT PROTECTION
+================================================================================
+
+Esta política protege tu API contra ataques que envían JSONs muy grandes o mal formados que podrían hacer que tu servicio se caiga o se vuelva lento.
+
+**¿Por qué es importante?**
+
+Imagina que alguien envía un JSON con 1 millón de elementos en un array, o con una estructura de 1000 niveles de profundidad. Tu servidor tendría que procesar todo eso, gastando memoria y CPU, y podría dejar de funcionar. JSON Threat Protection establece límites para prevenir estos ataques.
+
+**Las validaciones principales**
+
+La política tiene varias propiedades configurables. ArrayElementCount limita cuántos elementos puede tener un array (en el ejemplo: 4 elementos máximo). ContainerDepth controla la profundidad de anidamiento - básicamente cuántos niveles de llaves "{}" o corchetes "[]" puedes tener (ejemplo: 2 niveles). ObjectEntryCount limita cuántas propiedades puede tener un objeto JSON (ejemplo: 3 propiedades máximo).
+
+**Validaciones de texto**
+
+ObjectEntryNameLength controla qué tan largo puede ser el nombre de una propiedad (ejemplo: máximo 20 caracteres). StringValueLength limita el tamaño de los valores de texto (ejemplo: 50 caracteres). Si alguien intenta enviar un nombre de 100 caracteres cuando solo permites 20, la política rechaza el request inmediatamente.
+
+**Probando en Postman**
+
+Cuando envías un JSON válido que cumple todos los límites, recibes 200 OK. Pero si agregas un quinto elemento a un array cuando solo permites 4, obtienes un error claro: "Exceeded array element count at line 5". Lo mismo pasa si excedes la profundidad, el número de objetos, o el tamaño de strings.
+
+**Flexibilidad en la configuración**
+
+No tienes que usar todas las validaciones. Si solo te preocupa el tamaño de arrays, puedes configurar únicamente ArrayElementCount y omitir las demás. La política debe colocarse lo más temprano posible en el flujo (PreFlow Request) para rechazar payloads peligrosos antes de que consuman recursos del servidor.
+
+**Lo que debes entender**
+
+Esta política es como un guardia de seguridad que revisa que los JSONs que llegan no sean demasiado grandes o complejos. Es especialmente importante en APIs públicas donde no controlas quién hace las peticiones. Los límites que configures dependen de tu caso de uso: una API de carga masiva necesitará límites más altos que una API simple.
+
+
+================================================================================
+
+
+VIDEO 3: POLÍTICA SPIKE ARREST
+================================================================================
+
+Spike Arrest protege tu API backend contra picos repentinos de tráfico, distribuyendo las peticiones de manera uniforme en el tiempo.
+
+**La diferencia con Quota**
+
+Quota (que vimos antes) dice "puedes hacer 1000 llamadas por día" pero permite que todas lleguen en el primer minuto. Spike Arrest dice "puedes hacer 5 llamadas por minuto" y las distribuye uniformemente - no permite que las 5 lleguen al mismo tiempo. Esto protege tu backend de colapsar cuando hay un pico súbito de tráfico.
+
+**Identifier: quién está llamando**
+
+La propiedad Identifier te permite controlar el límite por solicitante. Si usas "request.header.solicitante", cada cliente tiene su propio contador independiente. Si no pones Identifier (lo dejas vacío), el límite aplica para todas las peticiones juntas. Por ejemplo, con límite de 5pm y un Identifier, Eduardo puede hacer 5 llamadas y María otras 5. Sin Identifier, entre Eduardo y María solo pueden hacer 5 llamadas en total.
+
+**MessageWeight: peticiones pesadas**
+
+Esta propiedad permite que ciertas peticiones "cuenten" más que otras. Si el peso es 1, cada petición cuenta como 1. Si el peso es 2, cada petición cuenta como 2, entonces con un límite de 5pm solo podrías hacer 2 peticiones (porque 2×2=4, y una más excedería el límite). Esto es útil cuando algunas operaciones son más costosas que otras.
+
+**Rate: el límite**
+
+Aquí defines cuántas peticiones permites. Se escribe como número + unidad: "5pm" significa 5 por minuto, "10ps" significa 10 por segundo. Apigee distribuye las peticiones uniformemente: si dices 60pm, significa 1 petición cada segundo durante 60 segundos, no 60 peticiones en el primer segundo y luego nada.
+
+**UseEffectiveCount y pruebas**
+
+Esta propiedad (configurada en "true") sincroniza el contador entre todos los servidores de Apigee, asegurando que el límite sea preciso. Al probar en Postman con límite de 5pm y peso 1, las primeras 5 peticiones pasan bien. La sexta petición recibe error 429 "Spike arrest violation". Si cambias el peso a 2, solo pasan 2 peticiones antes de bloquearse.
+
+**Lo que debes entender**
+
+Spike Arrest suaviza los picos de tráfico para que tu backend no se sature. Es diferente de Quota: uno controla la velocidad (peticiones por tiempo) y otro el total permitido. Generalmente usas ambas políticas juntas: Spike Arrest previene ataques súbitos y Quota controla el uso total del servicio.
+
+
+================================================================================
+
+
+VIDEO 4: OAUTH 2.0 - CLIENT CREDENTIALS FLOW (TEORÍA)
+================================================================================
+
+OAuth 2.0 es un estándar de la industria para autorización de APIs. El flujo de Client Credentials es específico para cuando dos aplicaciones necesitan comunicarse sin que haya un usuario humano de por medio.
+
+**¿Qué es OAuth 2.0?**
+
+Es un protocolo que permite obtener acceso a recursos de forma segura usando tokens temporales en lugar de enviar credenciales directamente. En vez de enviar tu usuario y contraseña en cada petición, primero obtienes un "access token" (token de acceso) que expira después de cierto tiempo, y usas ese token para las peticiones a la API.
+
+**Client Credentials: comunicación máquina a máquina**
+
+Este flujo se usa cuando no hay un usuario final involucrado, solo dos sistemas hablando entre sí. Por ejemplo: un servicio de facturación consultando un servicio de inventario, o un trabajo programado que actualiza reportes cada noche. A esto se le llama "machine to machine" o M2M.
+
+**Los componentes del flujo**
+
+Hay una aplicación cliente (backend) que necesita acceder a recursos. Hay un Authorization Server (servidor de autorización) que genera los tokens - esto lo implementaremos en Apigee. Y hay API Proxies (servidores de recursos) que validan esos tokens antes de dar acceso. El cliente tiene credenciales propias: un Client ID (identificador público) y un Client Secret (contraseña secreta).
+
+**Cómo funciona el flujo**
+
+Paso 1: El cliente envía su Client ID y Client Secret al Authorization Server. Paso 2: Si las credenciales son válidas, el servidor genera un Access Token y lo devuelve. Paso 3: El cliente usa ese token para llamar a las APIs protegidas enviándolo en el header Authorization. Paso 4: La API verifica que el token sea válido antes de procesar la petición.
+
+**Ventajas de este enfoque**
+
+El token expira automáticamente (típicamente después de 30 minutos), limitando el daño si alguien lo roba. Puedes revocar tokens sin cambiar las credenciales de la aplicación. Es un estándar ampliamente adoptado, así que funciona con muchas plataformas diferentes.
+
+**Lo que debes entender**
+
+OAuth 2.0 Client Credentials es la forma profesional de autenticar comunicaciones entre servicios. No es para aplicaciones móviles o web con usuarios - es específicamente para servicios backend. En los próximos videos implementaremos este flujo completo en Apigee.
+
+
+================================================================================
+
+
+VIDEO 5: OAUTH 2.0 - CREACIÓN DE PROXY DE OAUTH
+================================================================================
+
+En este video se crea el proxy que actuará como Authorization Server, es decir, el que genera los Access Tokens.
+
+**Creando el proxy base**
+
+Se crea un nuevo proxy llamado "oauth-v1-example" con tipo "No Target" porque no necesita llamar a ningún backend - su única función es generar tokens. El base path es "/oauth/v1" para seguir convenciones estándar de OAuth.
+
+**La política OAuth V2**
+
+Se agrega la política "OAuth v2.0" con nombre "Generate-Access-Token". En la configuración XML se cambia la operación a "GenerateAccessToken". La propiedad ExpiresIn se configura en 1,800,000 milisegundos (que son 30 minutos) - este es el tiempo que el token será válido. En SupportedGrantTypes se indica "client_credentials" para aceptar solo este tipo de flujo.
+
+**El flujo condicional**
+
+Se crea un flujo condicional llamado "Create-Access-Token" que escucha en el path "/token" con método POST. La política Generate-Access-Token se agrega en la sección Response de este flujo (no en Request). Esto es importante porque Apigee necesita validar las credenciales antes de generar el token.
+
+**Obteniendo credenciales de prueba**
+
+Para probar, necesitas ir a Publish → Apps y seleccionar una app existente (como "app-eduardo-pro"). Ahí encontrarás el Key (Client ID) y el Secret (Client Secret). Estos son los valores que usarás para autenticarte y obtener el token.
+
+**Probando con Postman**
+
+Se hace un POST a "https://[dominio].apigee.net/oauth/v1/token". En Authorization se usa Basic Auth con el Client ID como username y Client Secret como password. En el Body (tipo x-www-form-urlencoded) se envía "grant_type=client_credentials". Si todo está bien configurado, la respuesta incluye un access_token, token_type "Bearer", y expires_in "1799" (segundos).
+
+**Lo que debes entender**
+
+Este proxy es una pieza fundamental: genera los tokens que otros servicios usarán para autenticarse. El token es temporal (30 minutos) por seguridad. Apigee automáticamente valida que las credenciales existan y estén activas antes de generar el token. El access_token que recibes es un JWT (JSON Web Token) firmado por Apigee.
+
+
+================================================================================
+
+
+VIDEO 6: VERIFICACIÓN DE ACCESS TOKEN
+================================================================================
+
+Ahora que podemos generar tokens, necesitamos proteger nuestros API proxies para que solo acepten peticiones con tokens válidos.
+
+**Agregando verificación a un proxy**
+
+Se usa el proxy "seven-days-jobs-v1" como ejemplo. Se agrega una nueva política OAuth v2.0 llamada "Verify-Access-Token" con la operación "VerifyAccessToken". Esta política lee automáticamente el header Authorization, extrae el token, verifica que sea válido y que no haya expirado.
+
+**Ubicación en el flujo**
+
+La política se coloca en el PreFlow Request como la primera política que se ejecuta. Esto asegura que ninguna petición sin token válido pueda acceder a la lógica del proxy. Es como un guardia de seguridad en la entrada.
+
+**Prueba 1: Sin token**
+
+Al hacer una petición sin incluir el header Authorization, recibes error 401 "Invalid access token". La política detecta que no hay token y rechaza la petición inmediatamente.
+
+**Prueba 2: Token válido pero sin permisos**
+
+Cuando envías un token válido pero recibes error de que no tiene permisos, es porque falta configurar los API Products. La App que generó el token debe tener acceso tanto al proxy OAuth como al proxy que estás protegiendo.
+
+**Configurando API Products**
+
+Vas a Publish → Apps → Seleccionas tu App → Ves qué producto tiene asociado → Editas ese producto. En Operations agregas dos proxies: "oauth-v1-example" (para poder generar tokens) y "seven-days-jobs-v1" (para poder consumirlo). Después de guardar y esperar unos segundos, el token ya funciona correctamente.
+
+**Prueba exitosa**
+
+Con el producto bien configurado, al enviar el request con header "Authorization: Bearer [tu-token]", recibes 200 OK y la respuesta normal de la API. En Debug puedes ver que la política Verify-Access-Token se ejecutó exitosamente y pobló variables como oauth.client_id.
+
+**Lo que debes entender**
+
+Proteger un proxy con OAuth es agregar la política Verify-Access-Token al inicio del flujo. Los API Products controlan qué Apps tienen acceso a qué proxies - es el sistema de permisos de Apigee. Un token solo funciona si la App que lo generó tiene permiso para acceder al proxy que estás llamando.
+
+
+================================================================================
+
+
+VIDEO 7: SHARED FLOW DE SEGURIDAD
+================================================================================
+
+Los Shared Flows permiten reutilizar la misma lógica de seguridad en múltiples proxies sin tener que copiar y pegar políticas en cada uno.
+
+**¿Qué es un Shared Flow?**
+
+Es como una función reutilizable que puedes llamar desde cualquier proxy. En vez de tener la política "Verify-Access-Token" duplicada en 10 proxies diferentes, la pones una vez en un Shared Flow y todos los proxies la usan. Si necesitas cambiar algo, lo cambias en un solo lugar y afecta a todos.
+
+**Creando el Shared Flow**
+
+Vas a la sección Shared Flows y creas uno nuevo llamado "sf-security-oauth". Agregas la política OAuth v2.0 con operación VerifyAccessToken (igual que antes). En un Shared Flow no hay PreFlow ni PostFlow - solo agregas las políticas en un flujo lineal simple. Luego despliegas el Shared Flow al ambiente.
+
+**Usando el Shared Flow en un proxy**
+
+En tu proxy (por ejemplo seven-days-jobs-v1) agregas la política "Flow Callout" con nombre "FC-Security-OAuth". En la configuración indicas qué Shared Flow quieres llamar: "<SharedFlowBundle>sf-security-oauth</SharedFlowBundle>". Luego reemplazas la política antigua Verify-Access-Token con esta nueva política Flow Callout en el PreFlow.
+
+**Probando que funciona**
+
+Haces la misma petición con el token y funciona exactamente igual que antes. La diferencia es que ahora estás usando el Shared Flow. En Debug puedes ver cómo la política FC-Security-OAuth llama al Shared Flow, este ejecuta su política Verify-Access-Token, y todo funciona normalmente.
+
+**Ventajas de este enfoque**
+
+Si necesitas cambiar la lógica de OAuth (por ejemplo, agregar logging o validaciones adicionales), solo editas el Shared Flow una vez y automáticamente todos los proxies que lo usan tienen la nueva versión. Esto hace el mantenimiento mucho más fácil y garantiza que todos usen exactamente la misma lógica de seguridad.
+
+**Lo que debes entender**
+
+Los Shared Flows son para código que se repite en muchos lugares. En vez de duplicar políticas, las centralizas. Un proxy invoca el Shared Flow usando la política Flow Callout. Esto es especialmente útil para seguridad, logging, o cualquier lógica común. El Shared Flow debe estar desplegado para que funcione.
+
+
+================================================================================
+
+FIN DEL DOCUMENTO
+================================================================================

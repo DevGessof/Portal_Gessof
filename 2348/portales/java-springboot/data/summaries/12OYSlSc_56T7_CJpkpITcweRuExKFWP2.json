@@ -1,0 +1,61 @@
+{
+  "titulo": "Importar Configuración Externa desde Spring Cloud Config Server",
+  "resumen": "Creación y configuración del microservicio Config Server que expone configuraciones desde repositorio Git. Se habilita @EnableConfigServer, se configura puerto 8888, y se prueba acceso a propiedades vía endpoints REST. Los microservicios clientes obtienen configuración automáticamente al iniciar.",
+  "puntosClave": [
+    "Crear proyecto Config Server en módulo infraestructure-domain",
+    "Starter principal: spring-cloud-config-server",
+    "Clase principal: @SpringBootApplication + @EnableConfigServer",
+    "Configurar puerto: server.port=8888 (convención estándar)",
+    "spring.cloud.config.server.git.uri=file:///path/to/config-repo",
+    "Git URI puede ser: local (file://), GitHub (https://), GitLab",
+    "Config Server expone endpoints REST para consultar configuración",
+    "GET /{application}/{profile} retorna propiedades",
+    "Ejemplo: http://localhost:8888/customer-service/dev",
+    "Respuesta JSON con todas las propiedades del servicio y perfil",
+    "Microservicios clientes usan estos endpoints automáticamente",
+    "Config Server clona repositorio Git al iniciar"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Config Server",
+      "descripcion": "Microservicio que sirve configuración desde Git mediante endpoints REST"
+    },
+    {
+      "nombre": "@EnableConfigServer",
+      "descripcion": "Anotación que activa funcionalidad de servidor de configuración"
+    },
+    {
+      "nombre": "spring.cloud.config.server.git.uri",
+      "descripcion": "URL del repositorio Git con archivos de configuración"
+    },
+    {
+      "nombre": "Puerto 8888",
+      "descripcion": "Puerto convencional para Spring Cloud Config Server"
+    },
+    {
+      "nombre": "Endpoints REST de Config",
+      "descripcion": "URLs que exponen configuración: /{app}/{profile}, /{app}/{profile}/{label}"
+    },
+    {
+      "nombre": "Git URI Local",
+      "descripcion": "file:///path/to/repo para repositorio en sistema de archivos local"
+    },
+    {
+      "nombre": "Git URI Remoto",
+      "descripcion": "https://github.com/user/config-repo.git para repositorio remoto"
+    },
+    {
+      "nombre": "Clonación Automática",
+      "descripcion": "Config Server clona repositorio Git al iniciar y lo actualiza periódicamente"
+    },
+    {
+      "nombre": "Label Git",
+      "descripcion": "Rama de Git a usar (master, main, develop), por defecto: main"
+    },
+    {
+      "nombre": "Property Sources",
+      "descripcion": "Fuentes de propiedades que Config Server agrega en respuesta JSON"
+    }
+  ],
+  "codigoEjemplo": "<!-- pom.xml del Config Server -->\n<dependencies>\n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-config-server</artifactId>\n    </dependency>\n</dependencies>\n\n// ConfigServerApplication.java\npackage com.paymentchange.configserver;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\nimport org.springframework.cloud.config.server.EnableConfigServer;\n\n@SpringBootApplication\n@EnableConfigServer\npublic class ConfigServerApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(ConfigServerApplication.class, args);\n    }\n}\n\n# application.properties del Config Server\nserver.port=8888\nspring.application.name=config-server\n\n# Repositorio Git local\nspring.cloud.config.server.git.uri=file:///C:/config-repo\n\n# O repositorio Git remoto\nspring.cloud.config.server.git.uri=https://github.com/user/config-repo.git\nspring.cloud.config.server.git.default-label=main\n\n# Probar endpoints:\n# GET http://localhost:8888/customer-service/dev\n# Retorna JSON con propiedades de customer-service-dev.yml"
+}

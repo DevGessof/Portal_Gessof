@@ -1,0 +1,854 @@
+{
+  "seccion": "Sección 11 - API Gateway con Spring Cloud Gateway",
+  "descripcion": "Implementación de API Gateway como punto de entrada único para todos los microservicios. Se explican patrones de proxy inverso, se crea microservicio API Gateway con Spring Cloud Gateway, se configura enrutamiento dinámico vía Eureka, se implementan filtros globales, y se dockeriza. El resultado es una arquitectura con gateway centralizado que simplifica acceso, seguridad y monitoreo.",
+  "clases": [
+    {
+      "numero": 1,
+      "archivo": "1__diagrama_arquitectura_solución_parte_seguridad.srt",
+      "titulo": "Diagrama de Arquitectura de Solución con Foco en Seguridad",
+      "resumen": "Presentación de arquitectura completa de solución incluyendo API Gateway como capa de seguridad. Se muestra cómo Gateway actúa como punto de entrada único, maneja autenticación centralizada, aplica rate limiting, y oculta complejidad interna de microservicios. Establece visión de arquitectura enterprise.",
+      "puntosClave": [
+        "Problema: clientes acceden directamente a múltiples microservicios",
+        "Consecuencias: complejidad cliente, múltiples URLs, CORS por servicio, seguridad distribuida",
+        "Solución: API Gateway como Single Entry Point",
+        "Cliente solo conoce URL del Gateway: https://api.company.com",
+        "Gateway enruta requests a microservicios internos",
+        "Ventajas de seguridad:",
+        "  - Autenticación centralizada (un solo punto)",
+        "  - Autorización y validación de tokens",
+        "  - Rate limiting global",
+        "  - IP whitelisting/blacklisting",
+        "  - SSL/TLS termination",
+        "  - Ocultar arquitectura interna",
+        "Gateway puede agregar headers, modificar requests/responses",
+        "Logging y auditoría centralizados",
+        "Patrón esencial en arquitecturas de microservicios"
+      ],
+      "conceptos": [
+        {
+          "nombre": "API Gateway",
+          "descripcion": "Componente que actúa como punto de entrada único para todos los microservicios"
+        },
+        {
+          "nombre": "Single Entry Point",
+          "descripcion": "Un solo endpoint público que enruta a múltiples servicios internos"
+        },
+        {
+          "nombre": "Reverse Proxy",
+          "descripcion": "Servidor que recibe requests y las reenvía a servidores backend"
+        },
+        {
+          "nombre": "Centralized Authentication",
+          "descripcion": "Autenticación manejada en un solo punto en lugar de cada microservicio"
+        },
+        {
+          "nombre": "Rate Limiting",
+          "descripcion": "Limitar número de requests por cliente/IP en ventana de tiempo"
+        },
+        {
+          "nombre": "SSL/TLS Termination",
+          "descripcion": "Gateway maneja HTTPS, comunicación interna puede ser HTTP"
+        },
+        {
+          "nombre": "Request Routing",
+          "descripcion": "Enrutar peticiones a microservicio apropiado según path/headers"
+        },
+        {
+          "nombre": "Service Facade",
+          "descripcion": "Ocultar complejidad y estructura interna de microservicios"
+        },
+        {
+          "nombre": "Edge Service",
+          "descripcion": "Servicio en el borde de la red que interactúa con clientes externos"
+        },
+        {
+          "nombre": "Cross-Cutting Concerns",
+          "descripcion": "Funcionalidades comunes manejadas centralmente (auth, logging, monitoring)"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "archivo": "2__consiste_proxy_inverso_principales_funcionalidades.srt",
+      "titulo": "En Qué Consiste un Proxy Inverso y sus Principales Funcionalidades",
+      "resumen": "Explicación detallada de concepto de proxy inverso y diferencia con proxy tradicional. Se detallan funcionalidades clave: load balancing, caching, SSL termination, request routing, y security. Base conceptual para entender API Gateway.",
+      "puntosClave": [
+        "Proxy tradicional (forward proxy): cliente → proxy → internet",
+        "Proxy inverso (reverse proxy): internet → proxy → servidores backend",
+        "Cliente no sabe que hay múltiples servidores detrás",
+        "Funcionalidades principales:",
+        "1. Load Balancing: distribuir carga entre instancias",
+        "2. Caching: almacenar respuestas para reducir latencia",
+        "3. SSL Termination: descifrar HTTPS en proxy, HTTP interno",
+        "4. Compression: comprimir respuestas (gzip)",
+        "5. Request Routing: enrutar según URL, headers, método",
+        "6. Security: WAF, rate limiting, IP filtering",
+        "7. Request/Response Transformation: modificar headers, body",
+        "8. Health Checking: verificar salud de backends",
+        "Ejemplos: Nginx, HAProxy, Envoy, Traefik",
+        "API Gateway es proxy inverso especializado para APIs",
+        "Diferencia: Gateway tiene funcionalidades específicas de APIs (auth, throttling, API versioning)"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Reverse Proxy",
+          "descripcion": "Servidor intermediario que distribuye requests de clientes a servidores backend"
+        },
+        {
+          "nombre": "Forward Proxy",
+          "descripcion": "Proxy que actúa en nombre del cliente para acceder a recursos externos"
+        },
+        {
+          "nombre": "Load Balancing",
+          "descripcion": "Distribuir tráfico entre múltiples instancias de servicio"
+        },
+        {
+          "nombre": "Caching",
+          "descripcion": "Almacenar respuestas para evitar llamadas repetidas a backend"
+        },
+        {
+          "nombre": "SSL Termination",
+          "descripcion": "Descifrar SSL/TLS en proxy, comunicación interna sin cifrar"
+        },
+        {
+          "nombre": "Compression",
+          "descripcion": "Comprimir respuestas HTTP para reducir ancho de banda"
+        },
+        {
+          "nombre": "WAF (Web Application Firewall)",
+          "descripcion": "Firewall que filtra tráfico HTTP malicioso"
+        },
+        {
+          "nombre": "Health Checking",
+          "descripcion": "Verificar periódicamente que backends están respondiendo"
+        },
+        {
+          "nombre": "Request Transformation",
+          "descripcion": "Modificar request antes de enviar a backend"
+        },
+        {
+          "nombre": "Response Transformation",
+          "descripcion": "Modificar response antes de retornar a cliente"
+        }
+      ]
+    },
+    {
+      "numero": 3,
+      "archivo": "3__Patrones_implementar_proxy_inverso_Service_Mesh_API.srt",
+      "titulo": "Patrones para Implementar Proxy Inverso: Service Mesh vs API Gateway",
+      "resumen": "Comparación entre dos patrones principales para implementar proxy inverso en microservicios: Service Mesh (Istio, Linkerd) y API Gateway (Spring Cloud Gateway, Kong). Se explican casos de uso, ventajas y desventajas de cada patrón para elegir apropiadamente.",
+      "puntosClave": [
+        "Dos patrones principales para proxy inverso:",
+        "1. API Gateway (North-South traffic):",
+        "   - Punto de entrada para tráfico externo",
+        "   - Ejemplo: Spring Cloud Gateway, Kong, Apigee",
+        "   - Funcionalidades: routing, auth, rate limiting, API versioning",
+        "   - Un solo componente centralizado",
+        "2. Service Mesh (East-West traffic):",
+        "   - Comunicación entre microservicios internos",
+        "   - Ejemplo: Istio, Linkerd, Consul Connect",
+        "   - Sidecar proxy junto a cada microservicio",
+        "   - Funcionalidades: mTLS, circuit breaking, observability, traffic management",
+        "Cuándo usar API Gateway:",
+        "  - Exponer APIs a clientes externos",
+        "  - Autenticación/autorización centralizada",
+        "  - Transformación de requests/responses",
+        "Cuándo usar Service Mesh:",
+        "  - Muchos microservicios comunicándose entre sí",
+        "  - Necesidad de observabilidad profunda",
+        "  - mTLS automático entre servicios",
+        "Pueden coexistir: Gateway para entrada + Mesh para comunicación interna"
+      ],
+      "conceptos": [
+        {
+          "nombre": "North-South Traffic",
+          "descripcion": "Tráfico entre clientes externos e infraestructura interna"
+        },
+        {
+          "nombre": "East-West Traffic",
+          "descripcion": "Tráfico entre microservicios dentro de infraestructura"
+        },
+        {
+          "nombre": "Service Mesh",
+          "descripcion": "Capa de infraestructura para comunicación service-to-service"
+        },
+        {
+          "nombre": "Sidecar Proxy",
+          "descripcion": "Proxy deployado junto a cada instancia de microservicio"
+        },
+        {
+          "nombre": "Istio",
+          "descripcion": "Service mesh popular con Envoy como data plane"
+        },
+        {
+          "nombre": "Linkerd",
+          "descripcion": "Service mesh ligero y performante"
+        },
+        {
+          "nombre": "mTLS (Mutual TLS)",
+          "descripcion": "Autenticación bidireccional con certificados entre servicios"
+        },
+        {
+          "nombre": "Circuit Breaking",
+          "descripcion": "Patrón para prevenir cascading failures en servicios"
+        },
+        {
+          "nombre": "Data Plane",
+          "descripcion": "Componente que maneja tráfico real (Envoy sidecars)"
+        },
+        {
+          "nombre": "Control Plane",
+          "descripcion": "Componente que configura y gestiona data plane (Istio Pilot)"
+        }
+      ]
+    },
+    {
+      "numero": 4,
+      "archivo": "4__Arquitectura_de_un_APIGateway.srt",
+      "titulo": "Arquitectura de un API Gateway y sus Componentes",
+      "resumen": "Análisis detallado de arquitectura interna de API Gateway. Se explican componentes: router, filtros (pre/post), predicates, load balancer, circuit breaker. Se muestra flujo de request completo desde entrada hasta microservicio y respuesta.",
+      "puntosClave": [
+        "Componentes principales de API Gateway:",
+        "1. Router: decide a qué microservicio enrutar",
+        "2. Predicates: condiciones para aplicar ruta (path, method, header)",
+        "3. Filters: transformaciones pre/post request",
+        "   - Pre-filters: antes de enviar a backend (auth, logging)",
+        "   - Post-filters: después de recibir response (headers, logging)",
+        "4. Load Balancer: distribuir entre instancias",
+        "5. Circuit Breaker: prevenir llamadas a servicios caídos",
+        "6. Rate Limiter: limitar requests por cliente",
+        "Flujo de request:",
+        "  Cliente → Gateway → Predicates → Pre-filters → Router → Load Balancer → Microservicio",
+        "  Microservicio → Response → Post-filters → Cliente",
+        "Gateway puede modificar: headers, body, status code",
+        "Configuración declarativa: rutas definidas en YAML/properties",
+        "Configuración programática: RouteLocator @Bean",
+        "Spring Cloud Gateway usa WebFlux (reactivo, non-blocking)"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Router",
+          "descripcion": "Componente que determina a qué backend enviar request"
+        },
+        {
+          "nombre": "Predicate",
+          "descripcion": "Condición que debe cumplirse para aplicar ruta (path, header, time)"
+        },
+        {
+          "nombre": "Filter",
+          "descripcion": "Componente que modifica request o response"
+        },
+        {
+          "nombre": "Pre-Filter",
+          "descripcion": "Filter ejecutado antes de enviar request a backend"
+        },
+        {
+          "nombre": "Post-Filter",
+          "descripcion": "Filter ejecutado después de recibir response de backend"
+        },
+        {
+          "nombre": "Global Filter",
+          "descripcion": "Filter aplicado a todas las rutas"
+        },
+        {
+          "nombre": "Route-Specific Filter",
+          "descripcion": "Filter aplicado solo a ruta específica"
+        },
+        {
+          "nombre": "RouteLocator",
+          "descripcion": "Interfaz Spring para definir rutas programáticamente"
+        },
+        {
+          "nombre": "Spring Cloud Gateway",
+          "descripcion": "Implementación de API Gateway basada en Spring WebFlux"
+        },
+        {
+          "nombre": "WebFlux",
+          "descripcion": "Framework reactivo no-bloqueante de Spring"
+        }
+      ]
+    },
+    {
+      "numero": 5,
+      "archivo": "5__Arquitectura_Service_Mesh_API_Gateway_banco.srt",
+      "titulo": "Arquitectura Completa: Service Mesh + API Gateway en Aplicación Bancaria",
+      "resumen": "Ejemplo práctico de arquitectura enterprise combinando API Gateway (entrada externa) con Service Mesh (comunicación interna). Se muestra caso de uso bancario con múltiples canales (web, mobile, ATM) accediendo vía Gateway, y microservicios comunicándose vía Service Mesh con mTLS y observability.",
+      "puntosClave": [
+        "Escenario: aplicación bancaria con múltiples canales",
+        "Canales de entrada: Web, Mobile App, ATM, Partner APIs",
+        "Todos los canales pasan por API Gateway único",
+        "API Gateway maneja:",
+        "  - Autenticación (OAuth2/JWT)",
+        "  - Rate limiting por canal",
+        "  - API versioning (/v1, /v2)",
+        "  - Transformación de requests",
+        "Gateway enruta a microservicios: Accounts, Transactions, Cards, Loans",
+        "Service Mesh (Istio) maneja comunicación interna:",
+        "  - mTLS automático entre servicios",
+        "  - Circuit breaking",
+        "  - Retry policies",
+        "  - Distributed tracing",
+        "  - Traffic splitting (canary deployments)",
+        "Ventajas combinadas:",
+        "  - Seguridad en múltiples capas",
+        "  - Observabilidad completa",
+        "  - Resiliencia mejorada",
+        "Arquitectura típica de bancos y enterprises"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Multi-Channel Architecture",
+          "descripcion": "Arquitectura que soporta múltiples canales de acceso (web, mobile, IoT)"
+        },
+        {
+          "nombre": "Channel-Specific Routing",
+          "descripcion": "Enrutamiento diferenciado según canal de origen"
+        },
+        {
+          "nombre": "OAuth2",
+          "descripcion": "Protocolo de autorización para delegar acceso a recursos"
+        },
+        {
+          "nombre": "JWT (JSON Web Token)",
+          "descripcion": "Token autónomo que contiene claims para autenticación"
+        },
+        {
+          "nombre": "API Versioning",
+          "descripcion": "Mantener múltiples versiones de API simultáneamente"
+        },
+        {
+          "nombre": "Distributed Tracing",
+          "descripcion": "Rastrear request a través de múltiples microservicios"
+        },
+        {
+          "nombre": "Canary Deployment",
+          "descripcion": "Desplegar nueva versión a subset de usuarios para validar"
+        },
+        {
+          "nombre": "Traffic Splitting",
+          "descripcion": "Dividir tráfico entre diferentes versiones de servicio"
+        },
+        {
+          "nombre": "Defense in Depth",
+          "descripcion": "Múltiples capas de seguridad (Gateway + Mesh + Service)"
+        },
+        {
+          "nombre": "Zero Trust Network",
+          "descripcion": "Modelo donde cada comunicación requiere autenticación/autorización"
+        }
+      ]
+    },
+    {
+      "numero": 6,
+      "archivo": "6__Codificación_Crear_microservicio_APIGateway_incluirlo.srt",
+      "titulo": "Codificación: Crear Microservicio API Gateway e Incluirlo en Arquitectura",
+      "resumen": "Creación de microservicio API Gateway con Spring Cloud Gateway. Se genera proyecto, se agregan dependencias, se crea estructura de módulo, y se integra en multi-módulo Maven. Gateway listo para configuración de rutas.",
+      "puntosClave": [
+        "Crear módulo api-gateway en infrastructure-services",
+        "Dependencias necesarias:",
+        "  - spring-cloud-starter-gateway",
+        "  - spring-boot-starter-actuator",
+        "  - spring-cloud-starter-netflix-eureka-client",
+        "Crear clase ApiGatewayApplication con @SpringBootApplication",
+        "NO incluir spring-boot-starter-web (Gateway usa WebFlux)",
+        "Configurar puerto en application.yml: server.port=8080",
+        "Nombre de aplicación: spring.application.name=api-gateway",
+        "Agregar módulo a pom.xml padre en <modules>",
+        "Estructura de directorios:",
+        "  api-gateway/",
+        "    src/main/java/com/paymentchange/apigateway/",
+        "      ApiGatewayApplication.java",
+        "      config/",
+        "      filter/",
+        "    src/main/resources/",
+        "      application.yml",
+        "Validar compilación: mvn clean compile",
+        "Gateway inicialmente no tiene rutas configuradas"
+      ],
+      "conceptos": [
+        {
+          "nombre": "spring-cloud-starter-gateway",
+          "descripcion": "Starter que incluye Spring Cloud Gateway y WebFlux"
+        },
+        {
+          "nombre": "WebFlux vs WebMVC",
+          "descripcion": "WebFlux es reactivo/non-blocking, WebMVC es tradicional/blocking"
+        },
+        {
+          "nombre": "Reactive Programming",
+          "descripcion": "Paradigma basado en streams asíncronos de datos"
+        },
+        {
+          "nombre": "Non-Blocking I/O",
+          "descripcion": "Operaciones I/O no bloquean thread, mejora throughput"
+        },
+        {
+          "nombre": "Gateway Module",
+          "descripcion": "Módulo Maven separado para API Gateway"
+        },
+        {
+          "nombre": "Infrastructure Services",
+          "descripcion": "Grupo de servicios de infraestructura (Eureka, Config, Gateway)"
+        },
+        {
+          "nombre": "application.yml",
+          "descripcion": "Archivo de configuración en formato YAML"
+        },
+        {
+          "nombre": "Spring Cloud",
+          "descripcion": "Conjunto de proyectos para patrones comunes de microservicios"
+        },
+        {
+          "nombre": "Multi-Module Maven",
+          "descripcion": "Proyecto Maven con múltiples módulos relacionados"
+        },
+        {
+          "nombre": "Gateway Initialization",
+          "descripcion": "Gateway inicia sin rutas, se configuran después"
+        }
+      ],
+      "codigoEjemplo": "<!-- pom.xml - API Gateway Module -->\n<project>\n    <parent>\n        <groupId>com.paymentchange</groupId>\n        <artifactId>infrastructure-services</artifactId>\n        <version>1.0.0</version>\n    </parent>\n    \n    <artifactId>api-gateway</artifactId>\n    <name>API Gateway</name>\n    \n    <dependencies>\n        <!-- Spring Cloud Gateway -->\n        <dependency>\n            <groupId>org.springframework.cloud</groupId>\n            <artifactId>spring-cloud-starter-gateway</artifactId>\n        </dependency>\n        \n        <!-- Eureka Client -->\n        <dependency>\n            <groupId>org.springframework.cloud</groupId>\n            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>\n        </dependency>\n        \n        <!-- Actuator -->\n        <dependency>\n            <groupId>org.springframework.boot</groupId>\n            <artifactId>spring-boot-starter-actuator</artifactId>\n        </dependency>\n        \n        <!-- Lombok -->\n        <dependency>\n            <groupId>org.projectlombok</groupId>\n            <artifactId>lombok</artifactId>\n            <scope>provided</scope>\n        </dependency>\n        \n        <!-- NO incluir spring-boot-starter-web -->\n        <!-- Gateway usa WebFlux, no WebMVC -->\n    </dependencies>\n</project>\n\n// ApiGatewayApplication.java\npackage com.paymentchange.apigateway;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\nimport org.springframework.cloud.client.discovery.EnableDiscoveryClient;\n\n@SpringBootApplication\n@EnableDiscoveryClient\npublic class ApiGatewayApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(ApiGatewayApplication.class, args);\n    }\n}\n\n# application.yml\nserver:\n  port: 8080\n\nspring:\n  application:\n    name: api-gateway\n  cloud:\n    gateway:\n      # Configuración de rutas (próxima clase)\n      routes: []\n\neureka:\n  client:\n    serviceUrl:\n      defaultZone: http://localhost:8761/eureka/\n    register-with-eureka: true\n    fetch-registry: true\n\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: '*'\n  endpoint:\n    health:\n      show-details: always"
+    },
+    {
+      "numero": 7,
+      "archivo": "7__Codificación_Agregar_configuración_prefilter.srt",
+      "titulo": "Codificación: Agregar Configuración de Rutas y Pre-Filter Global",
+      "resumen": "Configuración de rutas de Gateway para enrutar requests a microservicios. Se crean rutas declarativas en application.yml y se implementa Global Filter para logging de requests. Gateway enruta automáticamente usando nombres de servicio desde Eureka.",
+      "puntosClave": [
+        "Configurar rutas en application.yml bajo spring.cloud.gateway.routes",
+        "Cada ruta tiene:",
+        "  - id: identificador único",
+        "  - uri: destino (lb://service-name para load balancing)",
+        "  - predicates: condiciones para aplicar ruta",
+        "  - filters: filtros específicos de ruta",
+        "Ejemplo ruta Customer:",
+        "  id: customer-service",
+        "  uri: lb://CUSTOMER-SERVICE (nombre en Eureka)",
+        "  predicates: Path=/api/v1/customer/**",
+        "lb:// indica load balancing vía Eureka",
+        "Crear GlobalFilter para logging:",
+        "  - Implementar GlobalFilter interface",
+        "  - Ordenar con @Order o Ordered interface",
+        "  - filter() ejecuta lógica pre/post request",
+        "Pre-filter: loggear método, path, headers",
+        "Post-filter: loggear status code, tiempo respuesta",
+        "chain.filter(exchange) para continuar cadena",
+        "Probar: curl http://localhost:8080/api/v1/customer",
+        "Gateway enruta automáticamente a Customer Service"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Route Configuration",
+          "descripcion": "Definición de rutas con predicates y filtros"
+        },
+        {
+          "nombre": "Predicate",
+          "descripcion": "Condición para aplicar ruta (Path, Method, Header, Query)"
+        },
+        {
+          "nombre": "Load Balancer URI",
+          "descripcion": "URI con esquema lb:// para balanceo automático vía Eureka"
+        },
+        {
+          "nombre": "GlobalFilter",
+          "descripcion": "Filter aplicado a todas las rutas del Gateway"
+        },
+        {
+          "nombre": "ServerWebExchange",
+          "descripcion": "Objeto reactivo que encapsula request y response"
+        },
+        {
+          "nombre": "GatewayFilterChain",
+          "descripcion": "Cadena de filtros que procesa request"
+        },
+        {
+          "nombre": "Mono",
+          "descripcion": "Tipo reactivo que representa 0 o 1 elemento (Reactor)"
+        },
+        {
+          "nombre": "Path Predicate",
+          "descripcion": "Predicate que matchea requests basado en path URI"
+        },
+        {
+          "nombre": "Filter Order",
+          "descripcion": "Orden de ejecución de filtros (menor valor = mayor prioridad)"
+        },
+        {
+          "nombre": "Request Logging",
+          "descripcion": "Registrar información de requests para auditoría y debugging"
+        }
+      ],
+      "codigoEjemplo": "# application.yml - Configurar rutas\nspring:\n  cloud:\n    gateway:\n      routes:\n        # Customer Service\n        - id: customer-service\n          uri: lb://CUSTOMER-SERVICE\n          predicates:\n            - Path=/api/v1/customer/**\n          filters:\n            - StripPrefix=0\n        \n        # Product Service\n        - id: product-service\n          uri: lb://PRODUCT-SERVICE\n          predicates:\n            - Path=/api/v1/product/**\n        \n        # Transaction Service\n        - id: transaction-service\n          uri: lb://TRANSACTION-SERVICE\n          predicates:\n            - Path=/api/v1/transaction/**\n        \n        # Eureka Dashboard\n        - id: eureka-server\n          uri: lb://EUREKA-SERVER\n          predicates:\n            - Path=/eureka/**\n        \n        # Admin Server\n        - id: admin-server\n          uri: lb://ADMIN-SERVER\n          predicates:\n            - Path=/admin/**\n\n// LoggingGlobalFilter.java\npackage com.paymentchange.apigateway.filter;\n\nimport lombok.extern.slf4j.Slf4j;\nimport org.springframework.cloud.gateway.filter.GatewayFilterChain;\nimport org.springframework.cloud.gateway.filter.GlobalFilter;\nimport org.springframework.core.Ordered;\nimport org.springframework.http.server.reactive.ServerHttpRequest;\nimport org.springframework.http.server.reactive.ServerHttpResponse;\nimport org.springframework.stereotype.Component;\nimport org.springframework.web.server.ServerWebExchange;\nimport reactor.core.publisher.Mono;\n\n@Slf4j\n@Component\npublic class LoggingGlobalFilter implements GlobalFilter, Ordered {\n    \n    @Override\n    public Mono<Void> filter(ServerWebExchange exchange, \n                            GatewayFilterChain chain) {\n        \n        ServerHttpRequest request = exchange.getRequest();\n        \n        // Pre-filter: logging antes de enviar a backend\n        log.info(\"[PRE-FILTER] Request: {} {}\", \n                request.getMethod(), \n                request.getURI());\n        log.info(\"[PRE-FILTER] Headers: {}\", request.getHeaders());\n        \n        long startTime = System.currentTimeMillis();\n        \n        // Continuar cadena y agregar post-filter\n        return chain.filter(exchange)\n            .then(Mono.fromRunnable(() -> {\n                ServerHttpResponse response = exchange.getResponse();\n                long duration = System.currentTimeMillis() - startTime;\n                \n                // Post-filter: logging después de recibir response\n                log.info(\"[POST-FILTER] Response Status: {}\", \n                        response.getStatusCode());\n                log.info(\"[POST-FILTER] Duration: {}ms\", duration);\n            }));\n    }\n    \n    @Override\n    public int getOrder() {\n        return -1;  // Alta prioridad (ejecuta primero)\n    }\n}\n\n// AuthenticationFilter.java - Ejemplo filter autenticación\n@Slf4j\n@Component\npublic class AuthenticationFilter implements GlobalFilter, Ordered {\n    \n    @Override\n    public Mono<Void> filter(ServerWebExchange exchange, \n                            GatewayFilterChain chain) {\n        \n        ServerHttpRequest request = exchange.getRequest();\n        \n        // Verificar header Authorization\n        if (!request.getHeaders().containsKey(\"Authorization\")) {\n            log.error(\"Missing Authorization header\");\n            \n            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);\n            return exchange.getResponse().setComplete();\n        }\n        \n        String authHeader = request.getHeaders()\n            .getFirst(\"Authorization\");\n        \n        // Validar token (ejemplo simple)\n        if (!isValidToken(authHeader)) {\n            log.error(\"Invalid token\");\n            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);\n            return exchange.getResponse().setComplete();\n        }\n        \n        log.info(\"Authentication successful\");\n        return chain.filter(exchange);\n    }\n    \n    private boolean isValidToken(String token) {\n        // Implementar validación real (JWT, OAuth2)\n        return token != null && token.startsWith(\"Basic \");\n    }\n    \n    @Override\n    public int getOrder() {\n        return 0;  // Ejecuta después de logging\n    }\n}\n\n# Probar Gateway\ncurl http://localhost:8080/api/v1/customer\n# Gateway enruta a http://customer-service:8081/api/v1/customer\n\n# Logs del Gateway:\n# [PRE-FILTER] Request: GET http://localhost:8080/api/v1/customer\n# [PRE-FILTER] Headers: {Host=[localhost:8080], ...}\n# [POST-FILTER] Response Status: 200 OK\n# [POST-FILTER] Duration: 245ms"
+    },
+    {
+      "numero": 8,
+      "archivo": "8__Codificación_Resolver_conflictos_de_dependecias.srt",
+      "titulo": "Codificación: Resolver Conflictos de Dependencias entre WebFlux y WebMVC",
+      "resumen": "Solución de conflictos cuando Gateway (WebFlux) y otros servicios (WebMVC) están en mismo multi-módulo Maven. Se excluyen dependencias conflictivas, se verifica classpath, y se asegura que Gateway usa solo WebFlux mientras otros servicios usan WebMVC.",
+      "puntosClave": [
+        "Problema: Gateway usa WebFlux, otros servicios usan WebMVC",
+        "Error común: Cannot determine embedded server (both in classpath)",
+        "WebFlux y WebMVC son incompatibles en mismo classpath",
+        "Solución: excluir spring-boot-starter-web de Gateway",
+        "En pom.xml de Gateway: NO incluir starter-web",
+        "Si heredado de parent, usar <exclusion>",
+        "Verificar dependencias: mvn dependency:tree",
+        "Buscar conflictos: grep -i \"spring-boot-starter-web\"",
+        "Gateway debe tener solo: WebFlux, Gateway, Eureka Client",
+        "Otros servicios tienen: Web, JPA, Security, etc.",
+        "Reactor vs Servlet API: diferentes modelos de threading",
+        "Gateway usa Netty (non-blocking), otros usan Tomcat (blocking)",
+        "Validar: logs de inicio deben mostrar Netty en Gateway",
+        "Logs de Customer/Product deben mostrar Tomcat"
+      ],
+      "conceptos": [
+        {
+          "nombre": "WebFlux vs WebMVC",
+          "descripcion": "WebFlux reactivo vs WebMVC tradicional, incompatibles en mismo classpath"
+        },
+        {
+          "nombre": "Dependency Conflict",
+          "descripcion": "Múltiples versiones o implementaciones incompatibles de librería"
+        },
+        {
+          "nombre": "Maven Exclusion",
+          "descripcion": "Excluir dependencia transitiva no deseada"
+        },
+        {
+          "nombre": "dependency:tree",
+          "descripcion": "Comando Maven para ver árbol de dependencias"
+        },
+        {
+          "nombre": "Netty",
+          "descripcion": "Servidor HTTP asíncrono usado por WebFlux"
+        },
+        {
+          "nombre": "Tomcat",
+          "descripcion": "Servidor servlet tradicional usado por WebMVC"
+        },
+        {
+          "nombre": "Reactor",
+          "descripcion": "Librería de programación reactiva usada por WebFlux"
+        },
+        {
+          "nombre": "Servlet API",
+          "descripcion": "API estándar Java para aplicaciones web tradicionales"
+        },
+        {
+          "nombre": "Classpath Conflict",
+          "descripcion": "Múltiples implementaciones incompatibles en runtime classpath"
+        },
+        {
+          "nombre": "Transitive Dependency",
+          "descripcion": "Dependencia traída indirectamente por otra dependencia"
+        }
+      ],
+      "codigoEjemplo": "<!-- pom.xml - Gateway (CORRECTO) -->\n<dependencies>\n    <!-- ✅ Solo WebFlux, NO WebMVC -->\n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-starter-gateway</artifactId>\n        <!-- Gateway incluye WebFlux automáticamente -->\n    </dependency>\n    \n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>\n    </dependency>\n    \n    <!-- ❌ NO incluir spring-boot-starter-web -->\n    <!-- <dependency> -->\n    <!--     <groupId>org.springframework.boot</groupId> -->\n    <!--     <artifactId>spring-boot-starter-web</artifactId> -->\n    <!-- </dependency> -->\n</dependencies>\n\n<!-- Si parent POM incluye starter-web, excluirlo -->\n<dependencies>\n    <dependency>\n        <groupId>com.paymentchange</groupId>\n        <artifactId>common-dependencies</artifactId>\n        <exclusions>\n            <exclusion>\n                <groupId>org.springframework.boot</groupId>\n                <artifactId>spring-boot-starter-web</artifactId>\n            </exclusion>\n        </exclusions>\n    </dependency>\n</dependencies>\n\n<!-- pom.xml - Customer Service (CORRECTO) -->\n<dependencies>\n    <!-- ✅ WebMVC para REST APIs tradicionales -->\n    <dependency>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-web</artifactId>\n    </dependency>\n    \n    <dependency>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-data-jpa</artifactId>\n    </dependency>\n</dependencies>\n\n# Verificar dependencias\nmvn dependency:tree -pl api-gateway\n\n# Buscar conflictos\nmvn dependency:tree -pl api-gateway | grep \"spring-boot-starter-web\"\n# No debe aparecer nada\n\nmvn dependency:tree -pl api-gateway | grep \"spring-webflux\"\n# Debe aparecer spring-webflux\n\n# Logs de inicio - Gateway (CORRECTO)\n# Netty started on port(s): 8080\n# Started ApiGatewayApplication in 3.456 seconds\n\n# Logs de inicio - Customer Service (CORRECTO)\n# Tomcat started on port(s): 8081 (http)\n# Started CustomerServiceApplication in 4.123 seconds\n\n# Error común (INCORRECTO)\n# Web application could not be started as there was \n# no org.springframework.boot.web.servlet.server.ServletWebServerFactory \n# bean defined in the context.\n# → Significa que WebMVC y WebFlux están en classpath"
+    },
+    {
+      "numero": 9,
+      "archivo": "9__Codificación_Iniciar_eureka.srt",
+      "titulo": "Codificación: Iniciar Eureka y Registrar Gateway",
+      "resumen": "Inicio de Eureka Server y registro de API Gateway en Eureka. Se verifica descubrimiento de servicios, se prueba enrutamiento dinámico vía Eureka, y se valida que Gateway balancea carga entre instancias. Gateway se convierte en cliente Eureka.",
+      "puntosClave": [
+        "Iniciar Eureka Server primero: java -jar eureka-server.jar",
+        "Verificar Eureka UI: http://localhost:8761",
+        "Iniciar API Gateway: java -jar api-gateway.jar",
+        "Gateway se registra automáticamente en Eureka",
+        "Verificar en Eureka Dashboard: API-GATEWAY aparece",
+        "Configurar Gateway para usar Eureka:",
+        "  eureka.client.fetch-registry=true",
+        "  eureka.client.register-with-eureka=true",
+        "Gateway resuelve nombres de servicio vía Eureka:",
+        "  lb://CUSTOMER-SERVICE → http://customer-instance:8081",
+        "Iniciar múltiples instancias de Customer:",
+        "  java -jar customer.jar --server.port=8081",
+        "  java -jar customer.jar --server.port=8091",
+        "Gateway balancea automáticamente entre instancias",
+        "Algoritmo por defecto: Round Robin",
+        "Probar: múltiples requests van a diferentes instancias",
+        "Verificar logs: Gateway loggea a qué instancia enruta"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Service Registration",
+          "descripcion": "Servicio se registra en Eureka al iniciar"
+        },
+        {
+          "nombre": "Service Discovery",
+          "descripcion": "Gateway consulta Eureka para resolver nombres de servicio"
+        },
+        {
+          "nombre": "Dynamic Routing",
+          "descripcion": "Enrutamiento basado en registro dinámico de servicios"
+        },
+        {
+          "nombre": "Load Balancing",
+          "descripcion": "Gateway distribuye requests entre instancias disponibles"
+        },
+        {
+          "nombre": "Round Robin",
+          "descripcion": "Algoritmo de balanceo que alterna entre instancias secuencialmente"
+        },
+        {
+          "nombre": "Instance Health",
+          "descripcion": "Eureka verifica salud de instancias, Gateway solo enruta a healthy"
+        },
+        {
+          "nombre": "Heartbeat",
+          "descripcion": "Ping periódico de instancia a Eureka para indicar que está viva"
+        },
+        {
+          "nombre": "Service Instance",
+          "descripcion": "Instancia específica de microservicio con IP:puerto único"
+        },
+        {
+          "nombre": "fetch-registry",
+          "descripcion": "Gateway obtiene lista de servicios registrados de Eureka"
+        },
+        {
+          "nombre": "Client-Side Load Balancing",
+          "descripcion": "Gateway hace balanceo, no servidor externo"
+        }
+      ],
+      "codigoEjemplo": "# application.yml - API Gateway con Eureka\nserver:\n  port: 8080\n\nspring:\n  application:\n    name: api-gateway\n  cloud:\n    gateway:\n      discovery:\n        locator:\n          enabled: true  # Auto-crear rutas desde Eureka\n          lower-case-service-id: true  # Convertir a lowercase\n      routes:\n        - id: customer-service\n          uri: lb://CUSTOMER-SERVICE  # Load balance vía Eureka\n          predicates:\n            - Path=/api/v1/customer/**\n\neureka:\n  client:\n    serviceUrl:\n      defaultZone: http://localhost:8761/eureka/\n    register-with-eureka: true  # Registrarse en Eureka\n    fetch-registry: true        # Obtener registro de servicios\n  instance:\n    prefer-ip-address: true\n    instance-id: ${spring.application.name}:${server.port}\n\n# 1. Iniciar Eureka Server\ncd infrastructure-services/eureka-server\nmvn spring-boot:run\n# Eureka: http://localhost:8761\n\n# 2. Iniciar API Gateway\ncd infrastructure-services/api-gateway\nmvn spring-boot:run\n# Gateway: http://localhost:8080\n\n# 3. Verificar registro en Eureka\n# Eureka Dashboard mostrará:\n# Application          AMIs        Availability Zones    Status\n# API-GATEWAY          n/a (1)     (1)                  UP (1) - api-gateway:8080\n\n# 4. Iniciar múltiples instancias de Customer\ncd business-domain/customer\n\n# Instancia 1\njava -jar target/customer-service.jar --server.port=8081\n\n# Instancia 2 (otra terminal)\njava -jar target/customer-service.jar --server.port=8091\n\n# Eureka mostrará:\n# CUSTOMER-SERVICE     n/a (2)     (2)                  UP (2) - customer:8081, customer:8091\n\n# 5. Probar load balancing\nfor i in {1..10}; do\n  curl http://localhost:8080/api/v1/customer\n  echo \"Request $i\"\ndone\n\n# Logs del Gateway mostrarán alternancia:\n# [PRE-FILTER] Routing to: http://192.168.1.10:8081/api/v1/customer\n# [PRE-FILTER] Routing to: http://192.168.1.10:8091/api/v1/customer\n# [PRE-FILTER] Routing to: http://192.168.1.10:8081/api/v1/customer\n# [PRE-FILTER] Routing to: http://192.168.1.10:8091/api/v1/customer\n# → Round Robin funcionando ✅\n\n# 6. Probar failover (detener una instancia)\n# Detener instancia en puerto 8091\n# Todas las requests ahora van a 8081\n# Gateway automáticamente deja de enrutar a instancia caída"
+    },
+    {
+      "numero": 10,
+      "archivo": "10__Conectar_apigateway_eureka_usar_puertos_aleatorios.srt",
+      "titulo": "Conectar API Gateway a Eureka y Usar Puertos Aleatorios para Escalado",
+      "resumen": "Configuración de puertos aleatorios para microservicios permitiendo múltiples instancias sin conflictos. Se usa ${random.int} en server.port, se asegura registro correcto en Eureka con instance-id único, y se valida escalado horizontal automático.",
+      "puntosClave": [
+        "Problema: puerto fijo impide múltiples instancias en mismo host",
+        "Solución: puerto aleatorio con server.port=${random.int[8081,8999]}",
+        "Rango customizable: 8081-8999 para servicios business",
+        "Eureka identifica instancias por instance-id, no solo puerto",
+        "Configurar instance-id único:",
+        "  instance-id: ${spring.application.name}:${random.value}",
+        "Gateway consulta Eureka, no necesita saber puertos",
+        "Iniciar múltiples instancias fácilmente:",
+        "  java -jar customer.jar (puerto aleatorio)",
+        "  java -jar customer.jar (otro puerto aleatorio)",
+        "Eureka muestra todas las instancias",
+        "Gateway balancea automáticamente",
+        "Ideal para containers: cada container puerto aleatorio",
+        "Docker: usar -p 8081:${random.int} en docker run",
+        "Kubernetes: Service abstrae puertos completamente",
+        "Ventaja: escalar sin coordinación de puertos"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Random Port",
+          "descripcion": "Puerto asignado aleatoriamente en rango para evitar conflictos"
+        },
+        {
+          "nombre": "Port Range",
+          "descripcion": "Rango de puertos disponibles para asignación aleatoria"
+        },
+        {
+          "nombre": "Instance ID",
+          "descripcion": "Identificador único de instancia en Eureka"
+        },
+        {
+          "nombre": "Horizontal Scaling",
+          "descripcion": "Agregar más instancias del mismo servicio"
+        },
+        {
+          "nombre": "Port Conflict",
+          "descripcion": "Error cuando dos procesos intentan usar mismo puerto"
+        },
+        {
+          "nombre": "Dynamic Port Assignment",
+          "descripcion": "Asignación de puerto en runtime, no en configuración"
+        },
+        {
+          "nombre": "Ephemeral Port",
+          "descripcion": "Puerto temporal asignado dinámicamente por OS"
+        },
+        {
+          "nombre": "Service Abstraction",
+          "descripcion": "Ocultar detalles de puerto detrás de nombre de servicio"
+        },
+        {
+          "nombre": "Container Orchestration",
+          "descripcion": "Gestión automática de contenedores (Kubernetes, Docker Swarm)"
+        },
+        {
+          "nombre": "Zero-Configuration Scaling",
+          "descripcion": "Escalar sin configuración manual de puertos"
+        }
+      ],
+      "codigoEjemplo": "# application.yml - Customer Service con puerto aleatorio\nserver:\n  port: ${random.int[8081,8999]}  # Puerto aleatorio en rango\n\nspring:\n  application:\n    name: customer-service\n\neureka:\n  client:\n    serviceUrl:\n      defaultZone: http://localhost:8761/eureka/\n    register-with-eureka: true\n    fetch-registry: true\n  instance:\n    prefer-ip-address: true\n    # Instance ID único con valor aleatorio\n    instance-id: ${spring.application.name}:${random.value}\n    # Alternativa: usar hostname + puerto\n    # instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${server.port}\n\n# Iniciar múltiples instancias fácilmente\n\n# Terminal 1\njava -jar customer-service.jar\n# Output: Tomcat started on port(s): 8234 (http)\n\n# Terminal 2\njava -jar customer-service.jar\n# Output: Tomcat started on port(s): 8567 (http)\n\n# Terminal 3\njava -jar customer-service.jar\n# Output: Tomcat started on port(s): 8912 (http)\n\n# Eureka Dashboard mostrará:\n# CUSTOMER-SERVICE (3 instances)\n#   customer-service:a1b2c3d4 - 192.168.1.10:8234 - UP\n#   customer-service:e5f6g7h8 - 192.168.1.10:8567 - UP\n#   customer-service:i9j0k1l2 - 192.168.1.10:8912 - UP\n\n# Gateway enruta a cualquiera de las 3\ncurl http://localhost:8080/api/v1/customer\n# Gateway balancea entre: 8234, 8567, 8912\n\n# Docker con puerto aleatorio\ndocker run -d \\\n  -p 8081-8999:8081-8999 \\\n  -e SERVER_PORT=${RANDOM} \\\n  customer-service:1.0.0\n\n# docker-compose.yml - Escalar fácilmente\nservices:\n  customer-service:\n    image: customer-service:1.0.0\n    environment:\n      - SERVER_PORT=0  # 0 = puerto aleatorio asignado por OS\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/\n    deploy:\n      replicas: 3  # 3 instancias automáticamente\n\n# Kubernetes - Puerto abstracto completamente\napiVersion: v1\nkind: Service\nmetadata:\n  name: customer-service\nspec:\n  selector:\n    app: customer-service\n  ports:\n    - port: 80\n      targetPort: 8080  # Puerto interno del container\n---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: customer-service\nspec:\n  replicas: 5  # 5 instancias, Kubernetes asigna puertos\n  template:\n    spec:\n      containers:\n      - name: customer\n        image: customer-service:1.0.0\n        ports:\n        - containerPort: 8080\n        env:\n        - name: SERVER_PORT\n          value: \"8080\"  # Puerto interno fijo, externo dinámico"
+    },
+    {
+      "numero": 11,
+      "archivo": "11__Dockerizar_API_gateway_prueba_e2e_puertos_aleatorios.srt",
+      "titulo": "Dockerizar API Gateway y Prueba E2E con Puertos Aleatorios",
+      "resumen": "Contenedorización de API Gateway con Docker y prueba end-to-end completa del sistema orquestado. Se crea Dockerfile, se construye imagen, se agrega a docker-compose.yml como punto de entrada único, y se valida flujo completo desde cliente hasta base de datos pasando por Gateway.",
+      "puntosClave": [
+        "Crear Dockerfile para API Gateway (similar a otros servicios)",
+        "FROM openjdk:17-jdk-slim",
+        "COPY target/api-gateway.jar app.jar",
+        "EXPOSE 8080",
+        "Construir imagen: docker build -t api-gateway:1.0.0 .",
+        "Agregar a docker-compose.yml:",
+        "  - Puerto fijo para Gateway: 8080:8080",
+        "  - Microservicios: puertos aleatorios (no mapear a host)",
+        "  - Gateway es único punto de entrada",
+        "depends_on: eureka-server, config-server",
+        "Cliente accede solo a Gateway: http://localhost:8080",
+        "Gateway enruta internamente a servicios en red Docker",
+        "Prueba E2E:",
+        "  1. docker-compose up -d",
+        "  2. Esperar que todos servicios estén UP",
+        "  3. curl http://localhost:8080/api/v1/customer",
+        "  4. Gateway → Customer → Product → PostgreSQL",
+        "Validar logs: ver enrutamiento en logs de Gateway",
+        "Sistema completo accesible vía Gateway únicamente",
+        "Arquitectura production-ready"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Gateway as Entry Point",
+          "descripcion": "Gateway es único servicio expuesto externamente"
+        },
+        {
+          "nombre": "Internal Network",
+          "descripcion": "Red Docker donde servicios se comunican internamente"
+        },
+        {
+          "nombre": "Port Mapping",
+          "descripcion": "Mapear puerto de container a puerto de host (-p)"
+        },
+        {
+          "nombre": "Service Isolation",
+          "descripcion": "Microservicios no expuestos externamente, solo vía Gateway"
+        },
+        {
+          "nombre": "E2E Testing",
+          "descripcion": "Probar flujo completo desde entrada hasta base de datos"
+        },
+        {
+          "nombre": "Production Architecture",
+          "descripcion": "Arquitectura lista para despliegue en producción"
+        },
+        {
+          "nombre": "Docker Network DNS",
+          "descripcion": "Resolución DNS automática de nombres de servicio en Docker"
+        },
+        {
+          "nombre": "Health Check Orchestration",
+          "descripcion": "Verificar que servicios están listos antes de aceptar tráfico"
+        },
+        {
+          "nombre": "Single Point of Access",
+          "descripcion": "Un solo endpoint público para toda la aplicación"
+        },
+        {
+          "nombre": "Gateway Pattern",
+          "descripcion": "Patrón arquitectónico de punto de entrada centralizado"
+        }
+      ],
+      "codigoEjemplo": "# Dockerfile - API Gateway\nFROM openjdk:17-jdk-slim\nWORKDIR /app\nCOPY target/api-gateway-1.0.0.jar app.jar\nEXPOSE 8080\nENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n\n# Construir imagen\ncd infrastructure-services/api-gateway\nmvn clean package\ndocker build -t api-gateway:1.0.0 .\n\n# docker-compose.yml - Sistema completo con Gateway\nversion: '3.8'\n\nservices:\n  # PostgreSQL\n  postgres:\n    image: postgres:15-alpine\n    environment:\n      POSTGRES_USER: postgres\n      POSTGRES_PASSWORD: postgres\n      POSTGRES_DB: paymentchange_db\n    volumes:\n      - postgres-data:/var/lib/postgresql/data\n    networks:\n      - microservices-network\n    healthcheck:\n      test: [\"CMD-SHELL\", \"pg_isready -U postgres\"]\n      interval: 10s\n      timeout: 5s\n      retries: 5\n  \n  # Eureka Server\n  eureka-server:\n    image: eureka-server:1.0.0\n    container_name: eureka-server\n    ports:\n      - \"8761:8761\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n  \n  # Config Server\n  config-server:\n    image: config-server:1.0.0\n    container_name: config-server\n    ports:\n      - \"8888:8888\"\n    networks:\n      - microservices-network\n    environment:\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n  \n  # API Gateway - Punto de entrada único\n  api-gateway:\n    image: api-gateway:1.0.0\n    container_name: api-gateway\n    ports:\n      - \"8080:8080\"  # Único puerto expuesto\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n      - config-server\n  \n  # Customer Service - Puerto aleatorio, NO expuesto\n  customer-service:\n    image: customer-service:1.0.0\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - SERVER_PORT=0  # Puerto aleatorio\n      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/paymentchange_db\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      postgres:\n        condition: service_healthy\n      eureka-server:\n        condition: service_started\n    # NO mapear puertos - solo accesible vía Gateway\n  \n  # Product Service\n  product-service:\n    image: product-service:1.0.0\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - SERVER_PORT=0\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n  \n  # Transaction Service\n  transaction-service:\n    image: transaction-service:1.0.0\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - SERVER_PORT=0\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n      - customer-service\n      - product-service\n\nvolumes:\n  postgres-data:\n\nnetworks:\n  microservices-network:\n    driver: bridge\n\n# Iniciar sistema completo\ndocker-compose up -d\n\n# Esperar que todos estén UP (~60 segundos)\nwatch docker-compose ps\n\n# Todos los servicios deben mostrar: Up\n\n# Probar vía Gateway\ncurl -u admin:admin123 http://localhost:8080/api/v1/customer\n# ✅ Funciona - Gateway enruta a Customer Service\n\ncurl -u admin:admin123 http://localhost:8080/api/v1/product\n# ✅ Funciona - Gateway enruta a Product Service\n\n# Intentar acceder directamente a Customer (FALLA)\ncurl http://localhost:8081/api/v1/customer\n# ❌ Connection refused - No está expuesto\n\n# Ver logs del Gateway\ndocker-compose logs -f api-gateway\n# [PRE-FILTER] Request: GET /api/v1/customer\n# [PRE-FILTER] Routing to: lb://CUSTOMER-SERVICE\n# [POST-FILTER] Response Status: 200 OK\n\n# Escalar Customer Service\ndocker-compose up -d --scale customer-service=3\n\n# Gateway balancea entre 3 instancias automáticamente\nfor i in {1..10}; do\n  curl -u admin:admin123 http://localhost:8080/api/v1/customer\ndone\n\n# Logs muestran balanceo:\n# Routing to instance: customer-service-1:8123\n# Routing to instance: customer-service-2:8456\n# Routing to instance: customer-service-3:8789\n\n# Arquitectura final:\n# Cliente → Gateway (8080) → [Customer|Product|Transaction] → PostgreSQL\n# Solo Gateway expuesto, servicios internos aislados ✅"
+    }
+  ],
+  "resumen_seccion": "Esta sección implementa API Gateway como punto de entrada único usando Spring Cloud Gateway. Se explican patrones de proxy inverso y Service Mesh, se crea microservicio Gateway con enrutamiento dinámico vía Eureka, se implementan filtros globales para logging y autenticación, se configuran puertos aleatorios para escalado, y se dockeriza. El resultado es una arquitectura con Gateway centralizado que simplifica acceso, mejora seguridad, y facilita observabilidad.",
+  "tecnologias_cubiertas": [
+    "Spring Cloud Gateway",
+    "Spring WebFlux (Reactor)",
+    "API Gateway Pattern",
+    "Reverse Proxy",
+    "Global Filters",
+    "Route Predicates",
+    "Service Discovery con Eureka",
+    "Load Balancing",
+    "Random Port Assignment",
+    "Docker Orchestration"
+  ],
+  "arquitectura_gateway": {
+    "componentes": [
+      "Router - Decide enrutamiento según predicates",
+      "Predicates - Condiciones para aplicar ruta (Path, Method, Header)",
+      "Filters - Pre/Post transformaciones de request/response",
+      "Load Balancer - Distribuye entre instancias vía Eureka",
+      "Circuit Breaker - Previene cascading failures",
+      "Rate Limiter - Limita requests por cliente"
+    ],
+    "flujo_request": [
+      "1. Cliente → Gateway (localhost:8080)",
+      "2. Gateway → Predicates (matchea Path=/api/v1/customer/**)",
+      "3. Gateway → Pre-Filters (logging, auth, headers)",
+      "4. Gateway → Eureka (resuelve CUSTOMER-SERVICE)",
+      "5. Gateway → Load Balancer (elige instancia)",
+      "6. Gateway → Customer Service (enruta request)",
+      "7. Customer → Response → Gateway",
+      "8. Gateway → Post-Filters (logging, headers)",
+      "9. Gateway → Cliente (retorna response)"
+    ]
+  },
+  "configuracion_rutas": {
+    "declarativa": "application.yml con spring.cloud.gateway.routes",
+    "programatica": "RouteLocator @Bean en Java config",
+    "dinamica": "Eureka con discovery.locator.enabled=true"
+  },
+  "patrones_implementados": [
+    "API Gateway Pattern - Punto entrada único",
+    "Reverse Proxy - Gateway reenvia a backends",
+    "Service Discovery - Resolución vía Eureka",
+    "Client-Side Load Balancing - Gateway balancea",
+    "Global Cross-Cutting Concerns - Filtros centralizados",
+    "Dynamic Routing - Rutas basadas en registro Eureka",
+    "Service Isolation - Servicios no expuestos directamente",
+    "Single Point of Access - Un solo endpoint público",
+    "Random Port Assignment - Escalado sin conflictos",
+    "Circuit Breaker Pattern - Resiliencia ante fallos"
+  ],
+  "mejores_practicas": [
+    "Gateway es único servicio expuesto externamente",
+    "Microservicios usan puertos aleatorios internamente",
+    "Implementar GlobalFilter para logging/auditoría",
+    "Validar autenticación en Gateway, no en cada servicio",
+    "Usar lb:// para load balancing automático",
+    "Configurar timeout apropiado para requests",
+    "Implementar Circuit Breaker para servicios críticos",
+    "Rate limiting para proteger contra abuso",
+    "CORS configurado solo en Gateway",
+    "SSL/TLS termination en Gateway",
+    "Monitorear métricas de Gateway (latencia, errores)",
+    "Cachear responses cuando sea apropiado"
+  ],
+  "gateway_vs_service_mesh": {
+    "API_Gateway": {
+      "trafico": "North-South (externo → interno)",
+      "ubicacion": "Edge/Borde de red",
+      "funciones": ["Routing", "Auth", "Rate Limiting", "API Versioning"],
+      "ejemplos": ["Spring Cloud Gateway", "Kong", "Apigee", "AWS API Gateway"],
+      "cuando_usar": "Exponer APIs a clientes externos"
+    },
+    "Service_Mesh": {
+      "trafico": "East-West (servicio ↔ servicio)",
+      "ubicacion": "Sidecar en cada servicio",
+      "funciones": ["mTLS", "Observability", "Circuit Breaking", "Traffic Management"],
+      "ejemplos": ["Istio", "Linkerd", "Consul Connect"],
+      "cuando_usar": "Muchos microservicios comunicándose internamente"
+    },
+    "pueden_coexistir": "Gateway para entrada + Mesh para comunicación interna"
+  },
+  "comandos_esenciales": [
+    "mvn clean package - Compilar Gateway",
+    "docker build -t api-gateway:1.0.0 . - Construir imagen",
+    "docker-compose up -d - Iniciar sistema completo",
+    "curl http://localhost:8080/api/v1/customer - Probar vía Gateway",
+    "docker-compose logs -f api-gateway - Ver logs Gateway",
+    "docker-compose up -d --scale service=3 - Escalar servicio",
+    "mvn dependency:tree - Verificar dependencias",
+    "docker-compose ps - Ver estado servicios"
+  ],
+  "troubleshooting": {
+    "error_webflux_webmvc": "Excluir spring-boot-starter-web del Gateway",
+    "servicio_no_resuelve": "Verificar registro en Eureka y lb:// en URI",
+    "timeout_gateway": "Aumentar spring.cloud.gateway.httpclient.connect-timeout",
+    "404_en_ruta": "Verificar predicates Path y nombre servicio en Eureka",
+    "load_balancing_no_funciona": "Verificar fetch-registry=true en Gateway"
+  }
+}

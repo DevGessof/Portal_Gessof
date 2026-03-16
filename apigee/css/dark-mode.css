@@ -1,0 +1,21 @@
+/* ========================================
+   GESSOF Academy - Modo Oscuro
+   Tema Dark para el Portal
+   ======================================== */
+
+body.dark {
+    --bg-main: #0a0f1a;
+    --bg-card: #111827;
+    --bg-elevated: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border: #1e293b;
+    --border-hover: #334155;
+    --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .carousel-btn {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+}

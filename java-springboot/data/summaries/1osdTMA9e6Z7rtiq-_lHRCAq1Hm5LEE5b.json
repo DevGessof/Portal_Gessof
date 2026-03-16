@@ -1,0 +1,61 @@
+{
+  "titulo": "Registrar Microservicios como Clientes de Eureka Server",
+  "resumen": "Configuración de microservicios business (Customer, Product, Transaction) como clientes Eureka. Se agrega dependencia eureka-client, se configura URL del servidor Eureka, y se valida registro exitoso en dashboard. Los servicios ahora se descubren dinámicamente entre sí.",
+  "puntosClave": [
+    "Agregar starter: spring-cloud-starter-netflix-eureka-client",
+    "Aplicar a customer-service, product-service, transaction-service",
+    "spring.application.name debe estar configurado correctamente",
+    "eureka.client.service-url.defaultZone=http://localhost:8761/eureka/",
+    "Al iniciar, microservicio se registra automáticamente en Eureka",
+    "Envía heartbeat cada 30 segundos (configurable)",
+    "Verificar en dashboard: http://localhost:8761",
+    "Sección 'Instances' muestra: CUSTOMER-SERVICE, PRODUCT-SERVICE, TRANSACTION-SERVICE",
+    "Estado debe ser UP con IP:puerto de cada instancia",
+    "Microservicios obtienen registro de Eureka para descubrir otros servicios",
+    "Cache local se actualiza cada 30 segundos",
+    "Base para implementar descubrimiento dinámico en WebClient"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Eureka Client",
+      "descripcion": "Microservicio que se registra en Eureka y puede descubrir otros servicios"
+    },
+    {
+      "nombre": "spring-cloud-starter-netflix-eureka-client",
+      "descripcion": "Starter que habilita funcionalidad de cliente Eureka"
+    },
+    {
+      "nombre": "eureka.client.service-url.defaultZone",
+      "descripcion": "URL del Eureka Server donde registrarse y obtener registro"
+    },
+    {
+      "nombre": "Registro Automático",
+      "descripcion": "Cliente se registra al iniciar sin código adicional"
+    },
+    {
+      "nombre": "Heartbeat Interval",
+      "descripcion": "Frecuencia con que cliente envía señal de vida (default: 30s)"
+    },
+    {
+      "nombre": "Lease Renewal",
+      "descripcion": "Renovación del registro que indica que servicio sigue activo"
+    },
+    {
+      "nombre": "Registry Fetch Interval",
+      "descripcion": "Frecuencia con que cliente actualiza lista de servicios (default: 30s)"
+    },
+    {
+      "nombre": "Instance ID",
+      "descripcion": "Identificador único de instancia: hostname:application-name:port"
+    },
+    {
+      "nombre": "Service ID",
+      "descripcion": "Nombre lógico del servicio (spring.application.name en mayúsculas)"
+    },
+    {
+      "nombre": "Metadata",
+      "descripcion": "Información adicional que servicio registra (zona, versión, tags)"
+    }
+  ],
+  "codigoEjemplo": "<!-- Agregar en pom.xml de customer, product, transaction -->\n<dependency>\n    <groupId>org.springframework.cloud</groupId>\n    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>\n</dependency>\n\n# application.properties (customer-service)\nspring.application.name=customer-service\nserver.port=8081\n\n# URL del Eureka Server\neureka.client.service-url.defaultZone=http://localhost:8761/eureka/\n\n# Opcional: configurar heartbeat e intervalos\neureka.instance.lease-renewal-interval-in-seconds=30\neureka.instance.lease-expiration-duration-in-seconds=90\neureka.client.registry-fetch-interval-seconds=30\n\n# Metadata adicional (opcional)\neureka.instance.metadata-map.zone=zone1\neureka.instance.metadata-map.version=1.0.0\n\n# Al iniciar, logs mostrarán:\n# DiscoveryClient: registering service CUSTOMER-SERVICE with eureka\n# Tomcat started on port(s): 8081\n\n# Dashboard Eureka mostrará:\n# Application: CUSTOMER-SERVICE\n# Status: UP (1) - hostname:customer-service:8081"
+}

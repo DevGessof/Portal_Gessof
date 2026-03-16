@@ -1,0 +1,61 @@
+{
+  "titulo": "Crear Microservicio de Catálogo de Productos y Agregarlo al Repositorio",
+  "resumen": "Construcción del microservicio Product desde cero siguiendo la misma estructura que Customer. Se crea entidad Product, repository, controller con CRUD completo, se configura puerto 8082, y se integra al módulo business-domain. Incluye configuración de H2 y Swagger para pruebas.",
+  "puntosClave": [
+    "Crear proyecto Product con Spring Initializr (mismo proceso que Customer)",
+    "Starters: Web, Data JPA, H2, DevTools, Lombok, Validation",
+    "Entidad Product: id (Long), name (String), price (Double)",
+    "Crear estructura de paquetes: entities, repositories, controller",
+    "ProductRepository extiende JpaRepository<Product, Long>",
+    "ProductRestController con métodos: findAll, findById, create, update, delete",
+    "Configurar puerto: server.port=8082 en application.properties",
+    "Agregar springdoc-openapi para Swagger",
+    "Mover proyecto a business-domain/product",
+    "Actualizar business-domain/pom.xml agregando <module>product</module>",
+    "Configurar parent en product/pom.xml apuntando a business-domain",
+    "Probar CRUD completo con Swagger en http://localhost:8082/swagger-ui.html"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Microservicio Product",
+      "descripcion": "Servicio responsable de gestionar el catálogo de productos/servicios financieros"
+    },
+    {
+      "nombre": "Entidad Product",
+      "descripcion": "Clase JPA que representa productos con atributos id, name y price"
+    },
+    {
+      "nombre": "ProductRepository",
+      "descripcion": "Interfaz JPA que provee métodos CRUD para la entidad Product"
+    },
+    {
+      "nombre": "ProductRestController",
+      "descripcion": "Controlador REST que expone endpoints para gestionar productos"
+    },
+    {
+      "nombre": "CRUD Completo",
+      "descripcion": "Implementación de Create, Read, Update y Delete para gestión de productos"
+    },
+    {
+      "nombre": "Puerto 8082",
+      "descripcion": "Puerto asignado al microservicio Product para evitar conflictos con Customer (8081)"
+    },
+    {
+      "nombre": "Estructura Consistente",
+      "descripcion": "Mismo patrón de paquetes y organización usado en Customer para mantener uniformidad"
+    },
+    {
+      "nombre": "Swagger UI",
+      "descripcion": "Interfaz interactiva para documentar y probar endpoints del microservicio Product"
+    },
+    {
+      "nombre": "Integración al Módulo",
+      "descripcion": "Proceso de agregar el nuevo microservicio a la estructura multi-módulo existente"
+    },
+    {
+      "nombre": "Herencia de Configuración",
+      "descripcion": "Product hereda dependencias del POM padre business-domain automáticamente"
+    }
+  ],
+  "codigoEjemplo": "// Entidad Product\npackage com.paymentchange.product.entities;\n\nimport jakarta.persistence.*;\nimport lombok.Data;\n\n@Data\n@Entity\npublic class Product {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    private String name;\n    private Double price;\n}\n\n// ProductRepository\npackage com.paymentchange.product.repositories;\n\nimport com.paymentchange.product.entities.Product;\nimport org.springframework.data.jpa.repository.JpaRepository;\n\npublic interface ProductRepository extends JpaRepository<Product, Long> {\n}\n\n// ProductRestController\npackage com.paymentchange.product.controller;\n\nimport com.paymentchange.product.entities.Product;\nimport com.paymentchange.product.repositories.ProductRepository;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.web.bind.annotation.*;\nimport java.util.List;\n\n@RestController\n@RequestMapping(\"/product\")\npublic class ProductRestController {\n    \n    @Autowired\n    private ProductRepository productRepository;\n    \n    @GetMapping\n    public List<Product> findAll() {\n        return productRepository.findAll();\n    }\n    \n    @GetMapping(\"/{id}\")\n    public Product findById(@PathVariable Long id) {\n        return productRepository.findById(id).orElse(null);\n    }\n    \n    @PostMapping\n    public Product create(@RequestBody Product product) {\n        return productRepository.save(product);\n    }\n}\n\n# application.properties\nserver.port=8082\nspring.application.name=product-service"
+}

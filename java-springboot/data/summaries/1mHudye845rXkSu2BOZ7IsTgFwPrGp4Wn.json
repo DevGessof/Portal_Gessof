@@ -1,0 +1,61 @@
+{
+  "titulo": "Consumir API REST de Product desde Customer usando WebClient",
+  "resumen": "Implementación completa del consumo de API REST de Product desde CustomerService. Se construye petición GET con WebClient para validar existencia de productos antes de crear customer. Incluye manejo de respuestas, errores, y conversión de datos reactivos con Mono y block().",
+  "puntosClave": [
+    "Validar productIds antes de guardar customer",
+    "webClient.get() inicia petición GET",
+    ".uri(\"/product/{id}\", productId) construye URL con parámetro",
+    ".retrieve() obtiene respuesta del servidor",
+    ".bodyToMono(Product.class) convierte respuesta a objeto Product",
+    "Mono<Product>: tipo reactivo que representa 0 o 1 elemento futuro",
+    ".block() bloquea hasta obtener resultado (síncrono)",
+    "Si producto no existe, block() retorna null",
+    "Lanzar excepción si producto no encontrado",
+    "Solo guardar customer si todos los productos son válidos",
+    "Manejo de errores con try-catch o verificación de null",
+    "En producción: usar manejo reactivo completo sin block()"
+  ],
+  "conceptos": [
+    {
+      "nombre": "webClient.get()",
+      "descripcion": "Inicia construcción de petición HTTP GET"
+    },
+    {
+      "nombre": ".uri()",
+      "descripcion": "Define el endpoint y parámetros de la petición"
+    },
+    {
+      "nombre": ".retrieve()",
+      "descripcion": "Ejecuta la petición y obtiene respuesta del servidor"
+    },
+    {
+      "nombre": ".bodyToMono()",
+      "descripcion": "Convierte cuerpo de respuesta HTTP a tipo Mono del objeto especificado"
+    },
+    {
+      "nombre": "Mono<T>",
+      "descripcion": "Tipo reactivo de Project Reactor que representa 0 o 1 elemento futuro"
+    },
+    {
+      "nombre": ".block()",
+      "descripcion": "Método bloqueante que espera y retorna resultado del Mono (usar con precaución)"
+    },
+    {
+      "nombre": "Manejo de Null",
+      "descripcion": "Verificar si block() retorna null cuando recurso no existe (404)"
+    },
+    {
+      "nombre": "Validación de Existencia",
+      "descripcion": "Confirmar que recurso existe en otro servicio antes de crear referencia"
+    },
+    {
+      "nombre": "Excepción de Negocio",
+      "descripcion": "Lanzar error personalizado cuando validación falla"
+    },
+    {
+      "nombre": "Path Variable",
+      "descripcion": "Parámetro en URL (/product/{id}) reemplazado por valor real"
+    }
+  ],
+  "codigoEjemplo": "// CustomerService - Validar productos con WebClient\npackage com.paymentchange.customer.services;\n\nimport com.paymentchange.customer.entities.Customer;\nimport com.paymentchange.customer.repositories.CustomerRepository;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\nimport org.springframework.web.reactive.function.client.WebClient;\n\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private CustomerRepository customerRepository;\n    \n    @Autowired\n    private WebClient webClient;\n    \n    public Customer create(Customer customer) {\n        // Validar que todos los productos existen\n        for (Long productId : customer.getProductIds()) {\n            Product product = webClient.get()\n                .uri(\"/product/{id}\", productId)\n                .retrieve()\n                .bodyToMono(Product.class)\n                .block(); // Bloquea hasta obtener respuesta\n            \n            if (product == null) {\n                throw new RuntimeException(\n                    \"Producto no encontrado: \" + productId\n                );\n            }\n        }\n        \n        // Solo guardar si todos los productos son válidos\n        return customerRepository.save(customer);\n    }\n}\n\n// Clase Product (DTO en Customer para recibir respuesta)\npackage com.paymentchange.customer.dto;\n\nimport lombok.Data;\n\n@Data\npublic class Product {\n    private Long id;\n    private String name;\n    private Double price;\n}"
+}

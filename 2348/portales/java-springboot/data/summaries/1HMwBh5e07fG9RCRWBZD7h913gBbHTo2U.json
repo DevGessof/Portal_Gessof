@@ -1,0 +1,61 @@
+{
+  "titulo": "Heredar Configuración del POM Padre en Microservicios",
+  "resumen": "Demostración práctica de cómo los microservicios heredan configuración del POM padre. Se verifica la eliminación de dependencias duplicadas en POMs hijos, se comprueba que versiones se heredan correctamente, y se ejecutan todos los microservicios simultáneamente para validar la configuración multi-módulo funcional.",
+  "puntosClave": [
+    "Verificar que microservicios heredan de business-domain correctamente",
+    "Eliminar sección <dependencyManagement> de POMs hijos (va solo en padre)",
+    "POMs hijos solo declaran dependencias necesarias sin versión",
+    "Versiones se resuelven desde el POM padre automáticamente",
+    "Ejecutar 'mvn clean install' desde la raíz compila todo",
+    "Cada microservicio puede ejecutarse independientemente",
+    "Ejecutar simultáneamente: Customer (8081), Product (8082), Transaction (8083)",
+    "Verificar que no hay conflictos de puerto",
+    "Probar endpoints con Swagger en cada puerto diferente",
+    "Configuración de puertos permanece en application.properties de cada uno",
+    "Beneficio: una sola actualización de versión afecta todos los módulos",
+    "Estructura final lista para añadir componentes de infraestructura"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Herencia de Configuración",
+      "descripcion": "Mecanismo donde módulos hijos reciben automáticamente propiedades del padre"
+    },
+    {
+      "nombre": "Resolución de Versiones",
+      "descripcion": "Proceso donde Maven determina qué versión usar basándose en dependencyManagement"
+    },
+    {
+      "nombre": "Maven Clean Install",
+      "descripcion": "Comando completo: limpia, compila, ejecuta tests, empaqueta e instala en repositorio local"
+    },
+    {
+      "nombre": "Repositorio Local Maven",
+      "descripcion": "Carpeta .m2 donde Maven almacena dependencias y artefactos construidos localmente"
+    },
+    {
+      "nombre": "Ejecución Simultánea",
+      "descripcion": "Capacidad de ejecutar múltiples microservicios al mismo tiempo sin conflictos"
+    },
+    {
+      "nombre": "Independencia de Ejecución",
+      "descripcion": "Cada microservicio puede iniciarse/detenerse sin afectar a otros"
+    },
+    {
+      "nombre": "Build Reactor",
+      "descripcion": "Sistema de Maven que gestiona compilación de proyectos multi-módulo"
+    },
+    {
+      "nombre": "Dependency Resolution",
+      "descripcion": "Proceso de determinar y descargar todas las librerías necesarias"
+    },
+    {
+      "nombre": "Configuración Local",
+      "descripcion": "Properties específicos que NO se heredan (server.port, spring.application.name)"
+    },
+    {
+      "nombre": "Multi-Module Build",
+      "descripcion": "Construcción de múltiples proyectos relacionados en una sola operación"
+    }
+  ],
+  "codigoEjemplo": "<!-- Estructura simplificada de herencia -->\n\n<!-- Raíz: payment-microservices/pom.xml -->\n<packaging>pom</packaging>\n<modules>\n    <module>business-domain</module>\n</modules>\n\n<!-- business-domain/pom.xml -->\n<parent>\n    <artifactId>payment-microservices</artifactId>\n</parent>\n<packaging>pom</packaging>\n<modules>\n    <module>customer</module>\n</modules>\n\n<!-- customer/pom.xml -->\n<parent>\n    <artifactId>business-domain</artifactId>\n</parent>\n<packaging>jar</packaging>\n<!-- Hereda dependencias del padre -->\n\n# Comandos para compilar y ejecutar\n# Desde raíz - compila todos los módulos\nmvn clean install\n\n# Ejecutar cada microservicio en terminal separada\ncd business-domain/customer\nmvn spring-boot:run\n\ncd business-domain/product  \nmvn spring-boot:run\n\ncd business-domain/transaction\nmvn spring-boot:run"
+}

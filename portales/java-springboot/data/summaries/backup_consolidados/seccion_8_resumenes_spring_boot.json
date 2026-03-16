@@ -1,0 +1,668 @@
+{
+  "seccion": "Sección 8 - Documentación de APIs con Swagger y DTOs con MapStruct",
+  "descripcion": "Documentación profesional de APIs REST usando Swagger/OpenAPI y separación de capas mediante DTOs. Se implementa documentación interactiva con anotaciones Swagger, se crean modelos Request/Response separados de entidades, y se automatiza mapeo con MapStruct. El resultado son APIs bien documentadas, testeable y con separación clara entre capas.",
+  "clases": [
+    {
+      "numero": 1,
+      "archivo": "1__Arquitectura_Interna_microservicio_comprender_Swagger.srt",
+      "titulo": "Arquitectura Interna del Microservicio para Comprender Swagger",
+      "resumen": "Explicación de la arquitectura interna de un microservicio Spring Boot y cómo Swagger se integra. Se analizan las capas (Controller, Service, Repository, Entity) y cómo Swagger escanea controllers y modelos para generar documentación OpenAPI automáticamente. Fundamento para entender documentación de APIs.",
+      "puntosClave": [
+        "Arquitectura en capas de microservicio Spring Boot:",
+        "- Controller: expone endpoints REST (API pública)",
+        "- Service: lógica de negocio y validaciones",
+        "- Repository: acceso a base de datos (JPA)",
+        "- Entity: modelos de dominio mapeados a tablas",
+        "Swagger escanea @RestController para detectar endpoints",
+        "Lee anotaciones @RequestMapping, @GetMapping, @PostMapping, etc.",
+        "Inspecciona tipos de parámetros y retorno para generar esquemas",
+        "Genera especificación OpenAPI (JSON/YAML)",
+        "Swagger UI renderiza especificación en interfaz interactiva",
+        "Endpoints disponibles en /v3/api-docs (JSON) y /swagger-ui.html (UI)",
+        "Springdoc-openapi: librería que integra Swagger con Spring Boot",
+        "Documentación generada automáticamente pero mejorable con anotaciones"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Swagger",
+          "descripcion": "Conjunto de herramientas para diseñar, documentar y consumir APIs REST"
+        },
+        {
+          "nombre": "OpenAPI Specification",
+          "descripcion": "Estándar para describir APIs REST de forma agnóstica al lenguaje"
+        },
+        {
+          "nombre": "Springdoc-OpenAPI",
+          "descripcion": "Librería que integra OpenAPI 3 con Spring Boot automáticamente"
+        },
+        {
+          "nombre": "Swagger UI",
+          "descripcion": "Interfaz web interactiva generada a partir de especificación OpenAPI"
+        },
+        {
+          "nombre": "/v3/api-docs",
+          "descripcion": "Endpoint que expone especificación OpenAPI en formato JSON"
+        },
+        {
+          "nombre": "Controller Layer",
+          "descripcion": "Capa que expone APIs REST y es escaneada por Swagger"
+        },
+        {
+          "nombre": "API Schema",
+          "descripcion": "Definición estructurada de modelos de entrada/salida de API"
+        },
+        {
+          "nombre": "Auto-Documentation",
+          "descripcion": "Documentación generada automáticamente analizando código"
+        },
+        {
+          "nombre": "Interactive Documentation",
+          "descripcion": "Documentación que permite probar endpoints directamente desde UI"
+        },
+        {
+          "nombre": "Contract-First vs Code-First",
+          "descripcion": "Code-first: generar spec desde código (Swagger). Contract-first: código desde spec"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "archivo": "2__Configuración_swagger_spring_docs_OpenAPi_usando.srt",
+      "titulo": "Configuración de Swagger con Springdoc-OpenAPI",
+      "resumen": "Configuración avanzada de Swagger mediante clase @Configuration con @Bean de OpenAPI. Se personaliza información general de la API (título, descripción, versión, contacto, licencia), se configuran servers, y se mejora presentación de documentación. Base para documentación profesional.",
+      "puntosClave": [
+        "Crear clase SwaggerConfig con @Configuration",
+        "Definir @Bean de tipo OpenAPI para personalizar documentación",
+        "Configurar Info: título, descripción, versión de API",
+        "Agregar Contact: nombre, email, URL del equipo/empresa",
+        "Definir License: tipo de licencia (Apache 2.0, MIT, etc.)",
+        "Configurar Servers: URLs donde API está disponible (dev, prod)",
+        "Tags para agrupar endpoints por funcionalidad",
+        "ExternalDocs para enlaces a documentación adicional",
+        "Propiedades application.properties:",
+        "  - springdoc.api-docs.path=/v3/api-docs",
+        "  - springdoc.swagger-ui.path=/swagger-ui.html",
+        "  - springdoc.swagger-ui.operationsSorter=method",
+        "Personalización mejora profesionalismo de documentación"
+      ],
+      "conceptos": [
+        {
+          "nombre": "OpenAPI Bean",
+          "descripcion": "Bean Spring que configura metadatos de documentación OpenAPI"
+        },
+        {
+          "nombre": "Info Object",
+          "descripcion": "Sección que describe información general de la API (título, versión, descripción)"
+        },
+        {
+          "nombre": "Contact Object",
+          "descripcion": "Información de contacto del equipo responsable de la API"
+        },
+        {
+          "nombre": "License Object",
+          "descripcion": "Información sobre licencia de uso de la API"
+        },
+        {
+          "nombre": "Server Object",
+          "descripcion": "URLs de servidores donde API está disponible (dev, staging, prod)"
+        },
+        {
+          "nombre": "Tags",
+          "descripcion": "Etiquetas para agrupar endpoints relacionados en documentación"
+        },
+        {
+          "nombre": "ExternalDocs",
+          "descripcion": "Enlaces a documentación externa (wikis, guías, especificaciones)"
+        },
+        {
+          "nombre": "operationsSorter",
+          "descripcion": "Configuración para ordenar operaciones en Swagger UI (alpha, method)"
+        },
+        {
+          "nombre": "API Versioning in Docs",
+          "descripcion": "Documentar versión de API en metadata de OpenAPI"
+        },
+        {
+          "nombre": "Professional Documentation",
+          "descripcion": "Documentación completa con contacto, licencia y descripción clara"
+        }
+      ],
+      "codigoEjemplo": "// SwaggerConfig.java\npackage com.paymentchange.customer.config;\n\nimport io.swagger.v3.oas.models.OpenAPI;\nimport io.swagger.v3.oas.models.info.Contact;\nimport io.swagger.v3.oas.models.info.Info;\nimport io.swagger.v3.oas.models.info.License;\nimport io.swagger.v3.oas.models.servers.Server;\nimport org.springframework.context.annotation.Bean;\nimport org.springframework.context.annotation.Configuration;\nimport java.util.List;\n\n@Configuration\npublic class SwaggerConfig {\n    \n    @Bean\n    public OpenAPI customOpenAPI() {\n        return new OpenAPI()\n            .info(new Info()\n                .title(\"Customer Service API\")\n                .description(\"API REST para gestión de clientes en sistema financiero\")\n                .version(\"v1.0.0\")\n                .contact(new Contact()\n                    .name(\"Equipo de Desarrollo\")\n                    .email(\"dev@paymentchange.com\")\n                    .url(\"https://paymentchange.com/team\"))\n                .license(new License()\n                    .name(\"Apache 2.0\")\n                    .url(\"https://www.apache.org/licenses/LICENSE-2.0.html\")))\n            .servers(List.of(\n                new Server()\n                    .url(\"http://localhost:8081\")\n                    .description(\"Servidor de Desarrollo\"),\n                new Server()\n                    .url(\"https://api.paymentchange.com\")\n                    .description(\"Servidor de Producción\")\n            ));\n    }\n}\n\n# application.properties - Configuración Swagger\n# Ruta de la especificación OpenAPI JSON\nspringdoc.api-docs.path=/v3/api-docs\n\n# Ruta de Swagger UI\nspringdoc.swagger-ui.path=/swagger-ui.html\n\n# Ordenar operaciones por método HTTP\nspringdoc.swagger-ui.operationsSorter=method\n\n# Ordenar tags alfabéticamente\nspringdoc.swagger-ui.tagsSorter=alpha\n\n# Habilitar botón Try it out por defecto\nspringdoc.swagger-ui.tryItOutEnabled=true\n\n# Mostrar request duration\nspringdoc.swagger-ui.displayRequestDuration=true"
+    },
+    {
+      "numero": 3,
+      "archivo": "3__Documentar_clase_entidad_sus_atributos_swagger.srt",
+      "titulo": "Documentar Clase Entidad y sus Atributos con Anotaciones Swagger",
+      "resumen": "Documentación de modelos de datos usando anotaciones @Schema de OpenAPI. Se documenta clase Customer con descripción general y cada atributo con @Schema individual (descripción, ejemplo, required, formato). Swagger genera esquemas JSON mejorados en documentación interactiva.",
+      "puntosClave": [
+        "Anotación @Schema a nivel de clase: descripción del modelo",
+        "@Schema(description = \"Modelo de Customer del dominio financiero\")",
+        "@Schema en cada atributo para documentar campos:",
+        "  - description: explicación del campo",
+        "  - example: valor de ejemplo para Swagger UI",
+        "  - required: si es obligatorio (true/false)",
+        "  - format: formato del dato (email, date, uuid, etc.)",
+        "  - minLength/maxLength: restricciones de longitud",
+        "  - minimum/maximum: valores numéricos min/max",
+        "Ejemplos aparecen en Swagger UI al hacer Try it out",
+        "Mejora experiencia de desarrolladores consumiendo API",
+        "Documentar enums con allowableValues",
+        "No confundir @Schema (documentación) con @NotNull (validación)",
+        "Aplicar en todas las entidades y DTOs"
+      ],
+      "conceptos": [
+        {
+          "nombre": "@Schema",
+          "descripcion": "Anotación OpenAPI para documentar clases y atributos de modelos"
+        },
+        {
+          "nombre": "description",
+          "descripcion": "Texto explicativo del propósito del modelo o campo"
+        },
+        {
+          "nombre": "example",
+          "descripcion": "Valor de ejemplo que aparece en Swagger UI"
+        },
+        {
+          "nombre": "required",
+          "descripcion": "Indica si campo es obligatorio en esquema OpenAPI"
+        },
+        {
+          "nombre": "format",
+          "descripcion": "Formato específico del dato (email, date-time, uuid, uri)"
+        },
+        {
+          "nombre": "minLength / maxLength",
+          "descripcion": "Restricciones de longitud para strings"
+        },
+        {
+          "nombre": "minimum / maximum",
+          "descripcion": "Valores mínimo y máximo para números"
+        },
+        {
+          "nombre": "allowableValues",
+          "descripcion": "Lista de valores permitidos para enums"
+        },
+        {
+          "nombre": "Schema Documentation",
+          "descripcion": "Documentación de estructura de datos en especificación OpenAPI"
+        },
+        {
+          "nombre": "Developer Experience",
+          "descripcion": "Experiencia mejorada con ejemplos y descripciones claras"
+        }
+      ],
+      "codigoEjemplo": "// Customer.java - Entidad documentada\npackage com.paymentchange.customer.entities;\n\nimport io.swagger.v3.oas.annotations.media.Schema;\nimport jakarta.persistence.*;\nimport lombok.Data;\nimport java.util.ArrayList;\nimport java.util.List;\n\n@Data\n@Entity\n@Schema(description = \"Modelo de Customer que representa un cliente del sistema financiero\")\npublic class Customer {\n    \n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    @Schema(\n        description = \"ID único del cliente\",\n        example = \"1\",\n        accessMode = Schema.AccessMode.READ_ONLY\n    )\n    private Long id;\n    \n    @Schema(\n        description = \"Nombre completo del cliente\",\n        example = \"Juan Pérez García\",\n        required = true,\n        minLength = 3,\n        maxLength = 100\n    )\n    private String name;\n    \n    @Schema(\n        description = \"Número de teléfono del cliente\",\n        example = \"+52-555-1234-5678\",\n        required = true,\n        pattern = \"^\\\\+?[0-9-]+$\"\n    )\n    private String phoneNumber;\n    \n    @Schema(\n        description = \"Correo electrónico del cliente\",\n        example = \"juan.perez@email.com\",\n        format = \"email\"\n    )\n    private String email;\n    \n    @Schema(\n        description = \"Estado del cliente en el sistema\",\n        example = \"ACTIVE\",\n        allowableValues = {\"ACTIVE\", \"INACTIVE\", \"SUSPENDED\"}\n    )\n    private String status;\n    \n    @ElementCollection\n    @CollectionTable(\n        name = \"customer_products\",\n        joinColumns = @JoinColumn(name = \"customer_id\")\n    )\n    @Column(name = \"product_id\")\n    @Schema(\n        description = \"IDs de productos asociados al cliente\",\n        example = \"[1, 2, 3]\"\n    )\n    private List<Long> productIds = new ArrayList<>();\n}"
+    },
+    {
+      "numero": 4,
+      "archivo": "4__Documentar_API_sus_métodos_swagger_standar_OpenAPI.srt",
+      "titulo": "Documentar API y sus Métodos con Swagger siguiendo Estándar OpenAPI",
+      "resumen": "Documentación completa de endpoints REST usando anotaciones @Operation, @ApiResponse, @Parameter y @Tag. Se documenta cada método del controller con descripción, respuestas posibles (200, 404, 500), parámetros, y se agrupan endpoints por tags. Documentación profesional lista para consumo.",
+      "puntosClave": [
+        "@Tag a nivel de clase controller para agrupar endpoints",
+        "@Operation en cada método: summary y description",
+        "@ApiResponses para documentar posibles respuestas:",
+        "  - @ApiResponse(responseCode = \"200\", description = \"Éxito\")",
+        "  - @ApiResponse(responseCode = \"404\", description = \"No encontrado\")",
+        "  - @ApiResponse(responseCode = \"500\", description = \"Error servidor\")",
+        "@Parameter para documentar parámetros de path/query:",
+        "  - description, example, required",
+        "@RequestBody para documentar body de petición POST/PUT",
+        "Incluir content con @Content y schema para respuestas",
+        "Documentar headers si son necesarios con @Header",
+        "Especificar mediaType: application/json",
+        "Cada endpoint debe tener al menos summary claro",
+        "Aplicar en todos los controllers del microservicio"
+      ],
+      "conceptos": [
+        {
+          "nombre": "@Tag",
+          "descripcion": "Anotación para agrupar endpoints relacionados bajo una etiqueta"
+        },
+        {
+          "nombre": "@Operation",
+          "descripcion": "Documenta operación individual (endpoint) con summary y description"
+        },
+        {
+          "nombre": "@ApiResponses",
+          "descripcion": "Contenedor de múltiples @ApiResponse para documentar respuestas posibles"
+        },
+        {
+          "nombre": "@ApiResponse",
+          "descripcion": "Documenta una respuesta específica con código HTTP y descripción"
+        },
+        {
+          "nombre": "@Parameter",
+          "descripcion": "Documenta parámetro de path, query o header"
+        },
+        {
+          "nombre": "@RequestBody",
+          "descripcion": "Documenta cuerpo de petición POST/PUT con descripción y ejemplo"
+        },
+        {
+          "nombre": "@Content",
+          "descripcion": "Define contenido de respuesta con mediaType y schema"
+        },
+        {
+          "nombre": "summary",
+          "descripcion": "Resumen corto de operación (aparece en lista de endpoints)"
+        },
+        {
+          "nombre": "description",
+          "descripcion": "Descripción detallada de operación o parámetro"
+        },
+        {
+          "nombre": "responseCode",
+          "descripcion": "Código HTTP de respuesta (200, 201, 400, 404, 500)"
+        }
+      ],
+      "codigoEjemplo": "// CustomerRestController.java - Documentado\npackage com.paymentchange.customer.controller;\n\nimport io.swagger.v3.oas.annotations.Operation;\nimport io.swagger.v3.oas.annotations.Parameter;\nimport io.swagger.v3.oas.annotations.media.Content;\nimport io.swagger.v3.oas.annotations.media.Schema;\nimport io.swagger.v3.oas.annotations.responses.ApiResponse;\nimport io.swagger.v3.oas.annotations.responses.ApiResponses;\nimport io.swagger.v3.oas.annotations.tags.Tag;\nimport org.springframework.http.ResponseEntity;\nimport org.springframework.web.bind.annotation.*;\nimport java.util.List;\n\n@RestController\n@RequestMapping(\"/api/v1/customer\")\n@Tag(name = \"Customer\", description = \"API para gestión de clientes\")\npublic class CustomerRestController {\n    \n    @Autowired\n    private CustomerService customerService;\n    \n    @Operation(\n        summary = \"Listar todos los clientes\",\n        description = \"Obtiene lista completa de clientes registrados en el sistema\"\n    )\n    @ApiResponses(value = {\n        @ApiResponse(\n            responseCode = \"200\",\n            description = \"Lista obtenida exitosamente\",\n            content = @Content(\n                mediaType = \"application/json\",\n                schema = @Schema(implementation = Customer.class)\n            )\n        ),\n        @ApiResponse(\n            responseCode = \"500\",\n            description = \"Error interno del servidor\"\n        )\n    })\n    @GetMapping\n    public ResponseEntity<List<Customer>> findAll() {\n        return ResponseEntity.ok(customerService.findAll());\n    }\n    \n    @Operation(\n        summary = \"Obtener cliente por ID\",\n        description = \"Busca y retorna un cliente específico por su identificador único\"\n    )\n    @ApiResponses(value = {\n        @ApiResponse(\n            responseCode = \"200\",\n            description = \"Cliente encontrado\",\n            content = @Content(\n                mediaType = \"application/json\",\n                schema = @Schema(implementation = Customer.class)\n            )\n        ),\n        @ApiResponse(\n            responseCode = \"404\",\n            description = \"Cliente no encontrado\",\n            content = @Content(\n                mediaType = \"application/json\",\n                schema = @Schema(implementation = ErrorResponse.class)\n            )\n        )\n    })\n    @GetMapping(\"/{id}\")\n    public ResponseEntity<Customer> findById(\n        @Parameter(\n            description = \"ID del cliente a buscar\",\n            example = \"1\",\n            required = true\n        )\n        @PathVariable Long id) {\n        return ResponseEntity.ok(customerService.findById(id));\n    }\n    \n    @Operation(\n        summary = \"Crear nuevo cliente\",\n        description = \"Registra un nuevo cliente en el sistema con validación de datos\"\n    )\n    @ApiResponses(value = {\n        @ApiResponse(\n            responseCode = \"201\",\n            description = \"Cliente creado exitosamente\"\n        ),\n        @ApiResponse(\n            responseCode = \"400\",\n            description = \"Datos de entrada inválidos\"\n        )\n    })\n    @PostMapping\n    public ResponseEntity<Customer> create(\n        @io.swagger.v3.oas.annotations.parameters.RequestBody(\n            description = \"Datos del cliente a crear\",\n            required = true,\n            content = @Content(\n                schema = @Schema(implementation = Customer.class)\n            )\n        )\n        @RequestBody Customer customer) {\n        Customer saved = customerService.create(customer);\n        return ResponseEntity.status(HttpStatus.CREATED).body(saved);\n    }\n}"
+    },
+    {
+      "numero": 5,
+      "archivo": "5__Crear_modelos_Request_Response_separar_capas_API.srt",
+      "titulo": "Crear Modelos Request y Response para Separar Capas de API",
+      "resumen": "Implementación del patrón DTO para separar modelos de API (Request/Response) de entidades de dominio. Se crean CustomerRequest para entrada y CustomerResponse para salida, permitiendo evolución independiente de API y modelo de datos. Mejora seguridad y flexibilidad.",
+      "puntosClave": [
+        "Problema: exponer entidades JPA directamente en API es riesgo de seguridad",
+        "Solución: crear DTOs (Data Transfer Objects) específicos para API",
+        "CustomerRequest: modelo para recibir datos en POST/PUT",
+        "CustomerResponse: modelo para retornar datos en GET",
+        "Ventajas de DTOs:",
+        "  - Ocultar campos internos (createdAt, updatedAt)",
+        "  - Evitar exposición de relaciones JPA",
+        "  - Validaciones específicas de API sin afectar entidad",
+        "  - API puede evolucionar sin cambiar modelo de datos",
+        "  - Mayor control sobre qué datos se exponen",
+        "Crear paquete dto.request y dto.response",
+        "DTOs son POJOs simples sin anotaciones JPA",
+        "Usar @Data de Lombok para getters/setters",
+        "Documentar DTOs con @Schema igual que entidades"
+      ],
+      "conceptos": [
+        {
+          "nombre": "DTO (Data Transfer Object)",
+          "descripcion": "Objeto diseñado específicamente para transferir datos entre capas"
+        },
+        {
+          "nombre": "Request DTO",
+          "descripcion": "Modelo que representa datos de entrada en operaciones POST/PUT"
+        },
+        {
+          "nombre": "Response DTO",
+          "descripcion": "Modelo que representa datos de salida en operaciones GET"
+        },
+        {
+          "nombre": "API-Domain Separation",
+          "descripcion": "Separar modelos de API de modelos de dominio/persistencia"
+        },
+        {
+          "nombre": "Security Best Practice",
+          "descripcion": "No exponer entidades JPA directamente para evitar fuga de información"
+        },
+        {
+          "nombre": "Field Hiding",
+          "descripcion": "Ocultar campos internos que no deben ser públicos (IDs internos, timestamps)"
+        },
+        {
+          "nombre": "API Evolution",
+          "descripcion": "Capacidad de cambiar API sin afectar modelo de datos"
+        },
+        {
+          "nombre": "Validation Separation",
+          "descripcion": "Validaciones de API diferentes de validaciones de dominio"
+        },
+        {
+          "nombre": "POJO (Plain Old Java Object)",
+          "descripcion": "Clase Java simple sin dependencias de frameworks"
+        },
+        {
+          "nombre": "Loose Coupling",
+          "descripcion": "Bajo acoplamiento entre capa de API y capa de persistencia"
+        }
+      ],
+      "codigoEjemplo": "// CustomerRequest.java - DTO de entrada\npackage com.paymentchange.customer.dto.request;\n\nimport io.swagger.v3.oas.annotations.media.Schema;\nimport lombok.Data;\nimport java.util.List;\n\n@Data\n@Schema(description = \"Modelo de petición para crear/actualizar cliente\")\npublic class CustomerRequest {\n    \n    @Schema(\n        description = \"Nombre completo del cliente\",\n        example = \"María González\",\n        required = true\n    )\n    private String name;\n    \n    @Schema(\n        description = \"Número de teléfono\",\n        example = \"+52-555-9876-5432\"\n    )\n    private String phoneNumber;\n    \n    @Schema(\n        description = \"Correo electrónico\",\n        example = \"maria.gonzalez@email.com\"\n    )\n    private String email;\n    \n    @Schema(\n        description = \"IDs de productos a asociar\",\n        example = \"[1, 2]\"\n    )\n    private List<Long> productIds;\n    \n    // Sin ID, sin timestamps, sin campos internos\n}\n\n// CustomerResponse.java - DTO de salida\npackage com.paymentchange.customer.dto.response;\n\nimport io.swagger.v3.oas.annotations.media.Schema;\nimport lombok.Data;\nimport java.util.List;\n\n@Data\n@Schema(description = \"Modelo de respuesta con datos del cliente\")\npublic class CustomerResponse {\n    \n    @Schema(description = \"ID del cliente\", example = \"1\")\n    private Long id;\n    \n    @Schema(description = \"Nombre del cliente\", example = \"María González\")\n    private String name;\n    \n    @Schema(description = \"Teléfono\", example = \"+52-555-9876-5432\")\n    private String phoneNumber;\n    \n    @Schema(description = \"Email\", example = \"maria.gonzalez@email.com\")\n    private String email;\n    \n    @Schema(description = \"Estado del cliente\", example = \"ACTIVE\")\n    private String status;\n    \n    @Schema(description = \"IDs de productos asociados\", example = \"[1, 2]\")\n    private List<Long> productIds;\n    \n    // Incluye ID para referencia\n    // NO incluye: createdAt, updatedAt, versión, etc.\n}\n\n// Entidad Customer original (NO exponer directamente)\n@Data\n@Entity\npublic class Customer {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    \n    private String name;\n    private String phoneNumber;\n    private String email;\n    private String status;\n    \n    @ElementCollection\n    private List<Long> productIds;\n    \n    // Campos internos NO expuestos en API\n    private LocalDateTime createdAt;\n    private LocalDateTime updatedAt;\n    private Integer version;\n    private String internalNotes;  // Campo interno\n}"
+    },
+    {
+      "numero": 6,
+      "archivo": "6__Agregar_configurar_libreria_mapeo_automático.srt",
+      "titulo": "Agregar y Configurar Librería de Mapeo Automático MapStruct",
+      "resumen": "Integración de MapStruct para automatizar conversión entre entidades y DTOs. Se agrega dependencia, se configuran plugins de Maven, y se prepara proyecto para generar mappers en tiempo de compilación. MapStruct elimina código manual de mapeo evitando errores y reduciendo boilerplate.",
+      "puntosClave": [
+        "MapStruct: librería de mapeo compile-time (no reflection)",
+        "Genera código Java real en compilación (más rápido que reflection)",
+        "Agregar dependencia org.mapstruct:mapstruct en pom.xml",
+        "Agregar mapstruct-processor para generación de código",
+        "Configurar maven-compiler-plugin con annotation processors",
+        "Incluir Lombok y MapStruct en annotationProcessorPaths",
+        "Orden importante: Lombok antes de MapStruct",
+        "MapStruct genera implementaciones de interfaces mapper",
+        "Código generado en target/generated-sources/annotations",
+        "No requiere configuración adicional si nombres coinciden",
+        "Mapeo automático de campos con mismo nombre",
+        "Mapeo manual con @Mapping para campos diferentes"
+      ],
+      "conceptos": [
+        {
+          "nombre": "MapStruct",
+          "descripcion": "Librería de generación de código para mapear entre objetos Java"
+        },
+        {
+          "nombre": "Compile-Time Generation",
+          "descripcion": "Código generado durante compilación, no en runtime (más rápido)"
+        },
+        {
+          "nombre": "Annotation Processor",
+          "descripcion": "Procesador que genera código analizando anotaciones en compilación"
+        },
+        {
+          "nombre": "mapstruct-processor",
+          "descripcion": "Procesador de anotaciones que genera implementaciones de mappers"
+        },
+        {
+          "nombre": "annotationProcessorPaths",
+          "descripcion": "Configuración Maven para procesadores de anotaciones"
+        },
+        {
+          "nombre": "Reflection vs Code Generation",
+          "descripcion": "MapStruct genera código real vs librerías que usan reflection (ModelMapper)"
+        },
+        {
+          "nombre": "Type-Safe Mapping",
+          "descripcion": "Mapeo verificado en compilación, errores detectados temprano"
+        },
+        {
+          "nombre": "Zero Runtime Dependencies",
+          "descripcion": "MapStruct no añade dependencias en runtime, solo compile-time"
+        },
+        {
+          "nombre": "Boilerplate Reduction",
+          "descripcion": "Elimina código repetitivo de mapeo manual entre objetos"
+        },
+        {
+          "nombre": "Lombok Integration",
+          "descripcion": "MapStruct trabaja bien con Lombok, generar getters/setters primero"
+        }
+      ],
+      "codigoEjemplo": "<!-- pom.xml - Configurar MapStruct -->\n<properties>\n    <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>\n    <lombok.version>1.18.30</lombok.version>\n</properties>\n\n<dependencies>\n    <!-- MapStruct -->\n    <dependency>\n        <groupId>org.mapstruct</groupId>\n        <artifactId>mapstruct</artifactId>\n        <version>${org.mapstruct.version}</version>\n    </dependency>\n    \n    <!-- Lombok (ya existente) -->\n    <dependency>\n        <groupId>org.projectlombok</groupId>\n        <artifactId>lombok</artifactId>\n        <version>${lombok.version}</version>\n        <scope>provided</scope>\n    </dependency>\n</dependencies>\n\n<build>\n    <plugins>\n        <plugin>\n            <groupId>org.apache.maven.plugins</groupId>\n            <artifactId>maven-compiler-plugin</artifactId>\n            <version>3.11.0</version>\n            <configuration>\n                <source>17</source>\n                <target>17</target>\n                <annotationProcessorPaths>\n                    <!-- Lombok PRIMERO -->\n                    <path>\n                        <groupId>org.projectlombok</groupId>\n                        <artifactId>lombok</artifactId>\n                        <version>${lombok.version}</version>\n                    </path>\n                    <!-- MapStruct DESPUÉS -->\n                    <path>\n                        <groupId>org.mapstruct</groupId>\n                        <artifactId>mapstruct-processor</artifactId>\n                        <version>${org.mapstruct.version}</version>\n                    </path>\n                </annotationProcessorPaths>\n            </configuration>\n        </plugin>\n    </plugins>\n</build>\n\n<!-- Compilar proyecto -->\n<!-- mvn clean compile -->\n<!-- Código generado en: target/generated-sources/annotations -->"
+    },
+    {
+      "numero": 7,
+      "archivo": "7__Crear_Mappers_MapStruct_Mapeo_automático_modelos.srt",
+      "titulo": "Crear Mappers con MapStruct para Mapeo Automático entre Modelos",
+      "resumen": "Creación de interfaces Mapper con @Mapper de MapStruct para convertir entre Customer, CustomerRequest y CustomerResponse. MapStruct genera implementación automáticamente. Se define CustomerMapper con métodos toEntity() y toResponse(), se configura componentModel Spring, y se usa @Mapping para campos personalizados.",
+      "puntosClave": [
+        "Crear interfaz CustomerMapper con @Mapper(componentModel = \"spring\")",
+        "componentModel = \"spring\" permite inyectar mapper con @Autowired",
+        "Definir métodos de mapeo:",
+        "  - Customer toEntity(CustomerRequest request)",
+        "  - CustomerResponse toResponse(Customer entity)",
+        "  - List<CustomerResponse> toResponseList(List<Customer> entities)",
+        "MapStruct mapea automáticamente campos con mismo nombre",
+        "@Mapping para campos con nombres diferentes:",
+        "  @Mapping(source = \"name\", target = \"fullName\")",
+        "Ignorar campos: @Mapping(target = \"createdAt\", ignore = true)",
+        "MapStruct genera clase CustomerMapperImpl en compilación",
+        "Compilar proyecto: mvn clean compile",
+        "Verificar código generado en target/generated-sources",
+        "Inyectar mapper en Service como bean Spring"
+      ],
+      "conceptos": [
+        {
+          "nombre": "@Mapper",
+          "descripcion": "Anotación MapStruct que marca interfaz como generadora de mapper"
+        },
+        {
+          "nombre": "componentModel",
+          "descripcion": "Configuración que define cómo usar mapper (spring, cdi, default)"
+        },
+        {
+          "nombre": "componentModel = \"spring\"",
+          "descripcion": "Genera mapper como @Component Spring, inyectable con @Autowired"
+        },
+        {
+          "nombre": "toEntity()",
+          "descripcion": "Método que convierte DTO Request a Entidad"
+        },
+        {
+          "nombre": "toResponse()",
+          "descripcion": "Método que convierte Entidad a DTO Response"
+        },
+        {
+          "nombre": "@Mapping",
+          "descripcion": "Anotación para mapeo personalizado entre campos con nombres diferentes"
+        },
+        {
+          "nombre": "ignore = true",
+          "descripcion": "Configuración para ignorar campo en mapeo (no copiar valor)"
+        },
+        {
+          "nombre": "MapperImpl",
+          "descripcion": "Clase de implementación generada por MapStruct"
+        },
+        {
+          "nombre": "Collection Mapping",
+          "descripcion": "MapStruct mapea automáticamente listas usando método individual"
+        },
+        {
+          "nombre": "Bidirectional Mapping",
+          "descripcion": "Mapeo en ambas direcciones: Entity ↔ DTO"
+        }
+      ],
+      "codigoEjemplo": "// CustomerMapper.java - Interfaz Mapper\npackage com.paymentchange.customer.mapper;\n\nimport com.paymentchange.customer.dto.request.CustomerRequest;\nimport com.paymentchange.customer.dto.response.CustomerResponse;\nimport com.paymentchange.customer.entities.Customer;\nimport org.mapstruct.Mapper;\nimport org.mapstruct.Mapping;\nimport java.util.List;\n\n@Mapper(componentModel = \"spring\")\npublic interface CustomerMapper {\n    \n    /**\n     * Convierte CustomerRequest (DTO entrada) a Customer (Entidad)\n     */\n    @Mapping(target = \"id\", ignore = true)  // ID se genera automático\n    @Mapping(target = \"createdAt\", ignore = true)\n    @Mapping(target = \"updatedAt\", ignore = true)\n    @Mapping(target = \"status\", constant = \"ACTIVE\")  // Valor por defecto\n    Customer toEntity(CustomerRequest request);\n    \n    /**\n     * Convierte Customer (Entidad) a CustomerResponse (DTO salida)\n     */\n    CustomerResponse toResponse(Customer entity);\n    \n    /**\n     * Convierte lista de Customer a lista de CustomerResponse\n     * MapStruct usa toResponse() para cada elemento automáticamente\n     */\n    List<CustomerResponse> toResponseList(List<Customer> entities);\n    \n    /**\n     * Actualizar entidad existente con datos de request\n     * Útil para operaciones PUT\n     */\n    @Mapping(target = \"id\", ignore = true)\n    @Mapping(target = \"createdAt\", ignore = true)\n    void updateEntityFromRequest(CustomerRequest request, \n                                 @MappingTarget Customer entity);\n}\n\n// CustomerMapperImpl.java - Generado automáticamente\n// target/generated-sources/annotations/.../CustomerMapperImpl.java\n@Component\npublic class CustomerMapperImpl implements CustomerMapper {\n    \n    @Override\n    public Customer toEntity(CustomerRequest request) {\n        if (request == null) {\n            return null;\n        }\n        Customer customer = new Customer();\n        customer.setName(request.getName());\n        customer.setPhoneNumber(request.getPhoneNumber());\n        customer.setEmail(request.getEmail());\n        customer.setProductIds(request.getProductIds());\n        customer.setStatus(\"ACTIVE\");\n        return customer;\n    }\n    \n    @Override\n    public CustomerResponse toResponse(Customer entity) {\n        if (entity == null) {\n            return null;\n        }\n        CustomerResponse response = new CustomerResponse();\n        response.setId(entity.getId());\n        response.setName(entity.getName());\n        response.setPhoneNumber(entity.getPhoneNumber());\n        response.setEmail(entity.getEmail());\n        response.setStatus(entity.getStatus());\n        response.setProductIds(entity.getProductIds());\n        return response;\n    }\n    \n    // ... otros métodos generados\n}"
+    },
+    {
+      "numero": 8,
+      "archivo": "8__Refactorizar_API__Controller__utilice_modelos_Request.srt",
+      "titulo": "Refactorizar API Controller para Utilizar Modelos Request/Response",
+      "resumen": "Refactorización completa de CustomerRestController y CustomerService para usar DTOs en lugar de entidades. Controller recibe CustomerRequest y retorna CustomerResponse, Service usa mapper para conversión. Separación completa entre capa de API y capa de dominio lograda.",
+      "puntosClave": [
+        "Controller ahora recibe CustomerRequest en POST/PUT",
+        "Controller retorna CustomerResponse (no Customer) en GET",
+        "Inyectar CustomerMapper en Service con @Autowired",
+        "Service.create(): mapper.toEntity(request) → repository.save() → mapper.toResponse()",
+        "Service.findAll(): repository.findAll() → mapper.toResponseList()",
+        "Service.findById(): repository.findById() → mapper.toResponse()",
+        "Actualizar tipos de retorno en Controller:",
+        "  - ResponseEntity<CustomerResponse>",
+        "  - ResponseEntity<List<CustomerResponse>>",
+        "Actualizar documentación Swagger con nuevos tipos",
+        "Ventaja: Customer entity nunca sale de capa de persistencia",
+        "API puede cambiar sin afectar modelo de datos",
+        "Aplicar mismo patrón en Product y Transaction"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Controller Refactoring",
+          "descripcion": "Modificar controller para trabajar con DTOs en vez de entidades"
+        },
+        {
+          "nombre": "Service Refactoring",
+          "descripcion": "Service maneja conversión entre DTOs y entidades usando mapper"
+        },
+        {
+          "nombre": "Layer Separation",
+          "descripcion": "API layer (DTOs) completamente separada de Domain layer (Entities)"
+        },
+        {
+          "nombre": "Mapper Injection",
+          "descripcion": "Inyectar CustomerMapper en Service como bean Spring"
+        },
+        {
+          "nombre": "Request-Entity Conversion",
+          "descripcion": "Convertir CustomerRequest a Customer antes de persistir"
+        },
+        {
+          "nombre": "Entity-Response Conversion",
+          "descripcion": "Convertir Customer a CustomerResponse antes de retornar"
+        },
+        {
+          "nombre": "Type Safety",
+          "descripcion": "Tipos específicos en controller (Request/Response) evitan confusión"
+        },
+        {
+          "nombre": "API Contract",
+          "descripcion": "Contrato de API ahora basado en DTOs, no en modelo interno"
+        },
+        {
+          "nombre": "Encapsulation",
+          "descripcion": "Entidad encapsulada dentro de capa de persistencia"
+        },
+        {
+          "nombre": "Clean Architecture",
+          "descripcion": "Separación clara entre capas: API → Service → Repository"
+        }
+      ],
+      "codigoEjemplo": "// CustomerService.java - Refactorizado con DTOs\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private CustomerRepository customerRepository;\n    \n    @Autowired\n    private CustomerMapper customerMapper;  // Inyectar mapper\n    \n    public List<CustomerResponse> findAll() {\n        List<Customer> customers = customerRepository.findAll();\n        return customerMapper.toResponseList(customers);\n    }\n    \n    public CustomerResponse findById(Long id) {\n        Customer customer = customerRepository.findById(id)\n            .orElseThrow(() -> new NotFoundException(\n                \"Customer with ID \" + id + \" not found\"\n            ));\n        return customerMapper.toResponse(customer);\n    }\n    \n    public CustomerResponse create(CustomerRequest request) {\n        // Validar datos de request\n        validateCustomerRequest(request);\n        \n        // Convertir Request a Entity\n        Customer customer = customerMapper.toEntity(request);\n        \n        // Guardar en BD\n        Customer saved = customerRepository.save(customer);\n        \n        // Convertir Entity a Response\n        return customerMapper.toResponse(saved);\n    }\n    \n    public CustomerResponse update(Long id, CustomerRequest request) {\n        // Buscar customer existente\n        Customer existing = customerRepository.findById(id)\n            .orElseThrow(() -> new NotFoundException(\n                \"Customer with ID \" + id + \" not found\"\n            ));\n        \n        // Actualizar campos desde request\n        customerMapper.updateEntityFromRequest(request, existing);\n        \n        // Guardar cambios\n        Customer updated = customerRepository.save(existing);\n        \n        // Retornar response\n        return customerMapper.toResponse(updated);\n    }\n    \n    public void delete(Long id) {\n        Customer customer = customerRepository.findById(id)\n            .orElseThrow(() -> new NotFoundException(\n                \"Customer with ID \" + id + \" not found\"\n            ));\n        customerRepository.delete(customer);\n    }\n    \n    private void validateCustomerRequest(CustomerRequest request) {\n        if (request.getName() == null || request.getName().isEmpty()) {\n            throw new IllegalArgumentException(\"Name is required\");\n        }\n        // ... más validaciones\n    }\n}\n\n// CustomerRestController.java - Refactorizado\n@RestController\n@RequestMapping(\"/api/v1/customer\")\n@Tag(name = \"Customer\", description = \"API de gestión de clientes\")\npublic class CustomerRestController {\n    \n    @Autowired\n    private CustomerService customerService;\n    \n    @GetMapping\n    public ResponseEntity<List<CustomerResponse>> findAll() {\n        return ResponseEntity.ok(customerService.findAll());\n    }\n    \n    @GetMapping(\"/{id}\")\n    public ResponseEntity<CustomerResponse> findById(@PathVariable Long id) {\n        return ResponseEntity.ok(customerService.findById(id));\n    }\n    \n    @PostMapping\n    public ResponseEntity<CustomerResponse> create(\n            @RequestBody CustomerRequest request) {\n        CustomerResponse created = customerService.create(request);\n        return ResponseEntity.status(HttpStatus.CREATED).body(created);\n    }\n    \n    @PutMapping(\"/{id}\")\n    public ResponseEntity<CustomerResponse> update(\n            @PathVariable Long id,\n            @RequestBody CustomerRequest request) {\n        return ResponseEntity.ok(customerService.update(id, request));\n    }\n    \n    @DeleteMapping(\"/{id}\")\n    public ResponseEntity<Void> delete(@PathVariable Long id) {\n        customerService.delete(id);\n        return ResponseEntity.noContent().build();\n    }\n}"
+    },
+    {
+      "numero": 9,
+      "archivo": "9__Explicación_proceso_serialización_deserialización.srt",
+      "titulo": "Explicación del Proceso de Serialización y Deserialización en APIs REST",
+      "resumen": "Explicación técnica de cómo Spring Boot convierte automáticamente entre JSON y objetos Java usando Jackson. Se describe proceso de deserialización (JSON → Java) en requests y serialización (Java → JSON) en responses. Se explican configuraciones de Jackson, manejo de fechas, null values, y personalización del proceso.",
+      "puntosClave": [
+        "Serialización: convertir objeto Java a JSON (Response)",
+        "Deserialización: convertir JSON a objeto Java (Request)",
+        "Jackson: librería de Spring Boot para serialización/deserialización",
+        "Proceso automático mediante HttpMessageConverter",
+        "Request: JSON → HttpMessageConverter → CustomerRequest (objeto Java)",
+        "Response: CustomerResponse → HttpMessageConverter → JSON",
+        "Jackson usa getters para serializar (convertir a JSON)",
+        "Jackson usa setters/constructor para deserializar (crear objeto)",
+        "@JsonProperty para cambiar nombre de campo en JSON",
+        "@JsonIgnore para excluir campo de serialización",
+        "@JsonFormat para formatear fechas/números",
+        "Configurar ObjectMapper para comportamiento global",
+        "Manejo de null: incluir/excluir campos null en JSON"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Serialización",
+          "descripcion": "Conversión de objeto Java a formato JSON para enviar en response"
+        },
+        {
+          "nombre": "Deserialización",
+          "descripcion": "Conversión de JSON recibido a objeto Java en request"
+        },
+        {
+          "nombre": "Jackson",
+          "descripcion": "Librería de procesamiento JSON usada por Spring Boot por defecto"
+        },
+        {
+          "nombre": "HttpMessageConverter",
+          "descripcion": "Componente Spring que convierte entre HTTP body y objetos Java"
+        },
+        {
+          "nombre": "MappingJackson2HttpMessageConverter",
+          "descripcion": "Implementación de HttpMessageConverter que usa Jackson"
+        },
+        {
+          "nombre": "@JsonProperty",
+          "descripcion": "Anotación para especificar nombre de campo en JSON diferente a Java"
+        },
+        {
+          "nombre": "@JsonIgnore",
+          "descripcion": "Excluir campo de serialización/deserialización JSON"
+        },
+        {
+          "nombre": "@JsonFormat",
+          "descripcion": "Especificar formato de fecha/número en JSON"
+        },
+        {
+          "nombre": "ObjectMapper",
+          "descripcion": "Clase central de Jackson para configurar serialización"
+        },
+        {
+          "nombre": "Include.NON_NULL",
+          "descripcion": "Configuración para excluir campos con valor null del JSON"
+        }
+      ],
+      "codigoEjemplo": "// Proceso de Serialización/Deserialización\n\n// REQUEST (Cliente → Servidor)\n// 1. Cliente envía JSON\n{\n  \"name\": \"Pedro López\",\n  \"phoneNumber\": \"+52-555-0000\",\n  \"email\": \"pedro@email.com\"\n}\n\n// 2. HttpMessageConverter (Jackson) deserializa JSON → CustomerRequest\nCustomerRequest request = objectMapper.readValue(json, CustomerRequest.class);\n// Usa setters o constructor para crear objeto\n\n// 3. Controller recibe objeto Java\n@PostMapping\npublic ResponseEntity<CustomerResponse> create(@RequestBody CustomerRequest request) {\n    // request ya es objeto Java\n}\n\n// RESPONSE (Servidor → Cliente)\n// 1. Service retorna objeto Java\nCustomerResponse response = new CustomerResponse();\nresponse.setId(1L);\nresponse.setName(\"Pedro López\");\nresponse.setEmail(\"pedro@email.com\");\n\n// 2. HttpMessageConverter (Jackson) serializa objeto → JSON\nString json = objectMapper.writeValueAsString(response);\n// Usa getters para obtener valores\n\n// 3. Cliente recibe JSON\n{\n  \"id\": 1,\n  \"name\": \"Pedro López\",\n  \"email\": \"pedro@email.com\",\n  \"phoneNumber\": \"+52-555-0000\"\n}\n\n// Anotaciones Jackson para personalización\n\n@Data\npublic class CustomerResponse {\n    \n    private Long id;\n    \n    @JsonProperty(\"full_name\")  // JSON usa \"full_name\" en vez de \"name\"\n    private String name;\n    \n    @JsonIgnore  // Este campo NO aparece en JSON\n    private String internalCode;\n    \n    @JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")\n    private LocalDateTime createdAt;\n    \n    @JsonInclude(JsonInclude.Include.NON_NULL)  // Solo si no es null\n    private String optionalField;\n}\n\n// Configuración global de ObjectMapper\n@Configuration\npublic class JacksonConfig {\n    \n    @Bean\n    public ObjectMapper objectMapper() {\n        ObjectMapper mapper = new ObjectMapper();\n        \n        // Excluir campos null\n        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);\n        \n        // Formato de fechas\n        mapper.registerModule(new JavaTimeModule());\n        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);\n        \n        // Ignorar propiedades desconocidas en deserialización\n        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);\n        \n        return mapper;\n    }\n}"
+    }
+  ],
+  "resumen_seccion": "Esta sección implementa documentación profesional con Swagger/OpenAPI y separación de capas mediante DTOs. Se documenta cada endpoint y modelo con anotaciones, se crean Request/Response DTOs separados de entidades, se integra MapStruct para mapeo automático, y se explica serialización/deserialización JSON. El resultado son APIs bien documentadas, seguras y mantenibles con separación clara entre capas.",
+  "tecnologias_cubiertas": [
+    "Swagger/OpenAPI 3",
+    "Springdoc-OpenAPI",
+    "Anotaciones @Schema",
+    "@Operation, @ApiResponse",
+    "DTOs (Request/Response)",
+    "MapStruct",
+    "Annotation Processors",
+    "Jackson Serialization",
+    "@JsonProperty, @JsonIgnore",
+    "ObjectMapper Configuration"
+  ],
+  "anotaciones_swagger": {
+    "clase": [
+      "@Tag - Agrupar endpoints",
+      "@Schema - Documentar modelo"
+    ],
+    "metodo": [
+      "@Operation - Documentar endpoint",
+      "@ApiResponses - Múltiples respuestas",
+      "@ApiResponse - Respuesta específica",
+      "@Parameter - Documentar parámetro",
+      "@RequestBody - Documentar body"
+    ],
+    "campo": [
+      "@Schema - Documentar atributo",
+      "description - Descripción",
+      "example - Valor ejemplo",
+      "required - Obligatorio",
+      "format - Formato dato"
+    ]
+  },
+  "mejores_practicas": [
+    "Documentar API con Swagger desde inicio",
+    "Usar DTOs Request/Response separados de entidades",
+    "MapStruct para mapeo automático (no manual)",
+    "componentModel = 'spring' en @Mapper",
+    "Lombok antes de MapStruct en annotationProcessorPaths",
+    "No exponer entidades JPA directamente en API",
+    "Documentar cada endpoint con @Operation",
+    "Incluir ejemplos en @Schema para mejor UX",
+    "Configurar múltiples @ApiResponse por endpoint",
+    "Usar @JsonIgnore para campos internos",
+    "Configurar ObjectMapper para null handling",
+    "Compilar proyecto después de cambios en Mapper"
+  ],
+  "patron_dto": {
+    "ventajas": [
+      "Seguridad - No exponer campos internos",
+      "Flexibilidad - API evoluciona sin afectar entidad",
+      "Validaciones - Específicas por capa",
+      "Documentación - Clara separación Request/Response",
+      "Versionado - Múltiples DTOs para misma entidad"
+    ],
+    "estructura": {
+      "request": "Datos de entrada (POST/PUT) - sin ID",
+      "response": "Datos de salida (GET) - con ID",
+      "entity": "Modelo de dominio - no exponer directamente"
+    }
+  },
+  "mapstruct_vs_alternativas": {
+    "MapStruct": "Compile-time, rápido, type-safe, sin reflection",
+    "ModelMapper": "Runtime, reflection, más lento, más flexible",
+    "Dozer": "Runtime, XML config, legacy",
+    "Manual": "Control total, repetitivo, propenso a errores"
+  },
+  "endpoints_swagger": [
+    "/v3/api-docs - Especificación OpenAPI JSON",
+    "/v3/api-docs.yaml - Especificación OpenAPI YAML",
+    "/swagger-ui.html - Interfaz interactiva Swagger UI",
+    "/swagger-ui/index.html - Alternativa UI"
+  ],
+  "flujo_completo": [
+    "1. Cliente envía JSON (POST /customer)",
+    "2. Jackson deserializa JSON → CustomerRequest",
+    "3. Controller recibe CustomerRequest",
+    "4. Service usa Mapper: toEntity(request) → Customer",
+    "5. Repository persiste Customer en BD",
+    "6. Service usa Mapper: toResponse(customer) → CustomerResponse",
+    "7. Controller retorna CustomerResponse",
+    "8. Jackson serializa CustomerResponse → JSON",
+    "9. Cliente recibe JSON con datos"
+  ]
+}

@@ -1,0 +1,271 @@
+================================================================================
+                    CURSO COMPLETO DE APIGEE X
+                  ESTRUCTURA Y DISTRIBUCIÓN DE CONTENIDO
+================================================================================
+
+📚 RESUMEN GENERAL DEL CURSO
+================================================================================
+Total de Secciones: 6
+Total de Videos: 53
+Total de Archivos de Recursos: 4 (ZIPs y JSONs)
+
+================================================================================
+
+
+📂 SECCIÓN 1: INTRODUCCIÓN Y APROVISIONAMIENTO DE APIGEE X
+================================================================================
+Cantidad de videos: 6
+Archivos adicionales: 0
+
+Contenido:
+  1. Introducción
+  2. Creación cuenta Gmail (Saltar caso tener)
+  3. Creación de cuenta en Google Cloud Platform
+  4. Descripción general de la arquitectura de Apigee X
+  5. Aprovisionando tu Organización Apigee X Google Cloud
+  6. Eliminar Apigee X de prueba
+
+Temas cubiertos:
+- Presentación del curso y objetivos
+- Requisitos previos (cuenta Gmail y GCP)
+- Arquitectura de Apigee X
+- Proceso de aprovisionamiento
+- Gestión de organizaciones trial
+
+
+================================================================================
+
+
+📂 SECCIÓN 2: CREACIÓN Y GESTIÓN DE PROXIES DE API
+================================================================================
+Cantidad de videos: 20
+Archivos adicionales: 2
+  - KVMS admin.postman_collection.json
+  - kvm-example-v1_rev4_2025_03_08.zip
+
+Contenido:
+  1. Exploremos la UI de Apigee X
+  2. Qué es un API proxy
+  3. Creando nuestro primer API proxy
+  4. Conociendo el Apigee API
+  5. Organizaciones de Apigee X
+  6. Generando un access token para consumir el Apigee API
+  7. Configuración de environments y environment groups
+  8. Load balancing y environments
+  9. Configurando frontend para ambiente productivo
+  10. Solventando límite de ambientes en org trial
+  11. Apigee flows
+  12. Políticas y sus tipos
+  13. Agregando políticas nuestro API proxy (Extract Variables)
+  14. XML to JSON
+  15. Service callout y JSON to XML
+  16. Usuarios y roles en Apigee
+  17. Target servers
+  18. Key Value Maps
+  19. Administración de KVMs
+  20. KVM Operation policy
+  21. Laboratorio 1 (HTML)
+
+Temas cubiertos:
+- Interface de usuario de Apigee
+- Conceptos fundamentales de API Proxies
+- Ambientes y configuración
+- Flujos de ejecución (flows)
+- Políticas de transformación
+- Gestión de usuarios y permisos
+- Target Servers y KVMs
+- Práctica hands-on
+
+
+================================================================================
+
+
+📂 SECCIÓN 3: API PRODUCTS, DEVELOPERS Y APPS
+================================================================================
+Cantidad de videos: 6
+Archivos adicionales: 0
+
+Contenido:
+  1. Explicando qué es API Product, Developer y App en Apigee X
+  2. Creando nuestro primer Developer en Apigee X
+  3. Creando nuestro primer API Product en Apigee X
+  4. Creando nuestra primera App en Apigee X
+  5. Protegiendo nuestro API proxy usando política Verify API Key
+  6. Quota policy
+
+Temas cubiertos:
+- Modelo de gestión de desarrolladores
+- API Products y su configuración
+- Creación y gestión de Apps
+- Autenticación con API Keys
+- Control de uso con Quotas
+
+
+================================================================================
+
+
+📂 SECCIÓN 4: CASO DE USO SEVEN-DAYS-JOBS-V1
+================================================================================
+Cantidad de videos: 7
+Archivos adicionales: 1
+  - seven-days-jobs-v1_rev2_2025_03_13.zip
+
+Contenido:
+  1. Introducción
+  2. Creación de cuenta en rapidapi.com
+  3. Creación de KVM y entrada para el API Key
+  4. Creación del proxy y preparación del request
+  5. Configuración del cache
+  6. Personalizando la respuesta del API
+  7. Resultado del caso de uso
+
+Temas cubiertos:
+- Caso de uso práctico completo
+- Integración con APIs externas (RapidAPI)
+- Almacenamiento seguro de credenciales (KVM)
+- Implementación de caché (Response Cache)
+- Transformación de respuestas con JavaScript
+- Análisis de performance y mejoras
+
+
+================================================================================
+
+
+📂 SECCIÓN 5: SEGURIDAD EN APIGEE X
+================================================================================
+Cantidad de videos: 7
+Archivos adicionales: 1
+  - oauth-v1-example_rev2_2025_03_18.zip
+
+Contenido:
+  1. Política BasicAuthentication
+  2. Política JSONThreatProtection
+  3. Política de SpikeArrest
+  4. OAuth 2.0 Client credentials flow
+  5. OAuth 2.0 Creación de proxy de OAuth
+  6. Verificación de Access Token
+  7. Sharedflow de seguridad
+
+Temas cubiertos:
+- Autenticación básica (Basic Auth)
+- Protección contra amenazas JSON
+- Control de picos de tráfico (Spike Arrest)
+- OAuth 2.0 flujo Client Credentials
+- Creación de Authorization Server
+- Validación de tokens
+- Reutilización con Shared Flows
+
+
+================================================================================
+
+
+📂 SECCIÓN 6: MONITOREO Y LOGGING EN APIGEE X
+================================================================================
+Cantidad de videos: 4
+Archivos adicionales: 1
+  - sf-logging_rev5_2025_03_18.zip
+
+Contenido:
+  1. Service account para Cloud Logging
+  2. Sharedflow para logs usando Cloud Logging
+  3. Flowhooks
+  4. Fin del curso
+
+Temas cubiertos:
+- Configuración de Service Accounts en GCP
+- Integración con Cloud Logging
+- Message Logging policy
+- Flow Hooks para ejecución automática
+- Monitoreo centralizado de APIs
+- Cierre del curso
+
+
+================================================================================
+
+
+📊 ESTADÍSTICAS POR SECCIÓN
+================================================================================
+
+Sección 1: 6 videos    (11.3% del curso)
+Sección 2: 20 videos   (37.7% del curso) ⭐ La más extensa
+Sección 3: 6 videos    (11.3% del curso)
+Sección 4: 7 videos    (13.2% del curso)
+Sección 5: 7 videos    (13.2% del curso)
+Sección 6: 4 videos    (7.5% del curso)
+
+Total: 53 videos
+
+
+📦 RECURSOS DESCARGABLES
+================================================================================
+
+Total de archivos adicionales: 4
+
+1. KVMS admin.postman_collection.json
+   - Sección: 2
+   - Tipo: Colección de Postman
+   - Uso: Ejemplos de administración de KVMs via API
+
+2. kvm-example-v1_rev4_2025_03_08.zip
+   - Sección: 2
+   - Tipo: Proxy exportado
+   - Uso: Ejemplo de proxy con KVM Operations
+
+3. seven-days-jobs-v1_rev2_2025_03_13.zip
+   - Sección: 4
+   - Tipo: Proxy exportado
+   - Uso: Caso de uso completo con caché y transformación
+
+4. oauth-v1-example_rev2_2025_03_18.zip
+   - Sección: 5
+   - Tipo: Proxy exportado
+   - Uso: Authorization Server OAuth 2.0
+
+5. sf-logging_rev5_2025_03_18.zip
+   - Sección: 6
+   - Tipo: Shared Flow exportado
+   - Uso: Logging con Cloud Logging
+
+
+================================================================================
+
+
+🎯 PROGRESIÓN DEL APRENDIZAJE
+================================================================================
+
+NIVEL BÁSICO (Secciones 1-2):
+- Fundamentos de Apigee
+- Creación de proxies
+- Configuración básica
+- Políticas de transformación
+
+NIVEL INTERMEDIO (Secciones 3-4):
+- Gestión de desarrolladores
+- Seguridad con API Keys
+- Caso de uso práctico
+- Optimización con caché
+
+NIVEL AVANZADO (Secciones 5-6):
+- OAuth 2.0
+- Políticas de seguridad avanzadas
+- Shared Flows
+- Logging y monitoreo empresarial
+
+
+================================================================================
+
+
+💡 CONCEPTOS CLAVE POR SECCIÓN
+================================================================================
+
+Sección 1: Aprovisionamiento, Arquitectura
+Sección 2: Proxies, Policies, Flows, KVMs, Target Servers
+Sección 3: Developers, Products, Apps, API Keys, Quotas
+Sección 4: Cache, JavaScript, Response Transformation
+Sección 5: OAuth 2.0, BasicAuth, Threat Protection, Shared Flows
+Sección 6: Cloud Logging, Flow Hooks, Message Logging
+
+
+================================================================================
+FIN DE LA ESTRUCTURA DEL CURSO
+================================================================================

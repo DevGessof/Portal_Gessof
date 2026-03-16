@@ -1,0 +1,61 @@
+{
+  "titulo": "Overview de Transacciones Distribuidas en Microservicios",
+  "resumen": "Introducción al desafío de transacciones distribuidas en arquitecturas de microservicios. Se explica por qué las transacciones ACID tradicionales no funcionan entre microservicios con bases de datos separadas, y se presentan patrones alternativos: Saga Pattern, Event Sourcing, y Compensating Transactions. Base conceptual para futuras implementaciones.",
+  "puntosClave": [
+    "Problema: operación requiere modificar datos en múltiples microservicios",
+    "Ejemplo: crear transacción requiere actualizar Customer, Product, Transaction",
+    "ACID tradicional no funciona: cada servicio tiene su propia BD",
+    "No se puede usar transacción global (2PC) por complejidad y acoplamiento",
+    "Soluciones para consistencia eventual:",
+    "1. Saga Pattern: secuencia de transacciones locales con compensaciones",
+    "2. Event Sourcing: eventos inmutables que reconstruyen estado",
+    "3. Compensating Transactions: deshacer cambios si algo falla",
+    "Saga Choreography: servicios reaccionan a eventos (descentralizado)",
+    "Saga Orchestration: orquestador central coordina pasos",
+    "Importante: aceptar consistencia eventual en vez de inmediata",
+    "Monitoreo y logging críticos para debugging transacciones distribuidas"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Transacciones Distribuidas",
+      "descripcion": "Operación que afecta datos en múltiples servicios/bases de datos"
+    },
+    {
+      "nombre": "ACID",
+      "descripcion": "Atomicity, Consistency, Isolation, Durability - propiedades de transacciones tradicionales"
+    },
+    {
+      "nombre": "Two-Phase Commit (2PC)",
+      "descripcion": "Protocolo de transacciones distribuidas tradicional (evitar en microservicios)"
+    },
+    {
+      "nombre": "Saga Pattern",
+      "descripcion": "Secuencia de transacciones locales con transacciones compensatorias para rollback"
+    },
+    {
+      "nombre": "Event Sourcing",
+      "descripcion": "Almacenar cambios como secuencia de eventos inmutables en vez de estado actual"
+    },
+    {
+      "nombre": "Compensating Transaction",
+      "descripcion": "Transacción que deshace efectos de transacción anterior"
+    },
+    {
+      "nombre": "Choreography Saga",
+      "descripcion": "Servicios publican/escuchan eventos sin coordinador central"
+    },
+    {
+      "nombre": "Orchestration Saga",
+      "descripcion": "Servicio orquestador central coordina pasos de saga"
+    },
+    {
+      "nombre": "Eventual Consistency",
+      "descripcion": "Datos eventualmente consistentes en vez de inmediatamente"
+    },
+    {
+      "nombre": "Idempotency",
+      "descripcion": "Operación puede ejecutarse múltiples veces con mismo resultado"
+    }
+  ],
+  "codigoEjemplo": null
+}

@@ -1,0 +1,68 @@
+{
+  "titulo": "Escribir Imágenes Docker mediante Dockerfile",
+  "resumen": "Creación de Dockerfile para contenedorizar microservicio Spring Boot. Se definen instrucciones FROM, COPY, RUN, EXPOSE, ENTRYPOINT para construir imagen. Se explica cada comando, se optimiza con multi-stage builds, y se establecen mejores prácticas para Dockerfiles eficientes.",
+  "puntosClave": [
+    "Dockerfile: script con instrucciones para construir imagen",
+    "Instrucciones principales:",
+    "  - FROM: imagen base (openjdk:17-jdk-slim)",
+    "  - WORKDIR: directorio de trabajo dentro del contenedor",
+    "  - COPY: copiar archivos de host a imagen",
+    "  - RUN: ejecutar comando durante build",
+    "  - EXPOSE: documentar puerto que app usa",
+    "  - ENTRYPOINT: comando que se ejecuta al iniciar contenedor",
+    "Ubicación: raíz de cada microservicio",
+    "FROM openjdk:17-jdk-slim como base ligera",
+    "COPY target/*.jar app.jar para copiar JAR compilado",
+    "ENTRYPOINT [\"java\", \"-jar\", \"/app.jar\"]",
+    "Optimización: usar .dockerignore para excluir archivos innecesarios",
+    "Multi-stage: build en una etapa, runtime en otra (reduce tamaño)",
+    "Buenas prácticas: ordenar instrucciones para maximizar cache"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Dockerfile",
+      "descripcion": "Archivo de texto con instrucciones para construir imagen Docker"
+    },
+    {
+      "nombre": "FROM",
+      "descripcion": "Instrucción que especifica imagen base para construir"
+    },
+    {
+      "nombre": "WORKDIR",
+      "descripcion": "Define directorio de trabajo dentro del contenedor"
+    },
+    {
+      "nombre": "COPY",
+      "descripcion": "Copia archivos/directorios de host a imagen"
+    },
+    {
+      "nombre": "RUN",
+      "descripcion": "Ejecuta comando durante construcción de imagen"
+    },
+    {
+      "nombre": "EXPOSE",
+      "descripcion": "Documenta puerto que aplicación escucha (no publica automáticamente)"
+    },
+    {
+      "nombre": "ENTRYPOINT",
+      "descripcion": "Define comando principal que se ejecuta al iniciar contenedor"
+    },
+    {
+      "nombre": "CMD",
+      "descripcion": "Argumentos por defecto para ENTRYPOINT (o comando si no hay ENTRYPOINT)"
+    },
+    {
+      "nombre": ".dockerignore",
+      "descripcion": "Archivo que especifica qué archivos ignorar al copiar contexto"
+    },
+    {
+      "nombre": "Multi-Stage Build",
+      "descripcion": "Usar múltiples FROM para separar build de runtime"
+    },
+    {
+      "nombre": "Layer Caching",
+      "descripcion": "Docker cachea capas inmutables para builds más rápidos"
+    }
+  ],
+  "codigoEjemplo": "# Dockerfile - Customer Service (simple)\nFROM openjdk:17-jdk-slim\n\n# Directorio de trabajo\nWORKDIR /app\n\n# Copiar JAR compilado\nCOPY target/customer-service-1.0.0.jar app.jar\n\n# Puerto que usa la aplicación\nEXPOSE 8081\n\n# Comando para ejecutar aplicación\nENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n\n# Dockerfile - Multi-stage build (optimizado)\n# Etapa 1: Build\nFROM maven:3.9-openjdk-17 AS build\nWORKDIR /build\n\n# Copiar POMs primero (mejor cache)\nCOPY pom.xml .\nCOPY business-domain/customer/pom.xml business-domain/customer/\n\n# Descargar dependencias (se cachea si POMs no cambian)\nRUN mvn dependency:go-offline\n\n# Copiar código fuente\nCOPY business-domain/customer/src business-domain/customer/src\n\n# Compilar aplicación\nRUN mvn clean package -DskipTests\n\n# Etapa 2: Runtime\nFROM openjdk:17-jre-slim\nWORKDIR /app\n\n# Copiar solo JAR de etapa build\nCOPY --from=build /build/business-domain/customer/target/*.jar app.jar\n\n# Usuario no-root por seguridad\nRUN useradd -m appuser\nUSER appuser\n\nEXPOSE 8081\n\n# Variables de entorno\nENV SPRING_PROFILES_ACTIVE=prod\nENV JAVA_OPTS=\"-Xmx512m -Xms256m\"\n\n# Comando con opciones JVM\nENTRYPOINT [\"sh\", \"-c\", \"java $JAVA_OPTS -jar app.jar\"]\n\n# .dockerignore - Excluir archivos innecesarios\ntarget/\n.mvn/\n.git/\n.idea/\n*.iml\nnode_modules/\n.env\nREADME.md"
+}

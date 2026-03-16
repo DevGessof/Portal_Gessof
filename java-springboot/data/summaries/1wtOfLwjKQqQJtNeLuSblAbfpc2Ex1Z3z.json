@@ -1,0 +1,39 @@
+{
+  "titulo": "Por Qué Debes Hacer Este Curso y Cómo Evitar Errores Comunes",
+  "resumen": "Guía sobre cómo aprovechar al máximo el curso y evitar errores comunes. Se explica la importancia de las calificaciones positivas para mantener el curso actualizado, el proceso recomendado de aprendizaje paso a paso, y cómo usar las herramientas de la plataforma para resolver problemas. Incluye recomendaciones sobre el entorno de desarrollo.",
+  "puntosClave": [
+    "Las buenas calificaciones ayudan a mantener el curso actualizado",
+    "No saltarse clases ni ir directo al código descargable",
+    "Proceso recomendado: Ver video → Practicar → Probar → Debug si hay error",
+    "Usar el mismo entorno de desarrollo del instructor al inicio",
+    "Revisar Preguntas y Respuestas filtradas por clase actual",
+    "Consultar la sección de Recursos Adicionales al final del curso",
+    "Evitar agregar complejidad extra (ej: plataformas cloud al inicio)",
+    "Formular preguntas solo después de investigar",
+    "Conectar en redes sociales (Twitter: @SotoBotero)",
+    "El instructor está disponible para ayudar y apoyar"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Debug",
+      "descripcion": "Proceso de comparar tu código con el recurso descargable para encontrar diferencias y errores"
+    },
+    {
+      "nombre": "Preguntas y Respuestas",
+      "descripcion": "Foro colaborativo de la plataforma donde se resuelven dudas por clase"
+    },
+    {
+      "nombre": "Recursos Adicionales",
+      "descripcion": "Sección al final del curso con soluciones a problemas recurrentes y actualizaciones"
+    },
+    {
+      "nombre": "Entorno de Desarrollo",
+      "descripcion": "Configuración de herramientas y software para programar (IDE, versiones, etc.)"
+    },
+    {
+      "nombre": "Calificación Constructiva",
+      "descripcion": "Evaluación de 5 estrellas con comentarios que ayuda a mejorar el curso"
+    }
+  ],
+  "codigoEjemplo": null
+}

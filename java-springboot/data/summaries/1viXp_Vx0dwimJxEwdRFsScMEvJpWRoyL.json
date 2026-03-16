@@ -1,0 +1,62 @@
+{
+  "titulo": "Códigos de Respuesta HTTP Estándar en APIs - Implementar 200 OK",
+  "resumen": "Implementación de códigos de estado HTTP apropiados en respuestas de API. Se usa ResponseEntity<T> para controlar código de estado, headers y body. Se implementan respuestas 200 OK para operaciones exitosas, 201 Created para recursos nuevos, y se prepara base para otros códigos (404, 400, 500).",
+  "puntosClave": [
+    "ResponseEntity<T>: clase que permite control total de respuesta HTTP",
+    "Retornar ResponseEntity en vez de objeto directo",
+    "ResponseEntity.ok(data): código 200 + body con datos",
+    "ResponseEntity.status(HttpStatus.CREATED).body(data): código 201",
+    "Códigos de éxito principales:",
+    "  - 200 OK: operación exitosa (GET, PUT, DELETE)",
+    "  - 201 Created: recurso creado exitosamente (POST)",
+    "  - 204 No Content: éxito sin cuerpo (DELETE a veces)",
+    "Actualizar métodos de controller: findAll(), findById(), create(), update()",
+    "findAll() → ResponseEntity.ok(customerList)",
+    "create() → ResponseEntity.status(CREATED).body(newCustomer)",
+    "Permite agregar headers personalizados si es necesario",
+    "Base para implementar códigos de error más adelante"
+  ],
+  "conceptos": [
+    {
+      "nombre": "ResponseEntity<T>",
+      "descripcion": "Clase Spring que encapsula código HTTP, headers y body de respuesta"
+    },
+    {
+      "nombre": "HTTP Status 200 OK",
+      "descripcion": "Código de éxito estándar para operaciones que completaron correctamente"
+    },
+    {
+      "nombre": "HTTP Status 201 Created",
+      "descripcion": "Código específico para creación exitosa de recurso nuevo"
+    },
+    {
+      "nombre": "HTTP Status 204 No Content",
+      "descripcion": "Éxito sin cuerpo de respuesta (común en DELETE)"
+    },
+    {
+      "nombre": "HttpStatus Enum",
+      "descripcion": "Enumeración Spring con todos los códigos HTTP estándar"
+    },
+    {
+      "nombre": "Response Body",
+      "descripcion": "Contenido JSON de la respuesta HTTP"
+    },
+    {
+      "nombre": "Response Headers",
+      "descripcion": "Metadata de respuesta (Content-Type, Location, etc.)"
+    },
+    {
+      "nombre": "Semantic HTTP Codes",
+      "descripcion": "Usar código correcto según tipo de operación y resultado"
+    },
+    {
+      "nombre": "Location Header",
+      "descripcion": "Header con URL del recurso creado (usado con 201 Created)"
+    },
+    {
+      "nombre": "Builder Pattern",
+      "descripcion": "ResponseEntity.status().header().body() para construir respuestas"
+    }
+  ],
+  "codigoEjemplo": "// CustomerRestController - Con ResponseEntity\n@RestController\n@RequestMapping(\"/api/v1/customer\")\npublic class CustomerRestController {\n    \n    @Autowired\n    private CustomerService customerService;\n    \n    // GET - Retornar lista (200 OK)\n    @GetMapping\n    public ResponseEntity<List<Customer>> findAll() {\n        List<Customer> customers = customerService.findAll();\n        return ResponseEntity.ok(customers);  // 200 OK\n    }\n    \n    // GET - Retornar uno (200 OK)\n    @GetMapping(\"/{id}\")\n    public ResponseEntity<Customer> findById(@PathVariable Long id) {\n        Customer customer = customerService.findById(id);\n        return ResponseEntity.ok(customer);  // 200 OK\n    }\n    \n    // POST - Crear (201 Created)\n    @PostMapping\n    public ResponseEntity<Customer> create(@RequestBody Customer customer) {\n        Customer saved = customerService.create(customer);\n        \n        // Opción 1: Simple 201 Created\n        return ResponseEntity.status(HttpStatus.CREATED).body(saved);\n        \n        // Opción 2: 201 Created con Location header\n        // URI location = ServletUriComponentsBuilder\n        //     .fromCurrentRequest()\n        //     .path(\"/{id}\")\n        //     .buildAndExpand(saved.getId())\n        //     .toUri();\n        // return ResponseEntity.created(location).body(saved);\n    }\n    \n    // PUT - Actualizar (200 OK)\n    @PutMapping(\"/{id}\")\n    public ResponseEntity<Customer> update(\n            @PathVariable Long id, \n            @RequestBody Customer customer) {\n        Customer updated = customerService.update(id, customer);\n        return ResponseEntity.ok(updated);  // 200 OK\n    }\n    \n    // DELETE - Eliminar (204 No Content)\n    @DeleteMapping(\"/{id}\")\n    public ResponseEntity<Void> delete(@PathVariable Long id) {\n        customerService.delete(id);\n        return ResponseEntity.noContent().build();  // 204 No Content\n    }\n}"
+}

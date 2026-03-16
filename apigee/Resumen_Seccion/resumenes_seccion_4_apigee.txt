@@ -1,0 +1,135 @@
+================================================================================
+                    CURSO DE APIGEE - SECCIÓN 4
+              CASO DE USO: CACHÉ Y TRANSFORMACIÓN DE RESPUESTAS
+              RESÚMENES DIDÁCTICOS DE CADA VIDEO DEL CURSO
+================================================================================
+
+Instructor: Eduardo Celedonio
+Elaborado por: Claude (Asistente AI)
+Fecha: 2 de enero de 2026
+
+================================================================================
+
+
+VIDEO 1: INTRODUCCIÓN AL CASO DE USO 1
+================================================================================
+
+Este caso de uso muestra cómo crear un proxy que combina caché, seguridad mediante KVMs, y transformación de respuestas para mejorar performance.
+
+El proyecto consiste en crear un proxy que consulta una API externa de empleos (RapidAPI) que tarda aproximadamente 1.7 segundos en responder. Usando caché, las peticiones subsecuentes tardarán solo 40 milisegundos - una mejora de 97% en performance. Además, la respuesta del backend tiene muchos campos innecesarios, así que usaremos JavaScript para transformarla y enviar al cliente solo los datos relevantes.
+
+El flujo completo es: primero verificar si la respuesta está en caché, si no está entonces leer las credenciales del API externo desde un KVM, llamar al backend con esas credenciales, guardar la respuesta en caché por 7 días, transformar el JSON para simplificarlo, y finalmente enviar la respuesta al cliente. Si la siguiente petición pide los mismos datos, se sirve directamente desde caché sin llamar al backend.
+
+Los componentes principales que usaremos son: KVM para almacenar el API Key de RapidAPI de forma segura, Response Cache policy para cachear respuestas por 7 días, Assign Message policies para preparar headers del request, y JavaScript policy para transformar el JSON de respuesta.
+
+Este patrón es muy útil para APIs que consultan datos que no cambian frecuentemente, como catálogos de productos, tipos de cambio, o feeds de noticias. Reducir la latencia de 1700ms a 40ms mejora dramáticamente la experiencia del usuario.
+
+
+================================================================================
+
+
+VIDEO 2: CREACIÓN DE CUENTA EN RAPIDAPI.COM
+================================================================================
+
+RapidAPI es un marketplace donde desarrolladores publican APIs que otros pueden consumir, muchas con planes gratuitos.
+
+Para este caso de uso necesitas crear una cuenta gratuita en rapidapi.com. Una vez registrado, buscas "Active Jobs API" que es el servicio que usaremos - proporciona ofertas de trabajo actualizadas de los últimos 7 días. Seleccionas el plan gratuito que permite cierto número de llamadas al mes.
+
+Cuando te suscribes al API, RapidAPI te asigna un API Key único. Este key lo usarás para autenticarte en cada petición. Lo importante es copiar dos valores: el X-RapidAPI-Key (tu API key) y el X-RapidAPI-Host (el hostname del servicio). Ambos deben enviarse como headers en cada petición.
+
+El endpoint que usaremos es GET /active-ats-7d que devuelve las ofertas de trabajo publicadas en los últimos 7 días. Puedes probarlo directamente en el playground de RapidAPI para ver qué estructura tiene la respuesta - viene con muchos campos como título del puesto, empresa, ubicación, URL de aplicación, fecha de publicación, etc.
+
+Guarda el API Key en un lugar seguro porque lo usaremos en el siguiente paso para configurar el KVM en Apigee.
+
+
+================================================================================
+
+
+VIDEO 3: CREACIÓN DE KVM Y ENTRADA PARA EL APIKEY
+================================================================================
+
+El API Key de RapidAPI se guarda en un KVM para no hardcodearlo en el código del proxy.
+
+Puedes crear el KVM desde la UI o mediante el Apigee API. En este caso se usa el API para mostrar ambos métodos. Primero generas un access token con "gcloud auth print-access-token" para autenticarte. Luego haces un POST al endpoint de KVMs de Apigee con un JSON que especifica el nombre del KVM ("kvm-credentials") y si es encriptado o no.
+
+Una vez creado el KVM, agregas una entrada con la clave "seven-days-jobs-v1__jobs__api-key" y el valor es tu API Key de RapidAPI. Este naming convention (nombre-del-proxy__recurso__tipo) ayuda a organizar cuando tienes muchas entradas en el mismo KVM.
+
+Desde la UI también puedes crear KVMs: vas a Admin → Environments → Dev → Key Value Maps → Create. Le das un nombre, marcas si será encriptado, y agregas las entradas manualmente. El resultado es el mismo - un KVM a nivel de ambiente que tu proxy puede leer.
+
+El KVM debe ser de ambiente (no de organización ni de proxy) porque diferentes ambientes podrían usar diferentes API Keys - uno de prueba en desarrollo y uno de producción en prod.
+
+
+================================================================================
+
+
+VIDEO 4: CREACIÓN DEL PROXY Y PREPARACIÓN DEL REQUEST
+================================================================================
+
+Se crea el proxy "seven-days-jobs-v1" configurando el request hacia RapidAPI con las credenciales del KVM.
+
+Creas un reverse proxy con base path "/v1" y target URL "https://active-jobs-db.p.rapidapi.com/active-ats-7d". Luego creas un flujo condicional llamado "GetJobs" que solo se ejecuta cuando el path es "/jobs" y el método es GET. Así el endpoint completo será "GET /v1/jobs".
+
+Dentro del flujo GetJobs agregas varias políticas en orden. Primero "KVM-Get-API-Key" que lee el API Key del KVM y lo guarda en una variable "flow.x-rapid-apikey". Segunda política es "RF-Credentials-Missing" (Raise Fault) que solo se ejecuta si el API key no se encontró en el KVM - retorna error 401.
+
+Tercera política "AM-Set-Request" (Assign Message) inyecta los headers requeridos por RapidAPI: X-RapidAPI-Key con el valor leído del KVM, y X-RapidAPI-Host con el valor fijo del servicio. También quita cualquier query parameter que el cliente haya enviado ya que este endpoint no los necesita.
+
+Cuarta política "AM-Remove-Jobs-Path" usa Assign Message para quitar "/jobs" del path antes de llamar al backend, porque el target URL ya incluye la ruta completa. El orden de estas políticas es importante - primero obtienes credenciales, luego validas que existan, luego preparas el request.
+
+
+================================================================================
+
+
+VIDEO 5: CONFIGURACIÓN DEL CACHE
+================================================================================
+
+La política Response Cache almacena respuestas para servirlas rápidamente sin llamar al backend.
+
+Se agrega la política "Response-Cache" configurada con un CacheKey que incluye un prefijo único "seven-days-jobs-v1__cache" más información de la petición. El ExpirySettings se configura en 604800 segundos que equivalen a 7 días - después de este tiempo la entrada del caché expira automáticamente.
+
+La política debe colocarse en dos lugares específicos: en ProxyEndpoint PreFlow Response (después de recibir respuesta del backend) y en TargetEndpoint PostFlow Response. Apigee verifica en el primer lugar si la respuesta existe en caché - si sí, la sirve directamente saltándose el TargetEndpoint completo. Si no, continúa la ejecución normal.
+
+En la primera petición (cache miss) el flujo completo se ejecuta: verifica caché → no encuentra → llama backend → guarda en caché → retorna. Tarda 1700ms. En peticiones subsecuentes (cache hit) el flujo es: verifica caché → encuentra → retorna. Tarda solo 40ms.
+
+Apigee popula variables como "responsecache.Response-Cache.cachehit" con valor true/false que puedes ver en Debug. Esto te permite saber si la respuesta vino del caché o del backend. El caché es compartido entre todos los usuarios que hagan la misma petición.
+
+
+================================================================================
+
+
+VIDEO 6: PERSONALIZANDO LA RESPUESTA DEL API
+================================================================================
+
+El backend retorna un JSON muy grande con muchos campos innecesarios que se limpia usando JavaScript.
+
+Se crea una política JavaScript que referencia un archivo "JS-Customize-Response.js". En ese archivo escribes código JavaScript que lee la respuesta del backend con "context.getVariable('response.content')", la parsea como JSON, extrae solo los campos que necesitas (id, title, organization, countries, url, posted_date), y construye un nuevo JSON más pequeño.
+
+Además se traducen algunos nombres de campos al español para mejor experiencia del usuario: "title" se convierte en "titulo", "organization" en "empleador", "posted_date" en "fecha_publicacion", etc. Solo se toma el primer país del array countries_derived.
+
+El código incluye try-catch para manejar errores. Si algo falla durante la transformación, logeas el error pero devuelves un objeto vacío en vez de romper todo el proxy. Al final usas "context.setVariable('response.content', nuevoJSON)" para reemplazar la respuesta original con la simplificada.
+
+Esta política se coloca en ProxyEndpoint PreFlow Response DESPUÉS de Response-Cache. Así tanto las respuestas del caché como las del backend pasan por la transformación. El cliente siempre recibe el formato simplificado.
+
+
+================================================================================
+
+
+VIDEO 7: RESULTADO DEL CASO DE USO - PRUEBAS Y ANÁLISIS
+================================================================================
+
+Se prueba el proxy completo en Debug para verificar que todo funcione correctamente.
+
+En la primera petición puedes ver en Debug todo el flujo: obtener API Key del KVM → inyectar headers → quitar path → verificar caché (no encuentra) → llamar backend (1708ms) → guardar en caché → transformar JSON → retornar respuesta. La variable responsecache.cachehit es false.
+
+En la segunda petición el flujo es mucho más corto: verificar caché (encuentra) → transformar JSON → retornar (43ms). La variable responsecache.cachehit es true. Nunca se ejecutan las políticas de TargetEndpoint porque Apigee cortocircuita directo a la respuesta cacheada.
+
+Puedes verificar que la transformación funciona comparando la respuesta del backend (que tiene 20+ campos) con la que recibe el cliente (solo 6 campos en español). El JSON es mucho más pequeño y legible.
+
+El proxy también permite exportarlo como ZIP para respaldo. Este archivo contiene todas las políticas, código JavaScript, y configuración XML. Puedes importarlo en otra organización de Apigee o versionarlo en Git.
+
+Este patrón es muy común en producción para APIs que consultan datos relativamente estáticos como catálogos, tasas de cambio, feeds de noticias, clima, etc. El caché reduce costos (menos llamadas al backend), mejora performance (40ms vs 1700ms), y protege el backend de picos de tráfico.
+
+
+================================================================================
+
+FIN DE LA SECCIÓN 4
+================================================================================

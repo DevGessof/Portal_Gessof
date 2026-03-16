@@ -1,0 +1,60 @@
+{
+  "titulo": "Caso de Estudio: Comunicación entre Microservicios",
+  "resumen": "Introducción al desafío de la comunicación entre microservicios independientes. Se presenta el caso donde Customer necesita consultar información de Product para mostrar los productos asociados a un cliente. Se explica por qué NO usar relaciones de base de datos tradicionales y la necesidad de comunicación HTTP/REST entre servicios.",
+  "puntosClave": [
+    "Escenario: Customer necesita mostrar productos asociados a cada cliente",
+    "Problema: Customer y Product son microservicios independientes con BDs separadas",
+    "NO se pueden usar relaciones tradicionales de JPA entre microservicios",
+    "Solución: comunicación mediante APIs REST entre microservicios",
+    "Customer almacena solo IDs de productos, no objetos completos",
+    "Customer debe consumir API de Product para obtener detalles",
+    "Principio de microservicios: independencia y autonomía",
+    "Comunicación sincrona: Customer llama a Product vía HTTP",
+    "WebClient: cliente REST reactivo de Spring para consumir APIs",
+    "Objetivo: cuando se consulta un customer, también se muestran sus productos",
+    "Validación E2E (end-to-end) de toda la solución"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Comunicación entre Microservicios",
+      "descripcion": "Intercambio de datos entre servicios independientes mediante protocolos como HTTP/REST"
+    },
+    {
+      "nombre": "Independencia de Datos",
+      "descripcion": "Cada microservicio tiene su propia base de datos sin relaciones directas entre ellas"
+    },
+    {
+      "nombre": "Relaciones JPA Tradicionales",
+      "descripcion": "Foreign keys y relaciones @OneToMany/@ManyToOne que NO funcionan entre microservicios"
+    },
+    {
+      "nombre": "Comunicación Síncrona",
+      "descripcion": "Llamada HTTP donde el cliente espera respuesta inmediata del servidor"
+    },
+    {
+      "nombre": "Cliente REST",
+      "descripcion": "Componente que consume APIs REST de otros servicios"
+    },
+    {
+      "nombre": "WebClient",
+      "descripcion": "Cliente HTTP reactivo de Spring WebFlux para realizar peticiones REST"
+    },
+    {
+      "nombre": "IDs de Referencia",
+      "descripcion": "Customer almacena solo identificadores de productos, no objetos completos"
+    },
+    {
+      "nombre": "Validación E2E",
+      "descripcion": "Prueba end-to-end que verifica funcionamiento completo del flujo entre servicios"
+    },
+    {
+      "nombre": "Autonomía de Microservicios",
+      "descripcion": "Cada servicio puede funcionar, desplegarse y evolucionar independientemente"
+    },
+    {
+      "nombre": "API Gateway Pattern",
+      "descripcion": "Patrón donde servicios se comunican consumiendo APIs REST expuestas por otros"
+    }
+  ],
+  "codigoEjemplo": null
+}

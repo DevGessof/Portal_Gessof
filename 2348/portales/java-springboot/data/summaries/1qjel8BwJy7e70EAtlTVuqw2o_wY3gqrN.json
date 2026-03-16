@@ -1,0 +1,61 @@
+{
+  "titulo": "Agregar y Configurar Librería de Mapeo Automático MapStruct",
+  "resumen": "Integración de MapStruct para automatizar conversión entre entidades y DTOs. Se agrega dependencia, se configuran plugins de Maven, y se prepara proyecto para generar mappers en tiempo de compilación. MapStruct elimina código manual de mapeo evitando errores y reduciendo boilerplate.",
+  "puntosClave": [
+    "MapStruct: librería de mapeo compile-time (no reflection)",
+    "Genera código Java real en compilación (más rápido que reflection)",
+    "Agregar dependencia org.mapstruct:mapstruct en pom.xml",
+    "Agregar mapstruct-processor para generación de código",
+    "Configurar maven-compiler-plugin con annotation processors",
+    "Incluir Lombok y MapStruct en annotationProcessorPaths",
+    "Orden importante: Lombok antes de MapStruct",
+    "MapStruct genera implementaciones de interfaces mapper",
+    "Código generado en target/generated-sources/annotations",
+    "No requiere configuración adicional si nombres coinciden",
+    "Mapeo automático de campos con mismo nombre",
+    "Mapeo manual con @Mapping para campos diferentes"
+  ],
+  "conceptos": [
+    {
+      "nombre": "MapStruct",
+      "descripcion": "Librería de generación de código para mapear entre objetos Java"
+    },
+    {
+      "nombre": "Compile-Time Generation",
+      "descripcion": "Código generado durante compilación, no en runtime (más rápido)"
+    },
+    {
+      "nombre": "Annotation Processor",
+      "descripcion": "Procesador que genera código analizando anotaciones en compilación"
+    },
+    {
+      "nombre": "mapstruct-processor",
+      "descripcion": "Procesador de anotaciones que genera implementaciones de mappers"
+    },
+    {
+      "nombre": "annotationProcessorPaths",
+      "descripcion": "Configuración Maven para procesadores de anotaciones"
+    },
+    {
+      "nombre": "Reflection vs Code Generation",
+      "descripcion": "MapStruct genera código real vs librerías que usan reflection (ModelMapper)"
+    },
+    {
+      "nombre": "Type-Safe Mapping",
+      "descripcion": "Mapeo verificado en compilación, errores detectados temprano"
+    },
+    {
+      "nombre": "Zero Runtime Dependencies",
+      "descripcion": "MapStruct no añade dependencias en runtime, solo compile-time"
+    },
+    {
+      "nombre": "Boilerplate Reduction",
+      "descripcion": "Elimina código repetitivo de mapeo manual entre objetos"
+    },
+    {
+      "nombre": "Lombok Integration",
+      "descripcion": "MapStruct trabaja bien con Lombok, generar getters/setters primero"
+    }
+  ],
+  "codigoEjemplo": "<!-- pom.xml - Configurar MapStruct -->\n<properties>\n    <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>\n    <lombok.version>1.18.30</lombok.version>\n</properties>\n\n<dependencies>\n    <!-- MapStruct -->\n    <dependency>\n        <groupId>org.mapstruct</groupId>\n        <artifactId>mapstruct</artifactId>\n        <version>${org.mapstruct.version}</version>\n    </dependency>\n    \n    <!-- Lombok (ya existente) -->\n    <dependency>\n        <groupId>org.projectlombok</groupId>\n        <artifactId>lombok</artifactId>\n        <version>${lombok.version}</version>\n        <scope>provided</scope>\n    </dependency>\n</dependencies>\n\n<build>\n    <plugins>\n        <plugin>\n            <groupId>org.apache.maven.plugins</groupId>\n            <artifactId>maven-compiler-plugin</artifactId>\n            <version>3.11.0</version>\n            <configuration>\n                <source>17</source>\n                <target>17</target>\n                <annotationProcessorPaths>\n                    <!-- Lombok PRIMERO -->\n                    <path>\n                        <groupId>org.projectlombok</groupId>\n                        <artifactId>lombok</artifactId>\n                        <version>${lombok.version}</version>\n                    </path>\n                    <!-- MapStruct DESPUÉS -->\n                    <path>\n                        <groupId>org.mapstruct</groupId>\n                        <artifactId>mapstruct-processor</artifactId>\n                        <version>${org.mapstruct.version}</version>\n                    </path>\n                </annotationProcessorPaths>\n            </configuration>\n        </plugin>\n    </plugins>\n</build>\n\n<!-- Compilar proyecto -->\n<!-- mvn clean compile -->\n<!-- Código generado en: target/generated-sources/annotations -->"
+}

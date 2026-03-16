@@ -1,0 +1,64 @@
+{
+  "titulo": "Qué son Contenedores y Por Qué son tan Relevantes en el Mundo TI",
+  "resumen": "Profundización en tecnología de contenedores, su historia, y relevancia en DevOps moderno. Se explica arquitectura de contenedores, namespaces, cgroups, layered filesystem, y por qué se han convertido en estándar para deployment de aplicaciones cloud-native. Comparación con tecnologías tradicionales.",
+  "puntosClave": [
+    "Contenedores: virtualización a nivel de sistema operativo",
+    "Tecnología base: namespaces (aislamiento) + cgroups (límites recursos)",
+    "Layered filesystem: imágenes construidas en capas reutilizables",
+    "Cada capa es inmutable y cacheable",
+    "Docker Hub: repositorio público de imágenes (como npm, Maven Central)",
+    "Imágenes base: openjdk, nginx, postgres, mysql, node",
+    "Multi-stage builds: optimizar tamaño de imagen final",
+    "Relevancia en TI moderna:",
+    "  - Cloud-native applications",
+    "  - CI/CD pipelines",
+    "  - Microservices deployment",
+    "  - Infrastructure as Code",
+    "Alternativas a Docker: Podman, containerd, CRI-O",
+    "Kubernetes: orquestador de contenedores a escala enterprise",
+    "Contenedores son futuro de deployment de aplicaciones"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Namespaces",
+      "descripcion": "Mecanismo Linux para aislar procesos, red, filesystem"
+    },
+    {
+      "nombre": "cgroups (Control Groups)",
+      "descripcion": "Limitar y monitorear uso de recursos (CPU, memoria, I/O)"
+    },
+    {
+      "nombre": "Layered Filesystem",
+      "descripcion": "Sistema de archivos en capas donde cada capa es inmutable"
+    },
+    {
+      "nombre": "Docker Hub",
+      "descripcion": "Registro público de imágenes Docker compartidas por comunidad"
+    },
+    {
+      "nombre": "Base Image",
+      "descripcion": "Imagen inicial sobre la cual se construye aplicación (openjdk, alpine)"
+    },
+    {
+      "nombre": "Multi-Stage Build",
+      "descripcion": "Dockerfile con múltiples FROM para optimizar tamaño final"
+    },
+    {
+      "nombre": "Cloud-Native",
+      "descripcion": "Aplicaciones diseñadas específicamente para cloud con contenedores"
+    },
+    {
+      "nombre": "CI/CD",
+      "descripcion": "Integración y despliegue continuo automatizado"
+    },
+    {
+      "nombre": "Infrastructure as Code",
+      "descripcion": "Definir infraestructura mediante archivos versionables"
+    },
+    {
+      "nombre": "Container Orchestration",
+      "descripcion": "Gestión automática de contenedores (scaling, health, networking)"
+    }
+  ],
+  "codigoEjemplo": null
+}

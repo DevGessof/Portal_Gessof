@@ -1,0 +1,51 @@
+{
+  "titulo": "Instalación de Java JDK y Configuración de Variables de Entorno en Windows",
+  "resumen": "Guía detallada para instalar OpenJDK 11 en Windows 10 y configurar las variables de entorno JAVA_HOME y PATH. Se explica la descarga, extracción en Program Files, configuración de variables del sistema para un usuario y globalmente, y verificación mediante terminal. Incluye solución de problemas comunes.",
+  "puntosClave": [
+    "Descargar OpenJDK 11 (LTS) del sitio oficial de Java",
+    "Extraer directamente en C:\\Program Files\\Java\\",
+    "Configurar variable JAVA_HOME con ruta: C:\\Program Files\\Java\\jdk-11",
+    "Actualizar PATH agregando: %JAVA_HOME%\\bin",
+    "Cuidado: JAVA_HOME sin '\\bin', PATH con '\\bin'",
+    "Configuración por usuario vs sistema: afecta disponibilidad global",
+    "Verificar instalación: 'java -version' en CMD o PowerShell",
+    "Si no reconoce: revisar variables de entorno y reiniciar",
+    "Importante: cerrar comillas correctamente en %JAVA_HOME%",
+    "Para todos los usuarios: crear variables en 'System variables'"
+  ],
+  "conceptos": [
+    {
+      "nombre": "JDK (Java Development Kit)",
+      "descripcion": "Kit completo para desarrollo Java: compilador, JVM, bibliotecas y herramientas"
+    },
+    {
+      "nombre": "OpenJDK",
+      "descripcion": "Versión gratuita y de código abierto del JDK, alternativa a Oracle JDK"
+    },
+    {
+      "nombre": "JAVA_HOME",
+      "descripcion": "Variable de entorno que indica la ruta de instalación del JDK (sin \\bin)"
+    },
+    {
+      "nombre": "PATH",
+      "descripcion": "Variable que permite ejecutar comandos Java desde cualquier ubicación de la terminal"
+    },
+    {
+      "nombre": "Variables de Entorno",
+      "descripcion": "Configuraciones del sistema que aplicaciones usan para encontrar recursos"
+    },
+    {
+      "nombre": "LTS (Long Term Support)",
+      "descripcion": "Versión con soporte extendido, ideal para producción (JDK 11, 17, 20)"
+    },
+    {
+      "nombre": "User Variables vs System Variables",
+      "descripcion": "Variables por usuario (solo ese usuario) vs sistema (todos los usuarios)"
+    },
+    {
+      "nombre": "bin (binarios)",
+      "descripcion": "Carpeta que contiene los ejecutables de Java (java.exe, javac.exe, etc.)"
+    }
+  ],
+  "codigoEjemplo": "REM Verificar instalación en terminal CMD\njava -version\n\nREM Debe mostrar algo como:\nopenjdk version \"11.0.x\" 2023-xx-xx\nOpenJDK Runtime Environment (build 11.0.x+x)\nOpenJDK 64-Bit Server VM (build 11.0.x+x, mixed mode)\n\nREM Configuración de variables:\nREM JAVA_HOME = C:\\Program Files\\Java\\jdk-11\nREM PATH = %JAVA_HOME%\\bin"
+}

@@ -1,0 +1,61 @@
+{
+  "titulo": "Observabilidad de Microservicios con Spring Boot Admin",
+  "resumen": "Introducción a la observabilidad en arquitecturas de microservicios y cómo Spring Boot Admin facilita el monitoreo centralizado. Se explican los desafíos de monitorear múltiples servicios distribuidos, la necesidad de una interfaz unificada, y las capacidades que Spring Admin provee: visualización de salud, métricas, logs, configuración y más.",
+  "puntosClave": [
+    "Observabilidad: capacidad de entender el estado interno de sistemas distribuidos",
+    "Desafío: monitorear 10, 20, 50+ microservicios individualmente es ineficiente",
+    "Problema: acceder a /actuator/health de cada servicio manualmente",
+    "Solución: Spring Boot Admin - interfaz web centralizada de monitoreo",
+    "Visualiza: salud, métricas, logs, JVM, threads, configuración, variables",
+    "Integración con Actuator: Admin consume endpoints de cada microservicio",
+    "Panel único para ver estado de todos los servicios en tiempo real",
+    "Alertas cuando servicios cambian de estado (UP → DOWN)",
+    "Visualización gráfica de métricas (memoria, CPU, requests)",
+    "Integración con Eureka: descubre servicios automáticamente",
+    "Interfaz amigable vs llamadas REST manuales a /actuator",
+    "Esencial para operaciones y DevOps en producción"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Observabilidad",
+      "descripcion": "Capacidad de medir el estado interno de un sistema basándose en sus salidas (logs, métricas, trazas)"
+    },
+    {
+      "nombre": "Spring Boot Admin",
+      "descripcion": "Aplicación web para gestionar y monitorear aplicaciones Spring Boot desde interfaz centralizada"
+    },
+    {
+      "nombre": "Monitoreo Centralizado",
+      "descripcion": "Visualizar estado y métricas de múltiples servicios desde un único punto"
+    },
+    {
+      "nombre": "Dashboard de Observabilidad",
+      "descripcion": "Panel que muestra estado, métricas y logs de todos los microservicios"
+    },
+    {
+      "nombre": "Health Aggregation",
+      "descripcion": "Consolidar estado de salud de múltiples servicios en vista unificada"
+    },
+    {
+      "nombre": "Real-time Monitoring",
+      "descripcion": "Monitoreo en tiempo real del estado y rendimiento de servicios"
+    },
+    {
+      "nombre": "Alertas de Estado",
+      "descripcion": "Notificaciones cuando servicio cambia de UP a DOWN o viceversa"
+    },
+    {
+      "nombre": "Métricas Visualizadas",
+      "descripcion": "Gráficos de memoria, CPU, requests, garbage collection, etc."
+    },
+    {
+      "nombre": "Admin Server",
+      "descripcion": "Servidor central que recolecta datos de microservicios y presenta interfaz web"
+    },
+    {
+      "nombre": "Admin Client",
+      "descripcion": "Microservicio instrumentado que envía datos a Admin Server"
+    }
+  ],
+  "codigoEjemplo": null
+}

@@ -1,0 +1,497 @@
+{
+  "seccion": "Sección 2 - Desarrollo del Primer Microservicio con Spring Boot",
+  "descripcion": "Construcción paso a paso de un microservicio completo con Spring Boot, desde el diseño hasta las pruebas con Swagger",
+  "clases": [
+    {
+      "numero": 1,
+      "archivo": "1__Diseño_guiado_por_dominios_arquitectura_goblal.srt",
+      "titulo": "Diseño Guiado por Dominios y Arquitectura Global del Proyecto",
+      "resumen": "Introducción al diseño de microservicios usando Domain-Driven Design (DDD). Se presenta el caso de estudio de una startup financiera y se identifican los microservicios principales: Customer, Product y Transaction. Se explica la arquitectura completa con componentes como Config Server, Registry Discovery, API Gateway y Spring Boot Admin.",
+      "puntosClave": [
+        "Caso de estudio: startup del sector financiero con gestión de transacciones",
+        "Metodología DDD (Domain-Driven Design) para identificar microservicios",
+        "Microservicios identificados: Customer (clientes), Product (servicios), Transaction (transacciones)",
+        "Cada microservicio es una aplicación independiente con su propia base de datos",
+        "Microservicios se comunican entre sí mediante HTTP/APIs REST",
+        "No son relaciones de base de datos, son relaciones entre aplicaciones",
+        "Arquitectura incluye: Config Server, Registry Discovery, API Gateway, Spring Admin",
+        "Cada microservicio puede usar diferente tipo de base de datos (PostgreSQL, MongoDB, etc.)",
+        "Independencia en tiempo de ejecución: cada microservicio puede ejecutarse sin los demás",
+        "Objetivo: construir CRUD completo con Customer, luego añadir capas de infraestructura"
+      ],
+      "conceptos": [
+        {
+          "nombre": "DDD (Domain-Driven Design)",
+          "descripcion": "Metodología de diseño que modela software basándose en los dominios del negocio"
+        },
+        {
+          "nombre": "Microservicio Customer",
+          "descripcion": "Servicio responsable de administrar toda la información de los clientes"
+        },
+        {
+          "nombre": "Microservicio Product",
+          "descripcion": "Servicio que gestiona los productos/servicios que ofrece la startup financiera"
+        },
+        {
+          "nombre": "Microservicio Transaction",
+          "descripcion": "Servicio core que maneja transacciones financieras (abonos, retiros, transferencias)"
+        },
+        {
+          "nombre": "Config Server",
+          "descripcion": "Microservicio que centraliza la configuración conectándose a un repositorio Git"
+        },
+        {
+          "nombre": "Registry Discovery",
+          "descripcion": "Componente que permite a los microservicios descubrirse y comunicarse eficientemente"
+        },
+        {
+          "nombre": "API Gateway",
+          "descripcion": "Puerta de entrada única que gestiona seguridad y enrutamiento a los microservicios"
+        },
+        {
+          "nombre": "Spring Boot Admin",
+          "descripcion": "Herramienta para monitorizar el estado y métricas de todos los microservicios"
+        },
+        {
+          "nombre": "Independencia en Tiempo de Ejecución",
+          "descripcion": "Capacidad de desplegar y ejecutar cada microservicio sin necesidad de que otros estén activos"
+        },
+        {
+          "nombre": "Base de Datos por Microservicio",
+          "descripcion": "Buena práctica donde cada microservicio tiene su propia BD independiente"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "archivo": "2__Crear_Microservicio_spring_boot_maven_desde_cero_.srt",
+      "titulo": "Crear Microservicio Spring Boot con Maven desde Cero",
+      "resumen": "Tutorial paso a paso para crear el primer microservicio usando NetBeans IDE y Spring Boot Initializr. Se configuran los metadatos del proyecto Maven (GroupId, ArtifactId), se selecciona la versión de Spring Boot y JDK, y se añaden los starters iniciales (Web, H2, DevTools). Incluye explicación de cada parámetro del asistente.",
+      "puntosClave": [
+        "Crear proyecto: File → New Project → Maven → Spring Boot Initializr Project",
+        "GroupId: dominio invertido de la empresa (com.paymentchange)",
+        "ArtifactId: nombre del microservicio (customer)",
+        "Versión: dejar 0.0.1-SNAPSHOT para versión inicial",
+        "Tipo de paquete: JAR (con Spring Boot no necesita servidor externo)",
+        "Estructura de paquetes: com.paymentchange.customer",
+        "Lenguaje: Java (también disponible Kotlin)",
+        "JDK mínimo: versión 17 (según requisitos de Spring Boot 3.2)",
+        "Starters seleccionados: Spring Web, H2 Database, Spring DevTools",
+        "El asistente es equivalente a usar start.spring.io",
+        "DevTools permite recompilación automática al guardar cambios"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Spring Boot Initializr",
+          "descripcion": "Asistente que genera la estructura base de un proyecto Spring Boot con configuración inicial"
+        },
+        {
+          "nombre": "GroupId",
+          "descripcion": "Identificador único del grupo/empresa en formato dominio invertido (com.empresa)"
+        },
+        {
+          "nombre": "ArtifactId",
+          "descripcion": "Nombre del proyecto/microservicio, será el nombre del JAR generado"
+        },
+        {
+          "nombre": "SNAPSHOT",
+          "descripcion": "Sufijo que indica que es una versión en desarrollo, no estable"
+        },
+        {
+          "nombre": "JAR (Java Archive)",
+          "descripcion": "Formato de empaquetado que incluye todo lo necesario para ejecutar la aplicación"
+        },
+        {
+          "nombre": "WAR (Web Archive)",
+          "descripcion": "Formato para desplegar en servidores de aplicaciones externos (Tomcat, JBoss)"
+        },
+        {
+          "nombre": "Spring Web Starter",
+          "descripcion": "Starter que incluye Tomcat embebido, Spring MVC y herramientas para crear APIs REST"
+        },
+        {
+          "nombre": "H2 Database",
+          "descripcion": "Base de datos en memoria ideal para desarrollo y pruebas"
+        },
+        {
+          "nombre": "Spring DevTools",
+          "descripcion": "Herramientas que facilitan desarrollo con reinicio automático al detectar cambios"
+        },
+        {
+          "nombre": "Estructura de Paquetes",
+          "descripcion": "Organización de carpetas que contiene las clases del proyecto"
+        }
+      ],
+      "codigoEjemplo": "// Estructura básica generada por Spring Initializr\npackage com.paymentchange.customer;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\n\n@SpringBootApplication\npublic class CustomerApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(CustomerApplication.class, args);\n    }\n}"
+    },
+    {
+      "numero": 3,
+      "archivo": "3__Comprender_estructura_fichero_pom_xml_microservicio.srt",
+      "titulo": "Comprender la Estructura del Fichero pom.xml del Microservicio",
+      "resumen": "Explicación detallada del archivo pom.xml que configura proyectos Maven. Se analizan secciones clave: parent (Spring Boot), metadata del proyecto, properties (versión JDK), dependencies (starters y librerías), y plugins (Maven). Incluye consejos sobre actualización de versiones y compatibilidad entre framework, JDK y dependencias.",
+      "puntosClave": [
+        "pom.xml es el archivo de configuración principal de proyectos Maven",
+        "Sección parent: hereda configuración base de Spring Boot Framework",
+        "Metadata: groupId, artifactId, version, name, description",
+        "Properties: define versión del JDK y otras variables del proyecto",
+        "Dependencies: contiene todos los starters y librerías necesarias",
+        "Starters son paquetes pre-configurados de Spring Boot (web, h2, devtools)",
+        "Plugins: herramientas para compilar, empaquetar y ejecutar el proyecto",
+        "Al abrir código existente: SIEMPRE revisar versiones de framework y JDK",
+        "Cambiar versión Spring Boot 2.x a 3.2 si el código es antiguo",
+        "Lombok requiere definir versión explícita (1.18.28 o superior)",
+        "Build on Save: activar en propiedades del proyecto para compilación automática"
+      ],
+      "conceptos": [
+        {
+          "nombre": "pom.xml",
+          "descripcion": "Project Object Model, archivo XML que define configuración, dependencias y plugins de Maven"
+        },
+        {
+          "nombre": "Parent POM",
+          "descripcion": "Proyecto padre del cual se heredan configuraciones (spring-boot-starter-parent)"
+        },
+        {
+          "nombre": "Metadata del Proyecto",
+          "descripcion": "Información identificativa: groupId, artifactId, version, name, description"
+        },
+        {
+          "nombre": "Properties",
+          "descripcion": "Sección para definir variables como versión de Java, encoding, etc."
+        },
+        {
+          "nombre": "Dependencies",
+          "descripcion": "Sección que lista todas las librerías/starters que el proyecto necesita"
+        },
+        {
+          "nombre": "Starters",
+          "descripcion": "Dependencias pre-configuradas que incluyen múltiples librerías relacionadas"
+        },
+        {
+          "nombre": "Plugins",
+          "descripcion": "Herramientas Maven para tareas como compilar, empaquetar, ejecutar tests"
+        },
+        {
+          "nombre": "Scope",
+          "descripcion": "Define cuándo se usa una dependencia (compile, provided, test, runtime)"
+        },
+        {
+          "nombre": "Lombok",
+          "descripcion": "Librería que reduce código repetitivo generando getters/setters automáticamente"
+        },
+        {
+          "nombre": "Compatibilidad de Versiones",
+          "descripcion": "Relación entre versiones de Spring Boot, JDK y dependencias que deben ser compatibles"
+        }
+      ],
+      "codigoEjemplo": "<!-- Estructura básica del pom.xml -->\n<project>\n    <!-- Hereda de Spring Boot -->\n    <parent>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-parent</artifactId>\n        <version>3.2.0</version>\n    </parent>\n    \n    <!-- Metadata del proyecto -->\n    <groupId>com.paymentchange</groupId>\n    <artifactId>customer</artifactId>\n    <version>0.0.1-SNAPSHOT</version>\n    \n    <!-- Propiedades -->\n    <properties>\n        <java.version>17</java.version>\n    </properties>\n    \n    <!-- Dependencias -->\n    <dependencies>\n        <dependency>\n            <groupId>org.springframework.boot</groupId>\n            <artifactId>spring-boot-starter-web</artifactId>\n        </dependency>\n        <dependency>\n            <groupId>org.projectlombok</groupId>\n            <artifactId>lombok</artifactId>\n            <scope>provided</scope>\n        </dependency>\n    </dependencies>\n</project>"
+    },
+    {
+      "numero": 4,
+      "archivo": "4__Agregar_Persistencia_JPA_estructura_paquetes.srt",
+      "titulo": "Agregar Persistencia JPA y Estructura de Paquetes",
+      "resumen": "Organización del código en paquetes (entities, repositories, controller) siguiendo buenas prácticas. Se crea la entidad Customer con anotaciones JPA (@Entity, @Id, @GeneratedValue) y Lombok (@Data). Se implementa CustomerRepository extendiendo JpaRepository. Incluye explicación del cambio de javax a jakarta en Spring Boot 3+.",
+      "puntosClave": [
+        "Crear tres paquetes: entities, repositories, controller",
+        "Estructura recomendada: com.paymentchange.customer.entities",
+        "IMPORTANTE: mantener misma estructura base que la clase main",
+        "Entidad Customer: id (Long), name (String), phoneNumber (String)",
+        "Anotaciones JPA: @Entity, @Id, @GeneratedValue(strategy = AUTO)",
+        "Lombok @Data genera getters, setters, toString, equals automáticamente",
+        "Agregar starter spring-boot-starter-data-jpa al pom.xml",
+        "CustomerRepository extiende JpaRepository<Customer, Long>",
+        "Spring Boot 3.x usa jakarta.persistence en vez de javax.persistence",
+        "JpaRepository provee métodos CRUD sin implementación manual (findAll, save, delete)",
+        "Tipo Long con mayúscula para el ID en la interfaz JpaRepository"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Estructura de Paquetes",
+          "descripcion": "Organización del código en carpetas (entities, repositories, controller) para separar responsabilidades"
+        },
+        {
+          "nombre": "Entidad JPA",
+          "descripcion": "Clase Java que representa una tabla en la base de datos, anotada con @Entity"
+        },
+        {
+          "nombre": "@Entity",
+          "descripcion": "Anotación que marca una clase como entidad JPA manejada por Hibernate"
+        },
+        {
+          "nombre": "@Id",
+          "descripcion": "Marca el campo que será la llave primaria de la tabla"
+        },
+        {
+          "nombre": "@GeneratedValue",
+          "descripcion": "Define estrategia para auto-generar valores del ID (AUTO, IDENTITY, SEQUENCE)"
+        },
+        {
+          "nombre": "@Data (Lombok)",
+          "descripcion": "Genera automáticamente getters, setters, toString, equals y hashCode"
+        },
+        {
+          "nombre": "JpaRepository",
+          "descripcion": "Interfaz de Spring Data que provee métodos CRUD predefinidos para una entidad"
+        },
+        {
+          "nombre": "spring-boot-starter-data-jpa",
+          "descripcion": "Starter que incluye Hibernate, JPA y toda la configuración de persistencia"
+        },
+        {
+          "nombre": "jakarta.persistence vs javax.persistence",
+          "descripcion": "Spring Boot 3+ migró de javax a jakarta para APIs de Java Enterprise"
+        },
+        {
+          "nombre": "Métodos CRUD Automáticos",
+          "descripcion": "findAll, save, findById, delete provistos por JpaRepository sin código adicional"
+        }
+      ],
+      "codigoEjemplo": "// Entidad Customer con JPA y Lombok\npackage com.paymentchange.customer.entities;\n\nimport jakarta.persistence.*;\nimport lombok.Data;\n\n@Data\n@Entity\npublic class Customer {\n    @Id\n    @GeneratedValue(strategy = GenerationType.AUTO)\n    private Long id;\n    private String name;\n    private String phoneNumber;\n}\n\n// Repository Interface\npackage com.paymentchange.customer.repositories;\n\nimport com.paymentchange.customer.entities.Customer;\nimport org.springframework.data.jpa.repository.JpaRepository;\n\npublic interface CustomerRepository extends JpaRepository<Customer, Long> {\n    // Métodos heredados: save(), findAll(), findById(), delete()\n    // No requiere implementación manual\n}"
+    },
+    {
+      "numero": 5,
+      "archivo": "5__Agregar_API.srt",
+      "titulo": "Agregar API REST Controller para Exponer Funcionalidad",
+      "resumen": "Creación del REST Controller para exponer el microservicio mediante APIs REST. Se implementan métodos HTTP (GET, POST, PUT, DELETE) usando anotaciones Spring (@RestController, @RequestMapping, @Autowired). Se inyecta CustomerRepository para realizar operaciones CRUD. Introducción a Swagger para facilitar pruebas de la API.",
+      "puntosClave": [
+        "Crear CustomerRestController en paquete controller",
+        "Anotaciones principales: @RestController y @RequestMapping(\"/customer\")",
+        "@RequestMapping define la URL base del recurso REST",
+        "@Autowired inyecta CustomerRepository automáticamente",
+        "Método findAll(): retorna List<Customer> usando repository.findAll()",
+        "Método create(): recibe Customer y usa repository.save()",
+        "ResponseEntity.ok() retorna respuesta HTTP 200 con la entidad",
+        "JpaRepository provee métodos sin necesidad de implementarlos",
+        "Swagger se añadirá para probar APIs sin Postman",
+        "El controlador expone funcionalidad del microservicio vía HTTP/REST",
+        "DevTools permite ver cambios sin reiniciar manualmente"
+      ],
+      "conceptos": [
+        {
+          "nombre": "@RestController",
+          "descripcion": "Anotación que marca la clase como controlador REST que retorna JSON automáticamente"
+        },
+        {
+          "nombre": "@RequestMapping",
+          "descripcion": "Define la URL base para acceder a los endpoints del controlador"
+        },
+        {
+          "nombre": "@Autowired",
+          "descripcion": "Inyección automática de dependencias sin necesidad de instanciar manualmente"
+        },
+        {
+          "nombre": "API REST",
+          "descripcion": "Interfaz que permite interactuar con el microservicio usando HTTP y métodos estándar"
+        },
+        {
+          "nombre": "ResponseEntity",
+          "descripcion": "Clase que permite controlar la respuesta HTTP (código de estado, headers, body)"
+        },
+        {
+          "nombre": "CRUD Operations",
+          "descripcion": "Create, Read, Update, Delete - operaciones básicas de persistencia de datos"
+        },
+        {
+          "nombre": "Inyección de Dependencias",
+          "descripcion": "Patrón donde Spring crea e inyecta objetos necesarios automáticamente"
+        },
+        {
+          "nombre": "Métodos HTTP",
+          "descripcion": "GET (consultar), POST (crear), PUT (actualizar), DELETE (eliminar)"
+        },
+        {
+          "nombre": "JSON",
+          "descripcion": "Formato de intercambio de datos entre cliente y servidor en APIs REST"
+        },
+        {
+          "nombre": "Swagger/OpenAPI",
+          "descripcion": "Herramienta que documenta y permite probar APIs REST interactivamente"
+        }
+      ],
+      "codigoEjemplo": "package com.paymentchange.customer.controller;\n\nimport com.paymentchange.customer.entities.Customer;\nimport com.paymentchange.customer.repositories.CustomerRepository;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.http.ResponseEntity;\nimport org.springframework.web.bind.annotation.*;\nimport java.util.List;\n\n@RestController\n@RequestMapping(\"/customer\")\npublic class CustomerRestController {\n    \n    @Autowired\n    private CustomerRepository customerRepository;\n    \n    @GetMapping\n    public List<Customer> findAll() {\n        return customerRepository.findAll();\n    }\n    \n    @PostMapping\n    public ResponseEntity<Customer> create(@RequestBody Customer input) {\n        Customer saved = customerRepository.save(input);\n        return ResponseEntity.ok(saved);\n    }\n}"
+    },
+    {
+      "numero": 6,
+      "archivo": "6__Reconfigurar_lombok___Data__corregir_errores_getters.srt",
+      "titulo": "Reconfigurar Lombok (@Data) y Corregir Errores con Getters/Setters",
+      "resumen": "Solución al problema de compatibilidad entre Lombok y Maven en NetBeans 24+. Se explica cómo configurar el plugin maven-compiler-plugin con el annotation processor de Lombok. El error común es que el IDE no reconoce los métodos getter/setter generados automáticamente, causando errores de compilación.",
+      "puntosClave": [
+        "Problema: NetBeans 24+ no reconoce getters/setters generados por Lombok",
+        "Causa: incompatibilidad entre Lombok, Maven y procesador de anotaciones",
+        "Solución: agregar plugin maven-compiler-plugin al pom.xml",
+        "Configurar annotationProcessorPaths con lombok en el plugin",
+        "Usar versión explícita de Lombok (1.18.38 o superior)",
+        "El plugin se agrega en la sección <build><plugins>",
+        "Recomendación: definir versión de Lombok en <properties>",
+        "Después de agregar: guardar y verificar que desaparecen los errores",
+        "Aplicable a JDK 23+ y Spring Boot 3.x",
+        "Consultar documentación oficial de Lombok para Maven",
+        "Importante al actualizar versiones de Spring Boot o JDK"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Annotation Processor",
+          "descripcion": "Herramienta que procesa anotaciones en tiempo de compilación para generar código"
+        },
+        {
+          "nombre": "maven-compiler-plugin",
+          "descripcion": "Plugin de Maven que compila código Java con configuraciones específicas"
+        },
+        {
+          "nombre": "annotationProcessorPaths",
+          "descripcion": "Configuración que indica qué librerías usar para procesar anotaciones"
+        },
+        {
+          "nombre": "Compatibilidad Lombok-Maven",
+          "descripcion": "Requisito de configurar explícitamente Lombok en el compilador de Maven"
+        },
+        {
+          "nombre": "NetBeans 24+",
+          "descripcion": "Versiones modernas del IDE que requieren configuración adicional para Lombok"
+        },
+        {
+          "nombre": "JDK 23+",
+          "descripcion": "Versiones de Java que requieren procesador de anotaciones explícito para Lombok"
+        },
+        {
+          "nombre": "Build Plugins",
+          "descripcion": "Sección del pom.xml donde se configuran herramientas de construcción del proyecto"
+        },
+        {
+          "nombre": "Properties",
+          "descripcion": "Variables centralizadas en pom.xml para versiones de dependencias"
+        }
+      ],
+      "codigoEjemplo": "<!-- Agregar en pom.xml dentro de <build><plugins> -->\n<plugin>\n    <groupId>org.apache.maven.plugins</groupId>\n    <artifactId>maven-compiler-plugin</artifactId>\n    <version>3.11.0</version>\n    <configuration>\n        <annotationProcessorPaths>\n            <path>\n                <groupId>org.projectlombok</groupId>\n                <artifactId>lombok</artifactId>\n                <version>1.18.38</version>\n            </path>\n        </annotationProcessorPaths>\n    </configuration>\n</plugin>\n\n<!-- Opcional: definir versión en properties -->\n<properties>\n    <lombok.version>1.18.38</lombok.version>\n</properties>"
+    },
+    {
+      "numero": 7,
+      "archivo": "7__Añadir_Swagger_facilitar_pruebas_API_Rest_probar.srt",
+      "titulo": "Añadir Swagger para Facilitar Pruebas de API REST",
+      "resumen": "Implementación de Swagger (springdoc-openapi) para documentar y probar APIs REST sin necesidad de Postman o Curl. Se agrega la dependencia, se accede a la UI en /swagger-ui.html, y se prueban operaciones CRUD (POST, GET, PUT, DELETE) sobre la entidad Customer. Incluye validación completa del microservicio funcionando.",
+      "puntosClave": [
+        "Swagger implementa OpenAPI Specification para documentar APIs",
+        "Agregar dependencia springdoc-openapi-starter-webmvc-ui al pom.xml",
+        "Versión 2.3+ para Spring Boot 3.x (verificar compatibilidad)",
+        "Acceder en: http://localhost:8080/swagger-ui.html",
+        "Permite probar endpoints sin Postman/Curl desde el navegador",
+        "Interfaz interactiva muestra esquema de entidades automáticamente",
+        "Botón 'Try it out' para ejecutar peticiones HTTP",
+        "POST crea clientes, GET lista todos, PUT actualiza, DELETE elimina",
+        "Base de datos H2 en memoria: datos se pierden al reiniciar",
+        "DevTools reinicia automáticamente al guardar cambios",
+        "Swagger es opcional, no invasivo y se puede activar/desactivar"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Swagger",
+          "descripcion": "Conjunto de herramientas que documentan y facilitan pruebas de APIs REST"
+        },
+        {
+          "nombre": "OpenAPI Specification",
+          "descripcion": "Estándar para describir APIs REST de forma clara y estructurada"
+        },
+        {
+          "nombre": "springdoc-openapi",
+          "descripcion": "Librería que integra Swagger/OpenAPI en proyectos Spring Boot"
+        },
+        {
+          "nombre": "swagger-ui.html",
+          "descripcion": "Interfaz web interactiva para visualizar y probar endpoints de la API"
+        },
+        {
+          "nombre": "Try it out",
+          "descripcion": "Función de Swagger UI que permite ejecutar peticiones HTTP directamente"
+        },
+        {
+          "nombre": "Base de Datos en Memoria",
+          "descripcion": "BD H2 que almacena datos temporalmente mientras la aplicación está ejecutándose"
+        },
+        {
+          "nombre": "HTTP Status Codes",
+          "descripcion": "Códigos de respuesta (200 OK, 404 Not Found) que indican resultado de operaciones"
+        },
+        {
+          "nombre": "Request Body",
+          "descripcion": "Datos JSON enviados en el cuerpo de una petición POST/PUT"
+        },
+        {
+          "nombre": "Response Body",
+          "descripcion": "Datos JSON devueltos por el servidor como respuesta a una petición"
+        }
+      ],
+      "codigoEjemplo": "<!-- Agregar dependencia Swagger en pom.xml -->\n<dependency>\n    <groupId>org.springdoc</groupId>\n    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>\n    <version>2.3.0</version>\n</dependency>\n\n<!-- Probar endpoints en Swagger UI -->\n// POST http://localhost:8080/customer\n{\n  \"id\": 0,\n  \"name\": \"Juan Pérez\",\n  \"phoneNumber\": \"555-1234\"\n}\n\n// GET http://localhost:8080/customer\n// Retorna lista de todos los clientes\n\n// DELETE http://localhost:8080/customer/1\n// Elimina el cliente con ID 1"
+    },
+    {
+      "numero": 8,
+      "archivo": "8__Activar_desactivar_swagger_recomendaciones_descargar.srt",
+      "titulo": "Activar/Desactivar Swagger y Recomendaciones al Descargar Código",
+      "resumen": "Configuración de Swagger mediante properties para habilitar/deshabilitar en diferentes entornos. Se explica por qué NO usar Swagger en producción (falta de seguridad). Incluye guía completa de buenas prácticas al descargar código fuente: verificar versiones de framework, JDK, dependencias y propiedades del proyecto antes de compilar.",
+      "puntosClave": [
+        "Desactivar Swagger en producción por seguridad (sin autenticación)",
+        "Propiedad: springdoc.swagger-ui.enabled=false en application.properties",
+        "Activar en desarrollo: springdoc.swagger-ui.enabled=true (o eliminar propiedad)",
+        "Al descargar código: SIEMPRE abrir pom.xml primero",
+        "Verificar versión de Spring Boot y actualizarla si es necesaria",
+        "Verificar versión de JDK según requisitos del framework",
+        "Revisar versiones de otras dependencias (Lombok, Swagger, etc.)",
+        "Ir a Properties del proyecto → Compile → verificar JDK configurado",
+        "Activar 'Compile on Save' para compilación automática",
+        "Ejecutar Clean and Build después de actualizar versiones",
+        "Detener procesos en Output antes de reiniciar (evitar error de puerto ocupado)",
+        "Revisar log de compilación para detectar problemas de versiones"
+      ],
+      "conceptos": [
+        {
+          "nombre": "application.properties",
+          "descripcion": "Archivo de configuración donde se definen propiedades de Spring Boot (puerto, BD, features)"
+        },
+        {
+          "nombre": "Entorno de Desarrollo vs Producción",
+          "descripcion": "Desarrollo: con herramientas debug. Producción: optimizado, seguro, sin tools de desarrollo"
+        },
+        {
+          "nombre": "springdoc.swagger-ui.enabled",
+          "descripcion": "Propiedad que activa (true) o desactiva (false) la interfaz de Swagger"
+        },
+        {
+          "nombre": "Seguridad en Producción",
+          "descripcion": "Buena práctica de no exponer herramientas sin autenticación en ambientes productivos"
+        },
+        {
+          "nombre": "Clean and Build",
+          "descripcion": "Limpia archivos compilados y recompila todo el proyecto desde cero"
+        },
+        {
+          "nombre": "Compile on Save",
+          "descripcion": "Opción que recompila automáticamente al guardar cambios en archivos"
+        },
+        {
+          "nombre": "Compatibilidad de Versiones",
+          "descripcion": "Relación entre Spring Boot, JDK y dependencias que deben coincidir"
+        },
+        {
+          "nombre": "Puerto Ocupado",
+          "descripcion": "Error cuando se intenta iniciar el servidor en un puerto ya en uso"
+        },
+        {
+          "nombre": "Actualización de Framework",
+          "descripcion": "Proceso de migrar de Spring Boot 2.x a 3.x actualizando también JDK y dependencias"
+        }
+      ],
+      "codigoEjemplo": "# application.properties\n\n# Desactivar Swagger (recomendado en producción)\nspringdoc.swagger-ui.enabled=false\n\n# Activar Swagger (desarrollo/testing)\nspringdoc.swagger-ui.enabled=true\n\n# Otras configuraciones útiles\nserver.port=8080\nspring.application.name=customer-service\n\n# Configuración H2 (opcional, para ver consola)\nspring.h2.console.enabled=true\nspring.h2.console.path=/h2-console"
+    }
+  ],
+  "resumen_seccion": "Esta sección cubre el ciclo completo de desarrollo de un microservicio desde cero: diseño arquitectónico con DDD, creación del proyecto con Spring Initializr, configuración de Maven, implementación de persistencia JPA con entidades y repositorios, exposición de APIs REST, y pruebas con Swagger. Incluye resolución de problemas con Lombok y mejores prácticas para gestionar versiones y código descargable.",
+  "tecnologias_cubiertas": [
+    "Spring Boot 3.2",
+    "Maven",
+    "JPA/Hibernate",
+    "Lombok",
+    "H2 Database",
+    "Spring Data JPA",
+    "REST Controllers",
+    "Swagger/OpenAPI",
+    "Spring DevTools"
+  ]
+}

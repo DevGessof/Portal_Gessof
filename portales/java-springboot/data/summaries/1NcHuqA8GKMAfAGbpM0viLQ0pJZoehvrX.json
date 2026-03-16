@@ -1,0 +1,60 @@
+{
+  "titulo": "Crear Microservicio Spring Boot con Maven desde Cero",
+  "resumen": "Tutorial paso a paso para crear el primer microservicio usando NetBeans IDE y Spring Boot Initializr. Se configuran los metadatos del proyecto Maven (GroupId, ArtifactId), se selecciona la versión de Spring Boot y JDK, y se añaden los starters iniciales (Web, H2, DevTools). Incluye explicación de cada parámetro del asistente.",
+  "puntosClave": [
+    "Crear proyecto: File → New Project → Maven → Spring Boot Initializr Project",
+    "GroupId: dominio invertido de la empresa (com.paymentchange)",
+    "ArtifactId: nombre del microservicio (customer)",
+    "Versión: dejar 0.0.1-SNAPSHOT para versión inicial",
+    "Tipo de paquete: JAR (con Spring Boot no necesita servidor externo)",
+    "Estructura de paquetes: com.paymentchange.customer",
+    "Lenguaje: Java (también disponible Kotlin)",
+    "JDK mínimo: versión 17 (según requisitos de Spring Boot 3.2)",
+    "Starters seleccionados: Spring Web, H2 Database, Spring DevTools",
+    "El asistente es equivalente a usar start.spring.io",
+    "DevTools permite recompilación automática al guardar cambios"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Spring Boot Initializr",
+      "descripcion": "Asistente que genera la estructura base de un proyecto Spring Boot con configuración inicial"
+    },
+    {
+      "nombre": "GroupId",
+      "descripcion": "Identificador único del grupo/empresa en formato dominio invertido (com.empresa)"
+    },
+    {
+      "nombre": "ArtifactId",
+      "descripcion": "Nombre del proyecto/microservicio, será el nombre del JAR generado"
+    },
+    {
+      "nombre": "SNAPSHOT",
+      "descripcion": "Sufijo que indica que es una versión en desarrollo, no estable"
+    },
+    {
+      "nombre": "JAR (Java Archive)",
+      "descripcion": "Formato de empaquetado que incluye todo lo necesario para ejecutar la aplicación"
+    },
+    {
+      "nombre": "WAR (Web Archive)",
+      "descripcion": "Formato para desplegar en servidores de aplicaciones externos (Tomcat, JBoss)"
+    },
+    {
+      "nombre": "Spring Web Starter",
+      "descripcion": "Starter que incluye Tomcat embebido, Spring MVC y herramientas para crear APIs REST"
+    },
+    {
+      "nombre": "H2 Database",
+      "descripcion": "Base de datos en memoria ideal para desarrollo y pruebas"
+    },
+    {
+      "nombre": "Spring DevTools",
+      "descripcion": "Herramientas que facilitan desarrollo con reinicio automático al detectar cambios"
+    },
+    {
+      "nombre": "Estructura de Paquetes",
+      "descripcion": "Organización de carpetas que contiene las clases del proyecto"
+    }
+  ],
+  "codigoEjemplo": "// Estructura básica generada por Spring Initializr\npackage com.paymentchange.customer;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\n\n@SpringBootApplication\npublic class CustomerApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(CustomerApplication.class, args);\n    }\n}"
+}

@@ -1,0 +1,83 @@
+{
+  "titulo": "Definición de Realms, Roles, Usuarios y Clientes en Keycloak",
+  "resumen": "Configuración completa de Keycloak: crear realm para aplicación, definir roles (ADMIN, USER), crear usuarios con roles asignados, y registrar cliente OAuth2 para aplicación. Configuración necesaria para emitir tokens con roles correctos.",
+  "puntosClave": [
+    "Crear Realm:",
+    "  - Click en 'Master' dropdown → Create Realm",
+    "  - Name: paymentchange-realm",
+    "  - Enabled: ON",
+    "Crear Roles de Realm:",
+    "  - Realm Roles → Create Role",
+    "  - Roles: ADMIN, USER, MANAGER",
+    "  - Descripción de cada rol",
+    "Crear Usuarios:",
+    "  - Users → Add User",
+    "  - Username: admin-user, regular-user",
+    "  - Email: admin@company.com",
+    "  - Email Verified: ON",
+    "  - Set Password: temporal=OFF, password=123456",
+    "Asignar Roles a Usuarios:",
+    "  - User Details → Role Mapping",
+    "  - Assign Role → ADMIN (para admin-user)",
+    "  - Assign Role → USER (para regular-user)",
+    "Crear Cliente:",
+    "  - Clients → Create Client",
+    "  - Client ID: payment-app",
+    "  - Client Protocol: openid-connect",
+    "  - Access Type: confidential (requiere client secret)",
+    "  - Valid Redirect URIs: http://localhost:4200/*",
+    "  - Configurar Service Account y Direct Access Grants",
+    "Obtener Client Secret de tab Credentials"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Realm",
+      "descripcion": "Espacio aislado con su propia configuración de usuarios, roles y clientes"
+    },
+    {
+      "nombre": "Realm Role",
+      "descripcion": "Rol global del realm asignable a usuarios"
+    },
+    {
+      "nombre": "Client Role",
+      "descripcion": "Rol específico de un cliente/aplicación"
+    },
+    {
+      "nombre": "User",
+      "descripcion": "Cuenta de usuario con credenciales y roles asignados"
+    },
+    {
+      "nombre": "Client",
+      "descripcion": "Aplicación registrada que puede solicitar tokens"
+    },
+    {
+      "nombre": "Client ID",
+      "descripcion": "Identificador único del cliente en el realm"
+    },
+    {
+      "nombre": "Client Secret",
+      "descripcion": "Credencial secreta del cliente (como password)"
+    },
+    {
+      "nombre": "Confidential Client",
+      "descripcion": "Cliente que puede mantener secret seguro (backend)"
+    },
+    {
+      "nombre": "Public Client",
+      "descripcion": "Cliente que no puede mantener secret (SPA, mobile)"
+    },
+    {
+      "nombre": "Direct Access Grants",
+      "descripcion": "Permite Password Grant flow (username/password directo)"
+    },
+    {
+      "nombre": "Service Account",
+      "descripcion": "Permite Client Credentials flow (machine-to-machine)"
+    },
+    {
+      "nombre": "Role Mapping",
+      "descripcion": "Asignación de roles a usuario específico"
+    }
+  ],
+  "codigoEjemplo": null
+}

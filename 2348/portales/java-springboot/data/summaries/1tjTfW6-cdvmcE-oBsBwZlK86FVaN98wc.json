@@ -1,0 +1,69 @@
+{
+  "titulo": "Crear Microservicio Adaptador para Comunicarse con Keycloak",
+  "resumen": "Creación de microservicio KeycloakAdapter que encapsula comunicación con Keycloak. Se implementan métodos para obtener tokens, validar tokens, extraer roles, y obtener información de usuario. Adaptador reutilizable por API Gateway y otros servicios.",
+  "puntosClave": [
+    "Crear módulo keycloak-adapter en infrastructure-services",
+    "Dependencias:",
+    "  - spring-boot-starter-webflux (para WebClient)",
+    "  - spring-boot-starter-oauth2-resource-server",
+    "  - spring-security-oauth2-jose (JWT)",
+    "Crear KeycloakService con WebClient",
+    "Métodos principales:",
+    "  - getToken(username, password): obtener access token",
+    "  - validateToken(token): verificar firma y expiración",
+    "  - extractRoles(token): obtener roles de JWT",
+    "  - getUserInfo(token): obtener info de usuario",
+    "Configuración:",
+    "  keycloak.auth-server-url=http://localhost:8180",
+    "  keycloak.realm=paymentchange-realm",
+    "  keycloak.client-id=payment-app",
+    "  keycloak.client-secret=[secret]",
+    "Decodificar JWT con JwtDecoder",
+    "Validar con JWK Set de Keycloak:",
+    "  {keycloak-url}/realms/{realm}/protocol/openid-connect/certs",
+    "Exponer como librería para otros servicios"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Keycloak Adapter",
+      "descripcion": "Microservicio que encapsula comunicación con Keycloak"
+    },
+    {
+      "nombre": "OAuth2 Resource Server",
+      "descripcion": "Servidor que valida tokens OAuth2"
+    },
+    {
+      "nombre": "JwtDecoder",
+      "descripcion": "Clase Spring Security para decodificar y validar JWT"
+    },
+    {
+      "nombre": "JWK Set",
+      "descripcion": "JSON Web Key Set con claves públicas para validar JWT"
+    },
+    {
+      "nombre": "JWT Validation",
+      "descripcion": "Verificar firma, emisor, audiencia y expiración de JWT"
+    },
+    {
+      "nombre": "Role Extraction",
+      "descripcion": "Obtener lista de roles del claim realm_access.roles"
+    },
+    {
+      "nombre": "UserInfo Endpoint",
+      "descripcion": "Endpoint OpenID Connect para obtener info de usuario"
+    },
+    {
+      "nombre": "WebClient",
+      "descripcion": "Cliente HTTP reactivo de Spring para llamar APIs"
+    },
+    {
+      "nombre": "NimbusJwtDecoder",
+      "descripcion": "Implementación de JwtDecoder usando librería Nimbus"
+    },
+    {
+      "nombre": "Adapter Pattern",
+      "descripcion": "Patrón que adapta interfaz de Keycloak a interfaz interna"
+    }
+  ],
+  "codigoEjemplo": null
+}

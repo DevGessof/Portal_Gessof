@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Java Básico | Aprendizaje Interactivo</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- CSS Modular -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+</head>
+
+<body>
+    <!-- Navegación Principal -->
+    <nav class="main-nav-tabs">
+        <div class="nav-container">
+            <div style="display: flex; gap: 0.5rem; align-items:center;">
+                <button class="main-nav-tab active" onclick="switchMainTab(event, 'section-inicio')">
+                    <i class="fas fa-home"></i> Inicio
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-herramientas')">
+                    <i class="fas fa-tools"></i> Herramientas
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-clases')">
+                    <i class="fas fa-graduation-cap"></i> Curso
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-glosario')">
+                    <i class="fas fa-book"></i> Glosario
+                </button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <!-- Barra de Progreso -->
+                <div style="display:flex; flex-direction:column; min-width:150px;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:4px;">
+                        <span style="font-weight:600; color:var(--text-secondary);">Tu Progreso</span>
+                        <span id="progressText" style="font-weight:700; color:var(--primary);">0%</span>
+                    </div>
+                    <div style="height:6px; background:var(--border); border-radius:10px; overflow:hidden;">
+                        <div id="progressFill" style="height:100%; background:var(--primary); width:0%; transition:width 0.5s;"></div>
+                    </div>
+                </div>
+
+                <!-- Usuario y Tema -->
+                <div style="display:flex; align-items:center; gap:0.75rem; border-left:1px solid var(--border); padding-left:1.5rem;">
+                    <div style="text-align:right;">
+                        <div id="userNameDisplay" style="font-weight:600; font-size:0.9rem; color:var(--text-primary);">Usuario</div>
+                    </div>
+                    <button onclick="changeUser()" style="width:36px; height:36px; background:var(--primary-light); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1rem; border:none; cursor:pointer;" title="Cambiar usuario">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <button onclick="toggleTheme()" class="theme-toggle-header" style="background:none; border:none; cursor:pointer; color:var(--text-secondary); font-size:1.2rem; margin-left: 0.5rem;" title="Cambiar Tema">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Sección: Inicio -->
+        <section id="section-inicio" class="main-content-section active">
+            <div class="hero">
+                <div class="hero-badge"><i class="fas fa-bolt"></i> Java Básico</div>
+                <h1>Aprende Java desde Cero</h1>
+                <p>Domina los fundamentos de la programación en Java con este curso 100% práctico y didáctico. Desde la instalación del entorno hasta programación orientada a objetos.</p>
+                
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">
+                        <i class="fas fa-check-circle"></i> Lo que aprenderás
+                    </h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-check" style="color: var(--accent-green);"></i>
+                            <span>Conocer el manejo y desarrollo de uno de los lenguajes de programación más usado en el mercado laboral</span>
+                        </li>
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-check" style="color: var(--accent-green);"></i>
+                            <span>Aprendizaje 100% práctico con ejemplos claros en cada lección</span>
+                        </li>
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-check" style="color: var(--accent-green);"></i>
+                            <span>Formación base sólida en el mundo del lenguaje de programación Java</span>
+                        </li>
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-check" style="color: var(--accent-green);"></i>
+                            <span>39 videos organizados en 12 secciones temáticas</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div style="display: flex; gap: 2rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                    <div>
+                        <div style="font-size: 1.75rem; font-weight: 800; color: var(--primary);">4.5h</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">Duración Total</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.75rem; font-weight: 800; color: var(--primary);">12</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">Secciones</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.75rem; font-weight: 800; color: var(--primary);">39</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">Videos</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Herramientas -->
+        <section id="section-herramientas" class="main-content-section">
+            <div style="margin-bottom: 2rem;">
+                <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">
+                    <i class="fas fa-tools" style="color: var(--primary);"></i> Herramientas del Curso
+                </h2>
+                <p style="color: var(--text-secondary);">Recursos esenciales que necesitarás para seguir el curso</p>
+            </div>
+            
+            <div class="grid-modules">
+                <!-- Java JDK -->
+                <div class="module">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #f89820 0%, #d67d17 100%);">
+                        <i class="fab fa-java"></i>
+                    </div>
+                    <h3>Java JDK 11+</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem; margin-bottom: 1rem;">
+                        Kit de desarrollo de Java (OpenJDK). Versión LTS recomendada para aprendizaje y producción.
+                    </p>
+                    <a href="https://adoptium.net/" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem;">
+                        <i class="fas fa-external-link-alt"></i> Descargar OpenJDK
+                    </a>
+                </div>
+
+                <!-- Apache NetBeans -->
+                <div class="module">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #1b6ac6 0%, #144d8f 100%);">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Apache NetBeans</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem; margin-bottom: 1rem;">
+                        IDE gratuito y potente para desarrollo en Java. Entorno completo con todas las herramientas necesarias.
+                    </p>
+                    <a href="https://netbeans.apache.org/" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem;">
+                        <i class="fas fa-external-link-alt"></i> Descargar NetBeans
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Curso -->
+        <section id="section-clases" class="main-content-section">
+            <div style="margin-bottom: 2rem;">
+                <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">
+                    <i class="fas fa-graduation-cap" style="color: var(--primary);"></i> Programa de Estudios
+                </h2>
+                <p style="color: var(--text-secondary);">Domina Java paso a paso con 12 secciones temáticas</p>
+            </div>
+            
+            <div id="course-sections-container"></div>
+        </section>
+
+        <!-- Sección: Glosario -->
+        <section id="section-glosario" class="main-content-section">
+            <div style="margin-bottom: 2rem;">
+                <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">
+                    <i class="fas fa-book" style="color: var(--primary);"></i> Glosario de Términos
+                </h2>
+                <p style="color: var(--text-secondary);">Referencia rápida de conceptos clave de Java</p>
+            </div>
+            
+            <input type="text" id="glossarySearch" placeholder="🔍 Buscar término o concepto..." style="width:100%; padding:1rem 1.5rem; margin-bottom:2rem; border:1px solid var(--border); border-radius:var(--radius-md); font-size:1rem; background: var(--bg-card); color: var(--text-primary); transition: all 0.2s ease;">
+            
+            <div id="glossary-container"></div>
+        </section>
+    </main>
+
+    <!-- Modal de Video -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-play-circle"></i> Video</h2>
+                <span class="close" onclick="closeModal('videoModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <iframe src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width:100%; height:450px; border-radius: var(--radius-md);"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Resumen -->
+    <div id="summaryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-book-open"></i> Resumen</h2>
+                <span class="close" onclick="closeModal('summaryModal')">&times;</span>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p><i class="fas fa-code"></i> Portal de Aprendizaje Java Básico © 2026</p>
+    </footer>
+
+    <!-- JavaScript Modular -->
+    <script src="assets/js/data/data.js"></script>
+    <script src="assets/js/core/utils.js"></script>
+    <script src="assets/js/core/state.js"></script>
+    <script src="assets/js/components/ui-components.js"></script>
+</body>
+
+</html>

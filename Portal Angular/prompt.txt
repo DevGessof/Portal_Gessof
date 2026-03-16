@@ -1,0 +1,25 @@
+Estás trabajando en un portal web educativo de Angular.
+
+ANTES de generar cualquier código, debes:
+1. Leer y cumplir estrictamente el archivo PROJECT_RULES.md
+2. Respetar todas las reglas sin excepción
+3. Mantener una arquitectura modular y escalable
+
+Contexto del proyecto:
+- Portal educativo en español
+- Videos y materiales alojados en Google Drive
+- 24 secciones de curso, 33.4 horas de video
+- Cada sección tiene videos, transcripciones (.srt) y material de apoyo
+- Existe un index.html base que debe respetarse (portales de java, apigee y Springboot)
+- El portal tiene 5 secciones: Inicio, Herramientas, Curso, evaluacion y Glosario
+
+Requisitos clave:
+- Un carrusel de videos por sección
+- Cada video debe tener un resumen obtenido de la carpeta de resumenes
+- Los resúmenes deben ser colocados con buena estrucutra y faciles de leer e interpretar, separados por secciones, no un texto gigante
+- El proyecto NO debe ser monolítico
+
+Objetivo:
+Diseñar una estructura de proyecto clara, modular y mantenible que permita escalar el contenido del curso sin perder orden ni legibilidad.
+
+No generes código hasta que se te indique explícitamente.

@@ -1,0 +1,64 @@
+{
+  "titulo": "Enrutamiento: Comprobar Validez del Authorization Header",
+  "resumen": "Mejora del filtro de autenticación para validar formato y contenido del header Authorization. Se implementan validaciones de formato Bearer, longitud mínima del token, caracteres válidos, y se mejoran mensajes de error para facilitar debugging.",
+  "puntosClave": [
+    "Validaciones de Authorization header:",
+    "1. Verificar que header existe",
+    "2. Verificar que empieza con \"Bearer \"",
+    "3. Verificar que token no esté vacío después de quitar prefijo",
+    "4. Validar longitud mínima del token (> 10 caracteres)",
+    "5. Verificar formato JWT (tres partes separadas por puntos)",
+    "Crear método validateAuthorizationHeader()",
+    "Retornar diferentes mensajes de error según validación fallida:",
+    "  - \"Authorization header is required\"",
+    "  - \"Invalid Authorization header format\"",
+    "  - \"Token is empty\"",
+    "  - \"Token format is invalid\"",
+    "Logging detallado de cada tipo de error",
+    "Facilita debugging para desarrolladores consumiendo API",
+    "Mejorar UX con mensajes claros y específicos"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Header Validation",
+      "descripcion": "Verificar formato y contenido de headers HTTP"
+    },
+    {
+      "nombre": "Bearer Token Format",
+      "descripcion": "Formato estándar: Authorization: Bearer {token}"
+    },
+    {
+      "nombre": "JWT Format",
+      "descripcion": "Tres partes separadas por puntos: header.payload.signature"
+    },
+    {
+      "nombre": "Validation Chain",
+      "descripcion": "Secuencia de validaciones que deben pasar todas"
+    },
+    {
+      "nombre": "Early Validation",
+      "descripcion": "Validar formato antes de validar con Keycloak (performance)"
+    },
+    {
+      "nombre": "Descriptive Error Messages",
+      "descripcion": "Mensajes de error claros que indican exactamente qué falló"
+    },
+    {
+      "nombre": "Developer Experience",
+      "descripcion": "Facilitar debugging con mensajes informativos"
+    },
+    {
+      "nombre": "Input Sanitization",
+      "descripcion": "Limpiar y validar input antes de procesar"
+    },
+    {
+      "nombre": "Security Validation",
+      "descripcion": "Validaciones de seguridad antes de procesamiento costoso"
+    },
+    {
+      "nombre": "Fail Fast",
+      "descripcion": "Retornar error rápido si validación básica falla"
+    }
+  ],
+  "codigoEjemplo": null
+}

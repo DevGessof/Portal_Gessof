@@ -1,0 +1,64 @@
+{
+  "titulo": "Diagrama de Arquitectura de Solución con Foco en Seguridad",
+  "resumen": "Presentación de arquitectura completa de solución incluyendo API Gateway como capa de seguridad. Se muestra cómo Gateway actúa como punto de entrada único, maneja autenticación centralizada, aplica rate limiting, y oculta complejidad interna de microservicios. Establece visión de arquitectura enterprise.",
+  "puntosClave": [
+    "Problema: clientes acceden directamente a múltiples microservicios",
+    "Consecuencias: complejidad cliente, múltiples URLs, CORS por servicio, seguridad distribuida",
+    "Solución: API Gateway como Single Entry Point",
+    "Cliente solo conoce URL del Gateway: https://api.company.com",
+    "Gateway enruta requests a microservicios internos",
+    "Ventajas de seguridad:",
+    "  - Autenticación centralizada (un solo punto)",
+    "  - Autorización y validación de tokens",
+    "  - Rate limiting global",
+    "  - IP whitelisting/blacklisting",
+    "  - SSL/TLS termination",
+    "  - Ocultar arquitectura interna",
+    "Gateway puede agregar headers, modificar requests/responses",
+    "Logging y auditoría centralizados",
+    "Patrón esencial en arquitecturas de microservicios"
+  ],
+  "conceptos": [
+    {
+      "nombre": "API Gateway",
+      "descripcion": "Componente que actúa como punto de entrada único para todos los microservicios"
+    },
+    {
+      "nombre": "Single Entry Point",
+      "descripcion": "Un solo endpoint público que enruta a múltiples servicios internos"
+    },
+    {
+      "nombre": "Reverse Proxy",
+      "descripcion": "Servidor que recibe requests y las reenvía a servidores backend"
+    },
+    {
+      "nombre": "Centralized Authentication",
+      "descripcion": "Autenticación manejada en un solo punto en lugar de cada microservicio"
+    },
+    {
+      "nombre": "Rate Limiting",
+      "descripcion": "Limitar número de requests por cliente/IP en ventana de tiempo"
+    },
+    {
+      "nombre": "SSL/TLS Termination",
+      "descripcion": "Gateway maneja HTTPS, comunicación interna puede ser HTTP"
+    },
+    {
+      "nombre": "Request Routing",
+      "descripcion": "Enrutar peticiones a microservicio apropiado según path/headers"
+    },
+    {
+      "nombre": "Service Facade",
+      "descripcion": "Ocultar complejidad y estructura interna de microservicios"
+    },
+    {
+      "nombre": "Edge Service",
+      "descripcion": "Servicio en el borde de la red que interactúa con clientes externos"
+    },
+    {
+      "nombre": "Cross-Cutting Concerns",
+      "descripcion": "Funcionalidades comunes manejadas centralmente (auth, logging, monitoring)"
+    }
+  ],
+  "codigoEjemplo": null
+}

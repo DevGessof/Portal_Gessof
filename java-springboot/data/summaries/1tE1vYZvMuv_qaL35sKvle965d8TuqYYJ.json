@@ -1,0 +1,62 @@
+{
+  "titulo": "Refactorizar API Controller para Utilizar Modelos Request/Response",
+  "resumen": "Refactorización completa de CustomerRestController y CustomerService para usar DTOs en lugar de entidades. Controller recibe CustomerRequest y retorna CustomerResponse, Service usa mapper para conversión. Separación completa entre capa de API y capa de dominio lograda.",
+  "puntosClave": [
+    "Controller ahora recibe CustomerRequest en POST/PUT",
+    "Controller retorna CustomerResponse (no Customer) en GET",
+    "Inyectar CustomerMapper en Service con @Autowired",
+    "Service.create(): mapper.toEntity(request) → repository.save() → mapper.toResponse()",
+    "Service.findAll(): repository.findAll() → mapper.toResponseList()",
+    "Service.findById(): repository.findById() → mapper.toResponse()",
+    "Actualizar tipos de retorno en Controller:",
+    "  - ResponseEntity<CustomerResponse>",
+    "  - ResponseEntity<List<CustomerResponse>>",
+    "Actualizar documentación Swagger con nuevos tipos",
+    "Ventaja: Customer entity nunca sale de capa de persistencia",
+    "API puede cambiar sin afectar modelo de datos",
+    "Aplicar mismo patrón en Product y Transaction"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Controller Refactoring",
+      "descripcion": "Modificar controller para trabajar con DTOs en vez de entidades"
+    },
+    {
+      "nombre": "Service Refactoring",
+      "descripcion": "Service maneja conversión entre DTOs y entidades usando mapper"
+    },
+    {
+      "nombre": "Layer Separation",
+      "descripcion": "API layer (DTOs) completamente separada de Domain layer (Entities)"
+    },
+    {
+      "nombre": "Mapper Injection",
+      "descripcion": "Inyectar CustomerMapper en Service como bean Spring"
+    },
+    {
+      "nombre": "Request-Entity Conversion",
+      "descripcion": "Convertir CustomerRequest a Customer antes de persistir"
+    },
+    {
+      "nombre": "Entity-Response Conversion",
+      "descripcion": "Convertir Customer a CustomerResponse antes de retornar"
+    },
+    {
+      "nombre": "Type Safety",
+      "descripcion": "Tipos específicos en controller (Request/Response) evitan confusión"
+    },
+    {
+      "nombre": "API Contract",
+      "descripcion": "Contrato de API ahora basado en DTOs, no en modelo interno"
+    },
+    {
+      "nombre": "Encapsulation",
+      "descripcion": "Entidad encapsulada dentro de capa de persistencia"
+    },
+    {
+      "nombre": "Clean Architecture",
+      "descripcion": "Separación clara entre capas: API → Service → Repository"
+    }
+  ],
+  "codigoEjemplo": "// CustomerService.java - Refactorizado con DTOs\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private CustomerRepository customerRepository;\n    \n    @Autowired\n    private CustomerMapper customerMapper;  // Inyectar mapper\n    \n    public List<CustomerResponse> findAll() {\n        List<Customer> customers = customerRepository.findAll();\n        return customerMapper.toResponseList(customers);\n    }\n    \n    public CustomerResponse findById(Long id) {\n        Customer customer = customerRepository.findById(id)\n            .orElseThrow(() -> new NotFoundException(\n                \"Customer with ID \" + id + \" not found\"\n            ));\n        return customerMapper.toResponse(customer);\n    }\n    \n    public CustomerResponse create(CustomerRequest request) {\n        // Validar datos de request\n        validateCustomerRequest(request);\n        \n        // Convertir Request a Entity\n        Customer customer = customerMapper.toEntity(request);\n        \n        // Guardar en BD\n        Customer saved = customerRepository.save(customer);\n        \n        // Convertir Entity a Response\n        return customerMapper.toResponse(saved);\n    }\n    \n    public CustomerResponse update(Long id, CustomerRequest request) {\n        // Buscar customer existente\n        Customer existing = customerRepository.findById(id)\n            .orElseThrow(() -> new NotFoundException(\n                \"Customer with ID \" + id + \" not found\"\n            ));\n        \n        // Actualizar campos desde request\n        customerMapper.updateEntityFromRequest(request, existing);\n        \n        // Guardar cambios\n        Customer updated = customerRepository.save(existing);\n        \n        // Retornar response\n        return customerMapper.toResponse(updated);\n    }\n    \n    public void delete(Long id) {\n        Customer customer = customerRepository.findById(id)\n            .orElseThrow(() -> new NotFoundException(\n                \"Customer with ID \" + id + \" not found\"\n            ));\n        customerRepository.delete(customer);\n    }\n    \n    private void validateCustomerRequest(CustomerRequest request) {\n        if (request.getName() == null || request.getName().isEmpty()) {\n            throw new IllegalArgumentException(\"Name is required\");\n        }\n        // ... más validaciones\n    }\n}\n\n// CustomerRestController.java - Refactorizado\n@RestController\n@RequestMapping(\"/api/v1/customer\")\n@Tag(name = \"Customer\", description = \"API de gestión de clientes\")\npublic class CustomerRestController {\n    \n    @Autowired\n    private CustomerService customerService;\n    \n    @GetMapping\n    public ResponseEntity<List<CustomerResponse>> findAll() {\n        return ResponseEntity.ok(customerService.findAll());\n    }\n    \n    @GetMapping(\"/{id}\")\n    public ResponseEntity<CustomerResponse> findById(@PathVariable Long id) {\n        return ResponseEntity.ok(customerService.findById(id));\n    }\n    \n    @PostMapping\n    public ResponseEntity<CustomerResponse> create(\n            @RequestBody CustomerRequest request) {\n        CustomerResponse created = customerService.create(request);\n        return ResponseEntity.status(HttpStatus.CREATED).body(created);\n    }\n    \n    @PutMapping(\"/{id}\")\n    public ResponseEntity<CustomerResponse> update(\n            @PathVariable Long id,\n            @RequestBody CustomerRequest request) {\n        return ResponseEntity.ok(customerService.update(id, request));\n    }\n    \n    @DeleteMapping(\"/{id}\")\n    public ResponseEntity<Void> delete(@PathVariable Long id) {\n        customerService.delete(id);\n        return ResponseEntity.noContent().build();\n    }\n}"
+}

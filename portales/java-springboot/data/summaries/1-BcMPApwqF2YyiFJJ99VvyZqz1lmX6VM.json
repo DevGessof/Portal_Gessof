@@ -1,0 +1,70 @@
+{
+  "titulo": "Descubrir Microservicios desde Servidor de Registro y Validar Monitoreo Completo",
+  "resumen": "Validación end-to-end del sistema completo de observabilidad. Se ejecutan todos los componentes (Eureka, Config Server, Admin Server, microservicios business), se verifica descubrimiento automático en Admin, y se exploran todas las vistas de monitoreo: health, metrics, logs, environment, JVM. Demostración de arquitectura completa funcionando.",
+  "puntosClave": [
+    "Orden de inicio: 1) Eureka, 2) Config Server, 3) Admin Server, 4) Microservicios",
+    "Verificar Eureka (8761): todos los servicios registrados",
+    "Verificar Admin (9090): servicios descubiertos automáticamente",
+    "Applications view: CUSTOMER-SERVICE, PRODUCT-SERVICE, TRANSACTION-SERVICE (UP)",
+    "Click en servicio → Details: versión, build info, dependencies",
+    "Metrics: gráficos de memoria heap, threads, HTTP requests, GC",
+    "Environment: visualizar todas las propiedades y configuración activa",
+    "Loggers: cambiar nivel de logs en tiempo real (DEBUG, INFO, WARN)",
+    "JVM: métricas de memoria, threads, classes loaded",
+    "HTTP Traces: ver últimas peticiones HTTP recibidas",
+    "Wallboard: vista general de estado de todos los servicios",
+    "Journal: historial de eventos (servicio UP, DOWN, registrado)",
+    "Probar: detener servicio → Admin detecta DOWN → Journal registra evento"
+  ],
+  "conceptos": [
+    {
+      "nombre": "End-to-End Validation",
+      "descripcion": "Verificar funcionamiento completo de infraestructura y microservicios juntos"
+    },
+    {
+      "nombre": "Startup Order",
+      "descripcion": "Orden correcto de inicio para evitar fallos: Eureka → Config → Admin → Services"
+    },
+    {
+      "nombre": "Details Panel",
+      "descripcion": "Vista con información general: versión, health, info, dependencies"
+    },
+    {
+      "nombre": "Metrics Dashboard",
+      "descripcion": "Gráficos en tiempo real de JVM memory, threads, HTTP requests, GC"
+    },
+    {
+      "nombre": "Environment Inspector",
+      "descripcion": "Herramienta para ver todas las propiedades activas y sus fuentes"
+    },
+    {
+      "nombre": "Logger Management",
+      "descripcion": "Cambiar nivel de logs de paquetes específicos en runtime sin reiniciar"
+    },
+    {
+      "nombre": "JVM Monitoring",
+      "descripcion": "Visualización de métricas de JVM: heap, non-heap, threads, classes"
+    },
+    {
+      "nombre": "HTTP Traces",
+      "descripcion": "Registro de últimas peticiones HTTP con detalles (método, URL, status, tiempo)"
+    },
+    {
+      "nombre": "Wallboard View",
+      "descripcion": "Panel tipo semáforo que muestra estado de todos los servicios de un vistazo"
+    },
+    {
+      "nombre": "Event Journal",
+      "descripcion": "Log cronológico de eventos importantes del sistema (registros, cambios estado)"
+    },
+    {
+      "nombre": "Health Status Monitoring",
+      "descripcion": "Detectar automáticamente cuando servicio cambia de UP a DOWN"
+    },
+    {
+      "nombre": "Real-Time Updates",
+      "descripcion": "Dashboard se actualiza automáticamente cada pocos segundos"
+    }
+  ],
+  "codigoEjemplo": "# Orden de inicio de servicios\n\n# 1. Eureka Server (puerto 8761)\ncd infraestructure-domain/eureka-server\nmvn spring-boot:run\n# Verificar: http://localhost:8761\n\n# 2. Config Server (puerto 8888)\ncd infraestructure-domain/config-server\nmvn spring-boot:run\n# Verificar: http://localhost:8888/customer-service/dev\n\n# 3. Admin Server (puerto 9090)\ncd infraestructure-domain/admin-server\nmvn spring-boot:run\n# Verificar: http://localhost:9090\n\n# 4. Customer Service (puerto 8081)\ncd business-domain/customer\nmvn spring-boot:run\n\n# 5. Product Service (puerto 8082)\ncd business-domain/product\nmvn spring-boot:run\n\n# 6. Transaction Service (puerto 8083)\ncd business-domain/transaction\nmvn spring-boot:run\n\n# Verificaciones en Admin UI (http://localhost:9090):\n\n# Applications View:\n# ✅ CUSTOMER-SERVICE (UP) - 1 instance\n# ✅ PRODUCT-SERVICE (UP) - 1 instance\n# ✅ TRANSACTION-SERVICE (UP) - 1 instance\n# ✅ CONFIG-SERVER (UP) - 1 instance\n\n# Click en CUSTOMER-SERVICE → Details:\n# - Health: UP\n# - Info: version 1.0.0, Java 17\n# - Build: timestamp, artifact, group\n\n# Click en Metrics:\n# - JVM Memory Used: 256 MB / 512 MB\n# - HTTP Server Requests: 45 requests\n# - Threads: 25 live, 28 peak\n\n# Click en Environment:\n# - server.port: 8081\n# - spring.profiles.active: dev\n# - eureka.client.service-url.defaultZone: http://localhost:8761/eureka/\n\n# Click en Loggers:\n# - com.paymentchange: INFO → cambiar a DEBUG\n# - org.springframework: WARN\n\n# Wallboard:\n# [Verde] CUSTOMER-SERVICE\n# [Verde] PRODUCT-SERVICE  \n# [Verde] TRANSACTION-SERVICE\n# [Verde] CONFIG-SERVER\n\n# Journal (últimos eventos):\n# 14:35:22 - CUSTOMER-SERVICE registered\n# 14:35:25 - PRODUCT-SERVICE registered\n# 14:35:28 - TRANSACTION-SERVICE registered\n\n# Probar detección de fallos:\n# Detener customer-service (Ctrl+C)\n# Admin UI → CUSTOMER-SERVICE cambia a [Rojo] DOWN\n# Journal → \"14:36:10 - CUSTOMER-SERVICE status changed to DOWN\""
+}

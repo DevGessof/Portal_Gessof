@@ -1,0 +1,61 @@
+{
+  "titulo": "Escribir Fichero de Propiedades YAML para Perfil de Producción",
+  "resumen": "Creación del archivo application-prod.yml con configuración para entorno productivo usando formato YAML. Se configuran propiedades de base de datos PostgreSQL, se desactivan herramientas de desarrollo, y se optimizan logs. Se explican ventajas de YAML sobre properties y cómo Spring Boot soporta ambos formatos.",
+  "puntosClave": [
+    "Crear archivo application-prod.yml (formato YAML, no properties)",
+    "YAML: sintaxis jerárquica más legible que properties plano",
+    "Configurar PostgreSQL: spring.datasource.url, username, password",
+    "Usar variables de entorno para credenciales: ${DB_USER}, ${DB_PASSWORD}",
+    "Desactivar consola H2: spring.h2.console.enabled=false",
+    "Desactivar Swagger: springdoc.swagger-ui.enabled=false",
+    "Logs mínimos: logging.level.root=WARN o ERROR",
+    "Puerto producción: server.port=8081 (o del balanceador)",
+    "JPA: ddl-auto=validate (no create-drop en producción)",
+    "Spring Boot soporta .properties y .yml indistintamente",
+    "YAML permite anidar propiedades de forma clara",
+    "Buena práctica: dev usa .properties, prod usa .yml"
+  ],
+  "conceptos": [
+    {
+      "nombre": "YAML (Yet Another Markup Language)",
+      "descripcion": "Formato de configuración jerárquico más legible que properties plano"
+    },
+    {
+      "nombre": "application-prod.yml",
+      "descripcion": "Archivo de configuración de producción en formato YAML"
+    },
+    {
+      "nombre": "PostgreSQL",
+      "descripcion": "Base de datos relacional robusta usada comúnmente en producción"
+    },
+    {
+      "nombre": "Variables de Entorno",
+      "descripcion": "Valores externos inyectados en runtime: ${DB_USER}, ${DB_PASSWORD}"
+    },
+    {
+      "nombre": "spring.jpa.hibernate.ddl-auto",
+      "descripcion": "Estrategia de creación de esquema: create-drop (dev), validate (prod)"
+    },
+    {
+      "nombre": "Sintaxis YAML",
+      "descripcion": "Usa indentación y : para jerarquía en vez de puntos como properties"
+    },
+    {
+      "nombre": "Configuración de Producción",
+      "descripcion": "Optimizada para seguridad, rendimiento y estabilidad"
+    },
+    {
+      "nombre": "Logs en Producción",
+      "descripcion": "WARN o ERROR para reducir ruido y mejorar rendimiento"
+    },
+    {
+      "nombre": "Seguridad de Credenciales",
+      "descripcion": "No hardcodear passwords, usar variables de entorno o vault"
+    },
+    {
+      "nombre": "Validación de Esquema",
+      "descripcion": "ddl-auto=validate verifica que BD coincide con entidades sin modificarla"
+    }
+  ],
+  "codigoEjemplo": "# application-prod.yml (formato YAML)\nspring:\n  application:\n    name: customer-service\n  \n  datasource:\n    url: jdbc:postgresql://prod-server:5432/customer_db\n    username: ${DB_USER}\n    password: ${DB_PASSWORD}\n    driver-class-name: org.postgresql.Driver\n  \n  jpa:\n    database-platform: org.hibernate.dialect.PostgreSQLDialect\n    hibernate:\n      ddl-auto: validate  # No modificar esquema en producción\n    show-sql: false\n  \n  h2:\n    console:\n      enabled: false  # Desactivar en producción\n\nspringdoc:\n  swagger-ui:\n    enabled: false  # Sin Swagger en producción\n\nlogging:\n  level:\n    root: WARN\n    com.paymentchange: INFO\n\nserver:\n  port: 8081\n\n# Equivalente en .properties:\n# spring.datasource.url=jdbc:postgresql://prod-server:5432/customer_db\n# spring.datasource.username=${DB_USER}"
+}

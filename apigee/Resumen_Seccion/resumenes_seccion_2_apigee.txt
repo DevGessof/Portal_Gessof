@@ -1,0 +1,356 @@
+================================================================================
+                    CURSO DE APIGEE - SECCIÓN 2
+                    FUNDAMENTOS DE API PROXIES
+              RESÚMENES DIDÁCTICOS DE CADA VIDEO DEL CURSO
+================================================================================
+
+Instructor: Eduardo Celedonio
+Elaborado por: Claude (Asistente AI)
+Fecha: 2 de enero de 2026
+
+================================================================================
+
+
+VIDEO 1: EXPLOREMOS LA UI DE APIGEE X
+================================================================================
+
+La interfaz de Apigee se accede desde Google Cloud y está organizada en secciones específicas para diferentes funciones.
+
+La pantalla principal (Overview) muestra accesos directos para crear proxies, la URL de tu organización, y estadísticas básicas. Cuando Apigee se configura por primera vez, incluye un API de prueba llamado "HelloWorld" que puedes probar directamente. La sección más importante es "Proxy Development" donde crearás tus API proxies - tiene tres pestañas: Overview (información general), Develop (configuración y políticas), y Debug (herramienta de diagnóstico).
+
+Debug es particularmente útil porque permite iniciar sesiones de 10 minutos donde capturas el recorrido completo de cada petición, mostrando qué políticas se ejecutaron y qué variables se poblaron. Puedes descargar estas sesiones y compartirlas con tu equipo. Los Shared Flows son flujos reutilizables que evitan repetir código - por ejemplo, si varios proxies necesitan enviar logs de la misma manera, creas un shared flow y lo llamas desde cualquier proxy.
+
+La sección "Developers" administra quienes consumen tus APIs. "Apps" permite relacionar desarrolladores con productos y generar API Keys. "Analytics" proporciona dashboards automáticos con tráfico, tiempos de respuesta y análisis por proxy. "Management" muestra información de tu organización: instancias, ubicación del runtime, rangos de IPs y ambientes configurados.
+
+Algunas funcionalidades aún requieren acceder a la "UI clásica" (apigee.google.com) ya que Google Cloud está migrando gradualmente toda la interfaz. Cuando veas que falta alguna opción, busca el botón para acceder a la UI clásica.
+
+
+================================================================================
+
+
+VIDEO 2: ¿QUÉ ES UN API PROXY?
+================================================================================
+
+Un API Proxy es un intermediario entre el cliente y tu backend que agrega funcionalidades sin modificar el código del backend.
+
+Imagina que tienes un servicio backend en "https://mi-backend.com/users". En vez de dar esta URL directamente a los clientes, creas un API Proxy en Apigee que expone "https://mi-org.apigee.net/usuarios". Cuando alguien llama a tu proxy, Apigee recibe la petición, puede aplicar transformaciones, seguridad, validaciones, y luego llama al backend real. El cliente nunca sabe que existe un backend detrás.
+
+Las ventajas principales son: agregar seguridad sin tocar el backend (API Keys, OAuth, validación de tokens), transformar datos (XML a JSON o viceversa), aplicar límites de uso (quotas, spike arrest), cachear respuestas para mejorar performance, y tener un punto centralizado para logs y monitoreo.
+
+Un caso de uso común es cuando tienes un backend antiguo que responde en XML pero tus clientes móviles necesitan JSON. Con un proxy, transformas la respuesta automáticamente. Otro caso es agregar autenticación OAuth a un servicio que originalmente no la tenía.
+
+El proxy funciona como capa de abstracción: el backend puede cambiar de tecnología o ubicación, pero mientras el proxy mantenga el mismo contrato con los clientes, ellos no se ven afectados.
+
+
+================================================================================
+
+
+VIDEO 3: CREANDO NUESTRO PRIMER API PROXY
+================================================================================
+
+En este video se crea el primer proxy de forma práctica usando el asistente de Apigee.
+
+Vas a API Proxies y haces clic en "Create". Seleccionas "Reverse Proxy" que es el tipo más común - recibe peticiones y las reenvía a un backend. Le das un nombre como "my-first-proxy" y defines el Base Path "/v1/users" - esta es la ruta que expondrás a tus clientes.
+
+En Target (backend), pones la URL real de tu servicio, por ejemplo "https://jsonplaceholder.typicode.com/users". Opcionalmente puedes habilitar CORS si lo necesitas para aplicaciones web. Luego das "Create" y Apigee genera el proxy automáticamente con configuración básica.
+
+Después de crearlo puedes desplegarlo a un ambiente (eval o dev). Una vez desplegado, obtienes una URL completa como "https://tu-org.apigee.net/v1/users". Cuando llamas a esta URL, Apigee recibe la petición y la reenvía a tu backend en jsonplaceholder.
+
+Puedes probar directamente desde la UI de Apigee o usar Postman. Si todo está bien configurado, recibes la respuesta del backend. Este es el flujo básico más simple: cliente → proxy → backend → proxy → cliente.
+
+
+================================================================================
+
+
+VIDEO 4: CONOCIENDO EL APIGEE API
+================================================================================
+
+Apigee tiene su propio API REST que permite automatizar tareas administrativas sin usar la interfaz gráfica.
+
+El Apigee API te permite crear, actualizar, desplegar y eliminar proxies programáticamente. Esto es útil cuando tienes pipelines de CI/CD y quieres automatizar despliegues. Por ejemplo, puedes crear un script que al hacer commit en Git, automáticamente despliega la nueva versión del proxy a desarrollo.
+
+La documentación del API está en la sección de referencia de Apigee. Ahí encuentras todos los endpoints disponibles organizados por recurso: proxies, productos, developers, apps, etc. Cada endpoint muestra qué parámetros acepta, qué devuelve, y ejemplos de uso.
+
+Para usar el API necesitas autenticarte. Hay dos métodos principales: OAuth 2.0 con un access token, o usando las credenciales de tu cuenta de Google Cloud. El método más común es generar un access token y enviarlo en el header Authorization de tus peticiones.
+
+Las operaciones típicas incluyen: listar todos los proxies de una organización, obtener detalles de un proxy específico, desplegar una revisión a un ambiente, o crear nuevos recursos como productos o apps.
+
+
+================================================================================
+
+
+VIDEO 5: ORGANIZACIONES DE APIGEE X
+================================================================================
+
+Una organización en Apigee es el contenedor principal donde viven todos tus recursos: proxies, productos, developers, ambientes, etc.
+
+Cuando aprovisionas Apigee en Google Cloud, se crea automáticamente una organización con el mismo nombre que tu proyecto de GCP. Por ejemplo, si tu proyecto se llama "mi-proyecto-123", tu organización de Apigee también se llamará "mi-proyecto-123".
+
+Dentro de una organización puedes tener múltiples ambientes (dev, test, prod) y cada ambiente puede tener diferentes configuraciones. Los proxies se despliegan a ambientes específicos - puedes tener una versión en desarrollo y otra diferente en producción.
+
+La organización también determina ciertos límites y capacidades dependiendo de tu tipo de suscripción. Las organizaciones trial tienen límites como número máximo de ambientes o transacciones por segundo. Las organizaciones de pago (Standard o Enterprise) tienen límites mucho más altos.
+
+Todos los recursos como KVMs, Target Servers, y configuraciones de seguridad están asociados a la organización. Si trabajas en múltiples proyectos, cada uno tendrá su propia organización de Apigee independiente.
+
+
+================================================================================
+
+
+VIDEO 6: GENERANDO UN ACCESS TOKEN PARA CONSUMIR EL APIGEE API
+================================================================================
+
+Para usar el Apigee API necesitas autenticarte con un access token de Google Cloud.
+
+El comando más directo es "gcloud auth print-access-token" que genera un token temporal válido por aproximadamente una hora. Ejecutas este comando en tu terminal (requiere tener instalado gcloud CLI) y te devuelve un string largo que es el token.
+
+Este token lo usas en el header Authorization de tus peticiones al Apigee API con el formato "Bearer [token]". Por ejemplo, si quieres listar todos los proxies, haces un GET a "https://apigee.googleapis.com/v1/organizations/[tu-org]/apis" con el header "Authorization: Bearer [tu-token]".
+
+El token expira, así que si estás trabajando por mucho tiempo necesitarás generar uno nuevo. En scripts automatizados puedes incluir el comando para generar el token justo antes de hacer las peticiones al API.
+
+Alternativamente puedes usar OAuth 2.0 creando una Service Account en Google Cloud, pero para pruebas rápidas el método con gcloud es más simple.
+
+
+================================================================================
+
+
+VIDEO 7: CONFIGURACIÓN DE ENVIRONMENTS Y ENVIRONMENT GROUPS
+================================================================================
+
+Los ambientes (Environments) permiten tener diferentes configuraciones para desarrollo, pruebas y producción.
+
+Apigee crea automáticamente dos ambientes: "eval" (evaluación) y "prod" (producción). Puedes crear ambientes adicionales como "dev" o "test" dependiendo de tus necesidades. Cada ambiente tiene su propia configuración: KVMs, Target Servers, y variables específicas.
+
+Los Environment Groups agrupan ambientes y les asignan hostnames. Por ejemplo, puedes tener un grupo "desarrollo" con hostname "dev-apis.tuempresa.com" que apunte al ambiente "dev", y otro grupo "produccion" con hostname "apis.tuempresa.com" que apunte a "prod".
+
+Cuando despliegas un proxy a un ambiente, especificas cuál. Un proxy puede estar desplegado simultáneamente en múltiples ambientes con diferentes configuraciones. Por ejemplo, la versión 1.0 en producción y la versión 2.0 beta en desarrollo.
+
+Para cambiar la configuración de un ambiente vas a Admin → Environments, seleccionas el ambiente y ahí puedes configurar propiedades, KVMs, o incluso borrar el ambiente si ya no lo necesitas.
+
+
+================================================================================
+
+
+VIDEO 8: LOAD BALANCING Y ENVIRONMENTS
+================================================================================
+
+Apigee puede distribuir tráfico entre múltiples backends usando load balancing a nivel de Target Servers.
+
+Si tienes varios servidores backend (por ejemplo, tres instancias de tu servicio para alta disponibilidad), puedes configurar Target Servers en Apigee para cada uno. Luego en tu proxy, en vez de apuntar directamente a una URL, referencias el Target Server.
+
+Apigee automáticamente distribuye las peticiones entre los servidores disponibles usando round-robin (cada petición va al siguiente servidor en la lista). Si un servidor está caído, Apigee lo detecta y deja de enviarle tráfico hasta que se recupere.
+
+Esto es útil porque centralizas la configuración de tus backends. Si cambias la IP de un servidor, solo actualizas el Target Server en Apigee, no necesitas modificar cada proxy. Puedes tener diferentes Target Servers por ambiente - tus servidores de desarrollo apuntan a IPs de dev, y los de producción a IPs de prod.
+
+La configuración de health checks permite que Apigee verifique periódicamente si los backends están funcionando, automáticamente removiendo del pool los que fallen.
+
+
+================================================================================
+
+
+VIDEO 9: CONFIGURANDO FRONTEND PARA AMBIENTE PRODUCTIVO
+================================================================================
+
+El frontend de un proxy es la URL que expones a tus clientes y se configura mediante Environment Groups.
+
+Por defecto Apigee te da un hostname autogenerado como "eval-grupo-xyz.apigee.net". Para producción querrás usar tu propio dominio como "api.tuempresa.com". Para esto creas un Environment Group, le asignas el hostname personalizado, y lo vinculas al ambiente productivo.
+
+Después necesitas configurar DNS para que tu dominio apunte a Apigee. Obtienes la IP del Environment Group desde la configuración de Apigee y creas un registro A en tu DNS apuntando ahí. Opcionalmente puedes configurar SSL/TLS subiendo tus certificados.
+
+Una vez configurado, tus clientes pueden llamar a "https://api.tuempresa.com/v1/users" en vez de la URL autogenerada de Apigee. Esto da una imagen más profesional y te permite controlar completamente el dominio.
+
+Puedes tener múltiples Environment Groups para diferentes propósitos: uno para APIs públicas, otro para APIs internas, etc., cada uno con su propio dominio.
+
+
+================================================================================
+
+
+VIDEO 10: SOLVENTANDO LÍMITE DE AMBIENTES EN ORGANIZACIÓN TRIAL
+================================================================================
+
+Las organizaciones trial de Apigee tienen límite de dos ambientes (eval y prod), pero puedes trabajar con esta limitación.
+
+Si necesitas un ambiente de desarrollo pero ya tienes eval y prod, la solución más simple es usar "eval" como tu ambiente de desarrollo y reservar "prod" para cuando realmente vayas a producción. Renombrar no es posible, pero puedes cambiar la forma en que usas los ambientes.
+
+Otra opción es crear diferentes revisiones del mismo proxy en el mismo ambiente. Por ejemplo, tienes revisión 1 estable y revisión 2 en desarrollo, ambas desplegadas en "eval". Usas diferentes base paths para diferenciarlas: "/v1/users" para la estable y "/v2/users" para la en desarrollo.
+
+Para organizaciones de pago puedes crear hasta 12 ambientes, dándote total flexibilidad para tener dev, test, staging, prod, y otros que necesites. También puedes solicitar aumentos de límites contactando a soporte de Google Cloud.
+
+La limitación de ambientes no afecta el número de proxies que puedes crear - solo limita dónde puedes desplegarlos.
+
+
+================================================================================
+
+
+VIDEO 11: APIGEE FLOWS
+================================================================================
+
+Los flows son las etapas por las que pasa una petición dentro de un proxy, permitiendo ejecutar lógica en momentos específicos.
+
+Hay dos tipos principales de flujos: ProxyEndpoint (del lado del cliente) y TargetEndpoint (del lado del backend). Cada uno tiene sub-flujos: PreFlow (antes de flujos condicionales), Conditional Flows (se ejecutan solo si se cumple una condición), y PostFlow (después de flujos condicionales).
+
+El orden completo de ejecución es: ProxyEndpoint PreFlow Request → Conditional Flows → ProxyEndpoint PostFlow Request → TargetEndpoint PreFlow Request → TargetEndpoint PostFlow Request → llamada al backend → TargetEndpoint PreFlow Response → TargetEndpoint PostFlow Response → ProxyEndpoint PreFlow Response → ProxyEndpoint PostFlow Response.
+
+Los Conditional Flows permiten ejecutar lógica solo para ciertos casos. Por ejemplo, un flow que solo se ejecuta cuando el path es "/users" y el método es GET. Si la condición no se cumple, ese flow se salta.
+
+Entender los flows es fundamental porque te permite colocar políticas en el momento correcto. Si quieres validar seguridad antes de todo, va en ProxyEndpoint PreFlow Request. Si quieres transformar la respuesta del backend, va en TargetEndpoint PostFlow Response.
+
+
+================================================================================
+
+
+VIDEO 12: POLÍTICAS Y SUS TIPOS
+================================================================================
+
+Las políticas son bloques de funcionalidad que agregas a los flows para implementar características como seguridad, transformación, validación, etc.
+
+Apigee tiene más de 40 políticas diferentes organizadas en categorías. Las de Seguridad incluyen Verify API Key, OAuth, Basic Authentication, y CORS. Las de Transformación incluyen JSON to XML, XML to JSON, y XSLT. Las de Tráfico incluyen Quota, Spike Arrest, y Response Cache.
+
+Cada política se configura mediante XML donde defines su comportamiento. Por ejemplo, la política Quota necesita saber cuántas llamadas permitir y en qué período de tiempo. Una vez configurada, arrastras la política al flow donde quieres que se ejecute.
+
+Las políticas se ejecutan en el orden en que las colocas en el flow. Si pones Verify API Key seguido de Quota, primero valida la API Key y luego aplica el límite de uso. El orden importa - si inviertes estos dos, aplicarías quota incluso a requests con API Key inválida.
+
+Algunas políticas populares: Assign Message (manipular headers/body), Service Callout (llamar a otro servicio), JavaScript (ejecutar código personalizado), y Extract Variables (extraer datos del request/response).
+
+
+================================================================================
+
+
+VIDEO 13: AGREGANDO POLÍTICAS - EXTRACT VARIABLES
+================================================================================
+
+La política Extract Variables permite extraer información de un request o response y guardarla en variables para usarla después.
+
+Por ejemplo, si tu cliente envía un query parameter "user_id=123", puedes usar Extract Variables para guardar ese valor en una variable llamada "userId". Luego otras políticas pueden usar esa variable, como incluirla en logs o usarla para construir un nuevo request.
+
+En la configuración XML defines de dónde extraer (query params, headers, body JSON/XML, o path) y en qué variable guardarlo. Si extraes de JSON puedes usar JSONPath para navegar la estructura. Para XML usas XPath.
+
+Un caso de uso común es extraer información del cliente como su IP, user agent, o API key para incluirla en logs de auditoría. Otro caso es extraer campos del response del backend para construir un response personalizado al cliente.
+
+Las variables extraídas quedan disponibles durante toda la ejecución del proxy. Puedes verlas en Debug y son muy útiles para hacer el flujo dinámico basado en el contenido de las peticiones.
+
+
+================================================================================
+
+
+VIDEO 14: XML TO JSON
+================================================================================
+
+Esta política convierte automáticamente respuestas XML en formato JSON.
+
+Muchos servicios antiguos responden en XML pero las aplicaciones modernas (especialmente móviles) prefieren JSON. En vez de modificar el backend, agregas la política XML to JSON en el flujo de respuesta del proxy.
+
+La configuración es simple: defines la fuente (típicamente "response" que es la respuesta del backend) y el destino (también "response" para sobrescribir). Apigee automáticamente detecta la estructura XML y la convierte a JSON equivalente.
+
+Por ejemplo, un XML como `<user><name>Juan</name><age>30</age></user>` se convierte en `{"user": {"name": "Juan", "age": 30}}`. Arrays en XML también se convierten correctamente a arrays JSON.
+
+La política se coloca típicamente en TargetEndpoint PostFlow Response, después de recibir la respuesta del backend pero antes de enviarla al cliente. También cambias el header Content-Type a "application/json" para que el cliente sepa que está recibiendo JSON.
+
+
+================================================================================
+
+
+VIDEO 15: SERVICE CALLOUT Y JSON TO XML
+================================================================================
+
+Service Callout permite llamar a otro servicio externo desde dentro de tu proxy, útil para casos como consultar bases de datos externas o servicios de validación.
+
+Por ejemplo, tu proxy recibe un request, usa Service Callout para verificar el ID del usuario en otro servicio, y dependiendo de la respuesta decide si continuar o rechazar. La política hace un HTTP request completo (puedes especificar método, headers, body) y guarda la respuesta en una variable.
+
+JSON to XML hace lo contrario de XML to JSON - convierte JSON a XML. Esto es útil cuando tu cliente envía JSON pero tu backend antiguo solo acepta XML. Configuras la política para leer el request del cliente (que viene en JSON), convertirlo a XML, y enviarlo al backend.
+
+Puedes encadenar estas políticas: cliente envía JSON → JSON to XML → llamas al backend → backend responde XML → XML to JSON → cliente recibe JSON. Tu proxy actúa como traductor bidireccional.
+
+La política Service Callout puede hacer peticiones síncronas (espera la respuesta) o asíncronas dependiendo de tu configuración. Para casos donde no necesitas esperar la respuesta, asíncrona es más eficiente.
+
+
+================================================================================
+
+
+VIDEO 16: USUARIOS Y ROLES EN APIGEE
+================================================================================
+
+Apigee maneja permisos mediante roles que asignas a usuarios de tu organización de Google Cloud.
+
+Los roles principales son: Organization Administrator (control total), API Admin (puede crear/modificar proxies), Analytics Viewer (solo ver reportes), y Developer Admin (administrar developers y apps). Asignas roles mediante IAM en Google Cloud.
+
+Cuando agregas un usuario a tu proyecto de GCP con rol de Apigee, automáticamente tiene acceso a la interfaz de Apigee con los permisos correspondientes. Por ejemplo, un usuario con rol "API Admin" puede crear proxies pero no puede cambiar configuraciones de organización.
+
+Para equipos grandes es buena práctica crear roles personalizados con permisos específicos. Por ejemplo, un rol "Deployer" que solo puede desplegar proxies existentes pero no crearlos o modificarlos.
+
+Los permisos son a nivel de organización en Apigee X. No puedes dar acceso solo a ciertos proxies - si alguien tiene acceso, ve todos los proxies de la organización. Para separación estricta necesitarías múltiples organizaciones.
+
+
+================================================================================
+
+
+VIDEO 17: TARGET SERVERS
+================================================================================
+
+Target Servers son configuraciones reutilizables que definen hacia dónde apuntan tus proxies, facilitando cambios de backend.
+
+En vez de hardcodear "https://mi-backend.com:8080" en cada proxy, creas un Target Server llamado "backend-users" con esa URL. Luego en tus proxies simplemente referencias "backend-users". Si cambias el servidor, actualizas el Target Server una vez y todos los proxies que lo usan apuntan automáticamente al nuevo.
+
+Los Target Servers se configuran por ambiente. Puedes tener "backend-users" apuntando a "dev-backend.com" en desarrollo pero a "prod-backend.com" en producción. El mismo proxy usa diferentes backends según dónde esté desplegado.
+
+Para crear un Target Server vas a Admin → Environments → seleccionas el ambiente → Target Servers → Create. Defines el host, puerto, y opcionalmente SSL. Puedes tener múltiples Target Servers para el mismo servicio y Apigee hará load balancing entre ellos.
+
+En el proxy, en la sección TargetEndpoint, cambias la URL fija por una referencia al Target Server usando la sintaxiis específica de Apigee.
+
+
+================================================================================
+
+
+VIDEO 18: KEY VALUE MAPS (KVMs)
+================================================================================
+
+Los KVMs son almacenes clave-valor donde guardas información de configuración que puede cambiar sin redesplegar el proxy.
+
+Piensa en KVMs como un diccionario: guardas pares de "clave: valor" como "backend_url: https://mi-api.com" o "api_key: abc123xyz". Tus proxies leen estos valores durante ejecución, entonces si cambias el valor en el KVM, inmediatamente afecta a todos los proxies que lo usen.
+
+Hay tres niveles de KVMs: Organización (compartido por todos los ambientes), Ambiente (específico de dev/prod), y Proxy (solo para un proxy específico). La mayoría del tiempo usas KVMs de ambiente.
+
+Los KVMs pueden ser encriptados para datos sensibles como API Keys o passwords. Cuando creas un KVM encriptado, los valores se guardan cifrados y solo se desencriptan cuando el proxy los lee.
+
+Casos de uso comunes: guardar URLs de backends que cambian, API Keys de servicios externos, configuraciones de negocio (como límites de quota que puedes ajustar sin redesplegar), o feature flags para activar/desactivar funcionalidades.
+
+
+================================================================================
+
+
+VIDEO 19: ADMINISTRACIÓN DE KVMs
+================================================================================
+
+Los KVMs se pueden administrar tanto desde la UI como mediante el Apigee API.
+
+Desde la UI vas a Admin → Environments → seleccionas ambiente → Key Value Maps. Ahí puedes crear nuevos KVMs, agregar/editar/eliminar entradas, o marcar un KVM como encriptado. Cada entrada tiene una clave y un valor - ambos son strings.
+
+Para KVMs encriptados, cuando agregas una entrada el valor se muestra como asteriscos una vez guardado. No puedes ver el valor encriptado después, solo reemplazarlo. Esto protege credenciales sensibles.
+
+Mediante el API puedes automatizar la gestión de KVMs. Por ejemplo, en tu pipeline de CI/CD puedes tener un script que actualiza el KVM con la nueva URL de backend después de desplegar. El API te permite crear, leer, actualizar y eliminar tanto KVMs como sus entradas.
+
+Una práctica recomendada es documentar qué KVMs existen y para qué sirve cada uno. En proyectos grandes puedes terminar con muchos KVMs y sin documentación se vuelve confuso cuáles están en uso.
+
+
+================================================================================
+
+
+VIDEO 20: KVM OPERATION POLICY
+================================================================================
+
+La política Key Value Map Operations permite leer y escribir valores en KVMs desde tu proxy.
+
+La operación más común es GET que lee un valor del KVM y lo guarda en una variable de flujo. Por ejemplo, lees la clave "backend_url" del KVM "configuracion" y la guardas en la variable "target.url" que luego usas para construir el request al backend.
+
+En la configuración XML especificas: el nombre del KVM, la operación (GET, PUT, DELETE), la clave que quieres leer, y la variable donde guardar el resultado. Para GET es común guardar en variables que luego otras políticas usan.
+
+La operación PUT permite escribir valores durante la ejecución. Por ejemplo, podrías guardar un contador de cuántas veces se ha llamado cierto endpoint. DELETE remueve una entrada del KVM.
+
+Un patrón útil es combinar KVMs con políticas condicionales: lees un valor del KVM y dependiendo de su contenido ejecutas diferentes flujos. Por ejemplo, un feature flag en el KVM decide si usar el backend nuevo o el antiguo.
+
+La política se coloca típicamente temprano en el flujo si necesitas el valor para decisiones posteriores, o al final si estás guardando resultados de la ejecución.
+
+
+================================================================================
+
+FIN DE LA SECCIÓN 2
+================================================================================

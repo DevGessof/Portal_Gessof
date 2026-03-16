@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fix: evita que Google Drive bloquee los iframes cuando se sirve desde localhost -->
+    <meta name="referrer" content="no-referrer">
+    <title>Apigee X | Portal de Aprendizaje</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- CSS Modular -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/etapas.css">
+</head>
+
+<body>
+    <!-- Fondo decorativo -->
+    <div class="bg-pattern"></div>
+
+    <!-- Navegación Principal -->
+    <nav class="main-nav-tabs">
+        <div class="nav-container">
+            <div style="display: flex; gap: 0.5rem; align-items:center;">
+                <img src="assets/images/logo_gessof.png" alt="GESSOF Academy"
+                    style="height:82px; margin-right:2rem; object-fit: contain;" id="headerLogo">
+                <button class="main-nav-tab active" onclick="switchMainTab(event, 'section-inicio')">
+                    <i class="fas fa-home"></i> Inicio
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-herramientas')">
+                    <i class="fas fa-tools"></i> Herramientas
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-clases')">
+                    <i class="fas fa-graduation-cap"></i> Curso
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-evaluacion')">
+                    <i class="fas fa-clipboard-check"></i> Evaluación
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-glosario')">
+                    <i class="fas fa-book"></i> Glosario
+                </button>
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <!-- Barra de progreso -->
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div
+                        style="width: 120px; height: 8px; background: var(--bg-main); border-radius: 10px; overflow: hidden;">
+                        <div id="progressFill"
+                            style="height: 100%; width: 0%; background: var(--primary); transition: width 0.5s ease; border-radius: 10px;">
+                        </div>
+                    </div>
+                    <span id="progressText"
+                        style="font-size: 0.85rem; font-weight: 700; color: var(--primary); min-width: 40px;">0%</span>
+                </div>
+
+                <!-- Usuario -->
+                <button class="main-nav-tab" onclick="changeUser()" style="border: 1px solid var(--border);">
+                    <i class="fas fa-user"></i>
+                    <span id="userNameDisplay">Usuario</span>
+                </button>
+
+                <!-- Toggle tema -->
+                <button class="main-nav-tab theme-toggle-header" onclick="toggleTheme()"
+                    style="border: 1px solid var(--border);">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="main-content">
+
+        <!-- SECCIÓN: INICIO -->
+        <div id="section-inicio" class="main-content-section active">
+            <div class="hero">
+                <div class="hero-badge">
+                    <i class="fas fa-cloud"></i>
+                    Google Cloud Platform
+                </div>
+                <h1>Apigee X para Desarrolladores de APIs</h1>
+                <p>Domina la plataforma líder de gestión de APIs en Google Cloud. Aprende a crear, asegurar y escalar
+                    APIs profesionales con Apigee X.</p>
+
+                <div class="hero-stats">
+                    <div>
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Secciones</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">60</div>
+                        <div class="stat-label">Videos</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">~6h</div>
+                        <div class="stat-label">Duración</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Práctico</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objetivos de Aprendizaje / Temario -->
+            <div class="objetivos-section">
+                <h2 style="margin-bottom: 1.5rem; color: var(--text-primary);">
+                    <i class="fas fa-bullseye"></i> Lo que aprenderás
+                </h2>
+
+                <!-- Temario por módulos -->
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
+
+                    <!-- Módulo 1 -->
+                    <div class="objetivo-card" style="flex-direction: column; align-items: flex-start; gap: 0.75rem;">
+                        <div style="display:flex; align-items:center; gap:0.75rem; width:100%;">
+                            <div class="objetivo-icon" style="flex-shrink:0;"><i class="fas fa-plug"></i></div>
+                            <strong style="color: var(--text-primary); font-size: 0.95rem;">Módulo 1 – Fundamentos de
+                                Integración y APIs</strong>
+                        </div>
+                        <ul
+                            style="margin:0; padding-left:1.25rem; color: var(--text-secondary); font-size:0.85rem; line-height:1.7;">
+                            <li>¿Qué es una API y qué significa API?</li>
+                            <li>Principios HTTP y REST</li>
+                            <li>Formatos de datos: JSON, XML y YAML</li>
+                            <li>Conceptos de API Management</li>
+                            <li>Introducción a Google Apigee</li>
+                            <li>Conceptos base: API Proxy, Shared Flows, Environment Configuration, Products y Apps</li>
+                        </ul>
+                    </div>
+
+                    <!-- Módulo 2 -->
+                    <div class="objetivo-card" style="flex-direction: column; align-items: flex-start; gap: 0.75rem;">
+                        <div style="display:flex; align-items:center; gap:0.75rem; width:100%;">
+                            <div class="objetivo-icon" style="flex-shrink:0;"><i class="fas fa-sliders-h"></i></div>
+                            <strong style="color: var(--text-primary); font-size: 0.95rem;">Módulo 2 – Políticas y
+                                configuración básica</strong>
+                        </div>
+                        <ul
+                            style="margin:0; padding-left:1.25rem; color: var(--text-secondary); font-size:0.85rem; line-height:1.7;">
+                            <li>AssignMessage</li>
+                            <li>ExtractVariables</li>
+                            <li>RaiseFault</li>
+                            <li>VerifyAPIKey</li>
+                            <li>OAuthV2</li>
+                            <li>Quota</li>
+                            <li>JavaScript</li>
+                            <li>ServiceCallout</li>
+                        </ul>
+                    </div>
+
+                    <!-- Módulo 3 -->
+                    <div class="objetivo-card" style="flex-direction: column; align-items: flex-start; gap: 0.75rem;">
+                        <div style="display:flex; align-items:center; gap:0.75rem; width:100%;">
+                            <div class="objetivo-icon" style="flex-shrink:0;"><i class="fas fa-shield-alt"></i></div>
+                            <strong style="color: var(--text-primary); font-size: 0.95rem;">Módulo 3 – Políticas
+                                avanzadas y seguridad</strong>
+                        </div>
+                        <ul
+                            style="margin:0; padding-left:1.25rem; color: var(--text-secondary); font-size:0.85rem; line-height:1.7;">
+                            <li>FlowCallout</li>
+                            <li>JSONToXML / XMLToJSON</li>
+                            <li>LookupCache / PopulateCache</li>
+                            <li>Operaciones con Key Value Maps (KVM)</li>
+                            <li>CORS y configuración de seguridad para frontends</li>
+                            <li>Basic Authentication</li>
+                            <li>JSON Threat Protection</li>
+                            <li>XML Threat Protection</li>
+                        </ul>
+                    </div>
+
+                    <!-- Módulo 5 -->
+                    <div class="objetivo-card"
+                        style="flex-direction: column; align-items: flex-start; gap: 0.75rem; grid-column: span 1;">
+                        <div style="display:flex; align-items:center; gap:0.75rem; width:100%;">
+                            <div class="objetivo-icon" style="flex-shrink:0;"><i class="fas fa-flask"></i></div>
+                            <strong style="color: var(--text-primary); font-size: 0.95rem;">Módulo 4 – Laboratorios
+                                prácticos</strong>
+                        </div>
+                        <ul
+                            style="margin:0; padding-left:1.25rem; color: var(--text-secondary); font-size:0.85rem; line-height:1.7;">
+                            <li>Hola Mundo – Proxy sin Target Server</li>
+                            <li>Creación Producto, Developer y App</li>
+                            <li>OAuthV2 – Seguridad JWT</li>
+                            <li>WorkCafe API – Exposición servicio REST</li>
+                            <li>Meli API – Consumo y exposición API pública</li>
+                            <li>OMDb API – Integración API externa</li>
+                            <li>Creación Target Server OMDb</li>
+                            <li>Lemontech – Pass Through</li>
+                            <li>Clave AFP – Transformación</li>
+                            <li>Retail Connect – Transformación</li>
+                            <li>OAuth Cache – Gestión y almacenamiento de tokens</li>
+                            <li>Consulta en Línea (mTLS) – Certificados mutuos</li>
+                        </ul>
+                    </div>
+
+                    <!-- Resultados Esperados -->
+                    <div class="objetivo-card"
+                        style="flex-direction: column; align-items: flex-start; gap: 0.75rem; border-color: var(--primary); background: linear-gradient(135deg, var(--bg-card), color-mix(in srgb, var(--primary) 8%, transparent));">
+                        <div style="display:flex; align-items:center; gap:0.75rem; width:100%;">
+                            <div class="objetivo-icon" style="flex-shrink:0; background: var(--primary);"><i
+                                    class="fas fa-trophy"></i></div>
+                            <strong style="color: var(--primary); font-size: 0.95rem;">🎯 Resultados Esperados</strong>
+                        </div>
+                        <ul
+                            style="margin:0; padding-left:1.25rem; color: var(--text-secondary); font-size:0.85rem; line-height:1.7;">
+                            <li>Comprender arquitectura y conceptos de API Management en Apigee.</li>
+                            <li>Crear, documentar y exponer APIs seguras utilizando políticas estándar.</li>
+                            <li>Aplicar transformaciones, autenticación y manejo de errores.</li>
+                            <li>Implementar caching, KVM y protección contra amenazas.</li>
+                            <li>Desarrollar APIs empresariales listas para despliegue y monitoreo.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: HERRAMIENTAS -->
+        <div id="section-herramientas" class="main-content-section">
+            <h2 style="margin-bottom: 2rem; color: var(--text-primary);">
+                <i class="fas fa-tools"></i> Herramientas Necesarias
+            </h2>
+            <div class="grid-modules" id="herramientas-grid">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+        </div>
+
+        <!-- SECCIÓN: CURSO -->
+        <div id="section-clases" class="main-content-section">
+
+            <!-- VISTA PRINCIPAL: Selector de etapas -->
+            <div id="etapas-selector">
+                <div class="etapas-header">
+                    <h2><i class="fas fa-graduation-cap"></i> Ruta de Aprendizaje</h2>
+                    <p>Comienza con la introducción y avanza por las 3 etapas para completar el curso de Apigee X</p>
+                </div>
+
+                <div class="etapas-progreso-global">
+                    <div class="etapas-prog-step completado" id="prog-1">
+                        <div class="etapas-prog-circle"><i class="fab fa-google"></i></div>
+                        <span>Skill Badge</span>
+                    </div>
+                    <div class="etapas-prog-line"></div>
+                    <div class="etapas-prog-step" id="prog-2">
+                        <div class="etapas-prog-circle"><i class="fas fa-play"></i></div>
+                        <span>Videos</span>
+                    </div>
+                </div>
+
+                <div class="etapas-cards">
+                    <!-- INTRODUCCIÓN -->
+                    <div class="etapa-card etapa-card--intro" onclick="abrirIntroduccion()"
+                        style="border-color: #7C3AED; background: linear-gradient(135deg, var(--bg-card) 0%, color-mix(in srgb, #7C3AED 10%, var(--bg-card)) 100%);">
+                        <div class="etapa-card-num" style="color: #7C3AED;">00</div>
+                        <div class="etapa-card-icon" style="background: linear-gradient(135deg, #7C3AED, #5B21B6);">
+                            <i class="fas fa-book-reader"></i>
+                        </div>
+                        <div class="etapa-card-body">
+                            <div class="etapa-card-tag" style="background: linear-gradient(135deg, #7C3AED, #5B21B6);">
+                                Material de Introducción</div>
+                            <h3>Introducción</h3>
+                            <p>Revisa el material introductorio del curso. Presentación en PDF con fundamentos y
+                                contexto general de Apigee X.</p>
+                            <div class="etapa-card-meta">
+                                <span><i class="fas fa-file-pdf"></i> Sesión 1 PDF</span>
+                                <span><i class="fas fa-eye"></i> Vista embebida</span>
+                            </div>
+                        </div>
+                        <div class="etapa-card-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- ETAPA 1 -->
+                    <div class="etapa-card etapa-card--google" onclick="abrirEtapa(1)">
+                        <div class="etapa-card-num">01</div>
+                        <div class="etapa-card-icon">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <div class="etapa-card-body">
+                            <div class="etapa-card-tag">Certificación Oficial</div>
+                            <h3>Skill Badge Google</h3>
+                            <p>Completa el learning path oficial de Google Cloud y obtén tu badge verificado en Apigee
+                                X.</p>
+                            <div class="etapa-card-meta">
+                                <span><i class="fas fa-flask"></i> Labs prácticos</span>
+                                <span><i class="fas fa-clock"></i> ~4-6 horas</span>
+                                <span><i class="fas fa-trophy"></i> Badge compartible</span>
+                            </div>
+                        </div>
+                        <div class="etapa-card-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- ETAPA 2 -->
+                    <div class="etapa-card etapa-card--videos" onclick="abrirEtapa(2)">
+                        <div class="etapa-card-num">02</div>
+                        <div class="etapa-card-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="etapa-card-body">
+                            <div class="etapa-card-tag">Contenido Principal</div>
+                            <h3>Videos del Curso</h3>
+                            <p>Accede a las 6 secciones con 60 videos. Sigue tu progreso, marca favoritos y revisa cada
+                                tema a tu ritmo.</p>
+                            <div class="etapa-card-meta">
+                                <span><i class="fas fa-layer-group"></i> 6 secciones</span>
+                                <span><i class="fas fa-video"></i> 60 videos</span>
+                                <span><i class="fas fa-chart-line"></i> Seguimiento</span>
+                            </div>
+                        </div>
+                        <div class="etapa-card-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- VISTA DETALLE: Etapa activa -->
+            <div id="etapa-detalle" style="display:none;">
+                <!-- Botón volver -->
+                <button class="etapa-volver" onclick="volverEtapas()">
+                    <i class="fas fa-arrow-left"></i> Volver a las etapas
+                </button>
+
+                <!-- Panel Introducción -->
+                <div id="panel-intro" class="etapa-panel" style="display:none;">
+                    <div class="modulo-hero"
+                        style="background: linear-gradient(135deg, color-mix(in srgb, #7C3AED 15%, var(--bg-card)), color-mix(in srgb, #5B21B6 10%, var(--bg-card))); border: 1px solid color-mix(in srgb, #7C3AED 30%, transparent);">
+                        <div class="modulo-hero-icon" style="background: linear-gradient(135deg, #7C3AED, #5B21B6);">
+                            <i class="fas fa-book-reader"></i>
+                        </div>
+                        <div class="modulo-hero-text">
+                            <div class="modulo-hero-badge"
+                                style="background: linear-gradient(135deg, #7C3AED, #5B21B6);">Material de Introducción
+                            </div>
+                            <h3>Introducción al Curso — Apigee X</h3>
+                            <p>Revisa el material de la primera sesión del curso. Encontrarás los fundamentos, contexto
+                                y objetivos que guiarán tu aprendizaje durante toda la capacitación.</p>
+                        </div>
+                    </div>
+                    <!-- Visor PDF embebido -->
+                    <div
+                        style="margin: 1.5rem 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 24px rgba(0,0,0,0.15);">
+                        <div
+                            style="background: var(--bg-secondary); padding: 0.75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border);">
+                            <span
+                                style="font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-file-pdf" style="color: #EA4335;"></i> Sesión 1 — Material
+                                Introductorio
+                            </span>
+                            <a href="https://drive.google.com/uc?export=download&id=1HbByBnUhdRk31uu2ng5CuVcwwA-Hcmj5"
+                                class="btn-recurso btn-recurso--pdf" style="padding: 0.4rem 1rem; font-size: 0.8rem;"
+                                download="Sesion1_Introduccion.pdf">
+                                <i class="fas fa-download"></i> Descargar PDF
+                            </a>
+                        </div>
+                        <iframe src="https://drive.google.com/file/d/1HbByBnUhdRk31uu2ng5CuVcwwA-Hcmj5/preview"
+                            width="100%" height="680" frameborder="0" allow="autoplay"
+                            style="display: block; background: #fff;" title="Sesión 1 – Introducción al Curso"></iframe>
+                    </div>
+                </div>
+
+                <!-- Panel Etapa 1 -->
+                <div id="panel-etapa-1" class="etapa-panel" style="display:none;">
+                    <div class="modulo-hero modulo-hero--google">
+                        <div class="modulo-hero-icon"><i class="fab fa-google"></i></div>
+                        <div class="modulo-hero-text">
+                            <div class="modulo-hero-badge">Google Cloud Skills Boost</div>
+                            <h3>Skill Badge: API Development with Apigee X</h3>
+                            <p>Completa el learning path oficial de Google para obtener tu <strong>Skill Badge de
+                                    Apigee</strong>. Este badge valida tus competencias ante empleadores y la comunidad
+                                tecnológica global.</p>
+                        </div>
+                    </div>
+                    <div class="modulo-google-grid">
+                        <div class="modulo-google-card">
+                            <div class="modulo-google-card-icon"
+                                style="background:linear-gradient(135deg,#4285F4,#1967D2)"><i class="fas fa-route"></i>
+                            </div>
+                            <h4>¿Qué es un Skill Badge?</h4>
+                            <p>Certificación oficial de Google que demuestra tu habilidad práctica en tecnologías de
+                                Google Cloud, obtenida completando labs y desafíos reales en Qwiklabs.</p>
+                        </div>
+                        <div class="modulo-google-card">
+                            <div class="modulo-google-card-icon"
+                                style="background:linear-gradient(135deg,#34A853,#137333)"><i class="fas fa-flask"></i>
+                            </div>
+                            <h4>Labs Prácticos</h4>
+                            <p>Incluye laboratorios donde configurarás proxies, policies, ambientes y más directamente
+                                en Google Cloud Platform.</p>
+                        </div>
+                        <div class="modulo-google-card">
+                            <div class="modulo-google-card-icon"
+                                style="background:linear-gradient(135deg,#FBBC04,#EA8600)"><i class="fas fa-trophy"></i>
+                            </div>
+                            <h4>Certificado Compartible</h4>
+                            <p>Recibirás un badge digital que puedes compartir en LinkedIn, GitHub y tu CV para
+                                demostrar tus habilidades con Apigee X.</p>
+                        </div>
+                        <div class="modulo-google-card">
+                            <div class="modulo-google-card-icon"
+                                style="background:linear-gradient(135deg,#EA4335,#C5221F)"><i class="fas fa-clock"></i>
+                            </div>
+                            <h4>Duración Estimada</h4>
+                            <p>Duración aproximada de <strong>4–6 horas</strong>. Puedes avanzar a tu propio ritmo y
+                                retomar donde lo dejaste.</p>
+                        </div>
+                    </div>
+                    <div class="modulo-google-cta">
+                        <div class="modulo-google-cta-content">
+                            <div class="modulo-google-cta-left">
+                                <div class="modulo-google-cta-logo">
+                                    <i class="fab fa-google" style="color:#4285F4;font-size:1.8rem"></i>
+                                </div>
+                                <div>
+                                    <h4>API Development with Apigee X</h4>
+                                    <p>Google Cloud Skills Boost — Learning Path #27</p>
+                                    <div class="modulo-google-tags">
+                                        <span class="modulo-tag">Apigee X</span>
+                                        <span class="modulo-tag">API Management</span>
+                                        <span class="modulo-tag">Google Cloud</span>
+                                        <span class="modulo-tag">Intermedio</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="https://www.skills.google/paths/27" target="_blank" rel="noopener"
+                                class="btn-google-go">
+                                <i class="fas fa-external-link-alt"></i> Ir al Skill Badge
+                            </a>
+                        </div>
+
+                        <!-- Resumen del Curso PDFs -->
+                        <div class="modulo-google-summary-pdfs"
+                            style="margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                            <h5
+                                style="margin: 0; font-size: 0.95rem; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-file-pdf" style="color: #EA4335;"></i> Resumen del Curso (Manuales PDF)
+                            </h5>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <a href="https://drive.google.com/uc?export=download&id=1mkuY--r96Z-xNdI-KJclo0iPY5Dh-EHS"
+                                    class="btn-recurso btn-recurso--pdf" style="flex: 1; min-width: 250px;">
+                                    <i class="fas fa-download"></i> Manual Apigee Security GESSOF
+                                </a>
+                                <a href="https://drive.google.com/uc?export=download&id=1GHmO1NDA56ldWwk08wVN-E28pH1mVU3m"
+                                    class="btn-recurso btn-recurso--pdf" style="flex: 1; min-width: 250px;">
+                                    <i class="fas fa-download"></i> Manual Apigee GESSOF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modulo-google-steps">
+                        <h4><i class="fas fa-list-ol"></i> Pasos para completar el Skill Badge</h4>
+                        <div class="modulo-steps-list">
+                            <div class="modulo-step">
+                                <div class="modulo-step-num">1</div>
+                                <div class="modulo-step-text"><strong>Crear cuenta en Google Cloud Skills Boost</strong>
+                                    <p>Ingresa a <em>skills.google</em> y regístrate con tu cuenta Gmail.</p>
+                                </div>
+                            </div>
+                            <div class="modulo-step">
+                                <div class="modulo-step-num">2</div>
+                                <div class="modulo-step-text"><strong>Acceder al Learning Path #27</strong>
+                                    <p>Busca "API Development with Apigee X" o usa el botón de arriba.</p>
+                                </div>
+                            </div>
+                            <div class="modulo-step">
+                                <div class="modulo-step-num">3</div>
+                                <div class="modulo-step-text"><strong>Completar los labs en orden</strong>
+                                    <p>Realiza cada laboratorio práctico. Necesitarás créditos de Qwiklabs.</p>
+                                </div>
+                            </div>
+                            <div class="modulo-step">
+                                <div class="modulo-step-num">4</div>
+                                <div class="modulo-step-text"><strong>Aprobar el Challenge Lab final</strong>
+                                    <p>El último lab es el desafío de certificación. Debes completarlo sin guía.</p>
+                                </div>
+                            </div>
+                            <div class="modulo-step">
+                                <div class="modulo-step-num">5</div>
+                                <div class="modulo-step-text"><strong>Compartir tu Skill Badge</strong>
+                                    <p>Descarga y publica tu badge en LinkedIn y agrégalo a tu perfil.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel Etapa 2 -->
+                <div id="panel-etapa-2" class="etapa-panel" style="display:none;">
+                    <div class="modulo-hero modulo-hero--videos">
+                        <div class="modulo-hero-icon"
+                            style="background:linear-gradient(135deg,var(--primary),var(--primary-dark))"><i
+                                class="fas fa-play-circle"></i></div>
+                        <div class="modulo-hero-text">
+                            <div class="modulo-hero-badge"
+                                style="background:linear-gradient(135deg,var(--primary),var(--primary-dark))">Contenido
+                                Principal</div>
+                            <h3>Videos del Curso — Apigee X</h3>
+                            <p>6 secciones temáticas con 60 videos. Marca cada video como visto, guarda favoritos y
+                                sigue tu progreso de aprendizaje.</p>
+                        </div>
+                    </div>
+
+                    <!-- Glosario de Archivos (Lookup Table) -->
+                    <div class="modulo-google-cta"
+                        style="margin-bottom: 2.5rem; background: var(--bg-card); border: 1px dashed var(--border);">
+
+                    </div>
+                    <div id="curso-container">
+                        <!-- Se llena dinámicamente con JavaScript -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN: EVALUACIÓN -->
+    <div id="section-evaluacion" class="main-content-section">
+        <div style="max-width: 1000px; margin: 0 auto; padding-top: 1rem;">
+            <!-- Hero -->
+            <div class="modulo-hero modulo-hero--prueba">
+                <div class="modulo-hero-icon" style="background:linear-gradient(135deg,#EA4335,#C5221F)">
+                    <i class="fas fa-file-certificate"></i>
+                </div>
+                <div class="modulo-hero-text">
+                    <div class="modulo-hero-badge" style="background:linear-gradient(135deg,#EA4335,#C5221F)">
+                        Evaluación Final
+                    </div>
+                    <h3>Prueba de Conocimientos — Apigee X</h3>
+                    <p>Instancias de evaluación: una prueba técnica práctica para implementar en Apigee y un
+                        quiz de alternativas para cerrar el curso.</p>
+                </div>
+            </div>
+
+            <!-- Resumen de evaluaciones -->
+            <div class="prueba-resumen-grid">
+                <div class="prueba-resumen-item">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>20 preguntas</span>
+                    <small>Prueba Teorica</small>
+                </div>
+                <div class="prueba-resumen-item">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>7 Ejercicios</span>
+                    <small>Prueba Técnica</small>
+                </div>
+                <div class="prueba-resumen-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>Alternativas</span>
+                    <small>Quiz Teórico</small>
+                </div>
+            </div>
+
+            <!-- CARD 1: Prueba Teorica PDF -->
+            <div class="prueba-resource-card prueba-resource-card--pdf">
+                <div class="prueba-resource-header">
+                    <div class="prueba-resource-icon prueba-icon--pdf">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="prueba-resource-meta">
+                        <div class="prueba-resource-tag prueba-tag--pdf">Evaluación Teorica</div>
+                        <h3>Prueba Teorica</h3>
+                        <p>Evaluación de conocimientos conceptuales en Apigee
+                            Esta prueba mide la comprensión sólida de los fundamentos de Apigee, incluyendo
+                            arquitectura, diseño de APIs, políticas de control, seguridad, versionamiento y
+                            buenas prácticas en entornos regulados.
+                            Evalúa la capacidad del candidato para explicar conceptos clave como API Proxy,
+                            Target Endpoint, Shared Flows, mecanismos de autenticación, control de tráfico
+                            (Quota, Spike Arrest), validaciones previas al backend y estructura jerárquica de la
+                            plataforma.
+                            Su objetivo es validar criterio técnico, claridad conceptual y dominio de principios
+                            de API Management.</p>
+                    </div>
+                </div>
+                <div class="prueba-resource-body">
+                </div>
+                <div class="prueba-resource-footer">
+                    <div class="prueba-resource-info">
+                    </div>
+                    <a href="https://docs.google.com/document/d/1XcD0a75I-vjBNVtZBrmv5Ql2iAnfsz1g/export?format=pdf"
+                        download="Prueba Teorica.docx" class="btn-recurso btn-recurso--pdf">
+                        <i class="fas fa-download"></i> Descargar
+                    </a>
+                </div>
+            </div>
+
+            <!-- CARD 2: Prueba Técnica PDF -->
+            <div class="prueba-resource-card prueba-resource-card--pdf">
+                <div class="prueba-resource-header">
+                    <div class="prueba-resource-icon prueba-icon--pdf">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="prueba-resource-meta">
+                        <div class="prueba-resource-tag prueba-tag--pdf">Evaluación Técnica</div>
+                        <h3>Prueba Técnica Práctica</h3>
+                        <p>Esta prueba valida la capacidad del candidato para diseñar, configurar e implementar
+                            soluciones reales en Apigee bajo estándares de seguridad, control y transformación
+                            de datos.
+
+                            Incluye la creación de API Proxies, configuración de Target Servers, validación de
+                            contratos mediante OAS, control de cuotas, verificación de API Keys, transformación
+                            de datos (XML a JSON, Base64), orquestación con múltiples backends, uso de Shared
+                            Flows y manejo de cache con federación de tokens.
+
+                            El objetivo es evaluar habilidades prácticas, buenas prácticas de configuración,
+                            control de errores y capacidad de construir una capa de integración robusta y
+                            productiva.</p>
+                    </div>
+                </div>
+                <div class="prueba-resource-body">
+                </div>
+                <div class="prueba-resource-footer">
+                    <div class="prueba-resource-info">
+                    </div>
+                    <a href="https://docs.google.com/document/d/18Ep4nDswkWXpo8aZjvN-UMgsTLeFebQV/export?format=pdf"
+                        download="Prueba Practica.docx" class="btn-recurso btn-recurso--pdf">
+                        <i class="fas fa-download"></i> Descargar
+                    </a>
+                </div>
+            </div>
+
+            <!-- CARD 3: Quiz Alternativas -->
+            <div class="prueba-resource-card prueba-resource-card--alt">
+                <div class="prueba-resource-header">
+                    <div class="prueba-resource-icon prueba-icon--alt">
+                        <i class="fas fa-list-ul"></i>
+                    </div>
+                    <div class="prueba-resource-meta">
+                        <div class="prueba-resource-tag prueba-tag--alt">Quiz Teórico</div>
+                        <h3>Quiz de Alternativas</h3>
+                        <p>Preguntas de selección múltiple sobre conceptos de Apigee X</p>
+                    </div>
+                </div>
+                <div class="prueba-resource-body">
+                    <p class="prueba-resource-desc">
+                        Evalúa tu comprensión teórica de Apigee X a través de preguntas de alternativas.
+                        Cubre políticas, proxies, seguridad, flujos y arquitectura de la plataforma.
+                        Puedes realizarlo directamente en el navegador sin necesidad de instalar nada.
+                    </p>
+                    <div class="prueba-resource-chips">
+                        <span class="prueba-chip"><i class="fas fa-desktop"></i> En navegador</span>
+                        <span class="prueba-chip"><i class="fas fa-redo"></i> Reiniciable</span>
+                        <span class="prueba-chip"><i class="fas fa-check-circle"></i> Respuesta inmediata</span>
+                    </div>
+                </div>
+                <div class="prueba-resource-footer">
+                    <div class="prueba-resource-info">
+                        <span><i class="fas fa-globe"></i> HTML interactivo</span>
+                        <span><i class="fas fa-bolt"></i> Resultados al instante</span>
+                    </div>
+                    <div class="prueba-btns">
+                        <a href="assets/quizzes/apigee_quiz_alternativas.html" target="_blank" rel="noopener"
+                            class="btn-recurso btn-recurso--alt">
+                            <i class="fas fa-external-link-alt"></i> Abrir Quiz
+                        </a>
+                        <a href="assets/quizzes/apigee_quiz_alternativas.html" download="Quiz_Alternativas_Apigee.html"
+                            class="btn-recurso btn-recurso--outline">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                </div>
+            </div> <!-- content-container -->
+        </div> <!-- section-evaluacion -->
+
+
+        <!-- MÓDULOS / NIVELES (LEGACY - reemplazado, oculto) -->
+        <div id="modulos-legacy" style="display:none;">
+            <div class="modulos-tabs-bar">
+                <button class="modulo-tab active" onclick="switchModulo(event, 'modulo-1')">
+                    <span class="modulo-tab-num">01</span>
+                    <span class="modulo-tab-content">
+                        <i class="fab fa-google"></i>
+                        <span class="modulo-tab-label">Skill Badge Google</span>
+                    </span>
+                    <span class="modulo-tab-badge">Certificación</span>
+                </button>
+                <button class="modulo-tab" onclick="switchModulo(event, 'modulo-2')">
+                    <span class="modulo-tab-num">02</span>
+                    <span class="modulo-tab-content">
+                        <i class="fas fa-play-circle"></i>
+                        <span class="modulo-tab-label">Videos del Curso</span>
+                    </span>
+                    <span class="modulo-tab-badge">60 videos</span>
+                </button>
+                <button class="modulo-tab" onclick="switchModulo(event, 'modulo-3')">
+                    <span class="modulo-tab-num">03</span>
+                    <span class="modulo-tab-content">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="modulo-tab-label">Prueba Final</span>
+                    </span>
+                    <span class="modulo-tab-badge">Evaluación</span>
+                </button>
+            </div>
+
+            <!-- MÓDULO 1: Skill Badge Google -->
+            <div id="modulo-1" class="modulo-panel active">
+                <div class="modulo-hero modulo-hero--google">
+                    <div class="modulo-hero-icon">
+                        <i class="fab fa-google"></i>
+                    </div>
+                    <div class="modulo-hero-text">
+                        <div class="modulo-hero-badge">Google Cloud Skills Boost</div>
+                        <h3>Skill Badge: API Development with Apigee X</h3>
+                        <p>Completa el learning path oficial de Google para obtener tu <strong>Skill Badge de
+                                Apigee</strong>. Este badge valida tus competencias ante empleadores y la comunidad
+                            tecnológica global.</p>
+                    </div>
+                </div>
+
+                <div class="modulo-google-grid">
+                    <div class="modulo-google-card">
+                        <div class="modulo-google-card-icon"
+                            style="background: linear-gradient(135deg, #4285F4, #1967D2);">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h4>¿Qué es un Skill Badge?</h4>
+                        <p>Es una certificación oficial de Google que demuestra tu habilidad práctica en tecnologías
+                            de Google Cloud. Se obtiene completando labs y desafíos reales en Qwiklabs.</p>
+                    </div>
+                    <div class="modulo-google-card">
+                        <div class="modulo-google-card-icon"
+                            style="background: linear-gradient(135deg, #34A853, #137333);">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <h4>Labs Prácticos</h4>
+                        <p>El learning path incluye laboratorios prácticos donde configurarás proxies, policies,
+                            ambientes y más directamente en Google Cloud Platform.</p>
+                    </div>
+                    <div class="modulo-google-card">
+                        <div class="modulo-google-card-icon"
+                            style="background: linear-gradient(135deg, #FBBC04, #EA8600);">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h4>Certificado Compartible</h4>
+                        <p>Al completar el path recibirás un badge digital que puedes compartir en LinkedIn, GitHub
+                            y tu CV para demostrar tus habilidades con Apigee X.</p>
+                    </div>
+                    <div class="modulo-google-card">
+                        <div class="modulo-google-card-icon"
+                            style="background: linear-gradient(135deg, #EA4335, #C5221F);">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h4>Duración Estimada</h4>
+                        <p>El learning path tiene una duración aproximada de <strong>4–6 horas</strong>. Puedes
+                            avanzar a tu propio ritmo y retomar donde lo dejaste.</p>
+                    </div>
+                </div>
+
+                <div class="modulo-google-cta">
+                    <div class="modulo-google-cta-content">
+                        <div class="modulo-google-cta-left">
+                            <div class="modulo-google-cta-logo">
+                                <i class="fab fa-google" style="color: #4285F4; font-size: 1.8rem;"></i>
+                                <i class="fab fa-google"
+                                    style="color: #EA4335; font-size: 1.4rem; margin-left: -8px;"></i>
+                            </div>
+                            <div>
+                                <h4>API Development with Apigee X</h4>
+                                <p>Google Cloud Skills Boost — Learning Path #27</p>
+                                <div class="modulo-google-tags">
+                                    <span class="modulo-tag">Apigee X</span>
+                                    <span class="modulo-tag">API Management</span>
+                                    <span class="modulo-tag">Google Cloud</span>
+                                    <span class="modulo-tag">Intermedio</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="https://www.skills.google/paths/27" target="_blank" rel="noopener"
+                            class="btn-google-go">
+                            <i class="fas fa-external-link-alt"></i>
+                            Ir al Skill Badge
+                        </a>
+                    </div>
+
+                    <!-- Resumen del Curso PDFs -->
+                    <div class="modulo-google-summary-pdfs"
+                        style="margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                        <h5
+                            style="margin: 0; font-size: 0.95rem; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-file-pdf" style="color: #EA4335;"></i> Resumen del Curso (Manuales PDF)
+                        </h5>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <a href="https://drive.google.com/uc?export=download&id=1GHmO1NDA56ldWwk08wVN-E28pH1mVU3m"
+                                class="btn-recurso btn-recurso--pdf" style="flex: 1; min-width: 250px;">
+                                <i class="fas fa-download"></i> Manual Apigee GESSOF
+                            </a>
+                            <a href="https://drive.google.com/uc?export=download&id=1mkuY--r96Z-xNdI-KJclo0iPY5Dh-EHS"
+                                class="btn-recurso btn-recurso--pdf" style="flex: 1; min-width: 250px;">
+                                <i class="fas fa-download"></i> Manual Apigee Security GESSOF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modulo-google-steps">
+                    <h4><i class="fas fa-list-ol"></i> Pasos para completar el Skill Badge</h4>
+                    <div class="modulo-steps-list">
+                        <div class="modulo-step">
+                            <div class="modulo-step-num">1</div>
+                            <div class="modulo-step-text">
+                                <strong>Crear cuenta en Google Cloud Skills Boost</strong>
+                                <p>Ingresa a <em>skills.google</em> y regístrate con tu cuenta Gmail.</p>
+                            </div>
+                        </div>
+                        <div class="modulo-step">
+                            <div class="modulo-step-num">2</div>
+                            <div class="modulo-step-text">
+                                <strong>Acceder al Learning Path #27</strong>
+                                <p>Busca el path "API Development with Apigee X" o usa el botón de acceso directo de
+                                    arriba.</p>
+                            </div>
+                        </div>
+                        <div class="modulo-step">
+                            <div class="modulo-step-num">3</div>
+                            <div class="modulo-step-text">
+                                <strong>Completar los labs en orden</strong>
+                                <p>Realiza cada laboratorio práctico. Necesitarás créditos de Qwiklabs (pueden ser
+                                    gratuitos o de pago).</p>
+                            </div>
+                        </div>
+                        <div class="modulo-step">
+                            <div class="modulo-step-num">4</div>
+                            <div class="modulo-step-text">
+                                <strong>Aprobar el Challenge Lab final</strong>
+                                <p>El último lab es el desafío de certificación. Debes completarlo sin guía para
+                                    obtener el badge.</p>
+                            </div>
+                        </div>
+                        <div class="modulo-step">
+                            <div class="modulo-step-num">5</div>
+                            <div class="modulo-step-text">
+                                <strong>Compartir tu Skill Badge</strong>
+                                <p>Descarga y publica tu badge en LinkedIn y agrégalo a tu perfil profesional.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MÓDULO 2: Videos del Curso -->
+            <div id="modulo-2" class="modulo-panel">
+                <div id="curso-container">
+                    <!-- Se llena dinámicamente con JavaScript -->
+                </div>
+            </div>
+
+            <!-- MÓDULO 3: Prueba Final -->
+            <div id="modulo-3" class="modulo-panel">
+                <div class="modulo-hero modulo-hero--prueba">
+                    <div class="modulo-hero-icon">
+                        <i class="fas fa-file-certificate"></i>
+                    </div>
+                    <div class="modulo-hero-text">
+                        <div class="modulo-hero-badge" style="background: linear-gradient(135deg, #EA4335, #C5221F);">
+                            Evaluación Final</div>
+                        <h3>Prueba de Conocimientos</h3>
+                        <p>Descarga el documento de evaluación, léelo con atención y responde las preguntas según
+                            los conocimientos adquiridos durante el curso.</p>
+                    </div>
+                </div>
+
+                <div class="prueba-download-area" id="prueba-download-area">
+                    <div class="prueba-no-file">
+                        <div class="prueba-no-file-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h4>Prueba pendiente de publicación</h4>
+                        <p>El documento de evaluación será cargado por el instructor. Cuando esté disponible podrás
+                            descargarlo desde aquí.</p>
+                        <div class="prueba-placeholder-badge">
+                            <i class="fas fa-clock"></i> Próximamente disponible
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zona para agregar link al archivo cuando esté disponible -->
+                <!-- Para activar: descomentar y cambiar el href y el nombre del archivo -->
+                <!--
+                <div class="prueba-file-card" id="prueba-file-card">
+                    <div class="prueba-file-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="prueba-file-info">
+                        <h4>Prueba Final - Apigee X</h4>
+                        <p>Documento PDF con el caso de evaluación y preguntas</p>
+                        <span class="prueba-file-meta"><i class="fas fa-file"></i> PDF · Disponible</span>
+                    </div>
+                    <a href="assets/docs/prueba_final.pdf" download class="btn-download">
+                        <i class="fas fa-download"></i> Descargar
+                    </a>
+                </div>
+                -->
+
+                <div class="prueba-instrucciones">
+                    <h4><i class="fas fa-info-circle"></i> Instrucciones para la prueba</h4>
+                    <div class="prueba-instrucciones-grid">
+                        <div class="prueba-inst-item">
+                            <div class="prueba-inst-icon"><i class="fas fa-download"></i></div>
+                            <div>
+                                <strong>1. Descarga el documento</strong>
+                                <p>El archivo estará disponible en formato PDF o Word. Descárgalo y ábrelo en tu
+                                    dispositivo.</p>
+                            </div>
+                        </div>
+                        <div class="prueba-inst-item">
+                            <div class="prueba-inst-icon"><i class="fas fa-book-reader"></i></div>
+                            <div>
+                                <strong>2. Lee el caso completo</strong>
+                                <p>Analiza el caso de negocio o escenario técnico presentado antes de responder.</p>
+                            </div>
+                        </div>
+                        <div class="prueba-inst-item">
+                            <div class="prueba-inst-icon"><i class="fas fa-pen-alt"></i></div>
+                            <div>
+                                <strong>3. Responde las preguntas</strong>
+                                <p>Desarrolla tus respuestas aplicando los conocimientos adquiridos en el curso y el
+                                    Skill Badge.</p>
+                            </div>
+                        </div>
+                        <div class="prueba-inst-item">
+                            <div class="prueba-inst-icon"><i class="fas fa-paper-plane"></i></div>
+                            <div>
+                                <strong>4. Envía tu respuesta</strong>
+                                <p>Entrega tu documento completado según las indicaciones del instructor del curso.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /modulos-legacy -->
+    </div><!-- /section-clases -->
+
+    <!-- SECCIÓN: GLOSARIO -->
+    <div id="section-glosario" class="main-content-section">
+        <h2 style="margin-bottom: 2rem; color: var(--text-primary);">
+            <i class="fas fa-book"></i> Glosario de Apigee X
+        </h2>
+
+        <div class="glosario-search">
+            <input type="text" id="glosario-search" class="search-input"
+                placeholder="🔍 Buscar término, definición o propósito..." />
+        </div>
+
+        <div class="glosario-categorias" id="glosario-container">
+            <!-- Se llena dinámicamente con JavaScript -->
+        </div>
+    </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p><strong>GESSOF Academy - Portal de Aprendizaje Apigee</strong></p>
+        <p>Curso completo de Apigee X para microservicios profesionales</p>
+        <p>© 2024 GESSOF - Todos los derechos reservados</p>
+    </div>
+
+    <!-- JavaScript Modular - ORDEN IMPORTANTE -->
+    <!-- 1. Datos -->
+    <script src="assets/js/data/driveData.js"></script>
+    <script src="assets/js/data/resumenes.js"></script>
+    <script src="assets/js/data/glosario.js"></script>
+
+    <!-- 2. Core -->
+    <script src="assets/js/core/config.js"></script>
+    <script src="assets/js/core/utils.js"></script>
+    <script src="assets/js/core/storage.js"></script>
+    <script src="assets/js/core/modal.js"></script>
+    <script src="assets/js/core/progressBar.js"></script>
+    <script src="assets/js/core/themeToggle.js"></script>
+    <script src="assets/js/core/userManager.js"></script>
+
+    <!-- 3. Componentes -->
+    <script src="assets/js/components/sections.js"></script>
+    <script src="assets/js/etapas.js"></script>
+
+    <!-- 4. Main (Inicialización) -->
+    <script src="assets/js/main.js?v=2"></script>
+</body>
+
+</html>

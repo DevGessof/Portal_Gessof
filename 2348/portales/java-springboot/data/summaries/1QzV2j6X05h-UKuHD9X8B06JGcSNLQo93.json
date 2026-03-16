@@ -1,0 +1,66 @@
+{
+  "titulo": "Plugin Maven de Spotify para Automatizar Construcción de Imágenes",
+  "resumen": "Integración de Dockerfile Maven Plugin para automatizar construcción de imágenes Docker como parte del build de Maven. Se configura plugin, se ejecuta mvn package para compilar JAR y construir imagen en un solo comando. Simplifica workflow de desarrollo.",
+  "puntosClave": [
+    "dockerfile-maven-plugin de Spotify",
+    "Automatiza docker build durante mvn package",
+    "Agregar plugin en pom.xml de cada microservicio",
+    "Configuración:",
+    "  - repository: nombre de imagen",
+    "  - tag: versión de imagen",
+    "  - buildArgs: argumentos para Dockerfile",
+    "  - dockerDirectory: ubicación del Dockerfile",
+    "mvn package automáticamente:",
+    "  1. Compila código Java",
+    "  2. Ejecuta tests",
+    "  3. Genera JAR",
+    "  4. Construye imagen Docker",
+    "Binding a fase package de Maven",
+    "Ventaja: un solo comando en vez de mvn + docker build",
+    "CI/CD: simplifica pipeline de integración continua",
+    "Configurar en POM padre para todos los módulos"
+  ],
+  "conceptos": [
+    {
+      "nombre": "dockerfile-maven-plugin",
+      "descripcion": "Plugin Maven que integra construcción Docker en lifecycle de Maven"
+    },
+    {
+      "nombre": "Maven Lifecycle",
+      "descripcion": "Fases de build: compile → test → package → install → deploy"
+    },
+    {
+      "nombre": "Maven Plugin",
+      "descripcion": "Extensión que agrega funcionalidad a proceso de build Maven"
+    },
+    {
+      "nombre": "Build Automation",
+      "descripcion": "Automatizar pasos repetitivos del proceso de build"
+    },
+    {
+      "nombre": "Plugin Binding",
+      "descripcion": "Asociar ejecución de plugin a fase específica de Maven"
+    },
+    {
+      "nombre": "Build Args",
+      "descripcion": "Argumentos pasados al Dockerfile durante build"
+    },
+    {
+      "nombre": "Repository Tag",
+      "descripcion": "Nombre completo de imagen (repository:tag)"
+    },
+    {
+      "nombre": "Unified Build",
+      "descripcion": "Un solo comando ejecuta múltiples pasos de build"
+    },
+    {
+      "nombre": "CI/CD Integration",
+      "descripcion": "Simplificar integración con pipelines de CI/CD"
+    },
+    {
+      "nombre": "Build Reproducibility",
+      "descripcion": "Garantizar builds consistentes y reproducibles"
+    }
+  ],
+  "codigoEjemplo": "<!-- pom.xml - Customer Service -->\n<project>\n    <build>\n        <plugins>\n            <!-- Plugin de Spring Boot -->\n            <plugin>\n                <groupId>org.springframework.boot</groupId>\n                <artifactId>spring-boot-maven-plugin</artifactId>\n            </plugin>\n            \n            <!-- Plugin Dockerfile de Spotify -->\n            <plugin>\n                <groupId>com.spotify</groupId>\n                <artifactId>dockerfile-maven-plugin</artifactId>\n                <version>1.4.13</version>\n                <executions>\n                    <execution>\n                        <id>default</id>\n                        <phase>package</phase>\n                        <goals>\n                            <goal>build</goal>\n                        </goals>\n                    </execution>\n                </executions>\n                <configuration>\n                    <!-- Nombre de la imagen -->\n                    <repository>customer-service</repository>\n                    \n                    <!-- Tag de la imagen -->\n                    <tag>${project.version}</tag>\n                    \n                    <!-- Ubicación del Dockerfile -->\n                    <dockerfile>Dockerfile</dockerfile>\n                    \n                    <!-- Contexto de build -->\n                    <contextDirectory>${project.basedir}</contextDirectory>\n                    \n                    <!-- Argumentos para Dockerfile -->\n                    <buildArgs>\n                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>\n                    </buildArgs>\n                </configuration>\n            </plugin>\n        </plugins>\n    </build>\n</project>\n\n# Dockerfile con ARG\nFROM openjdk:17-jdk-slim\nWORKDIR /app\n\n# Argumento recibido de Maven\nARG JAR_FILE\nCOPY ${JAR_FILE} app.jar\n\nEXPOSE 8081\nENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n\n# Ejecutar build completo\ncd business-domain/customer\nmvn clean package\n\n# Output:\n# [INFO] --- maven-compiler-plugin:3.11.0:compile\n# [INFO] --- maven-surefire-plugin:3.0.0:test\n# [INFO] --- spring-boot-maven-plugin:3.2.0:repackage\n# [INFO] --- dockerfile-maven-plugin:1.4.13:build\n# [INFO] Building Docker context\n# [INFO] Image customer-service:1.0.0 built successfully\n# [INFO] BUILD SUCCESS\n\n# Verificar imagen creada\ndocker images | grep customer-service\n# customer-service   1.0.0   abc123   2 minutes ago   450MB\n\n# Ejecutar contenedor\ndocker run -d -p 8081:8081 customer-service:1.0.0\n\n# Beneficio: Un solo comando para todo\n# Antes:\n#   mvn clean package\n#   docker build -t customer-service:1.0.0 .\n# Ahora:\n#   mvn clean package  (hace ambas cosas)"
+}

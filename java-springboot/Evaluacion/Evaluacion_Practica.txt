@@ -1,0 +1,94 @@
+
+REQUISITO GLOBALES
+
+APIs a consumir:
+
+1.	Monster Hunter DB
+https://wilds.mhdb.io/en/monsters
+
+2.	Digimon API
+https://digi-api.com/api/v1/digimon/{name}
+
+Requisitos generales:
+1.	Trabajar con Arquitectura Hexagonal
+2.	Crear una clase AppConfig dentro del paquete config.
+3.	Definir Beans explícitos para:
+1.	RestTemplate
+2.	WebClient
+4.	Utilizar Camel al menos en uno de los flujos de consumo.
+5.	Implementar persistencia con JPA para almacenar los resultados procesados.
+6.	Implementar pruebas unitarias (mínimo de servicios).
+7.	El proyecto debe compilar y ejecutarse correctamente.
+
+Requisitos de persistencia (JPA)
+1.	Crear entidades JPA para:
+1.	Monster
+2.	Digimon
+2.	Uso correcto de:
+1.	@Entity
+2.	@Id
+3.	Solo grabar el nombre, un uuid y timestamp de consulta
+3.	Base de datos:
+1.	H2 (en memoria) 
+4.	Configuración vía application.yml o application.properties
+ 
+Pruebas unitarias mínimas
+1.	Pruebas para:
+1.	Servicios de consumo de APIs
+2.	Lógica de filtrado y transformación
+2.	Uso de:
+1.	JUnit 5
+2.	Mockito
+3.	Mock de llamadas externas (no consumir APIs reales en tests)
+
+
+------------------------------------------------------------------------------- 
+
+EJERCICIO 1 – MONSTER HUNTER API (RESTTEMPLATE)
+
+Endpoint a consumir: GET https://wilds.mhdb.io/en/monsters
+
+Requerimiento:
+1.	Obtener la lista completa de monstruos.
+2.	Filtrar aquellos cuya location.name sea exactamente: "Ruins of Wyveria”
+3.	Devolver una lista que contenga solo los siguientes campos:
+1.	name
+2.	species
+3.	description
+4.	Condición adicional:
+•	Si species == "temnoceran", agregar:
+o	resistances
+o	weaknesses
+•	Excluir explícitamente los campos:
+o	id
+o	condition
+5.	Persistir el resultado final en base de datos usando JPA.
+
+
+ 
+EJERCICIO 2 – DIGIMON API (WEBCLIENT + RESTTEMPLATE + CAMEL)
+
+Endpoints a consumir:
+GET https://digi-api.com/api/v1/digimon/leviamon
+GET https://digi-api.com/api/v1/digimon/mugendramon
+GET https://digi-api.com/api/v1/digimon/sakuyamon
+
+Requerimiento:
+1.	Consumir los 3 Digimon indicados.
+2.	Construir una lista ordenada alfabéticamente por name.
+3.	Cada Digimon debe contener:
+o	name
+o	descriptions
+	Solo la descripción en idioma inglés
+	Incluir el campo language
+o	priorEvolutions
+	Solo los campos id y digimon
+o	nextEvolutions
+	Solo los campos id y digimon
+4.	Implementar:
+o	Al menos un consumo usando WebClient
+o	Al menos un consumo usando RestTemplate
+o	Orquestacin o procesamiento usando Apache Camel
+
+
+

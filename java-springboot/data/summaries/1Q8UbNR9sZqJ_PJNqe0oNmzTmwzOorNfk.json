@@ -1,0 +1,61 @@
+{
+  "titulo": "Codificar Manejador de Excepciones Siguiendo Patrón @ControllerAdvice",
+  "resumen": "Implementación completa de GlobalExceptionHandler con @ControllerAdvice. Se crean handlers para excepciones comunes: NotFoundException (404), IllegalArgumentException (400), y Exception genérica (500). Cada handler retorna ResponseEntity<ErrorResponse> con código HTTP apropiado y mensaje descriptivo.",
+  "puntosClave": [
+    "Crear clase GlobalExceptionHandler con @ControllerAdvice",
+    "@RestControllerAdvice combina @ControllerAdvice + @ResponseBody",
+    "Crear método para cada tipo de excepción con @ExceptionHandler",
+    "Handler para 404: @ExceptionHandler(NotFoundException.class)",
+    "Handler para 400: @ExceptionHandler(IllegalArgumentException.class)",
+    "Handler genérico 500: @ExceptionHandler(Exception.class)",
+    "Cada handler retorna ResponseEntity<ErrorResponse>",
+    "Extraer información del request con WebRequest parameter",
+    "Usar request.getDescription(false) para obtener path",
+    "Construir ErrorResponse con timestamp, status, message, path",
+    "Logger para registrar excepciones en servidor",
+    "Aplicar mismo patrón en todos los microservicios"
+  ],
+  "conceptos": [
+    {
+      "nombre": "GlobalExceptionHandler",
+      "descripcion": "Clase que maneja todas las excepciones de la aplicación centralizadamente"
+    },
+    {
+      "nombre": "@RestControllerAdvice",
+      "descripcion": "Combinación de @ControllerAdvice y @ResponseBody para APIs REST"
+    },
+    {
+      "nombre": "NotFoundException",
+      "descripcion": "Excepción personalizada para recursos no encontrados (404)"
+    },
+    {
+      "nombre": "IllegalArgumentException",
+      "descripcion": "Excepción Java para argumentos inválidos (usar para 400)"
+    },
+    {
+      "nombre": "WebRequest",
+      "descripcion": "Objeto Spring que contiene información del request HTTP"
+    },
+    {
+      "nombre": "Exception Hierarchy",
+      "descripcion": "Handlers específicos primero, handler genérico al final"
+    },
+    {
+      "nombre": "Logger",
+      "descripcion": "Registrar excepciones en logs del servidor para debugging"
+    },
+    {
+      "nombre": "Error Logging",
+      "descripcion": "Importante loggear excepciones antes de retornar respuesta"
+    },
+    {
+      "nombre": "Response Builder",
+      "descripcion": "Construir ErrorResponse y ResponseEntity en handler"
+    },
+    {
+      "nombre": "Centralized Error Handling",
+      "descripcion": "Todos los controllers usan automáticamente el handler global"
+    }
+  ],
+  "codigoEjemplo": "// GlobalExceptionHandler.java\npackage com.paymentchange.customer.exceptions;\n\nimport com.paymentchange.customer.dto.ErrorResponse;\nimport lombok.extern.slf4j.Slf4j;\nimport org.springframework.http.HttpStatus;\nimport org.springframework.http.ResponseEntity;\nimport org.springframework.web.bind.annotation.ExceptionHandler;\nimport org.springframework.web.bind.annotation.RestControllerAdvice;\nimport org.springframework.web.context.request.WebRequest;\n\n@RestControllerAdvice\n@Slf4j\npublic class GlobalExceptionHandler {\n    \n    // Handler para recursos no encontrados (404)\n    @ExceptionHandler(NotFoundException.class)\n    public ResponseEntity<ErrorResponse> handleNotFoundException(\n            NotFoundException ex, \n            WebRequest request) {\n        \n        log.error(\"Resource not found: {}\", ex.getMessage());\n        \n        ErrorResponse error = new ErrorResponse(\n            HttpStatus.NOT_FOUND.value(),\n            \"Not Found\",\n            ex.getMessage(),\n            request.getDescription(false).replace(\"uri=\", \"\")\n        );\n        \n        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);\n    }\n    \n    // Handler para datos inválidos (400)\n    @ExceptionHandler(IllegalArgumentException.class)\n    public ResponseEntity<ErrorResponse> handleIllegalArgument(\n            IllegalArgumentException ex, \n            WebRequest request) {\n        \n        log.error(\"Invalid argument: {}\", ex.getMessage());\n        \n        ErrorResponse error = new ErrorResponse(\n            HttpStatus.BAD_REQUEST.value(),\n            \"Bad Request\",\n            ex.getMessage(),\n            request.getDescription(false).replace(\"uri=\", \"\")\n        );\n        \n        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);\n    }\n    \n    // Handler genérico para errores no manejados (500)\n    @ExceptionHandler(Exception.class)\n    public ResponseEntity<ErrorResponse> handleGlobalException(\n            Exception ex, \n            WebRequest request) {\n        \n        log.error(\"Unexpected error occurred: \", ex);\n        \n        ErrorResponse error = new ErrorResponse(\n            HttpStatus.INTERNAL_SERVER_ERROR.value(),\n            \"Internal Server Error\",\n            \"An unexpected error occurred. Please try again later.\",\n            request.getDescription(false).replace(\"uri=\", \"\")\n        );\n        \n        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)\n            .body(error);\n    }\n}\n\n// NotFoundException.java - Excepción personalizada\npackage com.paymentchange.customer.exceptions;\n\npublic class NotFoundException extends RuntimeException {\n    public NotFoundException(String message) {\n        super(message);\n    }\n}"
+}

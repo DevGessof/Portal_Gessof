@@ -1,0 +1,51 @@
+{
+  "titulo": "Cómo Escoger la Versión Correcta de Spring Boot y Compatibilidades",
+  "resumen": "Guía completa sobre cómo seleccionar versiones compatibles de Spring Boot, JDK, IDE y otras tecnologías. Se explica la importancia de revisar los prerequisitos oficiales, crear tablas de equivalencias y cómo mantenerse actualizado cuando el framework evoluciona. Incluye recomendaciones sobre upgrades controlados.",
+  "puntosClave": [
+    "Siempre consultar el sitio oficial de Spring Boot para prerequisitos",
+    "Crear tabla de equivalencias: Spring Boot → JDK → IDE → Maven → Lombok → Swagger",
+    "Spring Boot 3.2 requiere mínimo JDK 17 (o superior como JDK 20 LTS)",
+    "Usar siempre la última versión del framework salvo restricciones empresariales",
+    "No importa si el framework evoluciona, solo actualizar la tabla de equivalencias",
+    "NetBeans recomendado por balance entre sencillez y productividad",
+    "Los proyectos Maven son portables entre IDEs",
+    "Upgrade controlado: subir versiones de forma coordinada según equivalencias",
+    "Evitar problemas de dependencias siguiendo las versiones recomendadas",
+    "IDE puede variar, pero seguir el mismo facilita el aprendizaje"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Prerequisitos",
+      "descripcion": "Requisitos mínimos de versiones de JDK y otras tecnologías que exige cada versión de Spring Boot"
+    },
+    {
+      "nombre": "Tabla de Equivalencias",
+      "descripcion": "Matriz que relaciona versiones compatibles entre Spring Boot, JDK, Maven y otras dependencias"
+    },
+    {
+      "nombre": "LTS (Long Term Support)",
+      "descripcion": "Versiones con soporte extendido, más estables para producción (ej: JDK 17, JDK 20)"
+    },
+    {
+      "nombre": "JDK (Java Development Kit)",
+      "descripcion": "Kit de desarrollo Java que incluye compilador, JVM y herramientas para desarrollar"
+    },
+    {
+      "nombre": "Upgrade Controlado",
+      "descripcion": "Proceso de actualización coordinada de framework y dependencias respetando compatibilidades"
+    },
+    {
+      "nombre": "Maven",
+      "descripcion": "Gestor de dependencias y construcción de proyectos Java"
+    },
+    {
+      "nombre": "Gradle",
+      "descripcion": "Alternativa a Maven para gestión de proyectos (menos común que Maven)"
+    },
+    {
+      "nombre": "NetBeans",
+      "descripcion": "IDE recomendado para el curso por su facilidad de uso y productividad"
+    }
+  ],
+  "codigoEjemplo": "// Ejemplo de pom.xml con versión de Spring Boot\n<parent>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-parent</artifactId>\n    <version>3.2.0</version>\n    <relativePath/>\n</parent>\n\n<properties>\n    <java.version>17</java.version>\n    <maven.version>3.8+</maven.version>\n</properties>"
+}

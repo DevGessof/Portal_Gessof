@@ -1,0 +1,70 @@
+{
+  "titulo": "Actualizar Lombok si Subes la Versión del JDK",
+  "resumen": "Actualización de Lombok para compatibilidad con nuevas versiones de Java. Se explica por qué Lombok necesita actualización al cambiar Java, cómo actualizar versión en POMs, reinstalar plugin en IDE, y validar que anotaciones funcionan correctamente. Solución a problema común al actualizar Java.",
+  "puntosClave": [
+    "Lombok depende de internals de JDK para procesamiento de anotaciones",
+    "Cada versión de Java requiere versión compatible de Lombok:",
+    "  - Java 17: Lombok 1.18.22+ (recomendado 1.18.30+)",
+    "  - Java 21: Lombok 1.18.30+",
+    "Síntomas de Lombok incompatible:",
+    "  - Compilación falla con errors en @Data, @Getter, @Setter",
+    "  - IDE no reconoce métodos generados",
+    "  - NoSuchMethodError en runtime",
+    "Actualizar Lombok en POMs:",
+    "  1. Actualizar versión en dependencyManagement del parent",
+    "  2. No es necesario cambiar en módulos (heredan)",
+    "  3. Versión recomendada: 1.18.30",
+    "Actualizar plugin Lombok en IDE:",
+    "  - IntelliJ: Settings → Plugins → Lombok → Update",
+    "  - Eclipse: Help → Check for Updates",
+    "Limpiar y recompilar proyecto después de actualizar",
+    "Validar que anotaciones funcionan:",
+    "  - Getters/setters generados",
+    "  - Constructores (@AllArgsConstructor, @NoArgsConstructor)",
+    "  - @Builder funciona",
+    "  - @Slf4j genera logger"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Lombok",
+      "descripcion": "Librería que reduce boilerplate mediante anotaciones"
+    },
+    {
+      "nombre": "Annotation Processing",
+      "descripcion": "Procesamiento de anotaciones en compile-time"
+    },
+    {
+      "nombre": "AST (Abstract Syntax Tree)",
+      "descripcion": "Representación del código que Lombok modifica"
+    },
+    {
+      "nombre": "Lombok Plugin",
+      "descripcion": "Plugin IDE que permite reconocer código generado por Lombok"
+    },
+    {
+      "nombre": "Generated Code",
+      "descripcion": "Código generado automáticamente por Lombok (getters, setters, etc.)"
+    },
+    {
+      "nombre": "Delombok",
+      "descripcion": "Proceso de convertir código con Lombok a código Java puro"
+    },
+    {
+      "nombre": "@Data",
+      "descripcion": "Anotación que genera getters, setters, equals, hashCode, toString"
+    },
+    {
+      "nombre": "@Builder",
+      "descripcion": "Anotación que genera patrón Builder para clase"
+    },
+    {
+      "nombre": "@Slf4j",
+      "descripcion": "Anotación que genera logger SLF4J"
+    },
+    {
+      "nombre": "NoSuchMethodError",
+      "descripcion": "Error runtime cuando método generado no existe"
+    }
+  ],
+  "codigoEjemplo": "<!-- pom.xml - Parent POM ANTES -->\n<dependencyManagement>\n    <dependencies>\n        <dependency>\n            <groupId>org.projectlombok</groupId>\n            <artifactId>lombok</artifactId>\n            <version>1.18.20</version>  <!-- Versión antigua -->\n            <scope>provided</scope>\n        </dependency>\n    </dependencies>\n</dependencyManagement>\n\n<!-- pom.xml - Parent POM DESPUÉS -->\n<properties>\n    <java.version>17</java.version>\n    <lombok.version>1.18.30</lombok.version>  <!-- Versión actualizada -->\n</properties>\n\n<dependencyManagement>\n    <dependencies>\n        <dependency>\n            <groupId>org.projectlombok</groupId>\n            <artifactId>lombok</artifactId>\n            <version>${lombok.version}</version>\n            <scope>provided</scope>\n        </dependency>\n    </dependencies>\n</dependencyManagement>\n\n<!-- Módulos heredan versión automáticamente -->\n<!-- customer/pom.xml - NO cambiar nada -->\n<dependencies>\n    <dependency>\n        <groupId>org.projectlombok</groupId>\n        <artifactId>lombok</artifactId>\n        <!-- Versión viene del parent -->\n    </dependency>\n</dependencies>\n\n<!-- Si usas annotation processors (MapStruct + Lombok) -->\n<build>\n    <plugins>\n        <plugin>\n            <groupId>org.apache.maven.plugins</groupId>\n            <artifactId>maven-compiler-plugin</artifactId>\n            <version>3.11.0</version>\n            <configuration>\n                <source>${java.version}</source>\n                <target>${java.version}</target>\n                <annotationProcessorPaths>\n                    <!-- IMPORTANTE: Lombok ANTES de MapStruct -->\n                    <path>\n                        <groupId>org.projectlombok</groupId>\n                        <artifactId>lombok</artifactId>\n                        <version>${lombok.version}</version>\n                    </path>\n                    <path>\n                        <groupId>org.mapstruct</groupId>\n                        <artifactId>mapstruct-processor</artifactId>\n                        <version>${mapstruct.version}</version>\n                    </path>\n                </annotationProcessorPaths>\n            </configuration>\n        </plugin>\n    </plugins>\n</build>\n\n# Proceso de actualización de Lombok\n\n# 1. Actualizar versión en pom.xml (ver arriba)\n\n# 2. Limpiar proyecto\nmvn clean\n\n# 3. Actualizar plugin IDE\n\n# IntelliJ IDEA:\n# Settings → Plugins → Marketplace\n# Buscar \"Lombok\" → Update (si disponible)\n# Restart IDE\n\n# Eclipse:\n# Help → Eclipse Marketplace\n# Buscar \"Lombok\" → Update\n# Restart Eclipse\n\n# 4. Recompilar proyecto\nmvn compile\n\n# 5. Validar que funciona\n\n// Customer.java - Validar anotaciones Lombok\nimport lombok.AllArgsConstructor;\nimport lombok.Builder;\nimport lombok.Data;\nimport lombok.NoArgsConstructor;\n\n@Data\n@Builder\n@NoArgsConstructor\n@AllArgsConstructor\n@Entity\npublic class Customer {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    \n    private String name;\n    private String email;\n    private String phoneNumber;\n}\n\n// Test de validación\npublic class CustomerTest {\n    @Test\n    public void testLombokFunctionsWithJava17() {\n        // ✅ Builder debe funcionar\n        Customer customer = Customer.builder()\n            .name(\"Test\")\n            .email(\"test@example.com\")\n            .phoneNumber(\"+1234567890\")\n            .build();\n        \n        // ✅ Getters deben funcionar\n        assertEquals(\"Test\", customer.getName());\n        \n        // ✅ Setters deben funcionar\n        customer.setName(\"Updated\");\n        assertEquals(\"Updated\", customer.getName());\n        \n        // ✅ toString debe funcionar\n        String str = customer.toString();\n        assertTrue(str.contains(\"Test\"));\n        \n        // ✅ equals/hashCode deben funcionar\n        Customer customer2 = Customer.builder()\n            .name(\"Test\")\n            .email(\"test@example.com\")\n            .build();\n        \n        // No serán iguales porque ID es diferente\n        assertNotEquals(customer, customer2);\n    }\n}\n\n# Errores comunes y soluciones\n\n# Error 1: Lombok processor not found\n# Solución:\nmvn clean compile -U  # -U fuerza actualización de dependencias\n\n# Error 2: Cannot find symbol (para métodos generados)\n# Solución:\n# 1. Verificar plugin IDE instalado\n# 2. IntelliJ: File → Invalidate Caches → Invalidate and Restart\n# 3. Recompilar: mvn clean compile\n\n# Error 3: Lombok and MapStruct conflict\n# Solución: Asegurar orden correcto en annotationProcessorPaths\n# Lombok PRIMERO, luego MapStruct\n\n# Verificar versión de Lombok en uso\nmvn dependency:tree | grep lombok\n# Output: org.projectlombok:lombok:jar:1.18.30:provided\n\n# Tabla de compatibilidad Lombok\n\n| Java Version | Lombok Mínima | Lombok Recomendada |\n|--------------|---------------|--------------------|\n| 8            | 1.16.x        | 1.18.30            |\n| 11           | 1.18.10       | 1.18.30            |\n| 17           | 1.18.22       | 1.18.30            |\n| 21           | 1.18.30       | 1.18.32            |"
+}

@@ -1,0 +1,60 @@
+{
+  "titulo": "Agregar Persistencia JPA y Estructura de Paquetes",
+  "resumen": "Organización del código en paquetes (entities, repositories, controller) siguiendo buenas prácticas. Se crea la entidad Customer con anotaciones JPA (@Entity, @Id, @GeneratedValue) y Lombok (@Data). Se implementa CustomerRepository extendiendo JpaRepository. Incluye explicación del cambio de javax a jakarta en Spring Boot 3+.",
+  "puntosClave": [
+    "Crear tres paquetes: entities, repositories, controller",
+    "Estructura recomendada: com.paymentchange.customer.entities",
+    "IMPORTANTE: mantener misma estructura base que la clase main",
+    "Entidad Customer: id (Long), name (String), phoneNumber (String)",
+    "Anotaciones JPA: @Entity, @Id, @GeneratedValue(strategy = AUTO)",
+    "Lombok @Data genera getters, setters, toString, equals automáticamente",
+    "Agregar starter spring-boot-starter-data-jpa al pom.xml",
+    "CustomerRepository extiende JpaRepository<Customer, Long>",
+    "Spring Boot 3.x usa jakarta.persistence en vez de javax.persistence",
+    "JpaRepository provee métodos CRUD sin implementación manual (findAll, save, delete)",
+    "Tipo Long con mayúscula para el ID en la interfaz JpaRepository"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Estructura de Paquetes",
+      "descripcion": "Organización del código en carpetas (entities, repositories, controller) para separar responsabilidades"
+    },
+    {
+      "nombre": "Entidad JPA",
+      "descripcion": "Clase Java que representa una tabla en la base de datos, anotada con @Entity"
+    },
+    {
+      "nombre": "@Entity",
+      "descripcion": "Anotación que marca una clase como entidad JPA manejada por Hibernate"
+    },
+    {
+      "nombre": "@Id",
+      "descripcion": "Marca el campo que será la llave primaria de la tabla"
+    },
+    {
+      "nombre": "@GeneratedValue",
+      "descripcion": "Define estrategia para auto-generar valores del ID (AUTO, IDENTITY, SEQUENCE)"
+    },
+    {
+      "nombre": "@Data (Lombok)",
+      "descripcion": "Genera automáticamente getters, setters, toString, equals y hashCode"
+    },
+    {
+      "nombre": "JpaRepository",
+      "descripcion": "Interfaz de Spring Data que provee métodos CRUD predefinidos para una entidad"
+    },
+    {
+      "nombre": "spring-boot-starter-data-jpa",
+      "descripcion": "Starter que incluye Hibernate, JPA y toda la configuración de persistencia"
+    },
+    {
+      "nombre": "jakarta.persistence vs javax.persistence",
+      "descripcion": "Spring Boot 3+ migró de javax a jakarta para APIs de Java Enterprise"
+    },
+    {
+      "nombre": "Métodos CRUD Automáticos",
+      "descripcion": "findAll, save, findById, delete provistos por JpaRepository sin código adicional"
+    }
+  ],
+  "codigoEjemplo": "// Entidad Customer con JPA y Lombok\npackage com.paymentchange.customer.entities;\n\nimport jakarta.persistence.*;\nimport lombok.Data;\n\n@Data\n@Entity\npublic class Customer {\n    @Id\n    @GeneratedValue(strategy = GenerationType.AUTO)\n    private Long id;\n    private String name;\n    private String phoneNumber;\n}\n\n// Repository Interface\npackage com.paymentchange.customer.repositories;\n\nimport com.paymentchange.customer.entities.Customer;\nimport org.springframework.data.jpa.repository.JpaRepository;\n\npublic interface CustomerRepository extends JpaRepository<Customer, Long> {\n    // Métodos heredados: save(), findAll(), findById(), delete()\n    // No requiere implementación manual\n}"
+}

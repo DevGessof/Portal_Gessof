@@ -1,0 +1,61 @@
+{
+  "titulo": "Cambiar Perfiles y Propiedades sin Recompilar Microservicios",
+  "resumen": "Demostración práctica del poder de Config Server: modificar propiedades en Git, hacer commit/push, y ver cambios reflejados en microservicios sin recompilar. Se introduce @RefreshScope para refrescar beans con nuevas propiedades y endpoint /actuator/refresh para aplicar cambios en caliente.",
+  "puntosClave": [
+    "Ventaja principal: cambiar configuración sin recompilar ni redesplegar",
+    "Modificar archivo en repositorio Git (cambiar puerto, BD, logs)",
+    "Git commit y push de cambios",
+    "Config Server detecta cambios automáticamente al consultar",
+    "Microservicios obtienen nuevas propiedades al reiniciar",
+    "Para aplicar sin reiniciar: usar @RefreshScope + /actuator/refresh",
+    "@RefreshScope en beans que usan @Value o @ConfigurationProperties",
+    "POST a /actuator/refresh fuerza recarga de propiedades",
+    "Actuator debe estar habilitado con spring-boot-starter-actuator",
+    "Cambiar perfil: solo modificar spring.profiles.active y reiniciar",
+    "Útil para: cambiar logs, timeouts, feature flags, URLs",
+    "En producción: cambios graduales sin downtime"
+  ],
+  "conceptos": [
+    {
+      "nombre": "@RefreshScope",
+      "descripcion": "Anotación que permite refrescar beans cuando propiedades cambian vía /actuator/refresh"
+    },
+    {
+      "nombre": "/actuator/refresh",
+      "descripcion": "Endpoint POST que recarga propiedades desde Config Server sin reiniciar"
+    },
+    {
+      "nombre": "Spring Boot Actuator",
+      "descripcion": "Módulo que expone endpoints de monitoreo y gestión (/health, /metrics, /refresh)"
+    },
+    {
+      "nombre": "Configuración Dinámica",
+      "descripcion": "Modificar comportamiento de aplicación en runtime sin recompilar"
+    },
+    {
+      "nombre": "Hot Reload",
+      "descripcion": "Aplicar cambios de configuración sin reiniciar la aplicación"
+    },
+    {
+      "nombre": "@Value",
+      "descripcion": "Anotación para inyectar propiedades en campos de beans Spring"
+    },
+    {
+      "nombre": "@ConfigurationProperties",
+      "descripcion": "Anotación para mapear grupo de propiedades a un objeto POJO"
+    },
+    {
+      "nombre": "Feature Flags",
+      "descripcion": "Propiedades booleanas que activan/desactivan funcionalidades sin código nuevo"
+    },
+    {
+      "nombre": "Despliegue sin Downtime",
+      "descripcion": "Cambiar configuración sin detener servicio en producción"
+    },
+    {
+      "nombre": "Git como Source of Truth",
+      "descripcion": "Repositorio Git es la única fuente de verdad para configuración"
+    }
+  ],
+  "codigoEjemplo": "<!-- Agregar Actuator en pom.xml -->\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-actuator</artifactId>\n</dependency>\n\n# application.properties - habilitar endpoint refresh\nmanagement.endpoints.web.exposure.include=refresh,health,info\n\n// Clase con propiedades refrescables\npackage com.paymentchange.customer.config;\n\nimport org.springframework.beans.factory.annotation.Value;\nimport org.springframework.cloud.context.config.annotation.RefreshScope;\nimport org.springframework.stereotype.Component;\n\n@Component\n@RefreshScope  // Permite refrescar bean\npublic class AppConfig {\n    \n    @Value(\"${app.feature.enabled:false}\")\n    private boolean featureEnabled;\n    \n    @Value(\"${app.timeout.seconds:30}\")\n    private int timeoutSeconds;\n    \n    public boolean isFeatureEnabled() {\n        return featureEnabled;\n    }\n}\n\n# Flujo de cambio sin reiniciar:\n# 1. Modificar en Git: app.feature.enabled=true\n# 2. Git commit y push\n# 3. POST http://localhost:8081/actuator/refresh\n# 4. Bean AppConfig tiene nuevos valores\n\n# Cambiar perfil requiere reiniciar:\n# 1. Modificar spring.profiles.active=prod\n# 2. Reiniciar microservicio\n\n# curl para refrescar\ncurl -X POST http://localhost:8081/actuator/refresh"
+}

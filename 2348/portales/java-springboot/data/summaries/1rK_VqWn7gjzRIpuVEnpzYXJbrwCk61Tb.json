@@ -1,0 +1,61 @@
+{
+  "titulo": "Descubrir Servicios por Nombre usando Servidor de Registro Eureka",
+  "resumen": "Modificación de WebClient para usar nombres de servicio en lugar de URLs hardcodeadas. Se configura WebClient para resolver nombres mediante Eureka, permitiendo descubrimiento dinámico y balanceo de carga automático. Customer ahora descubre Product usando 'product-service' en vez de 'localhost:8082'.",
+  "puntosClave": [
+    "Problema actual: WebClient usa http://localhost:8082 hardcodeado",
+    "Solución: usar nombre de servicio registrado en Eureka",
+    "Cambiar baseUrl de http://localhost:8082 a http://product-service",
+    "Spring Cloud LoadBalancer resuelve nombre a instancias reales",
+    "WebClient automáticamente consulta Eureka por product-service",
+    "Obtiene lista de instancias disponibles (IP + puerto)",
+    "Selecciona instancia usando round-robin (balanceo)",
+    "Si hay múltiples instancias de Product, distribuye carga",
+    "Tolerancia a fallos: si instancia cae, usa otra disponible",
+    "No requiere conocer IPs/puertos de antemano",
+    "Aplicar mismo patrón para Transaction → Customer y Transaction → Product",
+    "Escalado transparente: agregar instancias sin cambiar código"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Service Name Resolution",
+      "descripcion": "Convertir nombre lógico (product-service) a IP:puerto real mediante Eureka"
+    },
+    {
+      "nombre": "Spring Cloud LoadBalancer",
+      "descripcion": "Cliente que balancea carga entre múltiples instancias de un servicio"
+    },
+    {
+      "nombre": "Round-Robin",
+      "descripcion": "Algoritmo de balanceo que distribuye peticiones secuencialmente entre instancias"
+    },
+    {
+      "nombre": "Client-Side Load Balancing",
+      "descripcion": "Cliente decide a qué instancia llamar (vs server-side con load balancer externo)"
+    },
+    {
+      "nombre": "Service Discovery Integration",
+      "descripcion": "WebClient integrado con Eureka para resolver nombres automáticamente"
+    },
+    {
+      "nombre": "Failover",
+      "descripcion": "Capacidad de usar instancia alternativa si una falla"
+    },
+    {
+      "nombre": "Dynamic Scaling",
+      "descripcion": "Agregar/quitar instancias sin modificar configuración de clientes"
+    },
+    {
+      "nombre": "Location Transparency",
+      "descripcion": "Cliente no necesita saber dónde está físicamente el servicio"
+    },
+    {
+      "nombre": "Instance Metadata",
+      "descripcion": "Información adicional de cada instancia (zona, versión, peso)"
+    },
+    {
+      "nombre": "Health-Based Routing",
+      "descripcion": "Solo enviar tráfico a instancias marcadas como UP en Eureka"
+    }
+  ],
+  "codigoEjemplo": "// WebClientConfig.java - Antes (hardcodeado)\n@Configuration\npublic class WebClientConfig {\n    @Bean\n    public WebClient webClient() {\n        return WebClient.builder()\n            .baseUrl(\"http://localhost:8082\")  // ❌ Hardcodeado\n            .build();\n    }\n}\n\n// WebClientConfig.java - Después (descubrimiento dinámico)\n@Configuration\npublic class WebClientConfig {\n    @Bean\n    @LoadBalanced  // ✅ Habilita balanceo de carga\n    public WebClient.Builder webClientBuilder() {\n        return WebClient.builder();\n    }\n    \n    @Bean\n    public WebClient webClient(WebClient.Builder builder) {\n        return builder\n            .baseUrl(\"http://product-service\")  // ✅ Nombre lógico\n            .build();\n    }\n}\n\n// CustomerService.java - Uso sigue igual\npublic Product getProduct(Long productId) {\n    return webClient.get()\n        .uri(\"/product/{id}\", productId)  // Se resuelve a http://INSTANCE_IP:PORT/product/{id}\n        .retrieve()\n        .bodyToMono(Product.class)\n        .block();\n}\n\n// Spring Cloud LoadBalancer resuelve automáticamente:\n// http://product-service/product/1\n// ↓\n// Consulta Eureka por \"PRODUCT-SERVICE\"\n// ↓\n// Obtiene: [192.168.1.10:8082, 192.168.1.11:8082]\n// ↓\n// Selecciona: 192.168.1.10:8082 (round-robin)\n// ↓\n// Ejecuta: http://192.168.1.10:8082/product/1"
+}

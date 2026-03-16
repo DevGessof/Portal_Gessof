@@ -1,0 +1,61 @@
+{
+  "titulo": "Crear Relación Cliente-Productos usando JPA ElementCollection",
+  "resumen": "Implementación de relación uno-a-muchos entre Customer y Product almacenando IDs de productos en Customer. Se usa @ElementCollection de JPA para guardar lista de IDs en tabla separada. Se explica por qué NO usar @OneToMany/@ManyToOne tradicional entre microservicios y la importancia de mantener independencia de datos.",
+  "puntosClave": [
+    "Customer necesita almacenar lista de productos asociados",
+    "NO usar @OneToMany/@ManyToOne (solo funciona en misma BD)",
+    "Solución: almacenar solo IDs de productos con @ElementCollection",
+    "Agregar campo: List<Long> productIds en entidad Customer",
+    "Anotación @ElementCollection para mapear colección de valores simples",
+    "@CollectionTable define tabla intermedia customer_products",
+    "@Column(name = \"product_id\") para nombrar columna de IDs",
+    "JPA crea automáticamente tabla customer_products con customer_id y product_id",
+    "Customer solo guarda referencias (IDs), no objetos Product completos",
+    "Para obtener datos completos: consumir API de Product",
+    "Mantiene independencia: Product puede cambiar sin afectar Customer",
+    "Inicializar lista: private List<Long> productIds = new ArrayList<>()"
+  ],
+  "conceptos": [
+    {
+      "nombre": "@ElementCollection",
+      "descripcion": "Anotación JPA para mapear colecciones de tipos simples (String, Long, etc.) en tabla separada"
+    },
+    {
+      "nombre": "@CollectionTable",
+      "descripcion": "Define nombre y configuración de tabla intermedia que almacena la colección"
+    },
+    {
+      "nombre": "Tabla Intermedia",
+      "descripcion": "Tabla creada automáticamente por JPA para almacenar relación muchos-a-muchos o colecciones"
+    },
+    {
+      "nombre": "IDs de Referencia",
+      "descripcion": "Almacenar solo identificadores en lugar de objetos completos para mantener independencia"
+    },
+    {
+      "nombre": "Relación Lógica",
+      "descripcion": "Relación conceptual entre entidades sin foreign keys directas en BD"
+    },
+    {
+      "nombre": "@OneToMany Tradicional",
+      "descripcion": "Relación JPA que NO debe usarse entre microservicios porque viola independencia"
+    },
+    {
+      "nombre": "Desacoplamiento de Datos",
+      "descripcion": "Práctica de no crear dependencias de BD entre microservicios"
+    },
+    {
+      "nombre": "Join Table",
+      "descripcion": "Tabla intermedia generada por @ElementCollection (customer_products)"
+    },
+    {
+      "nombre": "Colección de Primitivos",
+      "descripcion": "Lista de tipos básicos (Long, String) en lugar de objetos complejos"
+    },
+    {
+      "nombre": "Inicialización de Colecciones",
+      "descripcion": "Importante inicializar listas con new ArrayList<>() para evitar NullPointerException"
+    }
+  ],
+  "codigoEjemplo": "// Entidad Customer actualizada con relación a productos\npackage com.paymentchange.customer.entities;\n\nimport jakarta.persistence.*;\nimport lombok.Data;\nimport java.util.ArrayList;\nimport java.util.List;\n\n@Data\n@Entity\npublic class Customer {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    \n    private String name;\n    private String phoneNumber;\n    \n    // Relación con productos mediante IDs\n    @ElementCollection\n    @CollectionTable(\n        name = \"customer_products\",\n        joinColumns = @JoinColumn(name = \"customer_id\")\n    )\n    @Column(name = \"product_id\")\n    private List<Long> productIds = new ArrayList<>();\n}\n\n/* Tabla generada automáticamente:\ncustomer_products\n- customer_id (FK a customer)\n- product_id (Long, ID de producto en otro microservicio)\n*/"
+}

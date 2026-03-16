@@ -1,0 +1,642 @@
+📚 CURSO MICROSERVICIOS SPRING BOOT
+
+📁 SECCIÓN 1: Antes de empezar (Las bases)
+ ├── 📖 Clase 1: Presentación caso uso global curso
+ │    ├── 📹 presentación caso uso global curso.mp4
+ │    └── 📄 presentación caso uso global curso.srt
+ │
+ ├── 📖 Clase 2: Son microservicios evolución estilos arquitecturas
+ │    ├── 📹 son microservicios evolución estilos arquitecturas.mp4
+ │    ├── 📄 son microservicios evolución estilos arquitecturas.srt
+ │    └── 🔗 Microservicios según Spring.html
+ │
+ ├── 📖 Clase 3: Debes hacer este curso, evitar errores otros consejos
+ │    ├── 📹 debes hacer este curso, evitar errores otros consejos.mp4
+ │    ├── 📄 debes hacer este curso, evitar errores otros consejos.srt
+ │    ├── 🔗 Sigueme en twitter.html
+ │    └── 🔗 Suscribete a mi canal de youtube.html
+ │
+ ├── 📖 Clase 4: Spring Boot diferencias Spring Framework
+ │    ├── 📹 Spring Boot diferencias Spring Framework.mp4
+ │    ├── 📄 Spring Boot diferencias Spring Framework.srt
+ │    ├── 🔗 Arquitectura de los microservicios.html
+ │    └── 🔗 Ventajas y desventajas de los microservicios.html
+ │
+ ├── 📖 Clase 5: Versión Spring Boot
+ │    ├── 📹 versión Spring Boot.mp4
+ │    ├── 📄 versión Spring Boot.srt
+ │    ├── 🔗 IDEs de desarrollo.html
+ │    └── 🔗 Revisar la ultima versión de spring boot.html
+ │
+ ├── 📖 Clase 6: Instalación IDE desarrollo configuración plugins
+ │    ├── 📹 Instalación IDE desarollo configuración plugins.mp4
+ │    ├── 📄 Instalación IDE desarollo configuración plugins.srt
+ │    ├── 🔗 Instalar netbeans en linux.html
+ │    ├── 🔗 Java SE releases.html
+ │    ├── 📦 nb-springboot-plugin-3.1.nbm
+ │    ├── 🔗 Openjdk.html
+ │    ├── 🔗 Plugins para Netbeans.html
+ │    └── 🔗 Sitio Web de netbeans.html
+ │
+ ├── 📖 Clase 7: Instalar Java configurar JAVA_HOME PATH Windows
+ │    ├── 📹 Instalar Java configurar JAVA_HOME PATH Windows.mp4
+ │    ├── 📄 Instalar Java configurar JAVA_HOME PATH Windows.srt
+ │    └── 🔗 Descargar Java.html
+ │
+ ├── 📖 Clase 8: Instalar configurar eclipse STS
+ │    ├── 📹 Instalar configurar eclipse STS.mp4
+ │    └── 📄 Instalar configurar eclipse STS.srt
+ │
+ ├── 📖 Clase 9: Configuración uso Lombok
+ │    ├── 📹 configuracion uso Lombok.mp4
+ │    └── 📄 configuracion uso Lombok.srt
+ │
+ ├── 📖 Clase 10: Cuestionario y comunidad Discord
+ │    ├── 🔗 Cuestionario 1 Cuestionario de conceptos básicos.html
+ │    ├── 📹 Invitación comunidad Discord.mp4
+ │    └── 📖 Clase 11: Recursos Discord
+ │         ├── 📄 Invitación comunidad Discord.srt
+ │         ├── 🔗 Link para acceder al servidor discord.html
+ │         └── 🔗 Sitio Web del instructor.html
+
+📁 SECCIÓN 2: Primeros pasos Arquitectura global de la solución y creación proyecto inicial
+ ├── 📖 Clase 1: Diseño guiado por dominios arquitectura global
+ │    ├── 📹 Diseño guiado por dominios arquitectura goblal.mp4
+ │    └── 📄 Diseño guiado por dominios arquitectura goblal.srt
+ │
+ ├── 📖 Clase 2: Crear Microservicio spring boot maven desde cero
+ │    ├── 📹 Crear Microservicio spring boot maven desde cero,.mp4
+ │    ├── 📄 Crear Microservicio spring boot maven desde cero,.srt
+ │    ├── 🔗 Herramienta online spring boot crear microservicios.html
+ │    └── 🔗 Histórico de releases de spring boot.html
+ │
+ ├── 📖 Clase 3: Comprender estructura fichero pom.xml microservicio
+ │    ├── 📹 Comprender estructura fichero pom.xml microservicio.mp4
+ │    └── 📄 Comprender estructura fichero pom.xml microservicio.srt
+ │
+ ├── 📖 Clase 4: Agregar Persistencia JPA estructura paquetes
+ │    ├── 📹 Agregar Persistencia JPA estructura paquetes.mp4
+ │    ├── 📄 Agregar Persistencia JPA estructura paquetes.srt
+ │    ├── 🔗 Configurar lombok en intelliJ.html
+ │    └── 🔗 Install lombok eclipse.html
+ │
+ ├── 📖 Clase 5: Agregar API
+ │    ├── 📹 Agregar API.mp4
+ │    └── 📄 Agregar API.srt
+ │
+ ├── 📖 Clase 6: Reconfigurar lombok (@Data) corregir errores getters
+ │    ├── 📹 Reconfigurar lombok (@Data) corregir errores getters.mp4
+ │    ├── 📄 Reconfigurar lombok (@Data) corregir errores getters.srt
+ │    └── 🔗 Configuración de maven.html
+ │
+ ├── 📖 Clase 7: Añadir Swagger facilitar pruebas API Rest probar
+ │    ├── 📹 Añadir Swagger facilitar pruebas API Rest probar.mp4
+ │    ├── 📄 Añadir Swagger facilitar pruebas API Rest probar.srt
+ │    ├── 📦 customer_full_crud_swagger.zip
+ │    └── 🔗 Spring docs Swagger Openapi.html
+ │
+ └── 📖 Clase 8: Activar desactivar swagger recomendaciones descargar
+      ├── 📹 Activar desactivar swagger recomendaciones descargar.mp4
+      └── 📄 Activar desactivar swagger recomendaciones descargar.srt
+
+📁 SECCIÓN 3: Estrategia monorepo con maven para la gestión del repositorio de código
+ ├── 📖 Clase 1: Planificar estructura repositorio código varios
+ │    ├── 📹 Planificar estructura repositorio código varios.mp4
+ │    ├── 📄 Planificar estructura repositorio código varios.srt
+ │    └── 🖼️ Spring boot Maven Repository Structure.png
+ │
+ ├── 📖 Clase 2: Starters spring boot estructura estándar proyecto
+ │    ├── 📹 Starters spring boot estructura estándar proyecto.mp4
+ │    ├── 📄 Starters spring boot estructura estándar proyecto.srt
+ │    ├── 📦 billing.zip
+ │    └── 🔗 Listado de Starters de spring boot.html
+ │
+ ├── 📖 Clase 3: Configurar puertos ejecutar multiples microservicios
+ │    ├── 📹 Configurar puertos jecutar multiples microservicios.mp4
+ │    └── 📄 Configurar puertos jecutar multiples microservicios.srt
+ │
+ ├── 📖 Clase 4: Crear módulos repositorio código proyectos tipo POM
+ │    ├── 📹 Crear módulos repositorio código projectos tipo POM.mp4
+ │    └── 📄 Crear módulos repositorio código projectos tipo POM.srt
+ │
+ ├── 📖 Clase 5: Definir dependencias
+ │    ├── 📹 Definir dependecias.mp4
+ │    ├── 📄 Definir dependecias.srt
+ │    ├── 📄 pom.xml
+ │    └── 🔗 Proyecto maven de apache.html
+ │
+ ├── 📖 Clase 6: Refactorizar módulos business infraestructura
+ │    ├── 📹 Refactorizar módulos business infraestructura.mp4
+ │    ├── 📄 Refactorizar módulos business infraestructura.srt
+ │    └── 📦 monorepo_paymentchainparent.zip
+ │
+ ├── 📖 Clase 7: Heredar configuración POM.xml padre microservicio
+ │    ├── 📄 Heredar configuración POM.srt
+ │    └── 📹 Heredar configuración POM.xml padre microservicio.mp4
+ │
+ └── 📖 Clase 8: Validar conceptos mas relevantes adquiridos hasta
+      └── 🔗 Validar conceptos mas relevantes adquiridos hasta.html
+
+📁 SECCIÓN 4: Comunicando multiples microservicios del dominio del negocio con Webclient
+ ├── 📖 Clase 1: Caso estudio comunicación microservicios
+ │    ├── 📹 caso estudio comunicación microservicios.mp4
+ │    └── 📄 caso estudio comunicación microservicios.srt
+ │
+ ├── 📖 Clase 2: Crear microservicio catálogo productos agregarlo al
+ │    ├── 📹 Crear microservicio catálogo productos agregarlo al.mp4
+ │    └── 📄 Crear microservicio catálogo productos agregarlo al.srt
+ │
+ ├── 📖 Clase 3: Crear relación cliente muchos productos JPA
+ │    ├── 📹 Crear relación cliente muchos productos JPA.mp4
+ │    ├── 📄 Crear relación cliente muchos productos JPA.srt
+ │    ├── 🔗 Api persistencia Java JPA, relaciones entidades.html
+ │    └── 🔗 Spring Data JPA.html
+ │
+ ├── 📖 Clase 4: Revisión final refactorización prueba funcional
+ │    ├── 📹 Revisión final refactorización prueba funcional.mp4
+ │    ├── 📄 Revisión final refactorización prueba funcional.srt
+ │    └── 📦 paymentchainparent_customer_product_jpa.zip
+ │
+ ├── 📖 Clase 5: Modificar método guardar customer persistir productos
+ │    ├── 📹 Modificar método guardar customer persistir productos.mp4
+ │    └── 📄 Modificar método guardar customer persistir productos.srt
+ │
+ ├── 📖 Clase 6: Comparten datos se comunican microservicios
+ │    ├── 📹 comparten datos se comunican microservicios.mp4
+ │    ├── 📄 comparten datos se comunican microservicios.srt
+ │    └── 🖼️ Arquitectura Detallada Microservicios.png
+ │
+ ├── 📖 Clase 7: Configuración cliente reactivo Webclient cliente REST
+ │    ├── 📹 Configuración cliente reactivo Webclien cliente REST.mp4
+ │    ├── 📄 Configuración cliente reactivo Webclien cliente REST.srt
+ │    └── 🔗 Propiedades de configuracion del webclient builder.html
+ │
+ ├── 📖 Clase 8: Consumir API REST
+ │    ├── 📹 Consumir API REST.mp4
+ │    └── 📄 Consumir API REST.srt
+ │
+ ├── 📖 Clase 9: Crear método API customer consultar cliente sus
+ │    ├── 📹 Crear método API customer consultar cliente sus.mp4
+ │    └── 📄 Crear método API customer consultar cliente sus.srt
+ │
+ ├── 📖 Clase 10: Probar comunicación Customer Product
+ │    ├── 📹 Probar comunicación Customer Product.mp4
+ │    ├── 📄 Probar comunicación Customer Product.srt
+ │    └── 📦 paymentchainparent_customer_product_webclient.zip
+ │
+ ├── 📖 Clase 11: Revisar comentar microservicio transacciones
+ │    ├── 📹 Revisar comentar microservicio transacciones.mp4
+ │    ├── 📄 Revisar comentar microservicio transacciones.srt
+ │    └── 🔗 Crear microservicio transacciones agregarlo al.html
+ │
+ └── 📖 Clase 12-13: Prueba funcional E2E comunicación customer producto
+      ├── 📹 Prueba funcional E2E comunicación customer producto.mp4
+      ├── 📄 Prueba funcional E2E comunicación customer producto.srt
+      ├── 📦 paymentchainparent_businessdomain_Full_Module.zip
+      └── 📄 ImputSchemasForTestApis.md
+
+📁 SECCIÓN 5: Infraestructura Netflix Eureka y spring config (spring cloud)
+ ├── 📖 Clase 1: Microservicios van mas allá desarrollo, spring cloud
+ │    ├── 📹 microservicios van mas allá desarrollo, spring cloud.mp4
+ │    └── 📄 microservicios van mas allá desarrollo, spring cloud.srt
+ │
+ ├── 📖 Clase 2: Uso perfiles administrar configuración por entornos
+ │    ├── 📹 Uso perfiles administrar configuración por entornos.mp4
+ │    └── 📄 Uso perfiles administrar configuración por entornos.srt
+ │
+ ├── 📖 Clase 3: Escribir fichero propiedades perfil local desarrollo
+ │    ├── 📹 Escribir fichero propiedades perfil local desarrollo.mp4
+ │    └── 📄 Escribir fichero propiedades perfil local desarrollo.srt
+ │
+ ├── 📖 Clase 4: Escribir fichero propiedades yaml perfil producción
+ │    ├── 📹 Escribir fichero propiedades yaml perfil producción.mp4
+ │    ├── 📄 Escribir fichero propiedades yaml perfil producción.srt
+ │    └── 📦 paymentchainparent_profiles.zip
+ │
+ ├── 📖 Clase 5: Spring Cloud
+ │    ├── 📹 Spring Cloud.mp4
+ │    ├── 📄 Spring Cloud.srt
+ │    ├── 🔗 Instalar git, video apoyo mi canal youtube.html
+ │    ├── 🔗 Guia instalar git windows.html
+ │    └── 🔗 Spring cloud tabla equivalencias spring boot.html
+ │
+ ├── 📖 Clase 6: Crear repositorio git datasource servidor
+ │    ├── 📹 Crear repositorio git datasource servidor.mp4
+ │    ├── 📄 Crear repositorio git datasource servidor.srt
+ │    ├── 🔗 Documentación oficial de spring cloud config server.html
+ │    └── 📦 paymentchainparent_cloud-configserver.zip
+ │
+ ├── 📖 Clase 7: Configurar spring cloud springconfig cliente todos
+ │    ├── 📹 Configurar spring cloud springconfig cliente todos.mp4
+ │    └── 📄 Configurar spring cloud springconfig cliente todos.srt
+ │
+ ├── 📖 Clase 8: Importar configuración externa desde springConfig
+ │    ├── 📹 Importar configuración externa desde springCofig.mp4
+ │    └── 📄 Importar configuración externa desde springCofig.srt
+ │
+ ├── 📖 Clase 9: Indicar ruta repositorio git al jar springConfig
+ │    ├── 📹 Indicar ruta repositorio git al jar springCofig.mp4
+ │    └── 📄 Indicar ruta repositorio git al jar springCofig.srt
+ │
+ ├── 📖 Clase 10: Cambiar perfiles propiedades sin recopilar
+ │    ├── 📹 Cambiar perfiles propiedades sin recopilar.mp4
+ │    └── 📄 Cambiar perfiles propiedades sin recopilar.srt
+ │
+ ├── 📖 Clase 11: Registro discovery eureka
+ │    ├── 📹 Registro discovery eureka.mp4
+ │    └── 📄 Registro discovery eureka.srt
+ │
+ ├── 📖 Clase 12: Crear configurar servidor registro discovery eureka
+ │    ├── 📹 Crear configurar servidor registro discovery eureka.mp4
+ │    ├── 📄 Crear configurar servidor registro discovery eureka.srt
+ │    ├── 🔗 Eureka server documentación oficial.html
+ │    ├── 📦 paymentchainparent_springCloud-EurekaServer.zip
+ │    └── 🔗 Spring cloud tabla equivalencia versiones spring.html
+ │
+ ├── 📖 Clase 13: Registrar microservicio cliente servidor registry
+ │    ├── 📹 Registrar microservicio cliente servidor registry.mp4
+ │    ├── 📄 Registrar microservicio cliente servidor registry.srt
+ │    └── 📦 paymentchainparent-spring-cloud-eurekanadproduct.zip
+ │
+ ├── 📖 Clase 14: Agregar configurar Actuator consultar métricas
+ │    ├── 📹 Agregar configurar Actuator consultar métricas.mp4
+ │    ├── 📄 Agregar configurar Actuator consultar métricas.srt
+ │    ├── 🔗 API REST de eureka.html
+ │    └── 🔗 Spring cloud netflix de eureka.html
+ │
+ ├── 📖 Clase 15: Descubrir servicios por nombre servidor Registro
+ │    ├── 📹 Descubrir servicios por nombre servidor Registro.mp4
+ │    └── 📄 Descubrir servicios por nombre servidor Registro.srt
+ │
+ └── 📖 Clase 16: Balanceador carga cliente Spring cloud LoadBalancer
+      ├── 📹 Balanceador carga cliente Spring cloud LoadBalancer.mp4
+      ├── 📄 Balanceador carga cliente Spring cloud LoadBalancer.srt
+      └── 📦 paymentchainparent-spring-cloud-eureka_full.zip
+
+📁 SECCIÓN 6: Observabilidad - Monitorizando los microservicios con Spring Admin
+ ├── 📖 Clase 1: Observando sus microservicios con Spring Admin
+ │    ├── 📹 Observando sus microservicios con Spring Admin.mp4
+ │    └── 📄 Observando sus microservicios con Spring Admin.srt
+ │
+ ├── 📖 Clase 2: Crear servidor observabilidad Spring Boot Spring
+ │    ├── 📹 Crear servidor observabilidad Spring Boot Spring.mp4
+ │    ├── 📄 Crear servidor observabilidad Spring Boot Spring.srt
+ │    └── 🔗 Documentación oficial de Spring Admin.html
+ │
+ ├── 📖 Clase 3: Instrumentar microservicios clientes Spring Admin
+ │    ├── 📹 Instrumentar microservicios clientes Spring Admin.mp4
+ │    └── 📄 Instrumentar microservicios clientes Spring Admin.srt
+ │
+ ├── 📖 Clase 4: Conectar servidor observabilidad Eureka descubrir
+ │    ├── 📹 Conectar servidor observabilidad Eureka descubrir.mp4
+ │    └── 📄 Conectar servidor observabilidad Eureka descubrir.srt
+ │
+ └── 📖 Clase 5: Descubrir microservicios desde servidor registry and
+      ├── 📹 Descubrir microservicios desde servidor registry and.mp4
+      ├── 📄 Descubrir microservicios desde servidor registry and.srt
+      ├── 🔗 Documentación oficial de spring boot Admin.html
+      └── 📦 full-project-include-admin-billing.zip
+
+📁 SECCIÓN 7: Buenas prácticas para manejar excepciones errores y escribir APIs
+ ├── 📖 Clase 1: APIS corazón potencia comunicación aplicaciones
+ │    ├── 📹 APIS corazón potencia comunicación aplicaciones.mp4
+ │    ├── 📄 APIS corazón potencia comunicación aplicaciones.srt
+ │    └── 📄 Spring boot APIs.pdf
+ │
+ ├── 📖 Clase 2: Anatomía APIs aspectos mínimos diseño antes
+ │    ├── 📹 Anatomía APIs aspectos mínimos diseño antes.mp4
+ │    └── 📄 Anatomía APIs aspectos mínimos diseño antes.srt
+ │
+ ├── 📖 Clase 3: Codificar versionado API recurso microservicio
+ │    ├── 📹 Codificar versionado API recurso microservicio.mp4
+ │    ├── 📄 Codificar versionado API recurso microservicio.srt
+ │    └── 📦 paymentchainparent_withAPIversion.zip
+ │
+ ├── 📖 Clase 4: Códigos respuesta estándar APIs customer 200 OK
+ │    ├── 📹 Codigos respuesta estandar APIs customer 200 OK.mp4
+ │    ├── 📄 Códigos respuesta estándar APIs customer 200 OK.srt
+ │    ├── 🔗 Buscador RFCs Grupo Trabajo Ingeniería Internet.html
+ │    ├── 🔗 Ebook Web API Design The Missing Link.html
+ │    └── 🔗 Especificación OpenAPI.html
+ │
+ ├── 📖 Clase 5: Códigos HTTP estandarizar APIs
+ │    ├── 📹 Códigos HTTP estandarizar APIs.mp4
+ │    └── 📄 Códigos HTTP estandarizar APIs.srt
+ │
+ ├── 📖 Clase 6: Manejo standard excepciones orientación Aspectos
+ │    ├── 📹 Manejo standard excepciones orientación Aspectos.mp4
+ │    ├── 📄 Manejo standard excepciones orientación Aspectos.srt
+ │    └── 🔗 RCF 7807 de la IETF para el manejo de Excepciones.html
+ │
+ ├── 📖 Clase 7: Crear clase estandarizada manejar respuesta
+ │    ├── 📹 Crear clase estandarizada manejar respuesta.mp4
+ │    └── 📄 Crear clase estandarizada manejar respuesta.srt
+ │
+ ├── 📖 Clase 8: Codificar manejador excepciones siguiendo patron
+ │    ├── 📹 Codificar manejador excepciones siguiendo patron.mp4
+ │    └── 📄 Codificar manejador excepciones siguiendo patron.srt
+ │
+ ├── 📖 Clase 9: Crear capa intermedia manejo lógica validaciones
+ │    ├── 📹 Crear capa intermedia manejo lógica validaciones.mp4
+ │    └── 📄 Crear capa intermedia manejo lógica validaciones.srt
+ │
+ ├── 📖 Clase 10: Excepciones personalizadas manejar reglas
+ │    ├── 📹 Excepciones personalizadas manejar reglas.mp4
+ │    └── 📄 Excepciones personalizadas manejar reglas.srt
+ │
+ ├── 📖 Clase 11: Validación respuestas HTTP excepciones al consumir
+ │    ├── 📹 Validación respuestas HTTP excepciones al consumir.mp4
+ │    ├── 📄 Validación respuestas HTTP excepciones al consumir.srt
+ │    └── 📦 [archivo sin nombre].zip
+ │
+ ├── 📖 Clase 12: Implementar http status codes manejo excepciones
+ │    └── 🔗 Implementar http status codes manejo excepciones.html
+ │
+ └── 📖 Clase 13: Overview Transacciones distribuidas
+      ├── 📹 Overview Transacciones distribuidas.mp4
+      ├── 📄 Overview Transacciones distribuidas.srt
+      └── 🔗 Link del servidor discord.html
+
+📁 SECCIÓN 8: Swagger Open API Specification y MapStruct para Mapear y Serializar objetos
+ ├── 📖 Clase 1: Arquitectura Interna microservicio comprender Swagger
+ │    ├── 📹 Arquitectura Interna microservicio comprender Swagger.mp4
+ │    ├── 📄 Arquitectura Interna microservicio comprender Swagger.srt
+ │    └── 🖼️ ArquitecturaInternaMicroservicio.jpg
+ │
+ ├── 📖 Clase 2: Configuración swagger spring docs OpenAPI usando
+ │    ├── 📹 Configuración swagger spring docs OpenAPi usando.mp4
+ │    ├── 📄 Configuración swagger spring docs OpenAPi usando.srt
+ │    ├── 🔗 Spring Docs Open API.html
+ │    └── 🔗 Swagger OpenAPi specification V3.html
+ │
+ ├── 📖 Clase 3: Documentar clase entidad sus atributos swagger
+ │    ├── 📹 Documentar clase entidad sus atributos swagger.mp4
+ │    └── 📄 Documentar clase entidad sus atributos swagger.srt
+ │
+ ├── 📖 Clase 4: Documentar API sus métodos swagger standar OpenAPI
+ │    ├── 📹 Documentar API sus métodos swagger standar OpenAPI.mp4
+ │    ├── 📄 Documentar API sus métodos swagger standar OpenAPI.srt
+ │    └── 📦 billing_openAPI.zip
+ │
+ ├── 📖 Clase 5: Crear modelos Request Response separar capas API
+ │    ├── 📹 Crear modelos Request Response separar capas API.mp4
+ │    ├── 📄 Crear modelos Request Response separar capas API.srt
+ │    └── 🔗 Documentación oficial de lombo.html
+ │
+ ├── 📖 Clase 6: Agregar configurar libreria mapeo automático
+ │    ├── 📹 Agregar configurar libreria mapeo automático.mp4
+ │    ├── 📄 Agregar configurar libreria mapeo automático.srt
+ │    ├── 🔗 Configurar MapStruct con Lombok.html
+ │    ├── 🔗 Documentación oficial MapStruct.html
+ │    └── 🔗 Mapstruct org.html
+ │
+ ├── 📖 Clase 7: Crear Mappers MapStruct Mapeo automático modelos
+ │    ├── 📹 Crear Mappers MapStruct Mapeo automático modelos.mp4
+ │    ├── 📄 Crear Mappers MapStruct Mapeo automático modelos.srt
+ │    └── 🔗 Documentación oficial sobre Mappers con MapStruct.html
+ │
+ ├── 📖 Clase 8: Refactorizar API (Controller) utilice modelos Request
+ │    ├── 📹 Refactorizar API (Controller) utilice modelos Request.mp4
+ │    └── 📄 Refactorizar API (Controller) utilice modelos Request.srt
+ │
+ └── 📖 Clase 9: Explicación proceso serialización deserialización
+      ├── 📹 Explicación proceso serialización deserialización.mp4
+      ├── 📄 Explicación proceso serialización deserialización.srt
+      └── 📦 billing_mapStruct_59.zip
+
+📁 SECCIÓN 9: Spring Security, Seguridad básica propia del framework de spring
+ ├── 📖 Clase 1: Spring Security, seguridad Front Back
+ │    ├── 📹 Spring Security, seguridad Front Back.mp4
+ │    ├── 📄 Spring Security, seguridad Front Back.srt
+ │    └── 🖼️ Spring boot Security.png
+ │
+ ├── 📖 Clase 2: Restricciones técnicas ataques mínimas se deben
+ │    ├── 📹 Restriciciones tecnicas ataques mínimas se deben.mp4
+ │    └── 📄 Restriciciones tecnicas ataques mínimas se deben.srt
+ │
+ ├── 📖 Clase 3: Configuración autenticación básica usuario contraseña
+ │    ├── 📹 Configuración autenticación básica usuario contraseña.mp4
+ │    ├── 📄 Configuración autenticación básica usuario contraseña.srt
+ │    └── 🔗 Documentación Oficial Spring Security.html
+ │
+ ├── 📖 Clase 4: Restricción permisos métodos POST CSRF resolverlo
+ │    ├── 📹 Restricción permisos métodos POST CSRF resolverlo.mp4
+ │    ├── 📄 Restricción permisos métodos POST CSRF resolverlo.srt
+ │    └── 🔗 Cross Site Request Forgery (CSRF).html
+ │
+ ├── 📖 Clase 5: Configuración avanzada seguridad
+ │    ├── 📹 Configuración avanzada seguridad.mp4
+ │    └── 📄 Configuración avanzada seguridad.srt
+ │
+ ├── 📖 Clase 6: Configuración orígenes cruzados (CORS)
+ │    ├── 📹 Configuración orígenes cruzados (CORS).mp4
+ │    ├── 📄 Configuración orígenes cruzados (CORS).srt
+ │    ├── 📦 billing_security.zip
+ │    └── 🔗 Cross-Origin Resource Sharing (CORS).html
+ │
+ └── 📖 Clase 7: Enviar Header Authorization peticiones al API usando
+      ├── 📹 enviar Header Authorization peticiones al API usando.mp4
+      ├── 📄 enviar Header Authorization peticiones al API usando.srt
+      ├── 📄 CurlRequestwithAuthorizationHeader.txt
+      └── 🔗 Documentación oficial sobre CURL.html
+
+📁 SECCIÓN 10: Front Angular, Dockerización y Orquestación con Docker y asistencia de AI
+ ├── 📖 Clase 1: Alternativas web modernas Frontend
+ │    ├── 📹 Alternativas web modernas Frontend.mp4
+ │    └── 📄 Alternativas web modernas Frontend.srt
+ │
+ ├── 📖 Clase 2: Enfoque APIFirst generar módulos Angular
+ │    ├── 📹 Enfoque APIFirst generar módulos Angular.mp4
+ │    ├── 📄 Enfoque APIFirst generar módulos Angular.srt
+ │    ├── 📄 apifirstCustomerSchema.json
+ │    └── 🔗 Generador de código swagger editor.html
+ │
+ ├── 📖 Clase 3: Descargar ejecutar App Angular comprender consumir
+ │    ├── 📹 Descargar ejecutar App Angular comprender consumir.mp4
+ │    ├── 📄 Descargar ejecutar App Angular comprender consumir.srt
+ │    ├── 🔗 Descarga los proyectos desde github.html
+ │    └── 🔗 Videos adicionales configurar torno NodeJs.html
+ │
+ ├── 📖 Clase 4: Se empaquetan Microservicios contenedores se unen al
+ │    ├── 📹 se empaquetan Microservicios contenedores se unen al.mp4
+ │    └── 📄 se empaquetan Microservicios contenedores se unen al.srt
+ │
+ ├── 📖 Clase 5: Son contenedores porque son tan relevantes mundo TI
+ │    ├── 📹 son contenedores porque son tan relevantes mundo TI.mp4
+ │    ├── 📄 son contenedores porque son tan relevantes mundo TI.srt
+ │    └── 🔗 Guía Oficial de instalación de docker.html
+ │
+ ├── 📖 Clase 6: Video apoyo Instalar docker desktop usas windows 10
+ │    ├── 📹 Video apoyo Instalar docker desktop usas windows 10.mp4
+ │    ├── 📄 Video apoyo Instalar docker desktop usas windows 10.srt
+ │    ├── 📄 Comando_activarWSL2.txt
+ │    ├── 🔗 Descarga docker for Desktop.html
+ │    ├── 🔗 Guía oficial instalación docker diferentes sistemas.html
+ │    └── 🔗 Install docker desktop windows.html
+ │
+ ├── 📖 Clase 7: Escribir imágenes Docker Dockerfile usando
+ │    ├── 📹 Escribir imágenes Docker Dockerfile usando.mp4
+ │    ├── 📄 Escribir imágenes Docker Dockerfile usando.srt
+ │    ├── 📄 Dockerfile.original
+ │    ├── 📄 HELP.md
+ │    ├── 🔗 Repositorio público de imágenes de Docker.html
+ │    └── 🔗 Video adicional empezar usar Inteligencia.html
+ │
+ ├── 📖 Clase 8: Compilar imágenes docker
+ │    ├── 📹 Compilar imágenes docker.mp4
+ │    └── 📄 Compilar imágenes docker.srt
+ │
+ ├── 📖 Clase 9: Construir contenedores docker comandos básicos
+ │    ├── 📹 Construir contenedores docker comandos básicos.mp4
+ │    ├── 📄 Construir contenedores docker comandos básicos.srt
+ │    └── 📄 pom-con-plugin-docker.xml
+ │
+ ├── 📖 Clase 10: Plugin maven spotify automatizar construcción
+ │    ├── 📹 Plugin maven spotify automatizar construcción.mp4
+ │    └── 📄 Plugin maven spotify automatizar construcción.srt
+ │
+ ├── 📖 Clase 11: Construir orquestación docker compose usando
+ │    ├── 📹 Construir orquestación docker compose usando.mp4
+ │    ├── 📄 Construir orquestación docker compose usando.srt
+ │    └── 📄 docker-compose.yml
+ │
+ ├── 📖 Clase 12: Crear base datos postgres persistir información
+ │    ├── 📹 Crear base datos postgres persistir información.mp4
+ │    ├── 📄 Crear base datos postgres persistir información.srt
+ │    └── 📄 init-user-db.sh
+ │
+ └── 📖 Clase 13: Administrar orquestación base datos docker compose
+      ├── 📹 Administrar orquestación base datos docker compose.mp4
+      ├── 📄 Administrar orquestación base datos docker compose.srt
+      ├── 📦 paymentchainparent_completo_con_dockercompose.zip
+      └── 🔗 video adicional empezar usar Inteligencia.html
+
+📁 SECCIÓN 11: Seguridad APIGateway, proxy inverso, service mesh
+ ├── 📖 Clase 1: Diagrama arquitectura solución parte seguridad
+ │    ├── 📹 diagrama arquitectura solución parte seguridad.mp4
+ │    └── 📄 diagrama arquitectura solución parte seguridad.srt
+ │
+ ├── 📖 Clase 2: Consiste proxy inverso principales funcionalidades
+ │    ├── 📹 consiste proxy inverso principales funcionalidades.mp4
+ │    └── 📄 consiste proxy inverso principales funcionalidades.srt
+ │
+ ├── 📖 Clase 3: Patrones implementar proxy inverso Service Mesh API
+ │    ├── 📹 Patrones implementar proxy inverso Service Mesh API.mp4
+ │    └── 📄 Patrones implementar proxy inverso Service Mesh API.srt
+ │
+ ├── 📖 Clase 4: Arquitectura de un APIGateway
+ │    ├── 📹 Arquitectura de un APIGateway.mp4
+ │    └── 📄 Arquitectura de un APIGateway.srt
+ │
+ ├── 📖 Clase 5: Arquitectura Service Mesh API Gateway banco
+ │    ├── 📹 Arquitectura Service Mesh API Gateway banco.mp4
+ │    └── 📄 Arquitectura Service Mesh API Gateway banco.srt
+ │
+ ├── 📖 Clase 6: Codificación Crear microservicio APIGateway incluirlo
+ │    ├── 📹 Codificación Crear microservicio APIGateway incluirlo.mp4
+ │    ├── 📄 Codificación Crear microservicio APIGateway incluirlo.srt
+ │    └── 🔗 Spring cloud documentation.html
+ │
+ ├── 📖 Clase 7: Codificación Agregar configuración prefilter
+ │    ├── 📹 Codificación Agregar configuración prefilter.mp4
+ │    └── 📄 Codificación Agregar configuración prefilter.srt
+ │
+ ├── 📖 Clase 8: Codificación Resolver conflictos de dependencias
+ │    ├── 📹 Codificación Resolver conflictos de dependecias.mp4
+ │    └── 📄 Codificación Resolver conflictos de dependecias.srt
+ │
+ ├── 📖 Clase 9: Codificación Iniciar eureka
+ │    ├── 📹 Codificación Iniciar eureka.mp4
+ │    ├── 📄 Codificación Iniciar eureka.srt
+ │    └── 📦 paymentchainparent_completo_v2.zip
+ │
+ ├── 📖 Clase 10: Conectar apigateway eureka usar puertos aleatorios
+ │    ├── 📹 Conectar apigateway eureka usar puertos aleatorios.mp4
+ │    └── 📄 Conectar apigateway eureka usar puertos aleatorios.srt
+ │
+ └── 📖 Clase 11: Dockerizar API gateway prueba e2e puertos aleatorios
+      ├── 📹 Dockerizar API gateway prueba e2e puertos aleatorios.mp4
+      ├── 📄 Dockerizar API gateway prueba e2e puertos aleatorios.srt
+      └── 📦 paymentchainparent_completo_v2.zip
+
+📁 SECCIÓN 12: Seguridad OAuth2 y keycloak
+ ├── 📖 Clase 1: Keycloak Arquitectura flujo acceso seguridad api
+ │    ├── 📹 Keycloak Arquitectura flujo acceso seguridad api.mp4
+ │    └── 📄 Keycloak Arquitectura flujo acceso seguridad api.srt
+ │
+ ├── 📖 Clase 2: Es OAuth2, Single Sign On, Roles flujo OAuth2
+ │    ├── 📹 es OAuth2, Single Sign On, Roles flujo OAuth2.mp4
+ │    ├── 📄 es OAuth2, Single Sign On, Roles flujo OAuth2.srt
+ │    └── 🔗 Documentacion oficial del RFC del protocolo OAuth2.html
+ │
+ ├── 📖 Clase 3: Instalación del Keycloak y configuración inicial
+ │    ├── 📹 Instalación del Keycloak y configuración inicial.mp4
+ │    ├── 📄 Instalación del Keycloak y configuración inicial.srt
+ │    ├── 📄 docker-compose.yml
+ │    ├── 🔗 Documentación oficial keycloak.html
+ │    └── 🔗 Guia Oficial de administración de keycloak.html
+ │
+ ├── 📖 Clase 4: Definicion Realms, Roles, Usuarios Clientes keycloak
+ │    ├── 📹 Definicion Realms, Roles, Usuarios Clientes keycloak.mp4
+ │    ├── 📄 Definicion Realms, Roles, Usuarios Clientes keycloak.srt
+ │    └── 🔗 Guia de Roles y Claims.html
+ │
+ ├── 📖 Clase 5: Obtener token mediante API keycloak desde Postman
+ │    ├── 📹 Obtener token mediante API keycloak desde Postman.mp4
+ │    ├── 📄 Obtener token mediante API keycloak desde Postman.srt
+ │    └── 🔗 Rest API keycloak.html
+ │
+ ├── 📖 Clase 6: Crear microservicio adaptador comunicarse keycloak
+ │    ├── 📹 Crear microservicio adaptador comunicarse keycloak.mp4
+ │    ├── 📄 Crear microservicio adaptador comunicarse keycloak.srt
+ │    └── 📦 keycloackAdapter.zip
+ │
+ ├── 📖 Clase 7: Dockerizar probar adaptador keycloak, obtener roles
+ │    ├── 📹 Dockerizar probar adaptador keycloak, obtener roles.mp4
+ │    ├── 📄 Dockerizar probar adaptador keycloak, obtener roles.srt
+ │    └── 📄 docker-compose.yml
+ │
+ ├── 📖 Clase 8: Enrutamiento Configurar filtro personalizado API
+ │    ├── 📹 Enrutamiento Configurar filtro personalizado APi.mp4
+ │    └── 📄 Enrutamiento Configurar filtro personalizado APi.srt
+ │
+ ├── 📖 Clase 9: Enrutamiento Comprobar validez Authorization header
+ │    ├── 📹 Enrutamiento Comprobar validez Authorization header.mp4
+ │    ├── 📄 Enrutamiento Comprobar validez Authorization header.srt
+ │    └── 🔗 Patron filter e interceptor de Java.html
+ │
+ ├── 📖 Clase 10: Enrutamiento Configurar filtro personalizado
+ │    ├── 📹 Enrutamiento Configurar filtro personalizado.mp4
+ │    ├── 📄 Enrutamiento Configurar filtro personalizado.srt
+ │    └── 📦 apigateway.zip
+ │
+ ├── 📖 Clase 11: Enrutamiento Prueba recomendaciones seguridad api
+ │    ├── 📹 Enrutamiento Prueba recomendaciones seguridad api.mp4
+ │    └── 📄 Enrutamiento Prueba recomendaciones seguridad api.srt
+ │
+ └── 📖 Clase 12: Enrutamiento Añadir tercer microservicio al filtro
+      ├── 📹 Enrutamiento Añadir tercer microservicio al filtro.mp4
+      ├── 📄 Enrutamiento Añadir tercer microservicio al filtro.srt
+      └── 📦 paymentchainparent_completo_v2.zip
+
+📁 SECCIÓN 13: Actualización de versiones (upgrade) y solución a problemas comunes
+ ├── 📖 Clase 1: Upgrade Java, escoger versión correcta JDK
+ │    ├── 📹 Upgrade Java, escoger versión correcta JDK.mp4
+ │    ├── 📄 Upgrade Java, escoger versión correcta JDK.srt
+ │    ├── 🔗 Sitio oficial de releases del openjdk.html
+ │    └── 🔗 Tabla de releases LTS de oracle JDK.html
+ │
+ ├── 📖 Clase 2: Actualizar Java correctamente cada proyecto resolver
+ │    ├── 📹 Actualizar Java correctamente cada proyecto resolver.mp4
+ │    └── 📄 Actualizar Java correctamente cada proyecto resolver.srt
+ │
+ └── 📖 Clase 3: Actualizar lombok si subes la version del JDK
+      ├── 📹 Actualizar lombok si subes la version del JDK.mp4
+      └── 📄 Actualizar lombok si subes la version del JDK.srt
+
+📁 SECCIÓN 14: Cierre, cupones, material adicional y como llevar tu formación al próximo nivel
+ └── 📖 Clase 1: Cierre del curso
+      ├── 📹 Cierre del curso.mp4
+      ├── 📄 Cierre del curso.srt
+      ├── 🔗 Consejos preparar curriculum buscar empleo.html
+      └── 🔗 Cupones y recursos adicionales en mi sitio web.html

@@ -1,0 +1,62 @@
+{
+  "titulo": "Configuración de Swagger con Springdoc-OpenAPI",
+  "resumen": "Configuración avanzada de Swagger mediante clase @Configuration con @Bean de OpenAPI. Se personaliza información general de la API (título, descripción, versión, contacto, licencia), se configuran servers, y se mejora presentación de documentación. Base para documentación profesional.",
+  "puntosClave": [
+    "Crear clase SwaggerConfig con @Configuration",
+    "Definir @Bean de tipo OpenAPI para personalizar documentación",
+    "Configurar Info: título, descripción, versión de API",
+    "Agregar Contact: nombre, email, URL del equipo/empresa",
+    "Definir License: tipo de licencia (Apache 2.0, MIT, etc.)",
+    "Configurar Servers: URLs donde API está disponible (dev, prod)",
+    "Tags para agrupar endpoints por funcionalidad",
+    "ExternalDocs para enlaces a documentación adicional",
+    "Propiedades application.properties:",
+    "  - springdoc.api-docs.path=/v3/api-docs",
+    "  - springdoc.swagger-ui.path=/swagger-ui.html",
+    "  - springdoc.swagger-ui.operationsSorter=method",
+    "Personalización mejora profesionalismo de documentación"
+  ],
+  "conceptos": [
+    {
+      "nombre": "OpenAPI Bean",
+      "descripcion": "Bean Spring que configura metadatos de documentación OpenAPI"
+    },
+    {
+      "nombre": "Info Object",
+      "descripcion": "Sección que describe información general de la API (título, versión, descripción)"
+    },
+    {
+      "nombre": "Contact Object",
+      "descripcion": "Información de contacto del equipo responsable de la API"
+    },
+    {
+      "nombre": "License Object",
+      "descripcion": "Información sobre licencia de uso de la API"
+    },
+    {
+      "nombre": "Server Object",
+      "descripcion": "URLs de servidores donde API está disponible (dev, staging, prod)"
+    },
+    {
+      "nombre": "Tags",
+      "descripcion": "Etiquetas para agrupar endpoints relacionados en documentación"
+    },
+    {
+      "nombre": "ExternalDocs",
+      "descripcion": "Enlaces a documentación externa (wikis, guías, especificaciones)"
+    },
+    {
+      "nombre": "operationsSorter",
+      "descripcion": "Configuración para ordenar operaciones en Swagger UI (alpha, method)"
+    },
+    {
+      "nombre": "API Versioning in Docs",
+      "descripcion": "Documentar versión de API en metadata de OpenAPI"
+    },
+    {
+      "nombre": "Professional Documentation",
+      "descripcion": "Documentación completa con contacto, licencia y descripción clara"
+    }
+  ],
+  "codigoEjemplo": "// SwaggerConfig.java\npackage com.paymentchange.customer.config;\n\nimport io.swagger.v3.oas.models.OpenAPI;\nimport io.swagger.v3.oas.models.info.Contact;\nimport io.swagger.v3.oas.models.info.Info;\nimport io.swagger.v3.oas.models.info.License;\nimport io.swagger.v3.oas.models.servers.Server;\nimport org.springframework.context.annotation.Bean;\nimport org.springframework.context.annotation.Configuration;\nimport java.util.List;\n\n@Configuration\npublic class SwaggerConfig {\n    \n    @Bean\n    public OpenAPI customOpenAPI() {\n        return new OpenAPI()\n            .info(new Info()\n                .title(\"Customer Service API\")\n                .description(\"API REST para gestión de clientes en sistema financiero\")\n                .version(\"v1.0.0\")\n                .contact(new Contact()\n                    .name(\"Equipo de Desarrollo\")\n                    .email(\"dev@paymentchange.com\")\n                    .url(\"https://paymentchange.com/team\"))\n                .license(new License()\n                    .name(\"Apache 2.0\")\n                    .url(\"https://www.apache.org/licenses/LICENSE-2.0.html\")))\n            .servers(List.of(\n                new Server()\n                    .url(\"http://localhost:8081\")\n                    .description(\"Servidor de Desarrollo\"),\n                new Server()\n                    .url(\"https://api.paymentchange.com\")\n                    .description(\"Servidor de Producción\")\n            ));\n    }\n}\n\n# application.properties - Configuración Swagger\n# Ruta de la especificación OpenAPI JSON\nspringdoc.api-docs.path=/v3/api-docs\n\n# Ruta de Swagger UI\nspringdoc.swagger-ui.path=/swagger-ui.html\n\n# Ordenar operaciones por método HTTP\nspringdoc.swagger-ui.operationsSorter=method\n\n# Ordenar tags alfabéticamente\nspringdoc.swagger-ui.tagsSorter=alpha\n\n# Habilitar botón Try it out por defecto\nspringdoc.swagger-ui.tryItOutEnabled=true\n\n# Mostrar request duration\nspringdoc.swagger-ui.displayRequestDuration=true"
+}

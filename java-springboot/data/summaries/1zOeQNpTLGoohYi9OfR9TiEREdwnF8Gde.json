@@ -1,0 +1,64 @@
+{
+  "titulo": "Dockerizar y Probar Adaptador Keycloak para Obtener Roles",
+  "resumen": "Contenedorización de Keycloak y KeycloakAdapter. Se agrega Keycloak a docker-compose.yml, se dockeriza adaptador, se prueban métodos de validación y extracción de roles. Sistema listo para integración con API Gateway.",
+  "puntosClave": [
+    "Agregar Keycloak a docker-compose.yml",
+    "Usar imagen oficial con PostgreSQL para persistencia",
+    "Configurar variables de entorno para dev mode",
+    "Puerto 8180 para Keycloak",
+    "Crear Dockerfile para keycloak-adapter",
+    "Exponer como librería JAR para otros servicios",
+    "Probar endpoints del adaptador:",
+    "  POST /auth/token → obtener token",
+    "  POST /auth/validate → validar token",
+    "  GET /auth/roles → extraer roles",
+    "  GET /auth/userinfo → info de usuario",
+    "Validar que roles se extraen correctamente del JWT",
+    "Verificar validación de tokens expirados",
+    "Probar con usuarios de diferentes roles",
+    "Integrar adaptador con API Gateway en siguiente clase"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Keycloak Persistence",
+      "descripcion": "Almacenar configuración de Keycloak en BD PostgreSQL"
+    },
+    {
+      "nombre": "Environment Variables",
+      "descripcion": "Configurar Keycloak mediante variables de entorno"
+    },
+    {
+      "nombre": "Adapter Endpoints",
+      "descripcion": "APIs REST expuestas por adaptador para validación"
+    },
+    {
+      "nombre": "Token Expiration Testing",
+      "descripcion": "Probar validación de tokens expirados"
+    },
+    {
+      "nombre": "Role Verification",
+      "descripcion": "Verificar que roles extraídos coinciden con Keycloak"
+    },
+    {
+      "nombre": "Shared Library",
+      "descripcion": "Adaptador como JAR reutilizable por otros servicios"
+    },
+    {
+      "nombre": "Service Integration",
+      "descripcion": "Integrar adaptador con API Gateway"
+    },
+    {
+      "nombre": "Docker Networking",
+      "descripcion": "Comunicación entre Keycloak y adaptador en red Docker"
+    },
+    {
+      "nombre": "Health Check",
+      "descripcion": "Verificar que Keycloak está listo antes de usar adaptador"
+    },
+    {
+      "nombre": "Configuration Management",
+      "descripcion": "Gestionar configuración de Keycloak en diferentes entornos"
+    }
+  ],
+  "codigoEjemplo": null
+}

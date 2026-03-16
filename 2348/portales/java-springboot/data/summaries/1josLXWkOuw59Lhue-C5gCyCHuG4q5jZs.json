@@ -1,0 +1,65 @@
+{
+  "titulo": "Configuración de Orígenes Cruzados (CORS) para Aplicaciones Frontend",
+  "resumen": "Configuración de CORS (Cross-Origin Resource Sharing) para permitir que aplicaciones frontend (React, Angular, Vue) consuman la API desde diferentes dominios. Se explica política same-origin, por qué CORS es necesario, y cómo configurar orígenes, métodos y headers permitidos.",
+  "puntosClave": [
+    "Same-Origin Policy: navegadores bloquean requests entre diferentes orígenes",
+    "Origen = protocolo + dominio + puerto",
+    "Ejemplo: http://localhost:3000 ≠ http://localhost:8081",
+    "CORS permite configurar qué orígenes pueden acceder a API",
+    "Problema sin CORS: frontend recibe error \"blocked by CORS policy\"",
+    "Configurar CORS en Spring Security:",
+    "  - http.cors() para habilitar CORS",
+    "  - @Bean CorsConfigurationSource para definir reglas",
+    "Configuración CORS:",
+    "  - allowedOrigins: dominios permitidos (http://localhost:3000)",
+    "  - allowedMethods: GET, POST, PUT, DELETE, OPTIONS",
+    "  - allowedHeaders: *, Authorization, Content-Type",
+    "  - allowCredentials: true (para enviar cookies/auth)",
+    "  - maxAge: tiempo cache preflight request",
+    "Preflight request: OPTIONS enviado por navegador antes de request real",
+    "Producción: especificar orígenes exactos, no usar \"*\""
+  ],
+  "conceptos": [
+    {
+      "nombre": "CORS (Cross-Origin Resource Sharing)",
+      "descripcion": "Mecanismo que permite requests entre diferentes orígenes de forma segura"
+    },
+    {
+      "nombre": "Same-Origin Policy",
+      "descripcion": "Política de seguridad que bloquea requests entre diferentes orígenes"
+    },
+    {
+      "nombre": "Origin",
+      "descripcion": "Combinación de protocolo + dominio + puerto (http://localhost:3000)"
+    },
+    {
+      "nombre": "Preflight Request",
+      "descripcion": "Request OPTIONS enviado por navegador para verificar CORS antes de request real"
+    },
+    {
+      "nombre": "allowedOrigins",
+      "descripcion": "Lista de orígenes permitidos para hacer requests a API"
+    },
+    {
+      "nombre": "allowedMethods",
+      "descripcion": "Métodos HTTP permitidos desde otros orígenes"
+    },
+    {
+      "nombre": "allowedHeaders",
+      "descripcion": "Headers que cliente puede enviar en request cross-origin"
+    },
+    {
+      "nombre": "allowCredentials",
+      "descripcion": "Permite enviar cookies y headers de autenticación cross-origin"
+    },
+    {
+      "nombre": "maxAge",
+      "descripcion": "Tiempo en segundos que navegador cachea resultado de preflight"
+    },
+    {
+      "nombre": "CorsConfigurationSource",
+      "descripcion": "Bean que define configuración CORS para la aplicación"
+    }
+  ],
+  "codigoEjemplo": "// SecurityConfig.java - Configurar CORS\n@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n    \n    @Bean\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) \n            throws Exception {\n        http\n            .httpBasic()\n            .and()\n            .csrf().disable()\n            \n            // Habilitar CORS con configuración personalizada\n            .cors(cors -> cors.configurationSource(corsConfigurationSource()))\n            \n            .sessionManagement(session -> session\n                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)\n            )\n            .authorizeHttpRequests(auth -> auth\n                .requestMatchers(\"/actuator/health\").permitAll()\n                .requestMatchers(\"/swagger-ui/**\", \"/v3/api-docs/**\").permitAll()\n                .anyRequest().authenticated()\n            );\n        \n        return http.build();\n    }\n    \n    @Bean\n    public CorsConfigurationSource corsConfigurationSource() {\n        CorsConfiguration configuration = new CorsConfiguration();\n        \n        // Orígenes permitidos (desarrollo)\n        configuration.setAllowedOrigins(Arrays.asList(\n            \"http://localhost:3000\",      // React dev server\n            \"http://localhost:4200\",      // Angular dev server\n            \"http://localhost:8080\"       // Vue dev server\n        ));\n        \n        // Producción: especificar dominio exacto\n        // configuration.setAllowedOrigins(Arrays.asList(\n        //     \"https://app.paymentchange.com\"\n        // ));\n        \n        // Métodos permitidos\n        configuration.setAllowedMethods(Arrays.asList(\n            \"GET\", \"POST\", \"PUT\", \"DELETE\", \"OPTIONS\"\n        ));\n        \n        // Headers permitidos\n        configuration.setAllowedHeaders(Arrays.asList(\n            \"*\"  // Permitir todos los headers\n            // O específicos: \"Authorization\", \"Content-Type\", \"X-Requested-With\"\n        ));\n        \n        // Permitir envío de credenciales (cookies, auth headers)\n        configuration.setAllowCredentials(true);\n        \n        // Tiempo de cache para preflight (1 hora)\n        configuration.setMaxAge(3600L);\n        \n        // Aplicar configuración a todos los endpoints\n        UrlBasedCorsConfigurationSource source = \n            new UrlBasedCorsConfigurationSource();\n        source.registerCorsConfiguration(\"/**\", configuration);\n        \n        return source;\n    }\n    \n    // ... resto de beans (PasswordEncoder, UserDetailsService)\n}\n\n// Alternativa: CORS global con @CrossOrigin en controllers\n@RestController\n@RequestMapping(\"/api/v1/customer\")\n@CrossOrigin(origins = \"http://localhost:3000\")  // Por controller\npublic class CustomerRestController {\n    // ...\n}\n\n// O por método\n@GetMapping\n@CrossOrigin(origins = \"http://localhost:3000\")\npublic ResponseEntity<List<CustomerResponse>> findAll() {\n    // ...\n}\n\n# Probar CORS desde navegador (JavaScript)\nfetch('http://localhost:8081/api/v1/customer', {\n  method: 'GET',\n  headers: {\n    'Authorization': 'Basic YWRtaW46YWRtaW4xMjM=',\n    'Content-Type': 'application/json'\n  },\n  credentials: 'include'  // Enviar cookies\n})\n.then(response => response.json())\n.then(data => console.log(data))\n.catch(error => console.error('Error:', error));"
+}

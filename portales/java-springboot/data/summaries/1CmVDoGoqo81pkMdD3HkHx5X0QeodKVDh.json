@@ -1,0 +1,62 @@
+{
+  "titulo": "Introducción a Spring Cloud y sus Componentes Principales",
+  "resumen": "Visión general de Spring Cloud como ecosistema de proyectos para construir infraestructura de microservicios. Se presentan los componentes principales que se implementarán: Config Server para configuración centralizada, Eureka para descubrimiento de servicios, Gateway para enrutamiento, y Admin para monitoreo. Se explica cómo estos componentes trabajan juntos.",
+  "puntosClave": [
+    "Spring Cloud: familia de proyectos para sistemas distribuidos",
+    "No es un único framework, sino conjunto de librerías complementarias",
+    "Componentes a implementar en el curso:",
+    "1. Spring Cloud Config: configuración externa en Git",
+    "2. Spring Cloud Netflix Eureka: registro y descubrimiento",
+    "3. Spring Cloud Gateway: API Gateway con enrutamiento",
+    "4. Spring Boot Admin: interfaz de monitoreo",
+    "Versiones: Spring Cloud usa nombres (Hoxton, 2020, 2021, 2022)",
+    "Compatibilidad: verificar versión compatible con Spring Boot 3.2",
+    "Módulo infraestructure-domain contendrá estos componentes",
+    "Cada componente es un microservicio Spring Boot",
+    "Se usan starters específicos: spring-cloud-starter-config, spring-cloud-starter-netflix-eureka-server",
+    "Configuración BOM (Bill of Materials) para gestionar versiones"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Spring Cloud",
+      "descripcion": "Ecosistema de proyectos que facilitan construir aplicaciones distribuidas resilientes"
+    },
+    {
+      "nombre": "Spring Cloud Config",
+      "descripcion": "Servidor y cliente para externalizar configuración en repositorio Git"
+    },
+    {
+      "nombre": "Spring Cloud Netflix",
+      "descripcion": "Integración de herramientas Netflix OSS (Eureka, Ribbon, Hystrix)"
+    },
+    {
+      "nombre": "Eureka Server",
+      "descripcion": "Servidor de registro donde microservicios se dan de alta y consultan otros servicios"
+    },
+    {
+      "nombre": "Spring Cloud Gateway",
+      "descripcion": "Puerta de enlace inteligente con enrutamiento dinámico y filtros"
+    },
+    {
+      "nombre": "Spring Boot Admin",
+      "descripcion": "Aplicación web para gestionar y monitorear aplicaciones Spring Boot"
+    },
+    {
+      "nombre": "BOM (Bill of Materials)",
+      "descripcion": "POM especial que define versiones compatibles de librerías Spring Cloud"
+    },
+    {
+      "nombre": "Release Train",
+      "descripcion": "Versiones de Spring Cloud con nombres (Hoxton, 2020.0.x, 2021.0.x)"
+    },
+    {
+      "nombre": "Compatibilidad de Versiones",
+      "descripcion": "Spring Cloud 2022.0.x compatible con Spring Boot 3.0+"
+    },
+    {
+      "nombre": "Starter Spring Cloud",
+      "descripcion": "Dependencias pre-configuradas para componentes Cloud (config, eureka, gateway)"
+    }
+  ],
+  "codigoEjemplo": "<!-- Configurar Spring Cloud BOM en pom.xml padre -->\n<dependencyManagement>\n    <dependencies>\n        <!-- Spring Cloud BOM -->\n        <dependency>\n            <groupId>org.springframework.cloud</groupId>\n            <artifactId>spring-cloud-dependencies</artifactId>\n            <version>2022.0.0</version>\n            <type>pom</type>\n            <scope>import</scope>\n        </dependency>\n    </dependencies>\n</dependencyManagement>\n\n<!-- Starters para componentes Cloud -->\n<dependencies>\n    <!-- Config Server -->\n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-config-server</artifactId>\n    </dependency>\n    \n    <!-- Eureka Server -->\n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>\n    </dependency>\n    \n    <!-- Gateway -->\n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-starter-gateway</artifactId>\n    </dependency>\n</dependencies>"
+}

@@ -1,0 +1,494 @@
+{
+  "curso": "Microservicios con Spring Boot",
+  "clases": [
+    {
+      "archivo": "1__presentación_caso_uso_global_curso.srt",
+      "titulo": "Presentación y Caso de Uso Global del Curso",
+      "resumen": "Introducción al curso práctico de microservicios con Spring Boot. Se presenta el enfoque hands-on del curso que combina Spring Boot con herramientas como Docker. El caso de estudio es una startup del sector financiero que necesita una solución tecnológica para gestionar clientes, productos, transacciones y procesos operativos.",
+      "puntosClave": [
+        "El curso tiene un enfoque práctico con aprendizaje basado en práctica",
+        "Se combinará Spring Boot con herramientas complementarias como Docker",
+        "Caso de estudio: startup del sector financiero",
+        "Se aprenderá a construir microservicios con Spring Boot y Spring Cloud",
+        "El caso simula un entorno laboral real",
+        "Se cubrirán librerías principales de Spring Boot y Spring Cloud",
+        "Objetivo: aplicar buenas prácticas de desarrollo con microservicios"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Microservicios",
+          "descripcion": "Arquitectura de software donde las aplicaciones se construyen como conjunto de servicios pequeños e independientes"
+        },
+        {
+          "nombre": "Spring Boot",
+          "descripcion": "Framework Java que simplifica el desarrollo de aplicaciones empresariales basadas en Spring"
+        },
+        {
+          "nombre": "Spring Cloud",
+          "descripcion": "Conjunto de herramientas para construir sistemas distribuidos y microservicios"
+        },
+        {
+          "nombre": "Caso de Estudio",
+          "descripcion": "Startup financiera que requiere gestión de clientes, productos, transacciones y facturación"
+        },
+        {
+          "nombre": "Docker",
+          "descripcion": "Plataforma para empaquetar y desplegar aplicaciones en contenedores"
+        }
+      ]
+    },
+    {
+      "archivo": "2__son_microservicios_evolución_estilos_arquitecturas.srt",
+      "titulo": "Qué son Microservicios y Evolución de Estilos de Arquitectura",
+      "resumen": "Explicación detallada del concepto de microservicios como enfoque moderno de desarrollo. Se analiza la evolución de arquitecturas desde monolíticas, pasando por SOA (orientada a servicios), hasta llegar a microservicios. Los microservicios permiten construir aplicaciones en piezas pequeñas e independientes que resuelven tareas específicas del negocio.",
+      "puntosClave": [
+        "Microservicios: aplicaciones diseñadas en piezas pequeñas, manejables e independientes",
+        "Cada microservicio resuelve una tarea concreta del negocio",
+        "El tamaño NO es una métrica relevante en microservicios",
+        "Evolución: Monolíticas → SOA → Microservicios",
+        "Arquitecturas monolíticas: una única aplicación con una base de datos",
+        "SOA: servicios conectados mediante un bus central (ESB)",
+        "Microservicios: eliminan la centralización y permiten evolución independiente",
+        "Cada equipo puede usar tecnologías y lenguajes diferentes",
+        "Se comunican entre sí mediante APIs",
+        "Ventajas: tecnologías open source, menor costo, ciclos de vida independientes"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Arquitectura Monolítica",
+          "descripcion": "Estilo tradicional donde toda la aplicación es una única pieza desplegada en un servidor, con una sola base de datos"
+        },
+        {
+          "nombre": "SOA (Service-Oriented Architecture)",
+          "descripcion": "Arquitectura orientada a servicios que usa un bus central (ESB) para conectar diferentes servicios"
+        },
+        {
+          "nombre": "Microservicios",
+          "descripcion": "Arquitectura donde cada funcionalidad es una aplicación independiente con su propio ciclo de vida"
+        },
+        {
+          "nombre": "ESB (Enterprise Service Bus)",
+          "descripcion": "Bus central utilizado en SOA para la comunicación entre servicios"
+        },
+        {
+          "nombre": "API",
+          "descripcion": "Interfaz que permite la comunicación entre diferentes microservicios"
+        },
+        {
+          "nombre": "Ciclo de Vida Independiente",
+          "descripcion": "Cada microservicio puede desarrollarse, desplegarse y evolucionar sin afectar a otros"
+        },
+        {
+          "nombre": "DDD (Domain-Driven Design)",
+          "descripcion": "Diseño guiado por dominios del negocio, usado para modelar microservicios"
+        }
+      ]
+    },
+    {
+      "archivo": "3__debes_hacer_este_curso__evitar_errores_otros_consejos.srt",
+      "titulo": "Por Qué Debes Hacer Este Curso y Cómo Evitar Errores Comunes",
+      "resumen": "Guía sobre cómo aprovechar al máximo el curso y evitar errores comunes. Se explica la importancia de las calificaciones positivas para mantener el curso actualizado, el proceso recomendado de aprendizaje paso a paso, y cómo usar las herramientas de la plataforma para resolver problemas. Incluye recomendaciones sobre el entorno de desarrollo.",
+      "puntosClave": [
+        "Las buenas calificaciones ayudan a mantener el curso actualizado",
+        "No saltarse clases ni ir directo al código descargable",
+        "Proceso recomendado: Ver video → Practicar → Probar → Debug si hay error",
+        "Usar el mismo entorno de desarrollo del instructor al inicio",
+        "Revisar Preguntas y Respuestas filtradas por clase actual",
+        "Consultar la sección de Recursos Adicionales al final del curso",
+        "Evitar agregar complejidad extra (ej: plataformas cloud al inicio)",
+        "Formular preguntas solo después de investigar",
+        "Conectar en redes sociales (Twitter: @SotoBotero)",
+        "El instructor está disponible para ayudar y apoyar"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Debug",
+          "descripcion": "Proceso de comparar tu código con el recurso descargable para encontrar diferencias y errores"
+        },
+        {
+          "nombre": "Preguntas y Respuestas",
+          "descripcion": "Foro colaborativo de la plataforma donde se resuelven dudas por clase"
+        },
+        {
+          "nombre": "Recursos Adicionales",
+          "descripcion": "Sección al final del curso con soluciones a problemas recurrentes y actualizaciones"
+        },
+        {
+          "nombre": "Entorno de Desarrollo",
+          "descripcion": "Configuración de herramientas y software para programar (IDE, versiones, etc.)"
+        },
+        {
+          "nombre": "Calificación Constructiva",
+          "descripcion": "Evaluación de 5 estrellas con comentarios que ayuda a mejorar el curso"
+        }
+      ]
+    },
+    {
+      "archivo": "4__Spring_Boot_diferencias_Spring_Framework.srt",
+      "titulo": "Spring Boot vs Spring Framework: Diferencias Fundamentales",
+      "resumen": "Explicación de las diferencias entre Spring Framework y Spring Boot. Spring Framework es el marco base que ayuda con tareas repetitivas, pero requiere configuración manual XML. Spring Boot es una evolución que elimina esta complejidad mediante 'starters' y servidor embebido Tomcat, permitiendo al desarrollador enfocarse en la lógica de negocio.",
+      "puntosClave": [
+        "Spring Framework: marco de trabajo para rapidez y productividad",
+        "Spring Boot: evolución de Spring Framework, más fácil de usar",
+        "Spring Framework requería configuración XML manual y tediosa",
+        "Spring Boot usa 'starters' que son ficheros POM con configuraciones predefinidas",
+        "Trae servidor Tomcat embebido por defecto (también Jetty o Undertow)",
+        "Elimina configuración manual de beans, inyección de dependencias y descriptores",
+        "Permite iniciar proyectos en 2-3 pasos con un asistente",
+        "Facilita el empaquetado y despliegue (JAR auto-contenido)",
+        "Compatible con Docker y DevOps",
+        "En entrevistas: mencionar starters y Tomcat embebido como diferencias clave"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Spring Framework",
+          "descripcion": "Marco de trabajo Java con plantillas pre-construidas para tareas repetitivas como acceso a BD y seguridad"
+        },
+        {
+          "nombre": "Spring Boot",
+          "descripcion": "Evolución de Spring que simplifica la configuración mediante starters y autoconfiguración"
+        },
+        {
+          "nombre": "Starters",
+          "descripcion": "Ficheros POM XML que definen dependencias y configuraciones necesarias para funcionalidades específicas"
+        },
+        {
+          "nombre": "Tomcat Embebido",
+          "descripcion": "Servidor de aplicaciones incluido por defecto en Spring Boot que no requiere instalación externa"
+        },
+        {
+          "nombre": "Maven",
+          "descripcion": "Herramienta de gestión de proyectos Java usada principalmente con Spring Boot"
+        },
+        {
+          "nombre": "POM XML",
+          "descripcion": "Project Object Model, archivo que define las dependencias y configuración del proyecto Maven"
+        },
+        {
+          "nombre": "JAR",
+          "descripcion": "Java Archive, formato de empaquetado que contiene todo lo necesario para ejecutar la aplicación"
+        },
+        {
+          "nombre": "Inyección de Dependencias",
+          "descripcion": "Patrón de diseño que Spring maneja automáticamente para gestionar componentes"
+        }
+      ],
+      "codigoEjemplo": "// Ejemplo de Starter en pom.xml\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-web</artifactId>\n</dependency>\n\n// Esto incluye automáticamente:\n// - Tomcat embebido\n// - Spring MVC\n// - Jackson para JSON\n// - Validación"
+    },
+    {
+      "archivo": "5__versión_Spring_Boot.srt",
+      "titulo": "Cómo Escoger la Versión Correcta de Spring Boot y Compatibilidades",
+      "resumen": "Guía completa sobre cómo seleccionar versiones compatibles de Spring Boot, JDK, IDE y otras tecnologías. Se explica la importancia de revisar los prerequisitos oficiales, crear tablas de equivalencias y cómo mantenerse actualizado cuando el framework evoluciona. Incluye recomendaciones sobre upgrades controlados.",
+      "puntosClave": [
+        "Siempre consultar el sitio oficial de Spring Boot para prerequisitos",
+        "Crear tabla de equivalencias: Spring Boot → JDK → IDE → Maven → Lombok → Swagger",
+        "Spring Boot 3.2 requiere mínimo JDK 17 (o superior como JDK 20 LTS)",
+        "Usar siempre la última versión del framework salvo restricciones empresariales",
+        "No importa si el framework evoluciona, solo actualizar la tabla de equivalencias",
+        "NetBeans recomendado por balance entre sencillez y productividad",
+        "Los proyectos Maven son portables entre IDEs",
+        "Upgrade controlado: subir versiones de forma coordinada según equivalencias",
+        "Evitar problemas de dependencias siguiendo las versiones recomendadas",
+        "IDE puede variar, pero seguir el mismo facilita el aprendizaje"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Prerequisitos",
+          "descripcion": "Requisitos mínimos de versiones de JDK y otras tecnologías que exige cada versión de Spring Boot"
+        },
+        {
+          "nombre": "Tabla de Equivalencias",
+          "descripcion": "Matriz que relaciona versiones compatibles entre Spring Boot, JDK, Maven y otras dependencias"
+        },
+        {
+          "nombre": "LTS (Long Term Support)",
+          "descripcion": "Versiones con soporte extendido, más estables para producción (ej: JDK 17, JDK 20)"
+        },
+        {
+          "nombre": "JDK (Java Development Kit)",
+          "descripcion": "Kit de desarrollo Java que incluye compilador, JVM y herramientas para desarrollar"
+        },
+        {
+          "nombre": "Upgrade Controlado",
+          "descripcion": "Proceso de actualización coordinada de framework y dependencias respetando compatibilidades"
+        },
+        {
+          "nombre": "Maven",
+          "descripcion": "Gestor de dependencias y construcción de proyectos Java"
+        },
+        {
+          "nombre": "Gradle",
+          "descripcion": "Alternativa a Maven para gestión de proyectos (menos común que Maven)"
+        },
+        {
+          "nombre": "NetBeans",
+          "descripcion": "IDE recomendado para el curso por su facilidad de uso y productividad"
+        }
+      ],
+      "codigoEjemplo": "// Ejemplo de pom.xml con versión de Spring Boot\n<parent>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-parent</artifactId>\n    <version>3.2.0</version>\n    <relativePath/>\n</parent>\n\n<properties>\n    <java.version>17</java.version>\n    <maven.version>3.8+</maven.version>\n</properties>"
+    },
+    {
+      "archivo": "6__Instalación_IDE_desarollo_configuración_plugins.srt",
+      "titulo": "Instalación de NetBeans IDE y Configuración de Plugins para Spring Boot",
+      "resumen": "Tutorial paso a paso para instalar NetBeans 20 en Windows, configurar plugins esenciales para Spring Boot, y crear el primer microservicio. Incluye verificación de JDK, instalación del plugin Spring Boot, activación de características del IDE y validación de Maven. Se demuestra cómo crear y compilar un proyecto básico.",
+      "puntosClave": [
+        "Prerequisito: tener JDK instalado y configurado (verificar con 'java -version')",
+        "Descargar NetBeans 20 (última versión) del sitio oficial de Apache",
+        "Durante instalación debe reconocer el JDK instalado",
+        "Instalar plugin Spring Boot 3.1 para crear microservicios",
+        "Activar todos los plugins excepto PHP, C++ y HTML5",
+        "El IDE trae Maven bundle integrado (no requiere instalación aparte)",
+        "Crear proyecto: File → New → Spring Starter Project",
+        "Permitir acceso al repositorio central de Maven en firewall",
+        "Validar instalación insertando dependencia Lombok desde IDE",
+        "Verificar versión de JDK y Maven en Tools → Options → Java → Maven"
+      ],
+      "conceptos": [
+        {
+          "nombre": "NetBeans",
+          "descripcion": "IDE de código abierto para desarrollo Java con buen balance entre sencillez y productividad"
+        },
+        {
+          "nombre": "Plugin Spring Boot",
+          "descripcion": "Extensión que permite crear y gestionar proyectos Spring Boot desde el IDE"
+        },
+        {
+          "nombre": "Maven Bundle",
+          "descripcion": "Versión de Maven incluida en el IDE que no requiere instalación separada"
+        },
+        {
+          "nombre": "Workspace",
+          "descripcion": "Directorio donde el IDE guarda proyectos y configuraciones"
+        },
+        {
+          "nombre": "Repositorio Central Maven",
+          "descripcion": "Servidor público donde Maven descarga las dependencias (librerías)"
+        },
+        {
+          "nombre": "POM.xml",
+          "descripcion": "Archivo de configuración Maven con dependencias, plugins y propiedades del proyecto"
+        },
+        {
+          "nombre": "Lombok",
+          "descripcion": "Librería que genera automáticamente código repetitivo como getters/setters"
+        },
+        {
+          "nombre": "Spring Starter Project",
+          "descripcion": "Asistente para crear proyectos Spring Boot con configuración inicial"
+        }
+      ],
+      "codigoEjemplo": "<!-- Ejemplo de dependencia Lombok en pom.xml -->\n<dependency>\n    <groupId>org.projectlombok</groupId>\n    <artifactId>lombok</artifactId>\n    <scope>provided</scope>\n</dependency>\n\n<!-- El scope 'provided' indica que solo se usa en compilación -->"
+    },
+    {
+      "archivo": "7__Instalar_Java_configurar_JAVA_HOME_PATH_Windows.srt",
+      "titulo": "Instalación de Java JDK y Configuración de Variables de Entorno en Windows",
+      "resumen": "Guía detallada para instalar OpenJDK 11 en Windows 10 y configurar las variables de entorno JAVA_HOME y PATH. Se explica la descarga, extracción en Program Files, configuración de variables del sistema para un usuario y globalmente, y verificación mediante terminal. Incluye solución de problemas comunes.",
+      "puntosClave": [
+        "Descargar OpenJDK 11 (LTS) del sitio oficial de Java",
+        "Extraer directamente en C:\\Program Files\\Java\\",
+        "Configurar variable JAVA_HOME con ruta: C:\\Program Files\\Java\\jdk-11",
+        "Actualizar PATH agregando: %JAVA_HOME%\\bin",
+        "Cuidado: JAVA_HOME sin '\\bin', PATH con '\\bin'",
+        "Configuración por usuario vs sistema: afecta disponibilidad global",
+        "Verificar instalación: 'java -version' en CMD o PowerShell",
+        "Si no reconoce: revisar variables de entorno y reiniciar",
+        "Importante: cerrar comillas correctamente en %JAVA_HOME%",
+        "Para todos los usuarios: crear variables en 'System variables'"
+      ],
+      "conceptos": [
+        {
+          "nombre": "JDK (Java Development Kit)",
+          "descripcion": "Kit completo para desarrollo Java: compilador, JVM, bibliotecas y herramientas"
+        },
+        {
+          "nombre": "OpenJDK",
+          "descripcion": "Versión gratuita y de código abierto del JDK, alternativa a Oracle JDK"
+        },
+        {
+          "nombre": "JAVA_HOME",
+          "descripcion": "Variable de entorno que indica la ruta de instalación del JDK (sin \\bin)"
+        },
+        {
+          "nombre": "PATH",
+          "descripcion": "Variable que permite ejecutar comandos Java desde cualquier ubicación de la terminal"
+        },
+        {
+          "nombre": "Variables de Entorno",
+          "descripcion": "Configuraciones del sistema que aplicaciones usan para encontrar recursos"
+        },
+        {
+          "nombre": "LTS (Long Term Support)",
+          "descripcion": "Versión con soporte extendido, ideal para producción (JDK 11, 17, 20)"
+        },
+        {
+          "nombre": "User Variables vs System Variables",
+          "descripcion": "Variables por usuario (solo ese usuario) vs sistema (todos los usuarios)"
+        },
+        {
+          "nombre": "bin (binarios)",
+          "descripcion": "Carpeta que contiene los ejecutables de Java (java.exe, javac.exe, etc.)"
+        }
+      ],
+      "codigoEjemplo": "REM Verificar instalación en terminal CMD\njava -version\n\nREM Debe mostrar algo como:\nopenjdk version \"11.0.x\" 2023-xx-xx\nOpenJDK Runtime Environment (build 11.0.x+x)\nOpenJDK 64-Bit Server VM (build 11.0.x+x, mixed mode)\n\nREM Configuración de variables:\nREM JAVA_HOME = C:\\Program Files\\Java\\jdk-11\nREM PATH = %JAVA_HOME%\\bin"
+    },
+    {
+      "archivo": "8__Instalar_configurar_eclipse_STS.srt",
+      "titulo": "Instalación y Configuración de Eclipse IDE con Spring Tools para Spring Boot",
+      "resumen": "Tutorial completo para instalar Eclipse IDE para Enterprise Java en Windows 10 y configurar Spring Tools 4 (plugin para microservicios con Spring Boot). Incluye creación de workspace, instalación de plugins, creación de primer proyecto Spring Boot, compilación con Maven y ejecución como Spring Boot App. Se explica la independencia entre IDE y desarrollo.",
+      "puntosClave": [
+        "Descargar Eclipse desde eclipse.org versión para Enterprise Java",
+        "Prerequisito: JDK instalado y configurado (variables JAVA_HOME y PATH)",
+        "Seleccionar workspace inicial (ubicación para guardar proyectos)",
+        "Instalar plugin Spring Tools 4 desde Eclipse Marketplace",
+        "Reiniciar IDE después de instalar cada plugin",
+        "Crear proyecto: File → New → Spring Starter Project",
+        "Compilar con Maven: clic derecho → Run As → Maven Build → 'clean'",
+        "Ejecutar: clic derecho → Debug As → Spring Boot App",
+        "El desarrollo es independiente del IDE usado",
+        "Spring Tools Suite (STS) es Eclipse personalizado para Spring Boot"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Eclipse IDE",
+          "descripcion": "Entorno de desarrollo integrado de código abierto muy usado para Java"
+        },
+        {
+          "nombre": "Spring Tools 4",
+          "descripcion": "Plugin que facilita crear y gestionar proyectos Spring Boot en Eclipse"
+        },
+        {
+          "nombre": "Spring Tools Suite (STS)",
+          "descripcion": "Versión de Eclipse pre-configurada y optimizada para Spring Boot"
+        },
+        {
+          "nombre": "Eclipse Marketplace",
+          "descripcion": "Tienda de plugins donde se pueden instalar extensiones para Eclipse"
+        },
+        {
+          "nombre": "Workspace",
+          "descripcion": "Directorio raíz donde Eclipse guarda proyectos y configuraciones"
+        },
+        {
+          "nombre": "Maven Build",
+          "descripcion": "Proceso de compilación que usa Maven para construir el proyecto"
+        },
+        {
+          "nombre": "Maven Clean",
+          "descripcion": "Fase de Maven que elimina compilaciones anteriores antes de construir"
+        },
+        {
+          "nombre": "Spring Boot App",
+          "descripcion": "Modo de ejecución específico para aplicaciones Spring Boot con servidor embebido"
+        },
+        {
+          "nombre": "Portabilidad de IDE",
+          "descripcion": "Capacidad de abrir proyectos Maven en diferentes IDEs sin modificaciones"
+        }
+      ],
+      "codigoEjemplo": "// Clase main auto-generada por Spring Starter Project\npackage com.example.demo;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\n\n@SpringBootApplication\npublic class DemoApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(DemoApplication.class, args);\n    }\n}"
+    },
+    {
+      "archivo": "9__configuracion_uso_Lombok.srt",
+      "titulo": "Configuración de Lombok en Eclipse e IntelliJ IDEA",
+      "resumen": "Solución al problema de Lombok en Eclipse e IntelliJ que causa errores al no reconocer getters/setters generados automáticamente. Se muestra cómo instalar Lombok manualmente como plugin ejecutable (JAR) en el IDE. Incluye explicación de anotaciones Lombok (@Data) y validación de funcionamiento con Swagger.",
+      "puntosClave": [
+        "Lombok facilita escribir código generando getters/setters automáticamente",
+        "En Eclipse/IntelliJ requiere instalación manual del plugin",
+        "NetBeans reconoce Lombok por defecto sin configuración extra",
+        "Descargar lombok.jar del sitio oficial projectlombok.org",
+        "Ejecutar: 'java -jar lombok.jar' y especificar ubicación de Eclipse",
+        "Después de instalar: Project → Clean y Project → Build",
+        "Anotación @Data genera getters, setters y constructores",
+        "Sin Lombok correcto: errores en código y Swagger vacío",
+        "También instalar Spring Tools 4 en Eclipse para Spring Boot",
+        "Validar que no hay errores en métodos getter/setter de las entidades"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Lombok",
+          "descripcion": "Librería Java que genera automáticamente código repetitivo mediante anotaciones"
+        },
+        {
+          "nombre": "@Data",
+          "descripcion": "Anotación Lombok que genera getters, setters, toString, equals y hashCode"
+        },
+        {
+          "nombre": "Getters y Setters",
+          "descripcion": "Métodos para acceder (get) y modificar (set) atributos privados de una clase"
+        },
+        {
+          "nombre": "Plugin Manual",
+          "descripcion": "Instalación de extensión ejecutando un archivo JAR externo al IDE"
+        },
+        {
+          "nombre": "Project Clean",
+          "descripcion": "Elimina archivos compilados para forzar una recompilación completa"
+        },
+        {
+          "nombre": "Project Build",
+          "descripcion": "Compila el proyecto aplicando los cambios de configuración"
+        },
+        {
+          "nombre": "Swagger",
+          "descripcion": "Herramienta que genera documentación interactiva de APIs REST"
+        },
+        {
+          "nombre": "Código Repetitivo (Boilerplate)",
+          "descripcion": "Código que se repite en muchas clases sin aportar lógica de negocio"
+        }
+      ],
+      "codigoEjemplo": "// Sin Lombok - código manual extenso\npublic class Customer {\n    private String code;\n    private String name;\n    \n    public String getCode() { return code; }\n    public void setCode(String code) { this.code = code; }\n    public String getName() { return name; }\n    public void setName(String name) { this.name = name; }\n}\n\n// Con Lombok - código reducido\nimport lombok.Data;\n\n@Data\npublic class Customer {\n    private String code;\n    private String name;\n    // Getters, setters, toString, equals generados automáticamente\n}"
+    },
+    {
+      "archivo": "11__Invitación_comunidad_Discord.srt",
+      "titulo": "Invitación a la Comunidad Discord del Curso",
+      "resumen": "Presentación de la comunidad Discord diseñada para estudiantes del curso. Incluye canales para formar equipos de estudio/emprendimiento, foro de innovadores para compartir ideas, salas de videollamada para colaboración, y foro específico de cursos Udemy. Se explica cómo participar, crear conversaciones y las diferencias con el soporte oficial de Udemy.",
+      "puntosClave": [
+        "Comunidad global para aprender, compartir ideas y colaborar",
+        "Canales principales: Busco equipo, Innovadores, Presentaciones",
+        "Foro de cursos Udemy para preguntas genéricas y colaboración entre estudiantes",
+        "Soporte oficial sigue siendo la plataforma Udemy",
+        "Salas de videollamada sin restricciones con límites por sala",
+        "Compartir pantalla y colaborar en tiempo real",
+        "Crear nuevas conversaciones con título, mensaje y categoría",
+        "Ayudar a otros refuerza el propio aprendizaje",
+        "Respetar reglas de cada canal y límites de usuarios",
+        "Compartir el enlace para hacer crecer la comunidad"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Discord",
+          "descripcion": "Plataforma de comunicación con canales de texto, voz y video para comunidades"
+        },
+        {
+          "nombre": "Canal de Texto",
+          "descripcion": "Espacio para conversaciones escritas organizadas por temas específicos"
+        },
+        {
+          "nombre": "Sala de Voz/Video",
+          "descripcion": "Espacio para videollamadas y colaboración en tiempo real con pantalla compartida"
+        },
+        {
+          "nombre": "Foro Colaborativo",
+          "descripcion": "Sistema de conversaciones organizadas donde se comparten preguntas y soluciones"
+        },
+        {
+          "nombre": "Busco Equipo",
+          "descripcion": "Canal para encontrar compañeros de estudio o emprendimiento"
+        },
+        {
+          "nombre": "Innovadores",
+          "descripcion": "Foro para compartir ideas de proyectos y encontrar colaboradores"
+        },
+        {
+          "nombre": "Chat de Presentaciones",
+          "descripcion": "Canal informal para presentarse y compartir objetivos en la comunidad"
+        },
+        {
+          "nombre": "Comunidad Colaborativa",
+          "descripcion": "Espacio donde todos ayudan y aprenden juntos sin depender de una sola persona"
+        }
+      ]
+    }
+  ]
+}

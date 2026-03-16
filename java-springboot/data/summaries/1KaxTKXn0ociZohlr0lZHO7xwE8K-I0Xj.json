@@ -1,0 +1,67 @@
+{
+  "titulo": "Construir Orquestación Multi-Contenedor con Docker Compose",
+  "resumen": "Creación de archivo docker-compose.yml para orquestar múltiples microservicios. Se definen servicios (customer, product, transaction, eureka, config, admin), se configuran networks, se especifican dependencias, y se ejecuta sistema completo con docker-compose up. Orquestación simplificada para desarrollo.",
+  "puntosClave": [
+    "Docker Compose: herramienta para multi-contenedor applications",
+    "docker-compose.yml: archivo YAML que define servicios",
+    "Estructura:",
+    "  - version: versión de Compose file format",
+    "  - services: cada microservicio es un servicio",
+    "  - networks: redes para comunicación entre contenedores",
+    "  - volumes: persistencia de datos",
+    "Definir servicio:",
+    "  - image: imagen a usar",
+    "  - container_name: nombre del contenedor",
+    "  - ports: mapeo de puertos",
+    "  - environment: variables de entorno",
+    "  - depends_on: dependencias entre servicios",
+    "  - networks: redes a las que pertenece",
+    "docker-compose up: iniciar todos los servicios",
+    "docker-compose down: detener y eliminar todo",
+    "docker-compose logs: ver logs de todos los servicios",
+    "Orden de inicio respetado por depends_on"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Docker Compose",
+      "descripcion": "Herramienta para definir y ejecutar aplicaciones Docker multi-contenedor"
+    },
+    {
+      "nombre": "docker-compose.yml",
+      "descripcion": "Archivo YAML que define configuración de servicios, redes y volúmenes"
+    },
+    {
+      "nombre": "Service",
+      "descripcion": "Definición de contenedor en Docker Compose"
+    },
+    {
+      "nombre": "Network",
+      "descripcion": "Red virtual para comunicación entre contenedores"
+    },
+    {
+      "nombre": "Volume",
+      "descripcion": "Almacenamiento persistente compartido entre contenedor y host"
+    },
+    {
+      "nombre": "depends_on",
+      "descripcion": "Especifica dependencias de inicio entre servicios"
+    },
+    {
+      "nombre": "docker-compose up",
+      "descripcion": "Crear e iniciar todos los servicios definidos"
+    },
+    {
+      "nombre": "docker-compose down",
+      "descripcion": "Detener y eliminar contenedores, redes y volúmenes"
+    },
+    {
+      "nombre": "Service Discovery",
+      "descripcion": "Contenedores se referencian por nombre de servicio"
+    },
+    {
+      "nombre": "Compose File Format",
+      "descripcion": "Versión de sintaxis de docker-compose.yml (2, 3, 3.8)"
+    }
+  ],
+  "codigoEjemplo": "# docker-compose.yml - Orquestación completa\nversion: '3.8'\n\nservices:\n  # Eureka Server\n  eureka-server:\n    image: eureka-server:1.0.0\n    container_name: eureka-server\n    ports:\n      - \"8761:8761\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n  \n  # Config Server\n  config-server:\n    image: config-server:1.0.0\n    container_name: config-server\n    ports:\n      - \"8888:8888\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n  \n  # Admin Server\n  admin-server:\n    image: admin-server:1.0.0\n    container_name: admin-server\n    ports:\n      - \"9090:9090\"\n    networks:\n      - microservices-network\n    environment:\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n  \n  # Customer Service\n  customer-service:\n    image: customer-service:1.0.0\n    container_name: customer-service\n    ports:\n      - \"8081:8081\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888\n    depends_on:\n      - eureka-server\n      - config-server\n  \n  # Product Service\n  product-service:\n    image: product-service:1.0.0\n    container_name: product-service\n    ports:\n      - \"8082:8082\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n      - config-server\n  \n  # Transaction Service\n  transaction-service:\n    image: transaction-service:1.0.0\n    container_name: transaction-service\n    ports:\n      - \"8083:8083\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n      - config-server\n      - customer-service\n      - product-service\n\nnetworks:\n  microservices-network:\n    driver: bridge\n\n# Comandos Docker Compose\n\n# Iniciar todos los servicios\ndocker-compose up -d\n# -d: detached mode (background)\n\n# Ver logs de todos los servicios\ndocker-compose logs -f\n\n# Ver logs de servicio específico\ndocker-compose logs -f customer-service\n\n# Listar servicios corriendo\ndocker-compose ps\n\n# Detener servicios\ndocker-compose stop\n\n# Reiniciar servicios\ndocker-compose restart\n\n# Detener y eliminar todo\ndocker-compose down\n\n# Eliminar también volúmenes\ndocker-compose down -v\n\n# Reconstruir imágenes y reiniciar\ndocker-compose up -d --build\n\n# Escalar servicio (múltiples instancias)\ndocker-compose up -d --scale product-service=3"
+}

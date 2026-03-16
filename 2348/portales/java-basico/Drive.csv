@@ -1,0 +1,83 @@
+Seccion;Nombre Seccion;Nombre_Archivo;ID_Archivo_Drive;Tipo Archivo
+1;01. Descarga e Instalación de recursos;00 - Intro Java.mp4;1K6KbgCSBFYj_q1BC1tq3FNo7e2pHErUj;video/mp4
+1;01. Descarga e Instalación de recursos;00 - Intro Java.srt;1q4QPnRsXh_XfhnslByvPNH0bxmoGdiwZ;application/octet-stream
+1;01. Descarga e Instalación de recursos;01 - Descarga e Instalación del JDK.mp4;1HlwaQx4wWwDSY9cehN7K9U9TOSs_0bwn;video/mp4
+1;01. Descarga e Instalación de recursos;01 - Descarga e Instalación del JDK.srt;1DZe0dcXuXTPMnmQLd0JPK00r432Sstv3;application/octet-stream
+1;01. Descarga e Instalación de recursos;01 Apache-NetBeans-15-bin-windows-x64.exe;1dRwXBpQZVZZ3_5Qypteq278Nu-IQUyDE;application/x-dosexec
+1;01. Descarga e Instalación de recursos;01 OpenJDK11U-jdk_x64_windows_hotspot_11.0.16.1_1.msi;1imsDJwnk78hpY6eFgw3f5F9ku1ODbEtb;application/x-msi
+1;01. Descarga e Instalación de recursos;02 - Descarga e Instalación del IDE Apache NetBeans.mp4;10BIx1tI3unQDBqKm5hGkQO71aaFAO3bv;video/mp4
+1;01. Descarga e Instalación de recursos;02 - Descarga e Instalación del IDE Apache NetBeans.srt;1Ac25xkbIjkKN_uqyEohig4jmBmf9qhct;application/octet-stream
+1;01. Descarga e Instalación de recursos;03 - Temas disponibles en IDE Apache NetBeans.mp4;1I_Iz8MGO1M82NOrjGAuUtpwFW9-wq1ni;video/mp4
+1;01. Descarga e Instalación de recursos;03 - Temas disponibles en IDE Apache NetBeans.srt;1DVsw3otPhvKp1CbQxNSz5KYXqd602NFO;application/octet-stream
+2;02. Definición de Proyecto;04 - Clásico Hola Mundo.mp4;1Wdqh-BaeH6eLRBHBJD9WYkjZ8VWFg-sK;video/mp4
+2;02. Definición de Proyecto;04 - Clásico Hola Mundo.srt;1BO-ryEXV_nidjk1UCsJyzAGjPw6U08ho;application/octet-stream
+2;02. Definición de Proyecto;05 - Definir Comentarios.mp4;1eao2aBX-B10lOoELzR_ubnNjj0ZdUBze;video/mp4
+2;02. Definición de Proyecto;05 - Definir Comentarios.srt;1enBRoY_uVszNbabIDnOIKfFLBsQwd_Ck;application/octet-stream
+2;02. Definición de Proyecto;06 - Imprimir en Pantalla.mp4;1FY52f7FsUSsv35y37CvZxxvEDm_j6AKQ;video/mp4
+2;02. Definición de Proyecto;06 - Imprimir en Pantalla.srt;1lgJ-yL8s5ZNnT7jRdwPJeroMzsy8Hjuo;application/octet-stream
+2;02. Definición de Proyecto;07 - Eliminar Proyecto.mp4;15NjE1ZjwIY5bo_bFfIuadgZMCiJLewgw;video/mp4
+2;02. Definición de Proyecto;07 - Eliminar Proyecto.srt;1yYOC1XBc_KgJb4s17UXIfroauOcOqJaQ;application/octet-stream
+2;02. Definición de Proyecto;08 - Crear Java Class.mp4;1V_AHQSdUM5hz9xRkX4hbWLQFemXM_oWU;video/mp4
+2;02. Definición de Proyecto;08 - Crear Java Class.srt;15OGJum98mOZ-o62b3xB1WhQ1edYLfCiH;application/octet-stream
+3;03. Variables;09 - Variables y Tipos de datos.mp4;18wjp4G3xPsC8wnCPk7e8FepBYTLOS9CC;video/mp4
+3;03. Variables;09 - Variables y Tipos de datos.srt;1EOPCkS9TbginjEWubmMI9PpDq2dASj2o;application/octet-stream
+3;03. Variables;10 - Variables y Tipos de datos - parte 2.mp4;1MhjYLvhN2YIfo5URFFgkKFioclEuqNeR;video/mp4
+3;03. Variables;10 - Variables y Tipos de datos - parte 2.srt;1wWZEMJiy1Y9j0JzUgH10kpgDZ9nXocLm;application/octet-stream
+4;04. Operadores;11 - Operadores Aritméticos.mp4;1Cq3VeWg0QC8xcoew67dONRV2mIEH0MPl;video/mp4
+4;04. Operadores;11 - Operadores Aritméticos.srt;11XQZ1sohkWF_5-4hWPg8JDbK5qxDzegR;application/octet-stream
+4;04. Operadores;12 - Operadores de Comparación.mp4;1niOCvkciDhv3CqErV2C9Qxmwz_k4bn5g;video/mp4
+4;04. Operadores;12 - Operadores de Comparación.srt;1dvedoftk2cprNGZK1RJkd0OoIlhIvzqD;application/octet-stream
+4;04. Operadores;13 - Operadores Lógicos.mp4;1m2fa6ugZQaiN0liKMB1W3BayeMqdrIEH;video/mp4
+4;04. Operadores;13 - Operadores Lógicos.srt;1Vmg93b5zjvprpKxdDKa32qFFuDdbVc2F;application/octet-stream
+4;04. Operadores;14 - Operadores de Incremento y Decremento.mp4;1UA5kpzG_nxtVM75bErt5V2TUimYP1KHF;video/mp4
+4;04. Operadores;14 - Operadores de Incremento y Decremento.srt;1q8qZ-7ExVq-fpivjfvJ2GRC4aE8S-4po;application/octet-stream
+4;04. Operadores;15 - Operador Condicional.mp4;1NmgN_0BCImyDJPAXyzeCTulMUau4c8ya;video/mp4
+4;04. Operadores;15 - Operador Condicional.srt;14Pj2-IW_yRtH1uk4FWB1YIm0q9_dOYdg;application/octet-stream
+4;04. Operadores;16 - Concatenación.mp4;1RCa-orA0Pz1IXlz2gN3eZrO8PdzK_6wS;video/mp4
+4;04. Operadores;16 - Concatenación.srt;1SLQaxkEsLApHQdH0t9tQchNe7Ad2aX26;application/octet-stream
+5;05. Entrada de datos;17 - Entrada de datos por teclado.mp4;1rwJm4yzKGzIKm4G91YGMp8JrbEg2N_X3;video/mp4
+5;05. Entrada de datos;17 - Entrada de datos por teclado.srt;1uW5k_hVWzXJVDGnkO-sXWEz1NZie1xzB;application/octet-stream
+5;05. Entrada de datos;18 - Entrada de datos por teclado - parte 2.mp4;1MUvtto9ZSTYbJnNAicAmU6nF4El3fv9e;video/mp4
+5;05. Entrada de datos;18 - Entrada de datos por teclado - parte 2.srt;1feAVobX5MSX1BMsNl8f827YlFTsvO2Wt;application/octet-stream
+6;06. Personalizar el Ide NetBeans;19 - Personalizar el IDE Apache NetBeans - Dracula Theme.mp4;19wxTBHw5jnG87qLk0hip0ZB9G5YIQjic;video/mp4
+6;06. Personalizar el Ide NetBeans;19 - Personalizar el IDE Apache NetBeans - Dracula Theme.srt;1LFgbWsrA8bzuSqPGUBlSL6L_-1kp0vTb;application/octet-stream
+6;06. Personalizar el Ide NetBeans;19 dracula-theme-for-netbeans-v0.1.1.zip;1CXbOOvVa4oMpWOlpkJYhqO0ghnQCXszv;application/zip
+7;07. Conversión de tipos de datos;20 - Conversión de tipos de datos - parte 1.mp4;1XVJzMmFNvsrol4CuH_69LcIJinpxJzLk;video/mp4
+7;07. Conversión de tipos de datos;20 - Conversión de tipos de datos - parte 1.srt;1c0jtf8jpB6yVeXbgxdGYaXt6FcuYYwT9;application/octet-stream
+7;07. Conversión de tipos de datos;21 - Conversión de tipos de datos - parte 2.mp4;1DUKp7I4EbE97sZ_L03akAW0R0-a7iiNu;video/mp4
+7;07. Conversión de tipos de datos;21 - Conversión de tipos de datos - parte 2.srt;1jcnVX5Ahu4pbFjnSG9F1D6hsZQHuCDK8;application/octet-stream
+7;07. Conversión de tipos de datos;22 - Conversión de tipos de datos - parte 3.mp4;1RzcHxy27M1m06x2H_SUGQNpeWV-DsaxT;video/mp4
+7;07. Conversión de tipos de datos;22 - Conversión de tipos de datos - parte 3.srt;1KXmZS8XTPpaxUqyt8kH7bYYs7IFofl7F;application/octet-stream
+7;07. Conversión de tipos de datos;23 - Conversión de tipos de datos - parte 4.mp4;1L_o-mp04CwWiSIm1pCBpG90ilivzEBUn;video/mp4
+7;07. Conversión de tipos de datos;23 - Conversión de tipos de datos - parte 4.srt;1XgZZKuZARMzRoOq7TPfV0EC4w0cYBk51;application/octet-stream
+8;08. Estructura Condicional IF;24 - Estructura Condicional IF Else.mp4;1LfxMHWTq_sm99QNNQKJqDo1GhsQTkQRx;video/mp4
+8;08. Estructura Condicional IF;24 - Estructura Condicional IF Else.srt;1nkdh_WSaO_6EmcKCNCGeqGSsJXoOs9bi;application/octet-stream
+8;08. Estructura Condicional IF;25 - Estructura Condicional IF Else IF.mp4;1AKb8ctdhtHcWJ0fzN__NDXTqvns862bm;video/mp4
+8;08. Estructura Condicional IF;25 - Estructura Condicional IF Else IF.srt;1YomFChp1E85BMu3ZUL4WqQAlRy8VLAFH;application/octet-stream
+9;09. Estructura Condicional SWITCH;26 - Estructura Condicional SWITCH.mp4;1NLY1PWZoc1JU9RmO8RomDjZcAxmZdQHh;video/mp4
+9;09. Estructura Condicional SWITCH;26 - Estructura Condicional SWITCH.srt;1gDLdKDKhxEbO5G68CNjFudz1FmuVcQoX;application/octet-stream
+10;10. Estructura Cíclica WHILE ... DO WHILE ... FOR;27 - Estructura Cíclica While.mp4;1qOUBHuMTTMbWJLSX0HAxdmJoOBq8JYni;video/mp4
+10;10. Estructura Cíclica WHILE ... DO WHILE ... FOR;27 - Estructura Cíclica While.srt;1xLIDulwrvSUgIdrhmbIEpl36H6wVOW64;application/octet-stream
+10;10. Estructura Cíclica WHILE ... DO WHILE ... FOR;28 - Estructura Cíclica Do While.mp4;1UnBbRlzY2D39Nx0w9ix_c2URLs-dv6Li;video/mp4
+10;10. Estructura Cíclica WHILE ... DO WHILE ... FOR;28 - Estructura Cíclica Do While.srt;1Y31QFsf9A-kf-2DJAFX1KA-XJVFy75z4;application/octet-stream
+10;10. Estructura Cíclica WHILE ... DO WHILE ... FOR;29 - Estructura Cíclica For.mp4;18G7ETEn4eSwKeqyusU95NKzLSYo7MvTe;video/mp4
+10;10. Estructura Cíclica WHILE ... DO WHILE ... FOR;29 - Estructura Cíclica For.srt;1PCr1hhf7OUFXo-DdkvFLHOAQKaX8_ENr;application/octet-stream
+11;11. Vectores y Matrices;30 - Vectores.mp4;11MIPxnIEajnLUPOGhhdscmqFr0_CFJIN;video/mp4
+11;11. Vectores y Matrices;30 - Vectores.srt;1Rcs9WRz_BKR715DwagDBrDul9hU8l9Fg;application/octet-stream
+11;11. Vectores y Matrices;31 - Vectores - parte 02.mp4;1yPJcBkHFG_yqeidiBIY59guHxb-qXCix;video/mp4
+11;11. Vectores y Matrices;31 - Vectores - parte 02.srt;1lH4qfny9YpHZe46kbdiHT9TrTKEozw62;application/octet-stream
+11;11. Vectores y Matrices;32 - Matrices.mp4;1dFr_88LF5dl15h1QpaZ0fB9_Zml9_ZSh;video/mp4
+11;11. Vectores y Matrices;32 - Matrices.srt;1xU2xuwIb2l5j4P5_LUh04dQ2Cp2Ir1QT;application/octet-stream
+12;12. Métodos y Clases;33 - Aprendizaje_Java.zip;1zNkThWr9f1s9NHVXSwWqD9e0XCmUp_Kb;application/zip
+12;12. Métodos y Clases;33 - Métodos - parte 01.mp4;1Vdvjscbje2kiZpjyuZPhuLmVKQFoYoJX;video/mp4
+12;12. Métodos y Clases;33 - Métodos - parte 01.srt;1EaOuc3rYVf8ZgyUykNYTjIhXldDLzAvy;application/octet-stream
+12;12. Métodos y Clases;34 - Métodos - parte 02.mp4;1qmr76vmcZB4r-mk7UKYNIpeJShQj2J1e;video/mp4
+12;12. Métodos y Clases;34 - Métodos - parte 02.srt;1f5NomltCeCh5eBbbpiCLE3OR6OxeJxmR;application/octet-stream
+12;12. Métodos y Clases;35 - Métodos - parte 03.mp4;1oqbCP70h-FQ04ZmJWzBFpHtqIQkFaV6u;video/mp4
+12;12. Métodos y Clases;35 - Métodos - parte 03.srt;1mO4goZf1WdGM4Ltf4vjWhlrxaqtTZ53N;application/octet-stream
+12;12. Métodos y Clases;36 - Clases - parte 01.mp4;1rCJX8dYWVw91CgNOG2JPiOLzkvKf9qKH;video/mp4
+12;12. Métodos y Clases;36 - Clases - parte 01.srt;1IaOnsaC0ieKGy_26DhhkMMt9QCjW8YSP;application/octet-stream
+12;12. Métodos y Clases;37 - Clases - parte 02.mp4;1vz_fQpNyaszcfIqq59T3e63mBySyNuot;video/mp4
+12;12. Métodos y Clases;37 - Clases - parte 02.srt;1WXm61L_MjHKXnsULJ5Fc3GGN2C60LRbp;application/octet-stream
+12;12. Métodos y Clases;38 - Clases - parte 03 (Final del Curso).mp4;1GVMN2mLerLwb5voEDddshYhRzLnqRPVL;video/mp4
+12;12. Métodos y Clases;38 - Clases - parte 03 (Final del Curso).srt;1GwUz4FwiIKH_2Ph65tdVlNXuNmSJoUHs;application/octet-stream

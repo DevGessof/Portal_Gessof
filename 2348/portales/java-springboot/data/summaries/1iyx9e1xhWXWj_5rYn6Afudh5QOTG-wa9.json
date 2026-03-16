@@ -1,0 +1,36 @@
+{
+  "titulo": "Presentación y Caso de Uso Global del Curso",
+  "resumen": "Introducción al curso práctico de microservicios con Spring Boot. Se presenta el enfoque hands-on del curso que combina Spring Boot con herramientas como Docker. El caso de estudio es una startup del sector financiero que necesita una solución tecnológica para gestionar clientes, productos, transacciones y procesos operativos.",
+  "puntosClave": [
+    "El curso tiene un enfoque práctico con aprendizaje basado en práctica",
+    "Se combinará Spring Boot con herramientas complementarias como Docker",
+    "Caso de estudio: startup del sector financiero",
+    "Se aprenderá a construir microservicios con Spring Boot y Spring Cloud",
+    "El caso simula un entorno laboral real",
+    "Se cubrirán librerías principales de Spring Boot y Spring Cloud",
+    "Objetivo: aplicar buenas prácticas de desarrollo con microservicios"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Microservicios",
+      "descripcion": "Arquitectura de software donde las aplicaciones se construyen como conjunto de servicios pequeños e independientes"
+    },
+    {
+      "nombre": "Spring Boot",
+      "descripcion": "Framework Java que simplifica el desarrollo de aplicaciones empresariales basadas en Spring"
+    },
+    {
+      "nombre": "Spring Cloud",
+      "descripcion": "Conjunto de herramientas para construir sistemas distribuidos y microservicios"
+    },
+    {
+      "nombre": "Caso de Estudio",
+      "descripcion": "Startup financiera que requiere gestión de clientes, productos, transacciones y facturación"
+    },
+    {
+      "nombre": "Docker",
+      "descripcion": "Plataforma para empaquetar y desplegar aplicaciones en contenedores"
+    }
+  ],
+  "codigoEjemplo": null
+}

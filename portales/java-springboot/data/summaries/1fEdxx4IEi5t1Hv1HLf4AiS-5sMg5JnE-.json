@@ -1,0 +1,61 @@
+{
+  "titulo": "Agregar y Configurar Actuator para Consultar Métricas de Salud",
+  "resumen": "Implementación de Spring Boot Actuator para exponer endpoints de monitoreo y salud. Se configura exposición de endpoints, se consultan métricas vía REST, y se integra con Eureka para health checks. Base para implementar Spring Boot Admin en siguiente clase.",
+  "puntosClave": [
+    "Actuator: módulo de Spring Boot para monitoreo y gestión",
+    "Starter: spring-boot-starter-actuator",
+    "Endpoints principales: /health, /info, /metrics, /env, /refresh",
+    "Por defecto solo /health está expuesto vía web",
+    "management.endpoints.web.exposure.include=* para exponer todos",
+    "O especificar: health,info,metrics,env",
+    "GET /actuator/health retorna estado: {\"status\":\"UP\"}",
+    "GET /actuator/metrics lista métricas disponibles",
+    "GET /actuator/metrics/jvm.memory.used retorna uso de memoria",
+    "Eureka usa /actuator/health para verificar estado de servicios",
+    "management.endpoint.health.show-details=always muestra detalles",
+    "Preparación para Spring Boot Admin que visualiza estos endpoints"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Spring Boot Actuator",
+      "descripcion": "Módulo que expone endpoints HTTP para monitorear y gestionar aplicación"
+    },
+    {
+      "nombre": "/actuator/health",
+      "descripcion": "Endpoint que retorna estado de salud de la aplicación (UP, DOWN)"
+    },
+    {
+      "nombre": "/actuator/metrics",
+      "descripcion": "Endpoint que expone métricas de la aplicación (memoria, CPU, requests)"
+    },
+    {
+      "nombre": "/actuator/info",
+      "descripcion": "Endpoint con información de la aplicación (versión, descripción)"
+    },
+    {
+      "nombre": "/actuator/env",
+      "descripcion": "Endpoint que muestra propiedades de entorno y configuración"
+    },
+    {
+      "nombre": "management.endpoints.web.exposure.include",
+      "descripcion": "Propiedad que controla qué endpoints Actuator están disponibles vía HTTP"
+    },
+    {
+      "nombre": "Health Indicator",
+      "descripcion": "Componente que verifica salud de recursos (BD, disco, servicios externos)"
+    },
+    {
+      "nombre": "Métricas JVM",
+      "descripcion": "Estadísticas de memoria, threads, garbage collection de la JVM"
+    },
+    {
+      "nombre": "show-details",
+      "descripcion": "Configuración que muestra detalles internos de health checks"
+    },
+    {
+      "nombre": "Endpoints de Gestión",
+      "descripcion": "APIs REST para operaciones administrativas (/shutdown, /refresh, /env)"
+    }
+  ],
+  "codigoEjemplo": "<!-- Agregar Actuator en pom.xml -->\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-actuator</artifactId>\n</dependency>\n\n# application.properties - Configurar Actuator\n# Exponer todos los endpoints\nmanagement.endpoints.web.exposure.include=*\n\n# O exponer solo algunos\nmanagement.endpoints.web.exposure.include=health,info,metrics,env\n\n# Mostrar detalles de salud\nmanagement.endpoint.health.show-details=always\n\n# Info de la aplicación\ninfo.app.name=Customer Service\ninfo.app.description=Microservicio de gestión de clientes\ninfo.app.version=1.0.0\n\n# Endpoints disponibles:\n# GET http://localhost:8081/actuator\n# Retorna lista de endpoints disponibles\n\n# GET http://localhost:8081/actuator/health\n{\n  \"status\": \"UP\",\n  \"components\": {\n    \"diskSpace\": {\"status\": \"UP\"},\n    \"db\": {\"status\": \"UP\"},\n    \"ping\": {\"status\": \"UP\"}\n  }\n}\n\n# GET http://localhost:8081/actuator/metrics\n{\n  \"names\": [\n    \"jvm.memory.used\",\n    \"http.server.requests\",\n    \"system.cpu.usage\"\n  ]\n}\n\n# GET http://localhost:8081/actuator/metrics/jvm.memory.used\n{\n  \"name\": \"jvm.memory.used\",\n  \"measurements\": [{\"value\": 156789123}]\n}"
+}

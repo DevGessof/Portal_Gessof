@@ -1,0 +1,61 @@
+{
+  "titulo": "Microservicios van más allá del Desarrollo: Introducción a Spring Cloud",
+  "resumen": "Introducción a los desafíos de infraestructura en arquitecturas de microservicios. Se explica que desarrollar microservicios es solo el inicio; también se necesitan componentes para gestión de configuración, descubrimiento de servicios, monitoreo, seguridad y trazabilidad. Spring Cloud provee soluciones para estos desafíos mediante componentes de infraestructura.",
+  "puntosClave": [
+    "Desarrollar microservicios es solo el 30-40% del trabajo total",
+    "Desafíos de infraestructura: configuración, descubrimiento, monitoreo, seguridad",
+    "Spring Cloud: conjunto de herramientas para infraestructura de microservicios",
+    "Componentes clave: Config Server, Registry (Eureka), Gateway, Admin Server",
+    "Config Server: centraliza configuración externa en repositorio Git",
+    "Eureka Server: registro y descubrimiento de servicios",
+    "API Gateway: punto de entrada único con seguridad y enrutamiento",
+    "Spring Boot Admin: monitoreo visual del estado de microservicios",
+    "Circuit Breaker: manejo de fallos en comunicación entre servicios",
+    "Distributed Tracing: seguimiento de peticiones a través de servicios",
+    "Spring Cloud facilita implementar patrones de microservicios",
+    "Próximas clases: implementar cada componente paso a paso"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Spring Cloud",
+      "descripcion": "Conjunto de proyectos que facilitan construir infraestructura para sistemas distribuidos y microservicios"
+    },
+    {
+      "nombre": "Componentes de Infraestructura",
+      "descripcion": "Servicios técnicos que dan soporte a microservicios de negocio (Config, Registry, Gateway)"
+    },
+    {
+      "nombre": "Config Server",
+      "descripcion": "Servidor que centraliza configuración externa de todos los microservicios desde Git"
+    },
+    {
+      "nombre": "Registry/Discovery (Eureka)",
+      "descripcion": "Servidor de registro donde microservicios se registran y descubren entre sí"
+    },
+    {
+      "nombre": "API Gateway",
+      "descripcion": "Punto de entrada único que maneja seguridad, enrutamiento y balanceo de carga"
+    },
+    {
+      "nombre": "Spring Boot Admin",
+      "descripcion": "Interfaz web para monitorear salud, métricas y logs de microservicios"
+    },
+    {
+      "nombre": "Circuit Breaker",
+      "descripcion": "Patrón que previene fallos en cascada cuando un servicio no responde"
+    },
+    {
+      "nombre": "Distributed Tracing",
+      "descripcion": "Seguimiento de peticiones que atraviesan múltiples microservicios (Sleuth, Zipkin)"
+    },
+    {
+      "nombre": "Configuración Centralizada",
+      "descripcion": "Gestionar propiedades de todos los servicios desde un único punto"
+    },
+    {
+      "nombre": "Service Discovery",
+      "descripcion": "Mecanismo para que servicios se encuentren dinámicamente sin hardcodear URLs"
+    }
+  ],
+  "codigoEjemplo": null
+}

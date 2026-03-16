@@ -1,0 +1,62 @@
+{
+  "titulo": "Explicación del Proceso de Serialización y Deserialización en APIs REST",
+  "resumen": "Explicación técnica de cómo Spring Boot convierte automáticamente entre JSON y objetos Java usando Jackson. Se describe proceso de deserialización (JSON → Java) en requests y serialización (Java → JSON) en responses. Se explican configuraciones de Jackson, manejo de fechas, null values, y personalización del proceso.",
+  "puntosClave": [
+    "Serialización: convertir objeto Java a JSON (Response)",
+    "Deserialización: convertir JSON a objeto Java (Request)",
+    "Jackson: librería de Spring Boot para serialización/deserialización",
+    "Proceso automático mediante HttpMessageConverter",
+    "Request: JSON → HttpMessageConverter → CustomerRequest (objeto Java)",
+    "Response: CustomerResponse → HttpMessageConverter → JSON",
+    "Jackson usa getters para serializar (convertir a JSON)",
+    "Jackson usa setters/constructor para deserializar (crear objeto)",
+    "@JsonProperty para cambiar nombre de campo en JSON",
+    "@JsonIgnore para excluir campo de serialización",
+    "@JsonFormat para formatear fechas/números",
+    "Configurar ObjectMapper para comportamiento global",
+    "Manejo de null: incluir/excluir campos null en JSON"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Serialización",
+      "descripcion": "Conversión de objeto Java a formato JSON para enviar en response"
+    },
+    {
+      "nombre": "Deserialización",
+      "descripcion": "Conversión de JSON recibido a objeto Java en request"
+    },
+    {
+      "nombre": "Jackson",
+      "descripcion": "Librería de procesamiento JSON usada por Spring Boot por defecto"
+    },
+    {
+      "nombre": "HttpMessageConverter",
+      "descripcion": "Componente Spring que convierte entre HTTP body y objetos Java"
+    },
+    {
+      "nombre": "MappingJackson2HttpMessageConverter",
+      "descripcion": "Implementación de HttpMessageConverter que usa Jackson"
+    },
+    {
+      "nombre": "@JsonProperty",
+      "descripcion": "Anotación para especificar nombre de campo en JSON diferente a Java"
+    },
+    {
+      "nombre": "@JsonIgnore",
+      "descripcion": "Excluir campo de serialización/deserialización JSON"
+    },
+    {
+      "nombre": "@JsonFormat",
+      "descripcion": "Especificar formato de fecha/número en JSON"
+    },
+    {
+      "nombre": "ObjectMapper",
+      "descripcion": "Clase central de Jackson para configurar serialización"
+    },
+    {
+      "nombre": "Include.NON_NULL",
+      "descripcion": "Configuración para excluir campos con valor null del JSON"
+    }
+  ],
+  "codigoEjemplo": "// Proceso de Serialización/Deserialización\n\n// REQUEST (Cliente → Servidor)\n// 1. Cliente envía JSON\n{\n  \"name\": \"Pedro López\",\n  \"phoneNumber\": \"+52-555-0000\",\n  \"email\": \"pedro@email.com\"\n}\n\n// 2. HttpMessageConverter (Jackson) deserializa JSON → CustomerRequest\nCustomerRequest request = objectMapper.readValue(json, CustomerRequest.class);\n// Usa setters o constructor para crear objeto\n\n// 3. Controller recibe objeto Java\n@PostMapping\npublic ResponseEntity<CustomerResponse> create(@RequestBody CustomerRequest request) {\n    // request ya es objeto Java\n}\n\n// RESPONSE (Servidor → Cliente)\n// 1. Service retorna objeto Java\nCustomerResponse response = new CustomerResponse();\nresponse.setId(1L);\nresponse.setName(\"Pedro López\");\nresponse.setEmail(\"pedro@email.com\");\n\n// 2. HttpMessageConverter (Jackson) serializa objeto → JSON\nString json = objectMapper.writeValueAsString(response);\n// Usa getters para obtener valores\n\n// 3. Cliente recibe JSON\n{\n  \"id\": 1,\n  \"name\": \"Pedro López\",\n  \"email\": \"pedro@email.com\",\n  \"phoneNumber\": \"+52-555-0000\"\n}\n\n// Anotaciones Jackson para personalización\n\n@Data\npublic class CustomerResponse {\n    \n    private Long id;\n    \n    @JsonProperty(\"full_name\")  // JSON usa \"full_name\" en vez de \"name\"\n    private String name;\n    \n    @JsonIgnore  // Este campo NO aparece en JSON\n    private String internalCode;\n    \n    @JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")\n    private LocalDateTime createdAt;\n    \n    @JsonInclude(JsonInclude.Include.NON_NULL)  // Solo si no es null\n    private String optionalField;\n}\n\n// Configuración global de ObjectMapper\n@Configuration\npublic class JacksonConfig {\n    \n    @Bean\n    public ObjectMapper objectMapper() {\n        ObjectMapper mapper = new ObjectMapper();\n        \n        // Excluir campos null\n        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);\n        \n        // Formato de fechas\n        mapper.registerModule(new JavaTimeModule());\n        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);\n        \n        // Ignorar propiedades desconocidas en deserialización\n        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);\n        \n        return mapper;\n    }\n}"
+}

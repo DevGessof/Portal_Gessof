@@ -1,0 +1,961 @@
+{
+  "seccion": "Sección 10 - Contenedores Docker y Orquestación",
+  "descripcion": "Contenerización de microservicios con Docker y orquestación con Docker Compose. Se crean imágenes Docker mediante Dockerfile, se automatizan builds con Maven plugins, se implementa orquestación multi-contenedor, se integra PostgreSQL con persistencia, y se prueba integración con aplicación Angular frontend. El resultado es un sistema completo deployable con un solo comando.",
+  "clases": [
+    {
+      "numero": 1,
+      "archivo": "1__Alternativas_web_modernas_Frontend.srt",
+      "titulo": "Alternativas Web Modernas para Desarrollo Frontend",
+      "resumen": "Introducción a frameworks modernos de frontend (React, Angular, Vue) y por qué son necesarios para consumir APIs REST. Se explica arquitectura SPA (Single Page Application), diferencias entre frameworks, y cómo se conectan con backend mediante HTTP. Base conceptual para integración frontend-backend.",
+      "puntosClave": [
+        "Frontend moderno: aplicaciones SPA (Single Page Application)",
+        "Frameworks principales: React, Angular, Vue.js",
+        "SPA: cargan una vez, navegan sin recargar página",
+        "Consumen APIs REST mediante HTTP/AJAX",
+        "React: librería minimalista, componentes funcionales, hooks",
+        "Angular: framework completo con CLI, TypeScript, RxJS",
+        "Vue: progresivo, fácil aprender, reactivo",
+        "Comunicación con backend: fetch API, axios, HttpClient",
+        "JSON como formato de intercambio de datos",
+        "CORS necesario para permitir comunicación cross-origin",
+        "Autenticación: enviar token/credentials en headers",
+        "Separación clara: Frontend (UI) ↔ Backend (API/Datos)"
+      ],
+      "conceptos": [
+        {
+          "nombre": "SPA (Single Page Application)",
+          "descripcion": "Aplicación web que carga una sola página HTML y actualiza contenido dinámicamente"
+        },
+        {
+          "nombre": "React",
+          "descripcion": "Librería JavaScript para construir interfaces de usuario con componentes"
+        },
+        {
+          "nombre": "Angular",
+          "descripcion": "Framework TypeScript completo para aplicaciones web empresariales"
+        },
+        {
+          "nombre": "Vue.js",
+          "descripcion": "Framework progresivo JavaScript para interfaces reactivas"
+        },
+        {
+          "nombre": "Component-Based Architecture",
+          "descripcion": "Arquitectura donde UI se compone de componentes reutilizables"
+        },
+        {
+          "nombre": "HTTP Client",
+          "descripcion": "Librería para hacer peticiones HTTP (fetch, axios, HttpClient)"
+        },
+        {
+          "nombre": "REST API Consumption",
+          "descripcion": "Consumir endpoints REST desde aplicación frontend"
+        },
+        {
+          "nombre": "TypeScript",
+          "descripcion": "Superset de JavaScript con tipado estático"
+        },
+        {
+          "nombre": "Frontend-Backend Separation",
+          "descripcion": "Arquitectura donde frontend y backend son aplicaciones independientes"
+        },
+        {
+          "nombre": "API-First Development",
+          "descripcion": "Diseñar API antes de implementar frontend"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "archivo": "2__Enfoque_APIFirst_generar_módulos_Angular.srt",
+      "titulo": "Enfoque API-First para Generar Módulos Angular Automáticamente",
+      "resumen": "Uso de OpenAPI Generator para generar código TypeScript/Angular automáticamente desde especificación OpenAPI. Se exporta spec de Swagger, se genera cliente Angular, y se integran servicios generados en aplicación. Enfoque API-First que asegura sincronización entre frontend y backend.",
+      "puntosClave": [
+        "API-First: definir contrato API antes de codificar frontend",
+        "OpenAPI Generator: genera código cliente desde spec OpenAPI",
+        "Exportar especificación: GET /v3/api-docs → openapi.json",
+        "Instalar OpenAPI Generator CLI: npm install -g @openapitools/openapi-generator-cli",
+        "Generar cliente Angular: openapi-generator-cli generate -g typescript-angular",
+        "Genera: modelos TypeScript + servicios con métodos HTTP",
+        "Servicios generados ya incluyen tipos, validaciones, endpoints",
+        "Inyectar servicios en componentes Angular con DI",
+        "Configurar base path del API en módulo",
+        "Ventajas: sincronización automática, menos errores, types safety",
+        "Regenerar cuando API cambia (nuevos endpoints, modelos)",
+        "Reduce código boilerplate en frontend"
+      ],
+      "conceptos": [
+        {
+          "nombre": "API-First Approach",
+          "descripcion": "Metodología donde API se diseña antes que implementación frontend/backend"
+        },
+        {
+          "nombre": "OpenAPI Generator",
+          "descripcion": "Herramienta que genera código cliente/servidor desde especificación OpenAPI"
+        },
+        {
+          "nombre": "Code Generation",
+          "descripcion": "Generación automática de código a partir de especificación"
+        },
+        {
+          "nombre": "TypeScript Models",
+          "descripcion": "Interfaces/clases TypeScript que representan modelos de API"
+        },
+        {
+          "nombre": "Generated Services",
+          "descripcion": "Servicios Angular con métodos para llamar endpoints de API"
+        },
+        {
+          "nombre": "Type Safety",
+          "descripcion": "Verificación de tipos en compile-time gracias a TypeScript"
+        },
+        {
+          "nombre": "Dependency Injection",
+          "descripcion": "Patrón de Angular para inyectar servicios en componentes"
+        },
+        {
+          "nombre": "Base Path Configuration",
+          "descripcion": "URL base del API configurada en módulo Angular"
+        },
+        {
+          "nombre": "API Synchronization",
+          "descripcion": "Mantener frontend sincronizado con cambios en backend"
+        },
+        {
+          "nombre": "Boilerplate Reduction",
+          "descripcion": "Reducir código repetitivo mediante generación automática"
+        }
+      ],
+      "codigoEjemplo": "# 1. Exportar especificación OpenAPI desde Spring Boot\ncurl http://localhost:8081/v3/api-docs > openapi.json\n\n# 2. Instalar OpenAPI Generator\nnpm install -g @openapitools/openapi-generator-cli\n\n# 3. Generar cliente TypeScript/Angular\nopenapi-generator-cli generate \\\n  -i openapi.json \\\n  -g typescript-angular \\\n  -o src/app/generated-api\n\n# Archivos generados:\n# src/app/generated-api/\n#   ├── model/\n#   │   ├── customer-request.ts\n#   │   ├── customer-response.ts\n#   │   └── error-response.ts\n#   ├── api/\n#   │   └── customer.service.ts\n#   └── api.module.ts\n\n// customer.service.ts (generado automáticamente)\nimport { Injectable } from '@angular/core';\nimport { HttpClient } from '@angular/common/http';\nimport { Observable } from 'rxjs';\nimport { CustomerResponse } from '../model/customer-response';\n\n@Injectable()\nexport class CustomerService {\n  constructor(private http: HttpClient) {}\n  \n  findAll(): Observable<Array<CustomerResponse>> {\n    return this.http.get<Array<CustomerResponse>>(\n      '/api/v1/customer'\n    );\n  }\n  \n  findById(id: number): Observable<CustomerResponse> {\n    return this.http.get<CustomerResponse>(\n      `/api/v1/customer/${id}`\n    );\n  }\n  \n  create(body: CustomerRequest): Observable<CustomerResponse> {\n    return this.http.post<CustomerResponse>(\n      '/api/v1/customer',\n      body\n    );\n  }\n}\n\n// app.module.ts - Configurar API Module\nimport { ApiModule, Configuration } from './generated-api';\n\n@NgModule({\n  imports: [\n    ApiModule.forRoot(() => new Configuration({\n      basePath: 'http://localhost:8081'\n    }))\n  ]\n})\nexport class AppModule {}\n\n// component.ts - Usar servicio generado\nimport { CustomerService } from './generated-api/api/customer.service';\n\nexport class CustomerListComponent {\n  customers: CustomerResponse[] = [];\n  \n  constructor(private customerService: CustomerService) {}\n  \n  ngOnInit() {\n    this.customerService.findAll().subscribe(\n      data => this.customers = data,\n      error => console.error(error)\n    );\n  }\n}"
+    },
+    {
+      "numero": 3,
+      "archivo": "3__Descargar_ejecutar_App_Angular_comprender_consumir.srt",
+      "titulo": "Descargar y Ejecutar App Angular para Comprender Consumo de API",
+      "resumen": "Ejecución de aplicación Angular de ejemplo que consume APIs de microservicios. Se configura proxy para evitar problemas CORS en desarrollo, se prueban operaciones CRUD desde UI, y se valida integración completa frontend-backend. Demostración de flujo E2E.",
+      "puntosClave": [
+        "Descargar proyecto Angular de ejemplo del curso",
+        "npm install para instalar dependencias",
+        "Configurar proxy.conf.json para desarrollo:",
+        "  - Redirige /api a http://localhost:8081",
+        "  - Evita problemas CORS en desarrollo",
+        "ng serve --proxy-config proxy.conf.json",
+        "Aplicación corre en http://localhost:4200",
+        "Probar operaciones desde UI:",
+        "  - Listar customers (GET /api/v1/customer)",
+        "  - Crear customer (POST /api/v1/customer)",
+        "  - Editar customer (PUT /api/v1/customer/{id})",
+        "  - Eliminar customer (DELETE /api/v1/customer/{id})",
+        "DevTools → Network para ver peticiones HTTP",
+        "Validar que headers de autenticación se envían correctamente",
+        "Verificar respuestas JSON y manejo de errores en UI"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Angular CLI",
+          "descripcion": "Herramienta de línea de comandos para proyectos Angular"
+        },
+        {
+          "nombre": "ng serve",
+          "descripcion": "Comando que inicia servidor de desarrollo Angular"
+        },
+        {
+          "nombre": "proxy.conf.json",
+          "descripcion": "Archivo de configuración para proxy en desarrollo Angular"
+        },
+        {
+          "nombre": "Development Proxy",
+          "descripcion": "Proxy que redirige peticiones /api al backend para evitar CORS"
+        },
+        {
+          "nombre": "npm install",
+          "descripcion": "Comando para instalar dependencias Node.js del proyecto"
+        },
+        {
+          "nombre": "Browser DevTools",
+          "descripcion": "Herramientas de desarrollador del navegador (Network, Console)"
+        },
+        {
+          "nombre": "CRUD UI",
+          "descripcion": "Interfaz para operaciones Create, Read, Update, Delete"
+        },
+        {
+          "nombre": "HTTP Interceptor",
+          "descripcion": "Servicio Angular que intercepta requests para agregar headers"
+        },
+        {
+          "nombre": "Error Handling UI",
+          "descripcion": "Mostrar mensajes de error user-friendly en interfaz"
+        },
+        {
+          "nombre": "E2E Flow",
+          "descripcion": "Flujo completo de frontend a backend a base de datos"
+        }
+      ],
+      "codigoEjemplo": "// proxy.conf.json - Configuración proxy desarrollo\n{\n  \"/api\": {\n    \"target\": \"http://localhost:8081\",\n    \"secure\": false,\n    \"changeOrigin\": true,\n    \"logLevel\": \"debug\"\n  }\n}\n\n# package.json - Scripts npm\n{\n  \"scripts\": {\n    \"start\": \"ng serve --proxy-config proxy.conf.json\",\n    \"build\": \"ng build --prod\"\n  }\n}\n\n# Ejecutar aplicación\nnpm install\nnpm start\n\n# Aplicación disponible en:\n# http://localhost:4200\n\n// auth.interceptor.ts - Interceptor para agregar Authorization\nimport { Injectable } from '@angular/core';\nimport { HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';\n\n@Injectable()\nexport class AuthInterceptor implements HttpInterceptor {\n  intercept(req: HttpRequest<any>, next: HttpHandler) {\n    const credentials = btoa('admin:admin123');\n    const authReq = req.clone({\n      headers: req.headers.set(\n        'Authorization', \n        `Basic ${credentials}`\n      )\n    });\n    return next.handle(authReq);\n  }\n}\n\n// customer-list.component.ts - Componente de ejemplo\nexport class CustomerListComponent implements OnInit {\n  customers: CustomerResponse[] = [];\n  loading = false;\n  error: string | null = null;\n  \n  constructor(\n    private customerService: CustomerService,\n    private snackBar: MatSnackBar\n  ) {}\n  \n  ngOnInit() {\n    this.loadCustomers();\n  }\n  \n  loadCustomers() {\n    this.loading = true;\n    this.customerService.findAll().subscribe(\n      data => {\n        this.customers = data;\n        this.loading = false;\n      },\n      error => {\n        this.error = 'Error loading customers';\n        this.loading = false;\n        this.snackBar.open('Error loading customers', 'Close');\n      }\n    );\n  }\n  \n  deleteCustomer(id: number) {\n    if (confirm('Are you sure?')) {\n      this.customerService.delete(id).subscribe(\n        () => {\n          this.loadCustomers();\n          this.snackBar.open('Customer deleted', 'Close');\n        },\n        error => {\n          this.snackBar.open('Error deleting customer', 'Close');\n        }\n      );\n    }\n  }\n}"
+    },
+    {
+      "numero": 4,
+      "archivo": "4__se_empaquetan_Microservicios_contenedores_se_unen_al.srt",
+      "titulo": "Cómo se Empaquetan Microservicios en Contenedores y se Unen al Ecosistema",
+      "resumen": "Introducción a contenedores Docker y por qué son esenciales para microservicios. Se explica diferencia entre máquinas virtuales y contenedores, ventajas de Docker (portabilidad, aislamiento, eficiencia), y cómo múltiples contenedores forman un ecosistema orquestado. Base para dockerizar microservicios.",
+      "puntosClave": [
+        "Problema: cada microservicio necesita su entorno de ejecución",
+        "Solución: contenedores Docker empaquetan app + dependencias",
+        "Contenedor: proceso aislado que comparte kernel del host",
+        "VM vs Contenedor:",
+        "  - VM: sistema operativo completo (GB, minutos inicio)",
+        "  - Contenedor: solo app y deps (MB, segundos inicio)",
+        "Docker: plataforma para crear, ejecutar y distribuir contenedores",
+        "Imagen Docker: plantilla inmutable con app + runtime + deps",
+        "Contenedor: instancia en ejecución de una imagen",
+        "Ventajas Docker:",
+        "  - Portabilidad: \"funciona en mi máquina\" → funciona en todas",
+        "  - Aislamiento: cada contenedor tiene su filesystem, network",
+        "  - Eficiencia: menos overhead que VMs",
+        "  - Consistencia: mismo entorno dev/test/prod",
+        "Orquestación: coordinar múltiples contenedores (Docker Compose, Kubernetes)"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Docker",
+          "descripcion": "Plataforma para desarrollar, enviar y ejecutar aplicaciones en contenedores"
+        },
+        {
+          "nombre": "Contenedor",
+          "descripcion": "Proceso aislado que empaqueta aplicación con todas sus dependencias"
+        },
+        {
+          "nombre": "Imagen Docker",
+          "descripcion": "Plantilla inmutable de filesystem con app, runtime, librerías y config"
+        },
+        {
+          "nombre": "Docker Engine",
+          "descripcion": "Motor que ejecuta y gestiona contenedores en el host"
+        },
+        {
+          "nombre": "Dockerfile",
+          "descripcion": "Script con instrucciones para construir imagen Docker"
+        },
+        {
+          "nombre": "Container vs VM",
+          "descripcion": "Contenedores comparten kernel OS, VMs tienen OS completo"
+        },
+        {
+          "nombre": "Portabilidad",
+          "descripcion": "Contenedor funciona igual en cualquier sistema con Docker"
+        },
+        {
+          "nombre": "Aislamiento",
+          "descripcion": "Contenedores tienen filesystem, network y processes aislados"
+        },
+        {
+          "nombre": "Orquestación",
+          "descripcion": "Gestión coordinada de múltiples contenedores"
+        },
+        {
+          "nombre": "Microservices Ecosystem",
+          "descripcion": "Conjunto de microservicios contenedorizados trabajando juntos"
+        }
+      ]
+    },
+    {
+      "numero": 5,
+      "archivo": "5__son_contenedores_porque_son_tan_relevantes_mundo_TI.srt",
+      "titulo": "Qué son Contenedores y Por Qué son tan Relevantes en el Mundo TI",
+      "resumen": "Profundización en tecnología de contenedores, su historia, y relevancia en DevOps moderno. Se explica arquitectura de contenedores, namespaces, cgroups, layered filesystem, y por qué se han convertido en estándar para deployment de aplicaciones cloud-native. Comparación con tecnologías tradicionales.",
+      "puntosClave": [
+        "Contenedores: virtualización a nivel de sistema operativo",
+        "Tecnología base: namespaces (aislamiento) + cgroups (límites recursos)",
+        "Layered filesystem: imágenes construidas en capas reutilizables",
+        "Cada capa es inmutable y cacheable",
+        "Docker Hub: repositorio público de imágenes (como npm, Maven Central)",
+        "Imágenes base: openjdk, nginx, postgres, mysql, node",
+        "Multi-stage builds: optimizar tamaño de imagen final",
+        "Relevancia en TI moderna:",
+        "  - Cloud-native applications",
+        "  - CI/CD pipelines",
+        "  - Microservices deployment",
+        "  - Infrastructure as Code",
+        "Alternativas a Docker: Podman, containerd, CRI-O",
+        "Kubernetes: orquestador de contenedores a escala enterprise",
+        "Contenedores son futuro de deployment de aplicaciones"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Namespaces",
+          "descripcion": "Mecanismo Linux para aislar procesos, red, filesystem"
+        },
+        {
+          "nombre": "cgroups (Control Groups)",
+          "descripcion": "Limitar y monitorear uso de recursos (CPU, memoria, I/O)"
+        },
+        {
+          "nombre": "Layered Filesystem",
+          "descripcion": "Sistema de archivos en capas donde cada capa es inmutable"
+        },
+        {
+          "nombre": "Docker Hub",
+          "descripcion": "Registro público de imágenes Docker compartidas por comunidad"
+        },
+        {
+          "nombre": "Base Image",
+          "descripcion": "Imagen inicial sobre la cual se construye aplicación (openjdk, alpine)"
+        },
+        {
+          "nombre": "Multi-Stage Build",
+          "descripcion": "Dockerfile con múltiples FROM para optimizar tamaño final"
+        },
+        {
+          "nombre": "Cloud-Native",
+          "descripcion": "Aplicaciones diseñadas específicamente para cloud con contenedores"
+        },
+        {
+          "nombre": "CI/CD",
+          "descripcion": "Integración y despliegue continuo automatizado"
+        },
+        {
+          "nombre": "Infrastructure as Code",
+          "descripcion": "Definir infraestructura mediante archivos versionables"
+        },
+        {
+          "nombre": "Container Orchestration",
+          "descripcion": "Gestión automática de contenedores (scaling, health, networking)"
+        }
+      ]
+    },
+    {
+      "numero": 6,
+      "archivo": "6__Video_apoyo_Instalar_docker_desktop_usas_windows_10.srt",
+      "titulo": "Video de Apoyo: Instalar Docker Desktop en Windows 10/11",
+      "resumen": "Guía práctica de instalación de Docker Desktop en Windows. Se cubren requisitos del sistema (WSL2, Hyper-V), proceso de instalación, configuración inicial, y verificación de funcionamiento. Se explican diferencias entre Docker Desktop y Docker Engine en Linux.",
+      "puntosClave": [
+        "Docker Desktop: aplicación GUI para Windows/Mac",
+        "Requisitos Windows:",
+        "  - Windows 10/11 Pro, Enterprise o Education",
+        "  - WSL 2 (Windows Subsystem for Linux) habilitado",
+        "  - Virtualización habilitada en BIOS",
+        "Descargar de https://www.docker.com/products/docker-desktop",
+        "Instalación: siguiente → siguiente → reiniciar",
+        "Habilitar WSL 2 backend (recomendado sobre Hyper-V)",
+        "Verificar instalación: docker --version",
+        "Probar: docker run hello-world",
+        "Docker Desktop incluye:",
+        "  - Docker Engine",
+        "  - Docker CLI",
+        "  - Docker Compose",
+        "  - Kubernetes (opcional)",
+        "Configurar recursos (CPU, memoria) en Settings",
+        "Alternativa Linux: solo instalar docker-ce y docker-compose"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Docker Desktop",
+          "descripcion": "Aplicación todo-en-uno para ejecutar Docker en Windows/Mac"
+        },
+        {
+          "nombre": "WSL 2 (Windows Subsystem for Linux)",
+          "descripcion": "Capa de compatibilidad para ejecutar Linux en Windows"
+        },
+        {
+          "nombre": "Hyper-V",
+          "descripcion": "Tecnología de virtualización de Microsoft (alternativa a WSL2)"
+        },
+        {
+          "nombre": "Docker Engine",
+          "descripcion": "Motor central que ejecuta contenedores"
+        },
+        {
+          "nombre": "Docker CLI",
+          "descripcion": "Interfaz de línea de comandos para interactuar con Docker"
+        },
+        {
+          "nombre": "Docker Compose",
+          "descripcion": "Herramienta para definir y ejecutar aplicaciones multi-contenedor"
+        },
+        {
+          "nombre": "hello-world Image",
+          "descripcion": "Imagen de prueba simple para verificar instalación Docker"
+        },
+        {
+          "nombre": "Resource Allocation",
+          "descripcion": "Asignar CPU, memoria y disco a Docker Desktop"
+        },
+        {
+          "nombre": "docker-ce",
+          "descripcion": "Community Edition de Docker Engine para Linux"
+        },
+        {
+          "nombre": "Virtualization",
+          "descripcion": "Tecnología que permite ejecutar múltiples OS en mismo hardware"
+        }
+      ],
+      "codigoEjemplo": "# Verificar instalación Docker\ndocker --version\n# Output: Docker version 24.0.6, build ed223bc\n\ndocker-compose --version\n# Output: Docker Compose version v2.21.0\n\n# Probar Docker con hello-world\ndocker run hello-world\n# Output:\n# Hello from Docker!\n# This message shows that your installation appears to be working correctly.\n\n# Ver imágenes descargadas\ndocker images\n# REPOSITORY    TAG       IMAGE ID       CREATED        SIZE\n# hello-world   latest    9c7a54a9a43c   3 months ago   13.3kB\n\n# Ver contenedores en ejecución\ndocker ps\n\n# Ver todos los contenedores (incluidos detenidos)\ndocker ps -a\n\n# Configuración recomendada Docker Desktop:\n# Settings → Resources:\n#   CPUs: 4\n#   Memory: 8 GB\n#   Swap: 2 GB\n#   Disk image size: 60 GB"
+    },
+    {
+      "numero": 7,
+      "archivo": "7__Escribir_imágenes_Docker_Dockerfile_usando.srt",
+      "titulo": "Escribir Imágenes Docker mediante Dockerfile",
+      "resumen": "Creación de Dockerfile para contenedorizar microservicio Spring Boot. Se definen instrucciones FROM, COPY, RUN, EXPOSE, ENTRYPOINT para construir imagen. Se explica cada comando, se optimiza con multi-stage builds, y se establecen mejores prácticas para Dockerfiles eficientes.",
+      "puntosClave": [
+        "Dockerfile: script con instrucciones para construir imagen",
+        "Instrucciones principales:",
+        "  - FROM: imagen base (openjdk:17-jdk-slim)",
+        "  - WORKDIR: directorio de trabajo dentro del contenedor",
+        "  - COPY: copiar archivos de host a imagen",
+        "  - RUN: ejecutar comando durante build",
+        "  - EXPOSE: documentar puerto que app usa",
+        "  - ENTRYPOINT: comando que se ejecuta al iniciar contenedor",
+        "Ubicación: raíz de cada microservicio",
+        "FROM openjdk:17-jdk-slim como base ligera",
+        "COPY target/*.jar app.jar para copiar JAR compilado",
+        "ENTRYPOINT [\"java\", \"-jar\", \"/app.jar\"]",
+        "Optimización: usar .dockerignore para excluir archivos innecesarios",
+        "Multi-stage: build en una etapa, runtime en otra (reduce tamaño)",
+        "Buenas prácticas: ordenar instrucciones para maximizar cache"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Dockerfile",
+          "descripcion": "Archivo de texto con instrucciones para construir imagen Docker"
+        },
+        {
+          "nombre": "FROM",
+          "descripcion": "Instrucción que especifica imagen base para construir"
+        },
+        {
+          "nombre": "WORKDIR",
+          "descripcion": "Define directorio de trabajo dentro del contenedor"
+        },
+        {
+          "nombre": "COPY",
+          "descripcion": "Copia archivos/directorios de host a imagen"
+        },
+        {
+          "nombre": "RUN",
+          "descripcion": "Ejecuta comando durante construcción de imagen"
+        },
+        {
+          "nombre": "EXPOSE",
+          "descripcion": "Documenta puerto que aplicación escucha (no publica automáticamente)"
+        },
+        {
+          "nombre": "ENTRYPOINT",
+          "descripcion": "Define comando principal que se ejecuta al iniciar contenedor"
+        },
+        {
+          "nombre": "CMD",
+          "descripcion": "Argumentos por defecto para ENTRYPOINT (o comando si no hay ENTRYPOINT)"
+        },
+        {
+          "nombre": ".dockerignore",
+          "descripcion": "Archivo que especifica qué archivos ignorar al copiar contexto"
+        },
+        {
+          "nombre": "Multi-Stage Build",
+          "descripcion": "Usar múltiples FROM para separar build de runtime"
+        },
+        {
+          "nombre": "Layer Caching",
+          "descripcion": "Docker cachea capas inmutables para builds más rápidos"
+        }
+      ],
+      "codigoEjemplo": "# Dockerfile - Customer Service (simple)\nFROM openjdk:17-jdk-slim\n\n# Directorio de trabajo\nWORKDIR /app\n\n# Copiar JAR compilado\nCOPY target/customer-service-1.0.0.jar app.jar\n\n# Puerto que usa la aplicación\nEXPOSE 8081\n\n# Comando para ejecutar aplicación\nENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n\n# Dockerfile - Multi-stage build (optimizado)\n# Etapa 1: Build\nFROM maven:3.9-openjdk-17 AS build\nWORKDIR /build\n\n# Copiar POMs primero (mejor cache)\nCOPY pom.xml .\nCOPY business-domain/customer/pom.xml business-domain/customer/\n\n# Descargar dependencias (se cachea si POMs no cambian)\nRUN mvn dependency:go-offline\n\n# Copiar código fuente\nCOPY business-domain/customer/src business-domain/customer/src\n\n# Compilar aplicación\nRUN mvn clean package -DskipTests\n\n# Etapa 2: Runtime\nFROM openjdk:17-jre-slim\nWORKDIR /app\n\n# Copiar solo JAR de etapa build\nCOPY --from=build /build/business-domain/customer/target/*.jar app.jar\n\n# Usuario no-root por seguridad\nRUN useradd -m appuser\nUSER appuser\n\nEXPOSE 8081\n\n# Variables de entorno\nENV SPRING_PROFILES_ACTIVE=prod\nENV JAVA_OPTS=\"-Xmx512m -Xms256m\"\n\n# Comando con opciones JVM\nENTRYPOINT [\"sh\", \"-c\", \"java $JAVA_OPTS -jar app.jar\"]\n\n# .dockerignore - Excluir archivos innecesarios\ntarget/\n.mvn/\n.git/\n.idea/\n*.iml\nnode_modules/\n.env\nREADME.md"
+    },
+    {
+      "numero": 8,
+      "archivo": "8__Compilar_imágenes_docker.srt",
+      "titulo": "Compilar Imágenes Docker desde Dockerfile",
+      "resumen": "Proceso de construcción de imágenes Docker usando comando docker build. Se compila JAR de microservicio con Maven, se ejecuta docker build, se etiquetan imágenes apropiadamente, y se verifican con docker images. Se explica sistema de tags y versionado de imágenes.",
+      "puntosClave": [
+        "Prerequisito: compilar JAR con Maven primero",
+        "mvn clean package -DskipTests para generar JAR",
+        "docker build: comando para construir imagen desde Dockerfile",
+        "Sintaxis: docker build -t nombre:tag directorio",
+        "Ejemplo: docker build -t customer-service:1.0.0 .",
+        "El punto (.) indica contexto de build (directorio actual)",
+        "Docker envía contexto completo al daemon",
+        "Proceso build: ejecuta cada instrucción, crea capa por instrucción",
+        "Tags: etiquetar imágenes para versionado",
+        "  - customer-service:1.0.0 (versión específica)",
+        "  - customer-service:latest (última versión)",
+        "docker images para listar imágenes locales",
+        "docker tag para crear alias de imagen",
+        "docker rmi para eliminar imagen",
+        "Build cache acelera builds subsecuentes"
+      ],
+      "conceptos": [
+        {
+          "nombre": "docker build",
+          "descripcion": "Comando para construir imagen Docker desde Dockerfile"
+        },
+        {
+          "nombre": "Build Context",
+          "descripcion": "Directorio con archivos que Docker puede acceder durante build"
+        },
+        {
+          "nombre": "Image Tag",
+          "descripcion": "Etiqueta para versionar imágenes (nombre:versión)"
+        },
+        {
+          "nombre": "latest Tag",
+          "descripcion": "Tag convencional para última versión de imagen"
+        },
+        {
+          "nombre": "Image Layer",
+          "descripcion": "Cada instrucción Dockerfile crea una capa inmutable"
+        },
+        {
+          "nombre": "Build Cache",
+          "descripcion": "Docker reutiliza capas no modificadas para builds rápidos"
+        },
+        {
+          "nombre": "docker images",
+          "descripcion": "Comando para listar imágenes Docker locales"
+        },
+        {
+          "nombre": "docker tag",
+          "descripcion": "Crear alias/tag adicional para imagen existente"
+        },
+        {
+          "nombre": "docker rmi",
+          "descripcion": "Eliminar imagen del sistema local"
+        },
+        {
+          "nombre": "Image ID",
+          "descripcion": "Hash único SHA256 que identifica imagen"
+        }
+      ],
+      "codigoEjemplo": "# 1. Compilar JAR del microservicio\ncd business-domain/customer\nmvn clean package -DskipTests\n# Output: target/customer-service-1.0.0.jar\n\n# 2. Construir imagen Docker\ndocker build -t customer-service:1.0.0 .\n\n# Output del build:\n# [1/5] FROM openjdk:17-jdk-slim\n# [2/5] WORKDIR /app\n# [3/5] COPY target/customer-service-1.0.0.jar app.jar\n# [4/5] EXPOSE 8081\n# [5/5] ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n# Successfully built abc123def456\n# Successfully tagged customer-service:1.0.0\n\n# 3. Crear tag 'latest'\ndocker tag customer-service:1.0.0 customer-service:latest\n\n# 4. Listar imágenes\ndocker images\n# REPOSITORY          TAG       IMAGE ID       CREATED         SIZE\n# customer-service    1.0.0     abc123def456   2 minutes ago   450MB\n# customer-service    latest    abc123def456   2 minutes ago   450MB\n# openjdk             17-slim   xyz789abc012   2 weeks ago     420MB\n\n# 5. Construir con no-cache (forzar rebuild completo)\ndocker build --no-cache -t customer-service:1.0.0 .\n\n# 6. Ver historial de capas de imagen\ndocker history customer-service:1.0.0\n\n# 7. Inspeccionar imagen\ndocker inspect customer-service:1.0.0\n\n# 8. Eliminar imagen\ndocker rmi customer-service:1.0.0\n\n# 9. Construir múltiples servicios\ncd business-domain/product\nmvn clean package -DskipTests\ndocker build -t product-service:1.0.0 .\n\ncd ../transaction\nmvn clean package -DskipTests\ndocker build -t transaction-service:1.0.0 ."
+    },
+    {
+      "numero": 9,
+      "archivo": "9__Construir_contenedores_docker_comandos_básicos.srt",
+      "titulo": "Construir y Ejecutar Contenedores Docker con Comandos Básicos",
+      "resumen": "Ejecución de contenedores Docker desde imágenes construidas. Se usan comandos docker run, docker ps, docker logs, docker stop para gestionar ciclo de vida de contenedores. Se mapean puertos, se configuran variables de entorno, y se prueban microservicios contenedorizados.",
+      "puntosClave": [
+        "docker run: crear y ejecutar contenedor desde imagen",
+        "Mapeo de puertos: -p host:contenedor",
+        "  - docker run -p 8081:8081 customer-service:1.0.0",
+        "Modo detached: -d para ejecutar en background",
+        "Nombrar contenedor: --name customer-container",
+        "Variables de entorno: -e SPRING_PROFILES_ACTIVE=prod",
+        "docker ps: listar contenedores en ejecución",
+        "docker ps -a: listar todos (incluidos detenidos)",
+        "docker logs: ver logs de contenedor",
+        "  - docker logs -f customer-container (follow)",
+        "docker stop: detener contenedor gracefully",
+        "docker start: iniciar contenedor detenido",
+        "docker rm: eliminar contenedor",
+        "docker exec: ejecutar comando en contenedor corriendo",
+        "Probar: curl http://localhost:8081/api/v1/customer"
+      ],
+      "conceptos": [
+        {
+          "nombre": "docker run",
+          "descripcion": "Crear y ejecutar nuevo contenedor desde imagen"
+        },
+        {
+          "nombre": "Port Mapping",
+          "descripcion": "Mapear puerto de host a puerto de contenedor (-p)"
+        },
+        {
+          "nombre": "Detached Mode",
+          "descripcion": "Ejecutar contenedor en background (-d)"
+        },
+        {
+          "nombre": "Container Name",
+          "descripcion": "Nombre amigable para contenedor (--name)"
+        },
+        {
+          "nombre": "Environment Variables",
+          "descripcion": "Variables pasadas a contenedor (-e)"
+        },
+        {
+          "nombre": "docker ps",
+          "descripcion": "Listar contenedores en ejecución"
+        },
+        {
+          "nombre": "docker logs",
+          "descripcion": "Ver output de logs de contenedor"
+        },
+        {
+          "nombre": "docker stop",
+          "descripcion": "Detener contenedor enviando SIGTERM"
+        },
+        {
+          "nombre": "docker start",
+          "descripcion": "Iniciar contenedor existente previamente detenido"
+        },
+        {
+          "nombre": "docker rm",
+          "descripcion": "Eliminar contenedor detenido"
+        },
+        {
+          "nombre": "docker exec",
+          "descripcion": "Ejecutar comando dentro de contenedor corriendo"
+        },
+        {
+          "nombre": "Container Lifecycle",
+          "descripcion": "Estados: created → running → stopped → removed"
+        }
+      ],
+      "codigoEjemplo": "# 1. Ejecutar Customer Service\ndocker run -d \\\n  --name customer-container \\\n  -p 8081:8081 \\\n  -e SPRING_PROFILES_ACTIVE=dev \\\n  customer-service:1.0.0\n\n# Output: abc123def456... (container ID)\n\n# 2. Ver contenedores corriendo\ndocker ps\n# CONTAINER ID   IMAGE                    STATUS         PORTS                    NAMES\n# abc123def456   customer-service:1.0.0   Up 30 seconds  0.0.0.0:8081->8081/tcp   customer-container\n\n# 3. Ver logs del contenedor\ndocker logs customer-container\n# Output: Spring Boot startup logs...\n\n# Seguir logs en tiempo real\ndocker logs -f customer-container\n\n# 4. Probar servicio\ncurl http://localhost:8081/actuator/health\n# {\"status\":\"UP\"}\n\ncurl -u admin:admin123 http://localhost:8081/api/v1/customer\n# [{...}, {...}]\n\n# 5. Ejecutar comando dentro del contenedor\ndocker exec customer-container ls -la /app\n\n# Shell interactivo\ndocker exec -it customer-container /bin/sh\n# Dentro del contenedor:\n# ls /app\n# ps aux\n# exit\n\n# 6. Ver stats de recursos\ndocker stats customer-container\n# CPU %   MEM USAGE / LIMIT   MEM %   NET I/O\n# 0.50%   350MiB / 8GiB       4.37%   1.2kB / 850B\n\n# 7. Detener contenedor\ndocker stop customer-container\n\n# 8. Reiniciar contenedor\ndocker start customer-container\n\n# 9. Eliminar contenedor (debe estar detenido)\ndocker rm customer-container\n\n# O forzar eliminación de contenedor corriendo\ndocker rm -f customer-container\n\n# 10. Ejecutar múltiples servicios\ndocker run -d --name product-container \\\n  -p 8082:8082 \\\n  product-service:1.0.0\n\ndocker run -d --name transaction-container \\\n  -p 8083:8083 \\\n  transaction-service:1.0.0\n\n# 11. Ver todos los contenedores (incluidos detenidos)\ndocker ps -a"
+    },
+    {
+      "numero": 10,
+      "archivo": "10__Plugin_maven_spotify_automatizar_construcción.srt",
+      "titulo": "Plugin Maven de Spotify para Automatizar Construcción de Imágenes",
+      "resumen": "Integración de Dockerfile Maven Plugin para automatizar construcción de imágenes Docker como parte del build de Maven. Se configura plugin, se ejecuta mvn package para compilar JAR y construir imagen en un solo comando. Simplifica workflow de desarrollo.",
+      "puntosClave": [
+        "dockerfile-maven-plugin de Spotify",
+        "Automatiza docker build durante mvn package",
+        "Agregar plugin en pom.xml de cada microservicio",
+        "Configuración:",
+        "  - repository: nombre de imagen",
+        "  - tag: versión de imagen",
+        "  - buildArgs: argumentos para Dockerfile",
+        "  - dockerDirectory: ubicación del Dockerfile",
+        "mvn package automáticamente:",
+        "  1. Compila código Java",
+        "  2. Ejecuta tests",
+        "  3. Genera JAR",
+        "  4. Construye imagen Docker",
+        "Binding a fase package de Maven",
+        "Ventaja: un solo comando en vez de mvn + docker build",
+        "CI/CD: simplifica pipeline de integración continua",
+        "Configurar en POM padre para todos los módulos"
+      ],
+      "conceptos": [
+        {
+          "nombre": "dockerfile-maven-plugin",
+          "descripcion": "Plugin Maven que integra construcción Docker en lifecycle de Maven"
+        },
+        {
+          "nombre": "Maven Lifecycle",
+          "descripcion": "Fases de build: compile → test → package → install → deploy"
+        },
+        {
+          "nombre": "Maven Plugin",
+          "descripcion": "Extensión que agrega funcionalidad a proceso de build Maven"
+        },
+        {
+          "nombre": "Build Automation",
+          "descripcion": "Automatizar pasos repetitivos del proceso de build"
+        },
+        {
+          "nombre": "Plugin Binding",
+          "descripcion": "Asociar ejecución de plugin a fase específica de Maven"
+        },
+        {
+          "nombre": "Build Args",
+          "descripcion": "Argumentos pasados al Dockerfile durante build"
+        },
+        {
+          "nombre": "Repository Tag",
+          "descripcion": "Nombre completo de imagen (repository:tag)"
+        },
+        {
+          "nombre": "Unified Build",
+          "descripcion": "Un solo comando ejecuta múltiples pasos de build"
+        },
+        {
+          "nombre": "CI/CD Integration",
+          "descripcion": "Simplificar integración con pipelines de CI/CD"
+        },
+        {
+          "nombre": "Build Reproducibility",
+          "descripcion": "Garantizar builds consistentes y reproducibles"
+        }
+      ],
+      "codigoEjemplo": "<!-- pom.xml - Customer Service -->\n<project>\n    <build>\n        <plugins>\n            <!-- Plugin de Spring Boot -->\n            <plugin>\n                <groupId>org.springframework.boot</groupId>\n                <artifactId>spring-boot-maven-plugin</artifactId>\n            </plugin>\n            \n            <!-- Plugin Dockerfile de Spotify -->\n            <plugin>\n                <groupId>com.spotify</groupId>\n                <artifactId>dockerfile-maven-plugin</artifactId>\n                <version>1.4.13</version>\n                <executions>\n                    <execution>\n                        <id>default</id>\n                        <phase>package</phase>\n                        <goals>\n                            <goal>build</goal>\n                        </goals>\n                    </execution>\n                </executions>\n                <configuration>\n                    <!-- Nombre de la imagen -->\n                    <repository>customer-service</repository>\n                    \n                    <!-- Tag de la imagen -->\n                    <tag>${project.version}</tag>\n                    \n                    <!-- Ubicación del Dockerfile -->\n                    <dockerfile>Dockerfile</dockerfile>\n                    \n                    <!-- Contexto de build -->\n                    <contextDirectory>${project.basedir}</contextDirectory>\n                    \n                    <!-- Argumentos para Dockerfile -->\n                    <buildArgs>\n                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>\n                    </buildArgs>\n                </configuration>\n            </plugin>\n        </plugins>\n    </build>\n</project>\n\n# Dockerfile con ARG\nFROM openjdk:17-jdk-slim\nWORKDIR /app\n\n# Argumento recibido de Maven\nARG JAR_FILE\nCOPY ${JAR_FILE} app.jar\n\nEXPOSE 8081\nENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n\n# Ejecutar build completo\ncd business-domain/customer\nmvn clean package\n\n# Output:\n# [INFO] --- maven-compiler-plugin:3.11.0:compile\n# [INFO] --- maven-surefire-plugin:3.0.0:test\n# [INFO] --- spring-boot-maven-plugin:3.2.0:repackage\n# [INFO] --- dockerfile-maven-plugin:1.4.13:build\n# [INFO] Building Docker context\n# [INFO] Image customer-service:1.0.0 built successfully\n# [INFO] BUILD SUCCESS\n\n# Verificar imagen creada\ndocker images | grep customer-service\n# customer-service   1.0.0   abc123   2 minutes ago   450MB\n\n# Ejecutar contenedor\ndocker run -d -p 8081:8081 customer-service:1.0.0\n\n# Beneficio: Un solo comando para todo\n# Antes:\n#   mvn clean package\n#   docker build -t customer-service:1.0.0 .\n# Ahora:\n#   mvn clean package  (hace ambas cosas)"
+    },
+    {
+      "numero": 11,
+      "archivo": "11__Construir_orquestación_docker_compose_usando.srt",
+      "titulo": "Construir Orquestación Multi-Contenedor con Docker Compose",
+      "resumen": "Creación de archivo docker-compose.yml para orquestar múltiples microservicios. Se definen servicios (customer, product, transaction, eureka, config, admin), se configuran networks, se especifican dependencias, y se ejecuta sistema completo con docker-compose up. Orquestación simplificada para desarrollo.",
+      "puntosClave": [
+        "Docker Compose: herramienta para multi-contenedor applications",
+        "docker-compose.yml: archivo YAML que define servicios",
+        "Estructura:",
+        "  - version: versión de Compose file format",
+        "  - services: cada microservicio es un servicio",
+        "  - networks: redes para comunicación entre contenedores",
+        "  - volumes: persistencia de datos",
+        "Definir servicio:",
+        "  - image: imagen a usar",
+        "  - container_name: nombre del contenedor",
+        "  - ports: mapeo de puertos",
+        "  - environment: variables de entorno",
+        "  - depends_on: dependencias entre servicios",
+        "  - networks: redes a las que pertenece",
+        "docker-compose up: iniciar todos los servicios",
+        "docker-compose down: detener y eliminar todo",
+        "docker-compose logs: ver logs de todos los servicios",
+        "Orden de inicio respetado por depends_on"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Docker Compose",
+          "descripcion": "Herramienta para definir y ejecutar aplicaciones Docker multi-contenedor"
+        },
+        {
+          "nombre": "docker-compose.yml",
+          "descripcion": "Archivo YAML que define configuración de servicios, redes y volúmenes"
+        },
+        {
+          "nombre": "Service",
+          "descripcion": "Definición de contenedor en Docker Compose"
+        },
+        {
+          "nombre": "Network",
+          "descripcion": "Red virtual para comunicación entre contenedores"
+        },
+        {
+          "nombre": "Volume",
+          "descripcion": "Almacenamiento persistente compartido entre contenedor y host"
+        },
+        {
+          "nombre": "depends_on",
+          "descripcion": "Especifica dependencias de inicio entre servicios"
+        },
+        {
+          "nombre": "docker-compose up",
+          "descripcion": "Crear e iniciar todos los servicios definidos"
+        },
+        {
+          "nombre": "docker-compose down",
+          "descripcion": "Detener y eliminar contenedores, redes y volúmenes"
+        },
+        {
+          "nombre": "Service Discovery",
+          "descripcion": "Contenedores se referencian por nombre de servicio"
+        },
+        {
+          "nombre": "Compose File Format",
+          "descripcion": "Versión de sintaxis de docker-compose.yml (2, 3, 3.8)"
+        }
+      ],
+      "codigoEjemplo": "# docker-compose.yml - Orquestación completa\nversion: '3.8'\n\nservices:\n  # Eureka Server\n  eureka-server:\n    image: eureka-server:1.0.0\n    container_name: eureka-server\n    ports:\n      - \"8761:8761\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n  \n  # Config Server\n  config-server:\n    image: config-server:1.0.0\n    container_name: config-server\n    ports:\n      - \"8888:8888\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n  \n  # Admin Server\n  admin-server:\n    image: admin-server:1.0.0\n    container_name: admin-server\n    ports:\n      - \"9090:9090\"\n    networks:\n      - microservices-network\n    environment:\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n  \n  # Customer Service\n  customer-service:\n    image: customer-service:1.0.0\n    container_name: customer-service\n    ports:\n      - \"8081:8081\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888\n    depends_on:\n      - eureka-server\n      - config-server\n  \n  # Product Service\n  product-service:\n    image: product-service:1.0.0\n    container_name: product-service\n    ports:\n      - \"8082:8082\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n      - config-server\n  \n  # Transaction Service\n  transaction-service:\n    image: transaction-service:1.0.0\n    container_name: transaction-service\n    ports:\n      - \"8083:8083\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n      - config-server\n      - customer-service\n      - product-service\n\nnetworks:\n  microservices-network:\n    driver: bridge\n\n# Comandos Docker Compose\n\n# Iniciar todos los servicios\ndocker-compose up -d\n# -d: detached mode (background)\n\n# Ver logs de todos los servicios\ndocker-compose logs -f\n\n# Ver logs de servicio específico\ndocker-compose logs -f customer-service\n\n# Listar servicios corriendo\ndocker-compose ps\n\n# Detener servicios\ndocker-compose stop\n\n# Reiniciar servicios\ndocker-compose restart\n\n# Detener y eliminar todo\ndocker-compose down\n\n# Eliminar también volúmenes\ndocker-compose down -v\n\n# Reconstruir imágenes y reiniciar\ndocker-compose up -d --build\n\n# Escalar servicio (múltiples instancias)\ndocker-compose up -d --scale product-service=3"
+    },
+    {
+      "numero": 12,
+      "archivo": "12__Crear_base_datos_postgres_persistir_información.srt",
+      "titulo": "Crear Base de Datos PostgreSQL para Persistir Información",
+      "resumen": "Integración de PostgreSQL como contenedor Docker para persistencia de datos. Se agrega servicio postgres a docker-compose, se configuran credenciales, se crean volúmenes para persistencia, y se configuran microservicios para conectar a PostgreSQL en lugar de H2. Datos persisten entre reinicios.",
+      "puntosClave": [
+        "Agregar servicio postgres en docker-compose.yml",
+        "Imagen oficial: postgres:15-alpine (ligera)",
+        "Variables de entorno:",
+        "  - POSTGRES_USER: usuario de BD",
+        "  - POSTGRES_PASSWORD: contraseña",
+        "  - POSTGRES_DB: nombre de base de datos inicial",
+        "Puerto: 5432 (mapear a host si es necesario)",
+        "Volumen: persistir datos en host",
+        "  - postgres-data:/var/lib/postgresql/data",
+        "Actualizar application-docker.properties en microservicios:",
+        "  - spring.datasource.url=jdbc:postgresql://postgres:5432/customerdb",
+        "  - spring.datasource.username=postgres",
+        "  - spring.datasource.password=postgres",
+        "  - spring.jpa.hibernate.ddl-auto=update (crear tablas auto)",
+        "depends_on: asegurar que postgres inicia antes que microservicios",
+        "Healthcheck: verificar que postgres está listo antes de conectar"
+      ],
+      "conceptos": [
+        {
+          "nombre": "PostgreSQL",
+          "descripcion": "Sistema de gestión de bases de datos relacional open-source"
+        },
+        {
+          "nombre": "Docker Volume",
+          "descripcion": "Mecanismo para persistir datos fuera del ciclo de vida del contenedor"
+        },
+        {
+          "nombre": "Named Volume",
+          "descripcion": "Volumen gestionado por Docker con nombre específico"
+        },
+        {
+          "nombre": "Data Persistence",
+          "descripcion": "Mantener datos aunque contenedor se elimine"
+        },
+        {
+          "nombre": "Database Connection String",
+          "descripcion": "URL JDBC para conectar a base de datos"
+        },
+        {
+          "nombre": "Healthcheck",
+          "descripcion": "Comando para verificar que servicio está listo"
+        },
+        {
+          "nombre": "postgres:alpine",
+          "descripcion": "Imagen ligera de PostgreSQL basada en Alpine Linux"
+        },
+        {
+          "nombre": "POSTGRES_DB",
+          "descripcion": "Variable de entorno para crear BD inicial al iniciar contenedor"
+        },
+        {
+          "nombre": "spring.jpa.hibernate.ddl-auto",
+          "descripcion": "Estrategia de generación de esquema (create, update, validate)"
+        },
+        {
+          "nombre": "Service Hostname",
+          "descripcion": "Nombre de servicio usado como hostname DNS en red Docker"
+        }
+      ],
+      "codigoEjemplo": "# docker-compose.yml - Agregar PostgreSQL\nversion: '3.8'\n\nservices:\n  # Base de datos PostgreSQL\n  postgres:\n    image: postgres:15-alpine\n    container_name: postgres-db\n    ports:\n      - \"5432:5432\"\n    environment:\n      POSTGRES_USER: postgres\n      POSTGRES_PASSWORD: postgres\n      POSTGRES_DB: paymentchange_db\n      PGDATA: /var/lib/postgresql/data/pgdata\n    volumes:\n      - postgres-data:/var/lib/postgresql/data\n    networks:\n      - microservices-network\n    healthcheck:\n      test: [\"CMD-SHELL\", \"pg_isready -U postgres\"]\n      interval: 10s\n      timeout: 5s\n      retries: 5\n  \n  # Customer Service\n  customer-service:\n    image: customer-service:1.0.0\n    container_name: customer-service\n    ports:\n      - \"8081:8081\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/paymentchange_db\n      - SPRING_DATASOURCE_USERNAME=postgres\n      - SPRING_DATASOURCE_PASSWORD=postgres\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      postgres:\n        condition: service_healthy\n      eureka-server:\n        condition: service_started\n\nvolumes:\n  postgres-data:\n    driver: local\n\nnetworks:\n  microservices-network:\n    driver: bridge\n\n# application-docker.properties (Customer Service)\nspring.application.name=customer-service\nserver.port=8081\n\n# PostgreSQL Configuration\nspring.datasource.url=jdbc:postgresql://postgres:5432/paymentchange_db\nspring.datasource.username=postgres\nspring.datasource.password=postgres\nspring.datasource.driver-class-name=org.postgresql.Driver\n\n# JPA/Hibernate\nspring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect\nspring.jpa.hibernate.ddl-auto=update\nspring.jpa.show-sql=true\nspring.jpa.properties.hibernate.format_sql=true\n\n# Desactivar H2 console\nspring.h2.console.enabled=false\n\n# pom.xml - Agregar driver PostgreSQL\n<dependency>\n    <groupId>org.postgresql</groupId>\n    <artifactId>postgresql</artifactId>\n    <scope>runtime</scope>\n</dependency>\n\n# Iniciar sistema completo\ndocker-compose up -d\n\n# Verificar que postgres está listo\ndocker-compose logs postgres\n# Output: database system is ready to accept connections\n\n# Conectar a postgres directamente\ndocker exec -it postgres-db psql -U postgres -d paymentchange_db\n# psql (15.x)\n# \\dt  - listar tablas\n# SELECT * FROM customer;\n# \\q   - salir\n\n# Datos persisten entre reinicios\ndocker-compose down\ndocker-compose up -d\n# Datos siguen en postgres-data volume"
+    },
+    {
+      "numero": 13,
+      "archivo": "13__Administrar_orquestación_base_datos_docker_compose.srt",
+      "titulo": "Administrar Orquestación Completa con Base de Datos en Docker Compose",
+      "resumen": "Gestión completa del sistema orquestado: iniciar servicios en orden correcto, verificar logs, monitorear salud, escalar servicios, y troubleshooting. Se prueba flujo E2E desde frontend Angular hasta PostgreSQL pasando por todos los microservicios. Sistema completo funcionando con un comando.",
+      "puntosClave": [
+        "Sistema completo: Postgres + Eureka + Config + Admin + 3 microservicios",
+        "Orden de inicio automático por depends_on y healthcheck",
+        "Verificar que todos los servicios están UP:",
+        "  - docker-compose ps",
+        "  - http://localhost:8761 (Eureka)",
+        "  - http://localhost:9090 (Admin)",
+        "Monitorear logs en tiempo real:",
+        "  - docker-compose logs -f",
+        "  - docker-compose logs customer-service",
+        "Troubleshooting común:",
+        "  - Servicios no se registran en Eureka: verificar EUREKA_CLIENT_SERVICEURL_DEFAULTZONE",
+        "  - Error conexión BD: verificar postgres está healthy",
+        "  - Puerto ocupado: cambiar mapeo en docker-compose.yml",
+        "Escalar servicios: docker-compose up -d --scale product-service=3",
+        "Reiniciar servicio específico: docker-compose restart customer-service",
+        "Prueba E2E: Angular → Customer → Product → PostgreSQL",
+        "Sistema listo para desarrollo y demos"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Service Health",
+          "descripcion": "Estado de salud de servicios verificado por healthchecks"
+        },
+        {
+          "nombre": "Dependency Management",
+          "descripcion": "Gestión de dependencias entre servicios con depends_on"
+        },
+        {
+          "nombre": "Log Aggregation",
+          "descripcion": "Ver logs de múltiples servicios centralizadamente"
+        },
+        {
+          "nombre": "Service Scaling",
+          "descripcion": "Ejecutar múltiples instancias del mismo servicio"
+        },
+        {
+          "nombre": "Rolling Restart",
+          "descripcion": "Reiniciar servicios uno a uno sin downtime completo"
+        },
+        {
+          "nombre": "Troubleshooting",
+          "descripcion": "Diagnosticar y resolver problemas en sistema distribuido"
+        },
+        {
+          "nombre": "E2E Testing",
+          "descripcion": "Probar flujo completo desde frontend hasta base de datos"
+        },
+        {
+          "nombre": "Service Orchestration",
+          "descripcion": "Coordinar inicio, comunicación y dependencias entre servicios"
+        },
+        {
+          "nombre": "Container Networking",
+          "descripcion": "Comunicación entre contenedores mediante DNS interno"
+        },
+        {
+          "nombre": "Development Environment",
+          "descripcion": "Entorno completo replicable para desarrollo local"
+        }
+      ],
+      "codigoEjemplo": "# docker-compose.yml - Sistema completo\n# (Ver archivo completo en clase 11 y 12)\n\n# Comandos de administración\n\n# 1. Iniciar sistema completo\ndocker-compose up -d\n# Creating network \"microservices-network\"\n# Creating volume \"postgres-data\"\n# Creating postgres-db\n# Creating eureka-server\n# Creating config-server\n# Creating admin-server\n# Creating customer-service\n# Creating product-service\n# Creating transaction-service\n\n# 2. Verificar estado de servicios\ndocker-compose ps\n# NAME                 STATUS         PORTS\n# postgres-db          Up (healthy)   0.0.0.0:5432->5432/tcp\n# eureka-server        Up             0.0.0.0:8761->8761/tcp\n# config-server        Up             0.0.0.0:8888->8888/tcp\n# admin-server         Up             0.0.0.0:9090->9090/tcp\n# customer-service     Up             0.0.0.0:8081->8081/tcp\n# product-service      Up             0.0.0.0:8082->8082/tcp\n# transaction-service  Up             0.0.0.0:8083->8083/tcp\n\n# 3. Ver logs de todos\ndocker-compose logs -f\n\n# 4. Ver logs de servicio específico\ndocker-compose logs -f customer-service | grep ERROR\n\n# 5. Verificar endpoints\ncurl http://localhost:8761  # Eureka Dashboard\ncurl http://localhost:9090  # Admin Dashboard\ncurl http://localhost:8081/actuator/health  # Customer health\n\n# 6. Ver estadísticas de recursos\ndocker stats\n\n# 7. Escalar Product Service a 3 instancias\ndocker-compose up -d --scale product-service=3\n# Eureka mostrará 3 instancias de PRODUCT-SERVICE\n\n# 8. Reiniciar servicio sin afectar otros\ndocker-compose restart customer-service\n\n# 9. Ver redes Docker\ndocker network ls\ndocker network inspect microservices-network\n\n# 10. Ver volúmenes\ndocker volume ls\ndocker volume inspect postgres-data\n\n# 11. Ejecutar comando en servicio\ndocker-compose exec postgres psql -U postgres -d paymentchange_db\n\n# 12. Troubleshooting\n\n# Si servicio no se registra en Eureka:\ndocker-compose logs customer-service | grep -i eureka\n# Verificar variable EUREKA_CLIENT_SERVICEURL_DEFAULTZONE\n\n# Si error conexión BD:\ndocker-compose logs postgres\ndocker-compose exec postgres pg_isready -U postgres\n\n# Si puerto ocupado:\n# Error: bind: address already in use\n# Cambiar en docker-compose.yml: \"8081:8081\" → \"8091:8081\"\n\n# 13. Detener todo\ndocker-compose down\n\n# Detener y eliminar volúmenes (borra datos)\ndocker-compose down -v\n\n# 14. Prueba E2E completa\n\n# Terminal 1: Iniciar backend\ndocker-compose up -d\n\n# Esperar que todos estén UP (~30 segundos)\nwatch docker-compose ps\n\n# Terminal 2: Iniciar frontend Angular\ncd angular-app\nnpm start\n\n# Navegador:\n# http://localhost:4200\n# Crear customer → POST http://localhost:8081/api/v1/customer\n# Customer → WebClient → Product (http://product-service:8082)\n# Customer → Repository → PostgreSQL (postgres:5432)\n# Todo funciona! ✅\n\n# 15. Validar persistencia\n\n# Crear algunos customers desde Angular\n# Detener sistema\ndocker-compose down\n\n# Reiniciar sistema\ndocker-compose up -d\n\n# Listar customers - datos persisten!\ncurl -u admin:admin123 http://localhost:8081/api/v1/customer"
+    }
+  ],
+  "resumen_seccion": "Esta sección implementa contenedorización completa con Docker y orquestación con Docker Compose. Se crea Dockerfile para microservicios, se automatizan builds con Maven plugin, se orquesta sistema multi-contenedor con postgres, eureka, config, admin y microservicios business. Se integra frontend Angular consumiendo APIs. El resultado es un ecosistema completo deployable con docker-compose up.",
+  "tecnologias_cubiertas": [
+    "Docker",
+    "Dockerfile",
+    "Docker Compose",
+    "PostgreSQL",
+    "Multi-Stage Builds",
+    "Docker Volumes",
+    "Docker Networks",
+    "dockerfile-maven-plugin",
+    "Angular + OpenAPI Generator",
+    "Container Orchestration"
+  ],
+  "arquitectura_final": {
+    "frontend": "Angular App (localhost:4200) con proxy",
+    "infraestructura": [
+      "Eureka Server (8761)",
+      "Config Server (8888)",
+      "Admin Server (9090)"
+    ],
+    "business": [
+      "Customer Service (8081)",
+      "Product Service (8082)",
+      "Transaction Service (8083)"
+    ],
+    "database": "PostgreSQL (5432) con volumen persistente",
+    "network": "microservices-network (bridge)",
+    "volumes": ["postgres-data"]
+  },
+  "comandos_docker_esenciales": {
+    "imagenes": [
+      "docker build -t nombre:tag . - Construir imagen",
+      "docker images - Listar imágenes",
+      "docker rmi nombre:tag - Eliminar imagen",
+      "docker tag origen destino - Crear tag"
+    ],
+    "contenedores": [
+      "docker run -d -p 8081:8081 nombre:tag - Ejecutar contenedor",
+      "docker ps - Listar contenedores corriendo",
+      "docker ps -a - Listar todos",
+      "docker logs -f container - Ver logs",
+      "docker stop container - Detener",
+      "docker rm container - Eliminar"
+    ],
+    "compose": [
+      "docker-compose up -d - Iniciar servicios",
+      "docker-compose ps - Ver estado",
+      "docker-compose logs -f - Ver logs",
+      "docker-compose down - Detener todo",
+      "docker-compose restart servicio - Reiniciar",
+      "docker-compose up -d --scale servicio=3 - Escalar"
+    ]
+  },
+  "mejores_practicas": [
+    "Usar imágenes base ligeras (alpine, slim)",
+    "Multi-stage builds para reducir tamaño",
+    "No incluir credenciales en Dockerfile",
+    "Usar .dockerignore para excluir archivos innecesarios",
+    "Definir HEALTHCHECK en docker-compose",
+    "Usar volúmenes para datos persistentes",
+    "Configurar depends_on para orden de inicio",
+    "Nombrar contenedores y redes descriptivamente",
+    "Usar variables de entorno para configuración",
+    "Separar perfiles dev/docker/prod",
+    "Automatizar build con Maven plugin",
+    "Versionar imágenes apropiadamente"
+  ],
+  "flujo_desarrollo": [
+    "1. Desarrollar microservicio en IDE",
+    "2. mvn clean package → compila JAR + build imagen Docker",
+    "3. docker-compose up -d → inicia todo el ecosistema",
+    "4. Probar desde Angular en localhost:4200",
+    "5. Ver logs: docker-compose logs -f",
+    "6. Cambios en código → repetir paso 2-3",
+    "7. docker-compose down → detener todo"
+  ],
+  "troubleshooting": {
+    "servicio_no_inicia": "Revisar logs con docker-compose logs servicio",
+    "no_se_registra_eureka": "Verificar EUREKA_CLIENT_SERVICEURL_DEFAULTZONE",
+    "error_conexion_bd": "Verificar postgres healthy con docker-compose ps",
+    "puerto_ocupado": "Cambiar mapeo en docker-compose.yml",
+    "cors_error": "Verificar configuración CORS en SecurityConfig",
+    "imagen_no_actualiza": "docker-compose up -d --build --force-recreate"
+  }
+}

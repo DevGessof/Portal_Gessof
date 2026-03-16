@@ -1,0 +1,118 @@
+================================================================================
+                    CURSO DE APIGEE - SECCIÓN 3
+              DEVELOPERS, PRODUCTS, APPS Y SEGURIDAD BÁSICA
+              RESÚMENES DIDÁCTICOS DE CADA VIDEO DEL CURSO
+================================================================================
+
+Instructor: Eduardo Celedonio
+Elaborado por: Claude (Asistente AI)
+Fecha: 2 de enero de 2026
+
+================================================================================
+
+
+VIDEO 1: EXPLICANDO QUÉ ES API PRODUCT, DEVELOPER Y APP EN APIGEE X
+================================================================================
+
+Estos tres conceptos están relacionados y forman el sistema de gestión de acceso a tus APIs.
+
+Un **Developer** es la persona o empresa que consumirá tus APIs. Por ejemplo, si tienes una API de pagos, cada empresa que quiera usarla debe registrarse como Developer. Guardas su información de contacto: nombre, email, empresa. Un Developer puede tener múltiples Apps.
+
+Un **API Product** es un paquete de APIs que ofreces. Incluye qué proxies están disponibles, qué operaciones se permiten, y qué límites de uso tiene (como cuotas). Por ejemplo, puedes tener un producto "Basic" con límite de 1000 llamadas/día y otro "Premium" con 100,000 llamadas/día. Los productos permiten monetizar - cobras diferente por cada tier.
+
+Una **App** es la aplicación específica que un Developer crea para consumir tus APIs. Cuando un Developer crea una App, la asocias con un API Product. Apigee genera automáticamente credenciales para esa App: un API Key (identificador público) y un App Secret (contraseña). Estas credenciales son las que el Developer usa para llamar a tus APIs.
+
+El flujo completo es: creas un Developer → creas un API Product (con tus proxies y límites) → el Developer crea una App → asocias la App con el Product → Apigee genera credenciales → el Developer usa esas credenciales para autenticarse. Este modelo te da control granular sobre quién puede acceder a qué y con qué límites.
+
+
+================================================================================
+
+
+VIDEO 2: CREANDO NUESTRO PRIMER DEVELOPER EN APIGEE X
+================================================================================
+
+Los Developers se crean desde la sección Publish en la interfaz de Apigee.
+
+Vas a Publish → Developers → Create y llenas la información básica: nombre, apellido, email y username. El username debe ser único en tu organización. Opcionalmente puedes agregar atributos personalizados como empresa, teléfono, o cualquier metadato relevante para tu caso de uso.
+
+Una vez creado, el Developer aparece en el listado. Puedes editarlo después para actualizar información o agregar más atributos. Los Developers no tienen acceso directo a nada todavía - solo existen en el sistema. El acceso real se otorga cuando creas Apps y las asocias con Products.
+
+En producción, muchas organizaciones automatizan esto mediante el Apigee API. Por ejemplo, cuando alguien se registra en tu portal de desarrolladores, un script automáticamente crea el Developer en Apigee usando el API. Esto evita trabajo manual cuando tienes cientos de desarrolladores.
+
+Puedes tener tantos Developers como necesites sin límite. Cada uno es independiente y puede tener múltiples Apps, cada App con sus propias credenciales.
+
+
+================================================================================
+
+
+VIDEO 3: CREANDO NUESTRO PRIMER API PRODUCT EN APIGEE X
+================================================================================
+
+Los API Products definen qué proxies están disponibles y con qué restricciones.
+
+Vas a Publish → API Products → Create. Le das un nombre como "producto-basico" y agregas una descripción. Lo importante es la sección de Operations donde defines qué APIs incluyes. Seleccionas el proxy (por ejemplo "my-first-proxy"), defines el path (puede ser "/" para todo o paths específicos como "/users"), y opcionalmente especificas métodos permitidos (GET, POST, etc.).
+
+Puedes agregar múltiples proxies al mismo producto. Por ejemplo, un producto "Suite Completa" podría incluir tu API de usuarios, API de pagos, y API de notificaciones. Los límites de quota se configuran después cuando proteges el proxy con la política Quota.
+
+Los productos tienen estados: Published (publicado y activo) o Deprecated (obsoleto pero aún funcional). También puedes configurar aprobación automática o manual de Apps que quieran usar este producto.
+
+En entornos empresariales, los productos se usan para diferentes planes de suscripción. Producto Free con límites bajos, producto Pro con más llamadas, producto Enterprise sin límites. Cada uno se cobra diferente usando el módulo de Monetización de Apigee.
+
+
+================================================================================
+
+
+VIDEO 4: CREANDO NUESTRA PRIMERA APP EN APIGEE X
+================================================================================
+
+Las Apps son el vínculo entre Developers y Products, y generan las credenciales para autenticarse.
+
+Vas a Publish → Apps → Create. Seleccionas el Developer que será dueño de la App y le das un nombre. Lo crucial es agregar los API Products que esta App podrá consumir - seleccionas de la lista los productos disponibles. Puedes agregar múltiples productos a una App.
+
+Una vez creada, Apigee genera automáticamente un **Key** (API Key) y un **Secret** (App Secret). El Key es como un username - puede ser público. El Secret es como una password - debe mantenerse secreto. El Developer usará estas credenciales para autenticarse al llamar tus APIs.
+
+Puedes ver las credenciales haciendo clic en "Show" junto al Secret. También puedes generar nuevos keys, revocar existentes, o configurar tiempo de expiración. Si sospechas que un Secret fue comprometido, lo revocas y generas uno nuevo.
+
+En Debug puedes ver qué App está haciendo cada llamada cuando usas Verify API Key. Las variables pobladas incluyen developer.email, app.name, y apiproduct.name, útiles para logs y auditoría.
+
+
+================================================================================
+
+
+VIDEO 5: PROTEGIENDO NUESTRO API PROXY USANDO POLÍTICA VERIFY API KEY
+================================================================================
+
+La política Verify API Key valida que el cliente tenga credenciales válidas antes de procesar su petición.
+
+Agregas la política al proxy especificando dónde viene el API Key - típicamente en un header llamado "X-API-Key" o como query parameter "apikey". La política verifica que el key exista, esté activo, no haya expirado, y tenga acceso al proxy según el API Product asociado.
+
+La política se coloca en ProxyEndpoint PreFlow Request, lo más temprano posible. Así rechazas peticiones no autorizadas antes de ejecutar cualquier lógica costosa. Si la validación falla, retorna automáticamente error 401 "Invalid API Key".
+
+Cuando la validación pasa, Apigee popula muchas variables útiles: verifyapikey.*.client_id (el API Key usado), developer.email, developer.id, app.name, apiproduct.name. Estas variables quedan disponibles para otras políticas - por ejemplo, incluirlas en logs o usarlas para lógica condicional.
+
+Probando en Postman, envías el header "X-API-Key: [tu-api-key]". Si el key es válido y la App tiene acceso al proxy, recibes 200 OK. Si no envías el header o el key es inválido, recibes 401. Puedes ver todo el proceso en Debug viendo qué variables se poblaron.
+
+
+================================================================================
+
+
+VIDEO 6: QUOTA POLICY - FORZANDO LÍMITES DE USO
+================================================================================
+
+Quota limita cuántas llamadas puede hacer un cliente en un período de tiempo para prevenir abuso y controlar costos.
+
+La política Quota se configura con un límite (por ejemplo 10) y un intervalo (por ejemplo "hour" para hora). Puedes usar "minute", "hour", "day", "week", o "month". El límite aplica por API Key - cada App tiene su propio contador independiente.
+
+Un patrón común es usar el Identifier con la variable "verifyapikey.*.client_id" para que cada API Key tenga su propia quota. Sin identifier, todas las peticiones comparten el mismo contador. La política debe ir DESPUÉS de Verify API Key porque necesita saber qué App está llamando.
+
+Cuando se alcanza el límite, Apigee retorna error 429 "Too Many Requests" automáticamente. El contador se resetea al inicio del siguiente período. Por ejemplo, con límite de 100/día, si alguien usa las 100 llamadas a las 2pm, debe esperar hasta medianoche para que el contador vuelva a 0.
+
+Puedes configurar quotas diferentes por producto editando el Product y usando variables. Por ejemplo, producto Basic tiene quota de 1000/día, producto Pro tiene 10,000/día. La misma política Quota lee límites dinámicos del producto sin necesidad de múltiples políticas.
+
+En Debug ves las variables quota.*.allowed.count (límite total), quota.*.used.count (cuántas ha usado), y quota.*.available.count (cuántas le quedan). Útil para mostrar al cliente cuántas llamadas le restan.
+
+
+================================================================================
+
+FIN DE LA SECCIÓN 3
+================================================================================

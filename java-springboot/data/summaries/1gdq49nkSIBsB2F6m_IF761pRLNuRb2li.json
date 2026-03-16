@@ -1,0 +1,69 @@
+{
+  "titulo": "Dockerizar API Gateway y Prueba E2E con Puertos Aleatorios",
+  "resumen": "Contenedorización de API Gateway con Docker y prueba end-to-end completa del sistema orquestado. Se crea Dockerfile, se construye imagen, se agrega a docker-compose.yml como punto de entrada único, y se valida flujo completo desde cliente hasta base de datos pasando por Gateway.",
+  "puntosClave": [
+    "Crear Dockerfile para API Gateway (similar a otros servicios)",
+    "FROM openjdk:17-jdk-slim",
+    "COPY target/api-gateway.jar app.jar",
+    "EXPOSE 8080",
+    "Construir imagen: docker build -t api-gateway:1.0.0 .",
+    "Agregar a docker-compose.yml:",
+    "  - Puerto fijo para Gateway: 8080:8080",
+    "  - Microservicios: puertos aleatorios (no mapear a host)",
+    "  - Gateway es único punto de entrada",
+    "depends_on: eureka-server, config-server",
+    "Cliente accede solo a Gateway: http://localhost:8080",
+    "Gateway enruta internamente a servicios en red Docker",
+    "Prueba E2E:",
+    "  1. docker-compose up -d",
+    "  2. Esperar que todos servicios estén UP",
+    "  3. curl http://localhost:8080/api/v1/customer",
+    "  4. Gateway → Customer → Product → PostgreSQL",
+    "Validar logs: ver enrutamiento en logs de Gateway",
+    "Sistema completo accesible vía Gateway únicamente",
+    "Arquitectura production-ready"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Gateway as Entry Point",
+      "descripcion": "Gateway es único servicio expuesto externamente"
+    },
+    {
+      "nombre": "Internal Network",
+      "descripcion": "Red Docker donde servicios se comunican internamente"
+    },
+    {
+      "nombre": "Port Mapping",
+      "descripcion": "Mapear puerto de container a puerto de host (-p)"
+    },
+    {
+      "nombre": "Service Isolation",
+      "descripcion": "Microservicios no expuestos externamente, solo vía Gateway"
+    },
+    {
+      "nombre": "E2E Testing",
+      "descripcion": "Probar flujo completo desde entrada hasta base de datos"
+    },
+    {
+      "nombre": "Production Architecture",
+      "descripcion": "Arquitectura lista para despliegue en producción"
+    },
+    {
+      "nombre": "Docker Network DNS",
+      "descripcion": "Resolución DNS automática de nombres de servicio en Docker"
+    },
+    {
+      "nombre": "Health Check Orchestration",
+      "descripcion": "Verificar que servicios están listos antes de aceptar tráfico"
+    },
+    {
+      "nombre": "Single Point of Access",
+      "descripcion": "Un solo endpoint público para toda la aplicación"
+    },
+    {
+      "nombre": "Gateway Pattern",
+      "descripcion": "Patrón arquitectónico de punto de entrada centralizado"
+    }
+  ],
+  "codigoEjemplo": "# Dockerfile - API Gateway\nFROM openjdk:17-jdk-slim\nWORKDIR /app\nCOPY target/api-gateway-1.0.0.jar app.jar\nEXPOSE 8080\nENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n\n# Construir imagen\ncd infrastructure-services/api-gateway\nmvn clean package\ndocker build -t api-gateway:1.0.0 .\n\n# docker-compose.yml - Sistema completo con Gateway\nversion: '3.8'\n\nservices:\n  # PostgreSQL\n  postgres:\n    image: postgres:15-alpine\n    environment:\n      POSTGRES_USER: postgres\n      POSTGRES_PASSWORD: postgres\n      POSTGRES_DB: paymentchange_db\n    volumes:\n      - postgres-data:/var/lib/postgresql/data\n    networks:\n      - microservices-network\n    healthcheck:\n      test: [\"CMD-SHELL\", \"pg_isready -U postgres\"]\n      interval: 10s\n      timeout: 5s\n      retries: 5\n  \n  # Eureka Server\n  eureka-server:\n    image: eureka-server:1.0.0\n    container_name: eureka-server\n    ports:\n      - \"8761:8761\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n  \n  # Config Server\n  config-server:\n    image: config-server:1.0.0\n    container_name: config-server\n    ports:\n      - \"8888:8888\"\n    networks:\n      - microservices-network\n    environment:\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n  \n  # API Gateway - Punto de entrada único\n  api-gateway:\n    image: api-gateway:1.0.0\n    container_name: api-gateway\n    ports:\n      - \"8080:8080\"  # Único puerto expuesto\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n      - config-server\n  \n  # Customer Service - Puerto aleatorio, NO expuesto\n  customer-service:\n    image: customer-service:1.0.0\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - SERVER_PORT=0  # Puerto aleatorio\n      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/paymentchange_db\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      postgres:\n        condition: service_healthy\n      eureka-server:\n        condition: service_started\n    # NO mapear puertos - solo accesible vía Gateway\n  \n  # Product Service\n  product-service:\n    image: product-service:1.0.0\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - SERVER_PORT=0\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n  \n  # Transaction Service\n  transaction-service:\n    image: transaction-service:1.0.0\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - SERVER_PORT=0\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      - eureka-server\n      - customer-service\n      - product-service\n\nvolumes:\n  postgres-data:\n\nnetworks:\n  microservices-network:\n    driver: bridge\n\n# Iniciar sistema completo\ndocker-compose up -d\n\n# Esperar que todos estén UP (~60 segundos)\nwatch docker-compose ps\n\n# Todos los servicios deben mostrar: Up\n\n# Probar vía Gateway\ncurl -u admin:admin123 http://localhost:8080/api/v1/customer\n# ✅ Funciona - Gateway enruta a Customer Service\n\ncurl -u admin:admin123 http://localhost:8080/api/v1/product\n# ✅ Funciona - Gateway enruta a Product Service\n\n# Intentar acceder directamente a Customer (FALLA)\ncurl http://localhost:8081/api/v1/customer\n# ❌ Connection refused - No está expuesto\n\n# Ver logs del Gateway\ndocker-compose logs -f api-gateway\n# [PRE-FILTER] Request: GET /api/v1/customer\n# [PRE-FILTER] Routing to: lb://CUSTOMER-SERVICE\n# [POST-FILTER] Response Status: 200 OK\n\n# Escalar Customer Service\ndocker-compose up -d --scale customer-service=3\n\n# Gateway balancea entre 3 instancias automáticamente\nfor i in {1..10}; do\n  curl -u admin:admin123 http://localhost:8080/api/v1/customer\ndone\n\n# Logs muestran balanceo:\n# Routing to instance: customer-service-1:8123\n# Routing to instance: customer-service-2:8456\n# Routing to instance: customer-service-3:8789\n\n# Arquitectura final:\n# Cliente → Gateway (8080) → [Customer|Product|Transaction] → PostgreSQL\n# Solo Gateway expuesto, servicios internos aislados ✅"
+}

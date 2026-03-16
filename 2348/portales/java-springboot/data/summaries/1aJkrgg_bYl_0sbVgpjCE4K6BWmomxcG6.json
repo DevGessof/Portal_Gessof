@@ -1,0 +1,61 @@
+{
+  "titulo": "APIs: El Corazón y Potencia de la Comunicación entre Aplicaciones",
+  "resumen": "Introducción a la importancia de las APIs REST en arquitecturas de microservicios. Se explica por qué las APIs son el contrato entre servicios, la necesidad de diseñarlas correctamente desde el inicio, y las consecuencias de APIs mal diseñadas (difícil de mantener, consumir, evolucionar). Se establecen fundamentos para construir APIs profesionales y escalables.",
+  "puntosClave": [
+    "APIs REST: contrato de comunicación entre microservicios",
+    "APIs son la interfaz pública que otros servicios/clientes consumen",
+    "Diseño incorrecto causa: código duplicado, dificultad mantenimiento, bugs",
+    "APIs mal diseñadas dificultan integración de nuevos consumidores",
+    "Cambios en APIs pueden romper clientes existentes (breaking changes)",
+    "Importancia de diseño previo antes de codificar",
+    "Aspectos clave: versionado, códigos HTTP, estructura de respuesta, excepciones",
+    "REST: Representational State Transfer (arquitectura estándar)",
+    "APIs deben ser consistentes en todos los microservicios",
+    "Documentación clara es esencial (Swagger/OpenAPI)",
+    "Diseño pensando en consumidores (desarrolladores externos/internos)",
+    "APIs bien diseñadas facilitan escalabilidad y mantenimiento"
+  ],
+  "conceptos": [
+    {
+      "nombre": "API REST",
+      "descripcion": "Interfaz de programación basada en HTTP que expone recursos mediante URLs y métodos estándar"
+    },
+    {
+      "nombre": "Contrato de API",
+      "descripcion": "Acuerdo implícito entre proveedor y consumidor sobre estructura de peticiones/respuestas"
+    },
+    {
+      "nombre": "Breaking Change",
+      "descripcion": "Modificación en API que rompe compatibilidad con clientes existentes"
+    },
+    {
+      "nombre": "Diseño API-First",
+      "descripcion": "Enfoque de diseñar contrato de API antes de implementar código"
+    },
+    {
+      "nombre": "REST Principles",
+      "descripcion": "Principios arquitectónicos: recursos, verbos HTTP, stateless, representaciones"
+    },
+    {
+      "nombre": "Consumidor de API",
+      "descripcion": "Aplicación/servicio que utiliza endpoints expuestos por API"
+    },
+    {
+      "nombre": "Interfaz Pública",
+      "descripcion": "Endpoints y contratos expuestos externamente para consumo"
+    },
+    {
+      "nombre": "Consistencia de API",
+      "descripcion": "Mantener patrones similares en todos los endpoints y servicios"
+    },
+    {
+      "nombre": "Escalabilidad de API",
+      "descripcion": "Capacidad de API para manejar crecimiento sin rediseño completo"
+    },
+    {
+      "nombre": "Mantenibilidad",
+      "descripcion": "Facilidad de modificar y evolucionar API sin romper funcionalidad existente"
+    }
+  ],
+  "codigoEjemplo": null
+}

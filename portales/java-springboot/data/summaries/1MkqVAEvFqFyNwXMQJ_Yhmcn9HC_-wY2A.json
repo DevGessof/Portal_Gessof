@@ -1,0 +1,69 @@
+{
+  "titulo": "Codificación: Agregar Configuración de Rutas y Pre-Filter Global",
+  "resumen": "Configuración de rutas de Gateway para enrutar requests a microservicios. Se crean rutas declarativas en application.yml y se implementa Global Filter para logging de requests. Gateway enruta automáticamente usando nombres de servicio desde Eureka.",
+  "puntosClave": [
+    "Configurar rutas en application.yml bajo spring.cloud.gateway.routes",
+    "Cada ruta tiene:",
+    "  - id: identificador único",
+    "  - uri: destino (lb://service-name para load balancing)",
+    "  - predicates: condiciones para aplicar ruta",
+    "  - filters: filtros específicos de ruta",
+    "Ejemplo ruta Customer:",
+    "  id: customer-service",
+    "  uri: lb://CUSTOMER-SERVICE (nombre en Eureka)",
+    "  predicates: Path=/api/v1/customer/**",
+    "lb:// indica load balancing vía Eureka",
+    "Crear GlobalFilter para logging:",
+    "  - Implementar GlobalFilter interface",
+    "  - Ordenar con @Order o Ordered interface",
+    "  - filter() ejecuta lógica pre/post request",
+    "Pre-filter: loggear método, path, headers",
+    "Post-filter: loggear status code, tiempo respuesta",
+    "chain.filter(exchange) para continuar cadena",
+    "Probar: curl http://localhost:8080/api/v1/customer",
+    "Gateway enruta automáticamente a Customer Service"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Route Configuration",
+      "descripcion": "Definición de rutas con predicates y filtros"
+    },
+    {
+      "nombre": "Predicate",
+      "descripcion": "Condición para aplicar ruta (Path, Method, Header, Query)"
+    },
+    {
+      "nombre": "Load Balancer URI",
+      "descripcion": "URI con esquema lb:// para balanceo automático vía Eureka"
+    },
+    {
+      "nombre": "GlobalFilter",
+      "descripcion": "Filter aplicado a todas las rutas del Gateway"
+    },
+    {
+      "nombre": "ServerWebExchange",
+      "descripcion": "Objeto reactivo que encapsula request y response"
+    },
+    {
+      "nombre": "GatewayFilterChain",
+      "descripcion": "Cadena de filtros que procesa request"
+    },
+    {
+      "nombre": "Mono",
+      "descripcion": "Tipo reactivo que representa 0 o 1 elemento (Reactor)"
+    },
+    {
+      "nombre": "Path Predicate",
+      "descripcion": "Predicate que matchea requests basado en path URI"
+    },
+    {
+      "nombre": "Filter Order",
+      "descripcion": "Orden de ejecución de filtros (menor valor = mayor prioridad)"
+    },
+    {
+      "nombre": "Request Logging",
+      "descripcion": "Registrar información de requests para auditoría y debugging"
+    }
+  ],
+  "codigoEjemplo": "# application.yml - Configurar rutas\nspring:\n  cloud:\n    gateway:\n      routes:\n        # Customer Service\n        - id: customer-service\n          uri: lb://CUSTOMER-SERVICE\n          predicates:\n            - Path=/api/v1/customer/**\n          filters:\n            - StripPrefix=0\n        \n        # Product Service\n        - id: product-service\n          uri: lb://PRODUCT-SERVICE\n          predicates:\n            - Path=/api/v1/product/**\n        \n        # Transaction Service\n        - id: transaction-service\n          uri: lb://TRANSACTION-SERVICE\n          predicates:\n            - Path=/api/v1/transaction/**\n        \n        # Eureka Dashboard\n        - id: eureka-server\n          uri: lb://EUREKA-SERVER\n          predicates:\n            - Path=/eureka/**\n        \n        # Admin Server\n        - id: admin-server\n          uri: lb://ADMIN-SERVER\n          predicates:\n            - Path=/admin/**\n\n// LoggingGlobalFilter.java\npackage com.paymentchange.apigateway.filter;\n\nimport lombok.extern.slf4j.Slf4j;\nimport org.springframework.cloud.gateway.filter.GatewayFilterChain;\nimport org.springframework.cloud.gateway.filter.GlobalFilter;\nimport org.springframework.core.Ordered;\nimport org.springframework.http.server.reactive.ServerHttpRequest;\nimport org.springframework.http.server.reactive.ServerHttpResponse;\nimport org.springframework.stereotype.Component;\nimport org.springframework.web.server.ServerWebExchange;\nimport reactor.core.publisher.Mono;\n\n@Slf4j\n@Component\npublic class LoggingGlobalFilter implements GlobalFilter, Ordered {\n    \n    @Override\n    public Mono<Void> filter(ServerWebExchange exchange, \n                            GatewayFilterChain chain) {\n        \n        ServerHttpRequest request = exchange.getRequest();\n        \n        // Pre-filter: logging antes de enviar a backend\n        log.info(\"[PRE-FILTER] Request: {} {}\", \n                request.getMethod(), \n                request.getURI());\n        log.info(\"[PRE-FILTER] Headers: {}\", request.getHeaders());\n        \n        long startTime = System.currentTimeMillis();\n        \n        // Continuar cadena y agregar post-filter\n        return chain.filter(exchange)\n            .then(Mono.fromRunnable(() -> {\n                ServerHttpResponse response = exchange.getResponse();\n                long duration = System.currentTimeMillis() - startTime;\n                \n                // Post-filter: logging después de recibir response\n                log.info(\"[POST-FILTER] Response Status: {}\", \n                        response.getStatusCode());\n                log.info(\"[POST-FILTER] Duration: {}ms\", duration);\n            }));\n    }\n    \n    @Override\n    public int getOrder() {\n        return -1;  // Alta prioridad (ejecuta primero)\n    }\n}\n\n// AuthenticationFilter.java - Ejemplo filter autenticación\n@Slf4j\n@Component\npublic class AuthenticationFilter implements GlobalFilter, Ordered {\n    \n    @Override\n    public Mono<Void> filter(ServerWebExchange exchange, \n                            GatewayFilterChain chain) {\n        \n        ServerHttpRequest request = exchange.getRequest();\n        \n        // Verificar header Authorization\n        if (!request.getHeaders().containsKey(\"Authorization\")) {\n            log.error(\"Missing Authorization header\");\n            \n            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);\n            return exchange.getResponse().setComplete();\n        }\n        \n        String authHeader = request.getHeaders()\n            .getFirst(\"Authorization\");\n        \n        // Validar token (ejemplo simple)\n        if (!isValidToken(authHeader)) {\n            log.error(\"Invalid token\");\n            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);\n            return exchange.getResponse().setComplete();\n        }\n        \n        log.info(\"Authentication successful\");\n        return chain.filter(exchange);\n    }\n    \n    private boolean isValidToken(String token) {\n        // Implementar validación real (JWT, OAuth2)\n        return token != null && token.startsWith(\"Basic \");\n    }\n    \n    @Override\n    public int getOrder() {\n        return 0;  // Ejecuta después de logging\n    }\n}\n\n# Probar Gateway\ncurl http://localhost:8080/api/v1/customer\n# Gateway enruta a http://customer-service:8081/api/v1/customer\n\n# Logs del Gateway:\n# [PRE-FILTER] Request: GET http://localhost:8080/api/v1/customer\n# [PRE-FILTER] Headers: {Host=[localhost:8080], ...}\n# [POST-FILTER] Response Status: 200 OK\n# [POST-FILTER] Duration: 245ms"
+}

@@ -1,0 +1,62 @@
+{
+  "titulo": "Anatomía de APIs REST: Aspectos Mínimos de Diseño",
+  "resumen": "Análisis detallado de los elementos fundamentales que componen una API REST bien diseñada. Se cubren recursos, verbos HTTP correctos, estructura de URLs, códigos de estado, formato de respuestas (JSON), headers importantes, y convenciones de nombrado. Fundamentos para construir APIs consistentes y profesionales.",
+  "puntosClave": [
+    "Elementos esenciales de API REST:",
+    "1. Recursos: sustantivos que representan entidades (/customers, /products)",
+    "2. Verbos HTTP: GET (leer), POST (crear), PUT (actualizar), DELETE (eliminar)",
+    "3. Códigos de estado: 200 OK, 201 Created, 404 Not Found, 500 Error",
+    "4. Formato: JSON como estándar (no XML en microservicios modernos)",
+    "5. Versionado: /v1/customers, /v2/customers para evolución",
+    "URLs deben ser sustantivos plurales: /customers, no /getCustomers",
+    "Evitar verbos en URLs: POST /customers, no POST /createCustomer",
+    "Estructura jerárquica: /customers/{id}/products/{productId}",
+    "Headers importantes: Content-Type, Accept, Authorization",
+    "Respuestas consistentes: siempre mismo formato de error/éxito",
+    "Nombres en minúsculas con guiones: /customer-accounts, no /CustomerAccounts",
+    "Documentar cada endpoint con Swagger/OpenAPI"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Recurso REST",
+      "descripcion": "Entidad del dominio expuesta via URL (customer, product, transaction)"
+    },
+    {
+      "nombre": "Verbo HTTP",
+      "descripcion": "Método que indica acción: GET (leer), POST (crear), PUT (actualizar), DELETE (eliminar)"
+    },
+    {
+      "nombre": "Código de Estado HTTP",
+      "descripcion": "Número que indica resultado de petición (2xx éxito, 4xx cliente, 5xx servidor)"
+    },
+    {
+      "nombre": "JSON (JavaScript Object Notation)",
+      "descripcion": "Formato estándar de intercambio de datos en APIs REST modernas"
+    },
+    {
+      "nombre": "Versionado de API",
+      "descripcion": "Estrategia para evolucionar API sin romper clientes existentes (/v1, /v2)"
+    },
+    {
+      "nombre": "Sustantivos Plurales",
+      "descripcion": "Convención de usar nombres en plural para colecciones (/customers, /products)"
+    },
+    {
+      "nombre": "URLs sin Verbos",
+      "descripcion": "Buena práctica: usar sustantivos + verbo HTTP (no /createCustomer sino POST /customers)"
+    },
+    {
+      "nombre": "Jerarquía de Recursos",
+      "descripcion": "URLs anidadas para relaciones: /customers/{id}/orders"
+    },
+    {
+      "nombre": "Content-Type Header",
+      "descripcion": "Indica formato del cuerpo de petición/respuesta (application/json)"
+    },
+    {
+      "nombre": "Convención de Nombrado",
+      "descripcion": "Reglas para nombres consistentes: minúsculas, guiones, plurales"
+    }
+  ],
+  "codigoEjemplo": "// ✅ BUENAS PRÁCTICAS - API REST bien diseñada\n\n// Recursos con sustantivos plurales\nGET    /api/v1/customers          // Listar clientes\nGET    /api/v1/customers/{id}     // Obtener cliente específico\nPOST   /api/v1/customers          // Crear cliente\nPUT    /api/v1/customers/{id}     // Actualizar cliente\nDELETE /api/v1/customers/{id}     // Eliminar cliente\n\n// Recursos anidados (relaciones)\nGET    /api/v1/customers/{id}/products        // Productos del cliente\nPOST   /api/v1/customers/{id}/products/{pid}  // Asociar producto\n\n// ❌ MALAS PRÁCTICAS - Evitar\n\n// Verbos en URL\nPOST   /api/createCustomer          // ❌ No usar verbos\nGET    /api/getCustomerById/{id}    // ❌ Redundante\n\n// Nombres inconsistentes\nGET    /api/Customer                // ❌ Singular y mayúscula\nGET    /api/get_customers           // ❌ Snake case\n\n// Headers correctos\nContent-Type: application/json\nAccept: application/json\nAuthorization: Bearer {token}\n\n// Estructura de respuesta JSON consistente\n{\n  \"data\": { /* recurso */ },\n  \"status\": \"success\",\n  \"timestamp\": \"2024-01-15T10:30:00Z\"\n}"
+}

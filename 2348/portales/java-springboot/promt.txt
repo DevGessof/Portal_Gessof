@@ -1,0 +1,26 @@
+Estás trabajando en un portal web educativo de Java Spring Boot enfocado en microservicios.
+
+ANTES de generar cualquier código, debes:
+1. Leer y cumplir estrictamente el archivo PROJECT_RULES.md
+2. Respetar todas las reglas sin excepción
+3. Mantener una arquitectura modular y escalable
+
+Contexto del proyecto:
+- Portal educativo en español
+- Videos y materiales alojados en Google Drive
+- 13 secciones de curso, 18,5 horas de video
+- Cada sección tiene videos, transcripciones (.srt) y material de apoyo
+- Existe un index.html base que debe respetarse
+- El portal tiene 3 secciones: Inicio, Herramientas y Curso
+
+Requisitos clave:
+- Un carrusel de videos por sección
+- Cada video debe tener un resumen generado desde su transcript
+- Los resúmenes deben ser claros, didácticos y concisos
+- Cada sección (excepto instalación) debe cerrar con un ejercicio práctico generado con IA
+- El proyecto NO debe ser monolítico
+
+Objetivo:
+Diseñar una estructura de proyecto clara, modular y mantenible que permita escalar el contenido del curso sin perder orden ni legibilidad.
+
+No generes código hasta que se te indique explícitamente.

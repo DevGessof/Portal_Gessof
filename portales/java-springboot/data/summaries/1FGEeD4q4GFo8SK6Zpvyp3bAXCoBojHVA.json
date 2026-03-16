@@ -1,0 +1,55 @@
+{
+  "titulo": "Instalación y Configuración de Eclipse IDE con Spring Tools para Spring Boot",
+  "resumen": "Tutorial completo para instalar Eclipse IDE para Enterprise Java en Windows 10 y configurar Spring Tools 4 (plugin para microservicios con Spring Boot). Incluye creación de workspace, instalación de plugins, creación de primer proyecto Spring Boot, compilación con Maven y ejecución como Spring Boot App. Se explica la independencia entre IDE y desarrollo.",
+  "puntosClave": [
+    "Descargar Eclipse desde eclipse.org versión para Enterprise Java",
+    "Prerequisito: JDK instalado y configurado (variables JAVA_HOME y PATH)",
+    "Seleccionar workspace inicial (ubicación para guardar proyectos)",
+    "Instalar plugin Spring Tools 4 desde Eclipse Marketplace",
+    "Reiniciar IDE después de instalar cada plugin",
+    "Crear proyecto: File → New → Spring Starter Project",
+    "Compilar con Maven: clic derecho → Run As → Maven Build → 'clean'",
+    "Ejecutar: clic derecho → Debug As → Spring Boot App",
+    "El desarrollo es independiente del IDE usado",
+    "Spring Tools Suite (STS) es Eclipse personalizado para Spring Boot"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Eclipse IDE",
+      "descripcion": "Entorno de desarrollo integrado de código abierto muy usado para Java"
+    },
+    {
+      "nombre": "Spring Tools 4",
+      "descripcion": "Plugin que facilita crear y gestionar proyectos Spring Boot en Eclipse"
+    },
+    {
+      "nombre": "Spring Tools Suite (STS)",
+      "descripcion": "Versión de Eclipse pre-configurada y optimizada para Spring Boot"
+    },
+    {
+      "nombre": "Eclipse Marketplace",
+      "descripcion": "Tienda de plugins donde se pueden instalar extensiones para Eclipse"
+    },
+    {
+      "nombre": "Workspace",
+      "descripcion": "Directorio raíz donde Eclipse guarda proyectos y configuraciones"
+    },
+    {
+      "nombre": "Maven Build",
+      "descripcion": "Proceso de compilación que usa Maven para construir el proyecto"
+    },
+    {
+      "nombre": "Maven Clean",
+      "descripcion": "Fase de Maven que elimina compilaciones anteriores antes de construir"
+    },
+    {
+      "nombre": "Spring Boot App",
+      "descripcion": "Modo de ejecución específico para aplicaciones Spring Boot con servidor embebido"
+    },
+    {
+      "nombre": "Portabilidad de IDE",
+      "descripcion": "Capacidad de abrir proyectos Maven en diferentes IDEs sin modificaciones"
+    }
+  ],
+  "codigoEjemplo": "// Clase main auto-generada por Spring Starter Project\npackage com.example.demo;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\n\n@SpringBootApplication\npublic class DemoApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(DemoApplication.class, args);\n    }\n}"
+}

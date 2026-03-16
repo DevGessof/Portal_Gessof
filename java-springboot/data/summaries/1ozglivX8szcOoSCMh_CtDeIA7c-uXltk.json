@@ -1,0 +1,63 @@
+{
+  "titulo": "Crear Clase Estandarizada para Manejar Respuestas de Error",
+  "resumen": "Creación de DTO ErrorResponse para estandarizar estructura de respuestas de error en toda la API. Se define clase con campos timestamp, status, message, details, path para proporcionar información completa y consistente sobre errores. Facilita debugging y mejora experiencia del consumidor.",
+  "puntosClave": [
+    "Crear clase ErrorResponse en paquete dto o exceptions",
+    "Campos estándar:",
+    "  - timestamp: fecha/hora del error (LocalDateTime)",
+    "  - status: código HTTP (int)",
+    "  - error: descripción corta del tipo de error (String)",
+    "  - message: mensaje detallado (String)",
+    "  - path: URL donde ocurrió el error (String)",
+    "  - details: información adicional opcional (List<String>)",
+    "Usar @Data de Lombok para getters/setters",
+    "ErrorResponse usado en todos los @ExceptionHandler",
+    "Formato JSON consistente para todos los errores",
+    "Cliente puede parsear respuesta de error fácilmente",
+    "Facilita logging y debugging",
+    "Incluir solo información necesaria (no stack traces en producción)"
+  ],
+  "conceptos": [
+    {
+      "nombre": "ErrorResponse DTO",
+      "descripcion": "Objeto de transferencia de datos para respuestas de error estandarizadas"
+    },
+    {
+      "nombre": "Timestamp",
+      "descripcion": "Marca de tiempo cuando ocurrió el error para auditoría y debugging"
+    },
+    {
+      "nombre": "HTTP Status Code",
+      "descripcion": "Código numérico del error (400, 404, 500) incluido en body"
+    },
+    {
+      "nombre": "Error Message",
+      "descripcion": "Descripción legible del error para desarrollador"
+    },
+    {
+      "nombre": "Request Path",
+      "descripcion": "URL del endpoint donde ocurrió el error"
+    },
+    {
+      "nombre": "Error Details",
+      "descripcion": "Lista de mensajes específicos (validaciones, campos faltantes)"
+    },
+    {
+      "nombre": "Structured Error Response",
+      "descripcion": "Respuesta de error con formato consistente y predecible"
+    },
+    {
+      "nombre": "Client-Friendly Errors",
+      "descripcion": "Errores con información útil sin exponer detalles internos"
+    },
+    {
+      "nombre": "Error Serialization",
+      "descripcion": "Convertir ErrorResponse a JSON automáticamente"
+    },
+    {
+      "nombre": "Production vs Development Errors",
+      "descripcion": "Mostrar más/menos detalles según entorno"
+    }
+  ],
+  "codigoEjemplo": "// ErrorResponse.java - Clase estandarizada\npackage com.paymentchange.customer.dto;\n\nimport lombok.AllArgsConstructor;\nimport lombok.Data;\nimport lombok.NoArgsConstructor;\nimport java.time.LocalDateTime;\nimport java.util.List;\n\n@Data\n@AllArgsConstructor\n@NoArgsConstructor\npublic class ErrorResponse {\n    \n    private LocalDateTime timestamp;\n    private int status;\n    private String error;\n    private String message;\n    private String path;\n    private List<String> details;\n    \n    // Constructor para errores simples\n    public ErrorResponse(int status, String error, String message, String path) {\n        this.timestamp = LocalDateTime.now();\n        this.status = status;\n        this.error = error;\n        this.message = message;\n        this.path = path;\n        this.details = null;\n    }\n    \n    // Constructor con detalles\n    public ErrorResponse(int status, String error, String message, \n                        String path, List<String> details) {\n        this.timestamp = LocalDateTime.now();\n        this.status = status;\n        this.error = error;\n        this.message = message;\n        this.path = path;\n        this.details = details;\n    }\n}\n\n// Ejemplo de respuesta JSON\n{\n  \"timestamp\": \"2024-01-15T10:30:45\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Customer with ID 999 not found\",\n  \"path\": \"/api/v1/customer/999\",\n  \"details\": null\n}\n\n// Ejemplo con detalles (validación)\n{\n  \"timestamp\": \"2024-01-15T10:30:45\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Validation failed\",\n  \"path\": \"/api/v1/customer\",\n  \"details\": [\n    \"Name is required\",\n    \"Email format is invalid\",\n    \"Phone number must be 10 digits\"\n  ]\n}"
+}

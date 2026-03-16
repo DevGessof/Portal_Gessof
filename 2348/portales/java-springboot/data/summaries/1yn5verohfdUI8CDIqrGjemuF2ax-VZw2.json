@@ -1,0 +1,61 @@
+{
+  "titulo": "Uso de Perfiles para Administrar Configuración por Entornos",
+  "resumen": "Explicación del concepto de perfiles de Spring Boot para gestionar diferentes configuraciones según el entorno (desarrollo, testing, producción). Se introduce la nomenclatura de archivos application-{profile}.properties y cómo activar perfiles mediante spring.profiles.active. Fundamental para separar configuraciones sin recompilar código.",
+  "puntosClave": [
+    "Problema: mismas propiedades no sirven para todos los entornos",
+    "Desarrollo usa BD en memoria (H2), producción usa PostgreSQL/MySQL",
+    "Perfiles de Spring Boot: dev, test, prod, local",
+    "Nomenclatura: application-{profile}.properties o .yml",
+    "Archivo base: application.properties (configuración común)",
+    "Activar perfil: spring.profiles.active=dev",
+    "Puede activarse por variable de entorno o argumento JVM",
+    "Cada perfil tiene configuraciones específicas del entorno",
+    "Desarrollo: H2, logs detallados, Swagger activado",
+    "Producción: BD real, logs mínimos, Swagger desactivado",
+    "Permite desplegar mismo JAR en diferentes entornos",
+    "Cambiar entorno sin recompilar, solo cambiando perfil activo"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Perfil de Spring Boot",
+      "descripcion": "Configuración específica para un entorno determinado (dev, test, prod)"
+    },
+    {
+      "nombre": "application.properties",
+      "descripcion": "Archivo base con configuración común a todos los entornos"
+    },
+    {
+      "nombre": "application-{profile}.properties",
+      "descripcion": "Archivo específico de perfil que sobrescribe propiedades base"
+    },
+    {
+      "nombre": "spring.profiles.active",
+      "descripcion": "Propiedad que indica qué perfil activar al iniciar la aplicación"
+    },
+    {
+      "nombre": "Perfil dev",
+      "descripcion": "Configuración para desarrollo local con BD en memoria y logs detallados"
+    },
+    {
+      "nombre": "Perfil prod",
+      "descripcion": "Configuración para producción con BD real y seguridad reforzada"
+    },
+    {
+      "nombre": "Perfil test",
+      "descripcion": "Configuración para pruebas automatizadas con datos de test"
+    },
+    {
+      "nombre": "Separación de Entornos",
+      "descripcion": "Práctica de tener configuraciones diferentes según dónde se ejecuta"
+    },
+    {
+      "nombre": "Configuración por Entorno",
+      "descripcion": "Propiedades específicas de cada ambiente (URLs, credenciales, puertos)"
+    },
+    {
+      "nombre": "Variable de Entorno",
+      "descripcion": "Forma de activar perfil sin modificar código: SPRING_PROFILES_ACTIVE=prod"
+    }
+  ],
+  "codigoEjemplo": "# application.properties (configuración común)\nspring.application.name=customer-service\n\n# application-dev.properties (desarrollo)\nspring.profiles.active=dev\nserver.port=8081\nspring.datasource.url=jdbc:h2:mem:testdb\nspring.h2.console.enabled=true\nspringdoc.swagger-ui.enabled=true\nlogging.level.root=DEBUG\n\n# application-prod.properties (producción)\nspring.profiles.active=prod\nserver.port=8081\nspring.datasource.url=jdbc:postgresql://prod-server:5432/customer_db\nspring.datasource.username=${DB_USER}\nspring.datasource.password=${DB_PASSWORD}\nspringdoc.swagger-ui.enabled=false\nlogging.level.root=WARN\n\n# Activar perfil al ejecutar\njava -jar customer-service.jar --spring.profiles.active=prod\n\n# O mediante variable de entorno\nexport SPRING_PROFILES_ACTIVE=prod\njava -jar customer-service.jar"
+}

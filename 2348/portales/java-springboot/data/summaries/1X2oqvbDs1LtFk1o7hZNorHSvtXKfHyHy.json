@@ -1,0 +1,59 @@
+{
+  "titulo": "Planificar Estructura de Repositorio para Varios Microservicios",
+  "resumen": "Planificación de la arquitectura completa del proyecto con múltiples microservicios (Customer, Product, Transaction) más componentes de infraestructura (Config Server, Registry, Gateway, Admin). Se explica cómo organizar todo en un único repositorio de código siguiendo mejores prácticas de la industria, dividiendo entre módulos business e infraestructura.",
+  "puntosClave": [
+    "Arquitectura completa: 3 microservicios business + 4 componentes infraestructura",
+    "Microservicios business: Customer, Product, Transaction",
+    "Componentes infraestructura: Config Server, Registry, Gateway, Admin",
+    "Decisión clave: ¿un repositorio para todos o repositorios separados?",
+    "Recomendación: un solo repositorio con módulos separados",
+    "Ventajas: gestión centralizada, menos complejidad, facilita versionado",
+    "Organización en dos módulos principales: business-domain e infraestructure-domain",
+    "Cada microservicio será un sub-módulo dentro del módulo correspondiente",
+    "Enfoque práctico y real usado en la industria",
+    "Facilita CI/CD y gestión de dependencias compartidas"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Repositorio de Código",
+      "descripcion": "Espacio centralizado donde se almacena y versiona todo el código fuente del proyecto"
+    },
+    {
+      "nombre": "Microservicios Business",
+      "descripcion": "Servicios que implementan lógica de negocio específica (Customer, Product, Transaction)"
+    },
+    {
+      "nombre": "Componentes de Infraestructura",
+      "descripcion": "Servicios técnicos que dan soporte a los microservicios business (Config, Registry, Gateway)"
+    },
+    {
+      "nombre": "Módulo Maven",
+      "descripcion": "Unidad organizativa en Maven que agrupa proyectos relacionados bajo un mismo padre"
+    },
+    {
+      "nombre": "business-domain",
+      "descripcion": "Módulo que contiene todos los microservicios relacionados con la lógica del negocio"
+    },
+    {
+      "nombre": "infraestructure-domain",
+      "descripcion": "Módulo que contiene componentes técnicos de soporte (Config Server, Registry, etc.)"
+    },
+    {
+      "nombre": "Multi-Módulo Maven",
+      "descripcion": "Estructura de proyecto donde múltiples módulos comparten configuración de un POM padre"
+    },
+    {
+      "nombre": "Versionado Centralizado",
+      "descripcion": "Gestión de versiones de todos los microservicios desde un único punto de control"
+    },
+    {
+      "nombre": "Config Server",
+      "descripcion": "Microservicio que centraliza configuración externa conectándose a repositorio Git"
+    },
+    {
+      "nombre": "Registry (Eureka)",
+      "descripcion": "Servicio de descubrimiento que permite a microservicios encontrarse entre sí"
+    }
+  ],
+  "codigoEjemplo": null
+}

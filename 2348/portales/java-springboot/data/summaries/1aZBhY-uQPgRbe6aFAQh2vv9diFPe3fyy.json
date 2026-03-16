@@ -1,0 +1,64 @@
+{
+  "titulo": "Restricciones Técnicas y Ataques Mínimos que se Deben Prevenir",
+  "resumen": "Análisis detallado de vectores de ataque comunes y configuraciones mínimas de seguridad. Se explican ataques específicos (CSRF, clickjacking, MIME sniffing), y cómo Spring Security los previene. Se establecen requisitos mínimos de seguridad que toda API debe implementar.",
+  "puntosClave": [
+    "Configuraciones mínimas de seguridad:",
+    "1. HTTPS obligatorio en producción (TLS/SSL)",
+    "2. Autenticación en todos los endpoints (excepto públicos)",
+    "3. Protección CSRF para operaciones que modifican datos",
+    "4. CORS configurado para permitir solo orígenes confiables",
+    "5. Headers de seguridad habilitados",
+    "Ataques a prevenir:",
+    "- CSRF: usar tokens CSRF o deshabilitar para APIs stateless",
+    "- Clickjacking: X-Frame-Options DENY",
+    "- MIME Sniffing: X-Content-Type-Options nosniff",
+    "- XSS: Content-Security-Policy",
+    "- Session Fixation: invalidar sesión al autenticar",
+    "Spring Security habilita protecciones por defecto",
+    "Configurar excepciones para endpoints públicos (/health, /swagger)",
+    "Usar HTTPS Strict Transport Security (HSTS)"
+  ],
+  "conceptos": [
+    {
+      "nombre": "HTTPS/TLS",
+      "descripcion": "Protocolo seguro que encripta comunicación entre cliente y servidor"
+    },
+    {
+      "nombre": "CSRF Token",
+      "descripcion": "Token único por sesión que previene ataques CSRF"
+    },
+    {
+      "nombre": "Clickjacking",
+      "descripcion": "Ataque que engaña usuarios para hacer click en elementos ocultos"
+    },
+    {
+      "nombre": "X-Frame-Options",
+      "descripcion": "Header que previene que sitio sea embebido en iframe"
+    },
+    {
+      "nombre": "MIME Sniffing",
+      "descripcion": "Navegador intenta adivinar tipo de contenido ignorando Content-Type"
+    },
+    {
+      "nombre": "X-Content-Type-Options",
+      "descripcion": "Header que previene MIME sniffing (valor: nosniff)"
+    },
+    {
+      "nombre": "Content-Security-Policy",
+      "descripcion": "Header que define fuentes permitidas de contenido (scripts, estilos)"
+    },
+    {
+      "nombre": "HSTS (HTTP Strict Transport Security)",
+      "descripcion": "Header que fuerza navegador a usar solo HTTPS"
+    },
+    {
+      "nombre": "Session Fixation",
+      "descripcion": "Ataque que reutiliza ID de sesión conocido"
+    },
+    {
+      "nombre": "Public Endpoints",
+      "descripcion": "Endpoints que no requieren autenticación (/health, /swagger)"
+    }
+  ],
+  "codigoEjemplo": null
+}

@@ -1,0 +1,56 @@
+{
+  "titulo": "Añadir Swagger para Facilitar Pruebas de API REST",
+  "resumen": "Implementación de Swagger (springdoc-openapi) para documentar y probar APIs REST sin necesidad de Postman o Curl. Se agrega la dependencia, se accede a la UI en /swagger-ui.html, y se prueban operaciones CRUD (POST, GET, PUT, DELETE) sobre la entidad Customer. Incluye validación completa del microservicio funcionando.",
+  "puntosClave": [
+    "Swagger implementa OpenAPI Specification para documentar APIs",
+    "Agregar dependencia springdoc-openapi-starter-webmvc-ui al pom.xml",
+    "Versión 2.3+ para Spring Boot 3.x (verificar compatibilidad)",
+    "Acceder en: http://localhost:8080/swagger-ui.html",
+    "Permite probar endpoints sin Postman/Curl desde el navegador",
+    "Interfaz interactiva muestra esquema de entidades automáticamente",
+    "Botón 'Try it out' para ejecutar peticiones HTTP",
+    "POST crea clientes, GET lista todos, PUT actualiza, DELETE elimina",
+    "Base de datos H2 en memoria: datos se pierden al reiniciar",
+    "DevTools reinicia automáticamente al guardar cambios",
+    "Swagger es opcional, no invasivo y se puede activar/desactivar"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Swagger",
+      "descripcion": "Conjunto de herramientas que documentan y facilitan pruebas de APIs REST"
+    },
+    {
+      "nombre": "OpenAPI Specification",
+      "descripcion": "Estándar para describir APIs REST de forma clara y estructurada"
+    },
+    {
+      "nombre": "springdoc-openapi",
+      "descripcion": "Librería que integra Swagger/OpenAPI en proyectos Spring Boot"
+    },
+    {
+      "nombre": "swagger-ui.html",
+      "descripcion": "Interfaz web interactiva para visualizar y probar endpoints de la API"
+    },
+    {
+      "nombre": "Try it out",
+      "descripcion": "Función de Swagger UI que permite ejecutar peticiones HTTP directamente"
+    },
+    {
+      "nombre": "Base de Datos en Memoria",
+      "descripcion": "BD H2 que almacena datos temporalmente mientras la aplicación está ejecutándose"
+    },
+    {
+      "nombre": "HTTP Status Codes",
+      "descripcion": "Códigos de respuesta (200 OK, 404 Not Found) que indican resultado de operaciones"
+    },
+    {
+      "nombre": "Request Body",
+      "descripcion": "Datos JSON enviados en el cuerpo de una petición POST/PUT"
+    },
+    {
+      "nombre": "Response Body",
+      "descripcion": "Datos JSON devueltos por el servidor como respuesta a una petición"
+    }
+  ],
+  "codigoEjemplo": "<!-- Agregar dependencia Swagger en pom.xml -->\n<dependency>\n    <groupId>org.springdoc</groupId>\n    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>\n    <version>2.3.0</version>\n</dependency>\n\n<!-- Probar endpoints en Swagger UI -->\n// POST http://localhost:8080/customer\n{\n  \"id\": 0,\n  \"name\": \"Juan Pérez\",\n  \"phoneNumber\": \"555-1234\"\n}\n\n// GET http://localhost:8080/customer\n// Retorna lista de todos los clientes\n\n// DELETE http://localhost:8080/customer/1\n// Elimina el cliente con ID 1"
+}

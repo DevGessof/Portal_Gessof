@@ -1,0 +1,66 @@
+{
+  "titulo": "Administrar Orquestación Completa con Base de Datos en Docker Compose",
+  "resumen": "Gestión completa del sistema orquestado: iniciar servicios en orden correcto, verificar logs, monitorear salud, escalar servicios, y troubleshooting. Se prueba flujo E2E desde frontend Angular hasta PostgreSQL pasando por todos los microservicios. Sistema completo funcionando con un comando.",
+  "puntosClave": [
+    "Sistema completo: Postgres + Eureka + Config + Admin + 3 microservicios",
+    "Orden de inicio automático por depends_on y healthcheck",
+    "Verificar que todos los servicios están UP:",
+    "  - docker-compose ps",
+    "  - http://localhost:8761 (Eureka)",
+    "  - http://localhost:9090 (Admin)",
+    "Monitorear logs en tiempo real:",
+    "  - docker-compose logs -f",
+    "  - docker-compose logs customer-service",
+    "Troubleshooting común:",
+    "  - Servicios no se registran en Eureka: verificar EUREKA_CLIENT_SERVICEURL_DEFAULTZONE",
+    "  - Error conexión BD: verificar postgres está healthy",
+    "  - Puerto ocupado: cambiar mapeo en docker-compose.yml",
+    "Escalar servicios: docker-compose up -d --scale product-service=3",
+    "Reiniciar servicio específico: docker-compose restart customer-service",
+    "Prueba E2E: Angular → Customer → Product → PostgreSQL",
+    "Sistema listo para desarrollo y demos"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Service Health",
+      "descripcion": "Estado de salud de servicios verificado por healthchecks"
+    },
+    {
+      "nombre": "Dependency Management",
+      "descripcion": "Gestión de dependencias entre servicios con depends_on"
+    },
+    {
+      "nombre": "Log Aggregation",
+      "descripcion": "Ver logs de múltiples servicios centralizadamente"
+    },
+    {
+      "nombre": "Service Scaling",
+      "descripcion": "Ejecutar múltiples instancias del mismo servicio"
+    },
+    {
+      "nombre": "Rolling Restart",
+      "descripcion": "Reiniciar servicios uno a uno sin downtime completo"
+    },
+    {
+      "nombre": "Troubleshooting",
+      "descripcion": "Diagnosticar y resolver problemas en sistema distribuido"
+    },
+    {
+      "nombre": "E2E Testing",
+      "descripcion": "Probar flujo completo desde frontend hasta base de datos"
+    },
+    {
+      "nombre": "Service Orchestration",
+      "descripcion": "Coordinar inicio, comunicación y dependencias entre servicios"
+    },
+    {
+      "nombre": "Container Networking",
+      "descripcion": "Comunicación entre contenedores mediante DNS interno"
+    },
+    {
+      "nombre": "Development Environment",
+      "descripcion": "Entorno completo replicable para desarrollo local"
+    }
+  ],
+  "codigoEjemplo": "# docker-compose.yml - Sistema completo\n# (Ver archivo completo en clase 11 y 12)\n\n# Comandos de administración\n\n# 1. Iniciar sistema completo\ndocker-compose up -d\n# Creating network \"microservices-network\"\n# Creating volume \"postgres-data\"\n# Creating postgres-db\n# Creating eureka-server\n# Creating config-server\n# Creating admin-server\n# Creating customer-service\n# Creating product-service\n# Creating transaction-service\n\n# 2. Verificar estado de servicios\ndocker-compose ps\n# NAME                 STATUS         PORTS\n# postgres-db          Up (healthy)   0.0.0.0:5432->5432/tcp\n# eureka-server        Up             0.0.0.0:8761->8761/tcp\n# config-server        Up             0.0.0.0:8888->8888/tcp\n# admin-server         Up             0.0.0.0:9090->9090/tcp\n# customer-service     Up             0.0.0.0:8081->8081/tcp\n# product-service      Up             0.0.0.0:8082->8082/tcp\n# transaction-service  Up             0.0.0.0:8083->8083/tcp\n\n# 3. Ver logs de todos\ndocker-compose logs -f\n\n# 4. Ver logs de servicio específico\ndocker-compose logs -f customer-service | grep ERROR\n\n# 5. Verificar endpoints\ncurl http://localhost:8761  # Eureka Dashboard\ncurl http://localhost:9090  # Admin Dashboard\ncurl http://localhost:8081/actuator/health  # Customer health\n\n# 6. Ver estadísticas de recursos\ndocker stats\n\n# 7. Escalar Product Service a 3 instancias\ndocker-compose up -d --scale product-service=3\n# Eureka mostrará 3 instancias de PRODUCT-SERVICE\n\n# 8. Reiniciar servicio sin afectar otros\ndocker-compose restart customer-service\n\n# 9. Ver redes Docker\ndocker network ls\ndocker network inspect microservices-network\n\n# 10. Ver volúmenes\ndocker volume ls\ndocker volume inspect postgres-data\n\n# 11. Ejecutar comando en servicio\ndocker-compose exec postgres psql -U postgres -d paymentchange_db\n\n# 12. Troubleshooting\n\n# Si servicio no se registra en Eureka:\ndocker-compose logs customer-service | grep -i eureka\n# Verificar variable EUREKA_CLIENT_SERVICEURL_DEFAULTZONE\n\n# Si error conexión BD:\ndocker-compose logs postgres\ndocker-compose exec postgres pg_isready -U postgres\n\n# Si puerto ocupado:\n# Error: bind: address already in use\n# Cambiar en docker-compose.yml: \"8081:8081\" → \"8091:8081\"\n\n# 13. Detener todo\ndocker-compose down\n\n# Detener y eliminar volúmenes (borra datos)\ndocker-compose down -v\n\n# 14. Prueba E2E completa\n\n# Terminal 1: Iniciar backend\ndocker-compose up -d\n\n# Esperar que todos estén UP (~30 segundos)\nwatch docker-compose ps\n\n# Terminal 2: Iniciar frontend Angular\ncd angular-app\nnpm start\n\n# Navegador:\n# http://localhost:4200\n# Crear customer → POST http://localhost:8081/api/v1/customer\n# Customer → WebClient → Product (http://product-service:8082)\n# Customer → Repository → PostgreSQL (postgres:5432)\n# Todo funciona! ✅\n\n# 15. Validar persistencia\n\n# Crear algunos customers desde Angular\n# Detener sistema\ndocker-compose down\n\n# Reiniciar sistema\ndocker-compose up -d\n\n# Listar customers - datos persisten!\ncurl -u admin:admin123 http://localhost:8081/api/v1/customer"
+}

@@ -1,0 +1,61 @@
+{
+  "titulo": "Cómo Comparten Datos y se Comunican los Microservicios",
+  "resumen": "Explicación de patrones de comunicación entre microservicios: síncrona vs asíncrona. Se analiza cuándo usar cada tipo, ventajas/desventajas, y se introduce WebClient como solución para comunicación HTTP síncrona reactiva. Incluye comparación con RestTemplate (deprecado) y conceptos de programación reactiva.",
+  "puntosClave": [
+    "Dos tipos principales: comunicación síncrona y asíncrona",
+    "Síncrona: cliente espera respuesta inmediata (HTTP/REST)",
+    "Asíncrona: mensajería con colas (RabbitMQ, Kafka) sin espera bloqueante",
+    "Caso de estudio: Customer → Product es comunicación síncrona",
+    "RestTemplate: cliente HTTP tradicional (marcado como deprecado)",
+    "WebClient: cliente HTTP reactivo recomendado por Spring",
+    "Ventajas WebClient: no bloqueante, mejor rendimiento, reactivo",
+    "Programación reactiva: procesar streams de datos de forma asíncrona",
+    "Starter necesario: spring-boot-starter-webflux (incluye WebClient)",
+    "WebClient es más moderno y eficiente que RestTemplate",
+    "Comunicación síncrona adecuada cuando necesitas respuesta inmediata",
+    "Asíncrona mejor para operaciones que no requieren respuesta inmediata"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Comunicación Síncrona",
+      "descripcion": "Cliente hace petición y espera respuesta antes de continuar (bloqueante)"
+    },
+    {
+      "nombre": "Comunicación Asíncrona",
+      "descripcion": "Cliente envía mensaje y continúa sin esperar respuesta (no bloqueante)"
+    },
+    {
+      "nombre": "RestTemplate",
+      "descripcion": "Cliente HTTP tradicional de Spring, ahora deprecado en favor de WebClient"
+    },
+    {
+      "nombre": "WebClient",
+      "descripcion": "Cliente HTTP reactivo de Spring WebFlux, no bloqueante y más eficiente"
+    },
+    {
+      "nombre": "Programación Reactiva",
+      "descripcion": "Paradigma que maneja flujos de datos asíncronos con operadores funcionales"
+    },
+    {
+      "nombre": "Spring WebFlux",
+      "descripcion": "Framework reactivo de Spring para aplicaciones no bloqueantes"
+    },
+    {
+      "nombre": "No Bloqueante",
+      "descripcion": "Operación que no detiene la ejecución mientras espera respuesta"
+    },
+    {
+      "nombre": "Mensajería",
+      "descripcion": "Comunicación mediante colas de mensajes (RabbitMQ, Kafka, ActiveMQ)"
+    },
+    {
+      "nombre": "HTTP/REST",
+      "descripcion": "Protocolo estándar para comunicación síncrona entre microservicios"
+    },
+    {
+      "nombre": "Deprecado",
+      "descripcion": "Código antiguo que funciona pero no se recomienda usar en proyectos nuevos"
+    }
+  ],
+  "codigoEjemplo": "<!-- Agregar WebFlux para WebClient en pom.xml -->\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-webflux</artifactId>\n</dependency>\n\n// Comparación RestTemplate vs WebClient\n\n// RestTemplate (DEPRECADO - no usar)\nRestTemplate restTemplate = new RestTemplate();\nProduct product = restTemplate.getForObject(\n    \"http://localhost:8082/product/1\", \n    Product.class\n);\n\n// WebClient (RECOMENDADO - reactivo)\nWebClient webClient = WebClient.create(\"http://localhost:8082\");\nProduct product = webClient.get()\n    .uri(\"/product/1\")\n    .retrieve()\n    .bodyToMono(Product.class)\n    .block(); // block() para obtener resultado (usar con cuidado)"
+}

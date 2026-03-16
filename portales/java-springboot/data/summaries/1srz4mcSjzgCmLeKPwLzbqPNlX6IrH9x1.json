@@ -1,0 +1,64 @@
+{
+  "titulo": "Configuración Avanzada de Seguridad con Headers y Password Encoding",
+  "resumen": "Implementación de configuraciones avanzadas de seguridad: codificación de contraseñas con BCrypt, headers de seguridad personalizados, configuración de gestión de sesiones, y mejores prácticas de producción. Se usa BCryptPasswordEncoder en lugar de contraseñas en texto plano.",
+  "puntosClave": [
+    "BCryptPasswordEncoder: algoritmo robusto para hash de contraseñas",
+    "Reemplazar {noop} con BCrypt en producción",
+    "@Bean PasswordEncoder para codificar contraseñas",
+    "Generar hash BCrypt de contraseña: passwordEncoder.encode(\"password\")",
+    "Headers de seguridad automáticos:",
+    "  - X-Content-Type-Options: nosniff",
+    "  - X-Frame-Options: DENY",
+    "  - X-XSS-Protection: 1; mode=block",
+    "Configurar HSTS: Strict-Transport-Security",
+    "Gestión de sesiones:",
+    "  - sessionManagement().sessionCreationPolicy(STATELESS) para APIs",
+    "  - ALWAYS para aplicaciones con sesión",
+    "Logout configuration para invalidar sesiones",
+    "Personalizar response de acceso denegado (403) y no autenticado (401)",
+    "Aplicar configuración en todos los microservicios"
+  ],
+  "conceptos": [
+    {
+      "nombre": "BCryptPasswordEncoder",
+      "descripcion": "Algoritmo de hash adaptativo para codificar contraseñas de forma segura"
+    },
+    {
+      "nombre": "Password Hashing",
+      "descripcion": "Proceso de convertir contraseña en hash irreversible"
+    },
+    {
+      "nombre": "Salt",
+      "descripcion": "Valor aleatorio añadido a contraseña antes de hash (BCrypt lo hace automático)"
+    },
+    {
+      "nombre": "Security Headers",
+      "descripcion": "Headers HTTP que mejoran seguridad del cliente/navegador"
+    },
+    {
+      "nombre": "HSTS",
+      "descripcion": "Header que obliga navegador a usar solo HTTPS"
+    },
+    {
+      "nombre": "SessionCreationPolicy",
+      "descripcion": "Estrategia de creación de sesiones (STATELESS, ALWAYS, IF_REQUIRED)"
+    },
+    {
+      "nombre": "STATELESS",
+      "descripcion": "No crear ni usar sesiones HTTP (para APIs REST)"
+    },
+    {
+      "nombre": "Logout Handler",
+      "descripcion": "Componente que maneja proceso de cierre de sesión"
+    },
+    {
+      "nombre": "AuthenticationEntryPoint",
+      "descripcion": "Handler para respuestas cuando usuario no está autenticado (401)"
+    },
+    {
+      "nombre": "AccessDeniedHandler",
+      "descripcion": "Handler para respuestas cuando usuario no tiene permisos (403)"
+    }
+  ],
+  "codigoEjemplo": "// SecurityConfig.java - Configuración avanzada\n@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n    \n    @Bean\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) \n            throws Exception {\n        http\n            .httpBasic()\n            .and()\n            .csrf().disable()\n            \n            // Configurar headers de seguridad\n            .headers(headers -> headers\n                .contentTypeOptions()  // X-Content-Type-Options: nosniff\n                .and()\n                .xssProtection()  // X-XSS-Protection: 1; mode=block\n                .and()\n                .frameOptions().deny()  // X-Frame-Options: DENY\n                .and()\n                .httpStrictTransportSecurity()  // HSTS\n                    .maxAgeInSeconds(31536000)  // 1 año\n                    .includeSubDomains(true)\n            )\n            \n            // Gestión de sesiones (STATELESS para APIs REST)\n            .sessionManagement(session -> session\n                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)\n            )\n            \n            .authorizeHttpRequests(auth -> auth\n                .requestMatchers(\"/actuator/health\").permitAll()\n                .requestMatchers(\"/swagger-ui/**\", \"/v3/api-docs/**\").permitAll()\n                .requestMatchers(HttpMethod.GET, \"/api/v1/**\").hasRole(\"USER\")\n                .requestMatchers(HttpMethod.POST, \"/api/v1/**\").hasRole(\"ADMIN\")\n                .requestMatchers(HttpMethod.PUT, \"/api/v1/**\").hasRole(\"ADMIN\")\n                .requestMatchers(HttpMethod.DELETE, \"/api/v1/**\").hasRole(\"ADMIN\")\n                .anyRequest().authenticated()\n            )\n            \n            // Handler personalizado para 401\n            .exceptionHandling(ex -> ex\n                .authenticationEntryPoint(\n                    (request, response, authException) -> {\n                        response.setStatus(HttpStatus.UNAUTHORIZED.value());\n                        response.setContentType(\"application/json\");\n                        response.getWriter().write(\n                            \"{\\\"error\\\":\\\"Unauthorized\\\",\\\"message\\\":\\\"Authentication required\\\"}\"\n                        );\n                    }\n                )\n                .accessDeniedHandler(\n                    (request, response, accessDeniedException) -> {\n                        response.setStatus(HttpStatus.FORBIDDEN.value());\n                        response.setContentType(\"application/json\");\n                        response.getWriter().write(\n                            \"{\\\"error\\\":\\\"Forbidden\\\",\\\"message\\\":\\\"Insufficient permissions\\\"}\"\n                        );\n                    }\n                )\n            );\n        \n        return http.build();\n    }\n    \n    @Bean\n    public PasswordEncoder passwordEncoder() {\n        return new BCryptPasswordEncoder();\n    }\n    \n    @Bean\n    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {\n        UserDetails user = User.builder()\n            .username(\"user\")\n            .password(passwordEncoder.encode(\"user123\"))  // BCrypt hash\n            .roles(\"USER\")\n            .build();\n        \n        UserDetails admin = User.builder()\n            .username(\"admin\")\n            .password(passwordEncoder.encode(\"admin123\"))  // BCrypt hash\n            .roles(\"USER\", \"ADMIN\")\n            .build();\n        \n        return new InMemoryUserDetailsManager(user, admin);\n    }\n}\n\n// Generar hash BCrypt manualmente\npublic static void main(String[] args) {\n    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();\n    String hash = encoder.encode(\"password123\");\n    System.out.println(hash);\n    // Output: $2a$10$xyzabcdefghijklmnopqrstuvwxyz...\n}"
+}

@@ -1,0 +1,61 @@
+{
+  "titulo": "Enfoque API-First para Generar Módulos Angular Automáticamente",
+  "resumen": "Uso de OpenAPI Generator para generar código TypeScript/Angular automáticamente desde especificación OpenAPI. Se exporta spec de Swagger, se genera cliente Angular, y se integran servicios generados en aplicación. Enfoque API-First que asegura sincronización entre frontend y backend.",
+  "puntosClave": [
+    "API-First: definir contrato API antes de codificar frontend",
+    "OpenAPI Generator: genera código cliente desde spec OpenAPI",
+    "Exportar especificación: GET /v3/api-docs → openapi.json",
+    "Instalar OpenAPI Generator CLI: npm install -g @openapitools/openapi-generator-cli",
+    "Generar cliente Angular: openapi-generator-cli generate -g typescript-angular",
+    "Genera: modelos TypeScript + servicios con métodos HTTP",
+    "Servicios generados ya incluyen tipos, validaciones, endpoints",
+    "Inyectar servicios en componentes Angular con DI",
+    "Configurar base path del API en módulo",
+    "Ventajas: sincronización automática, menos errores, types safety",
+    "Regenerar cuando API cambia (nuevos endpoints, modelos)",
+    "Reduce código boilerplate en frontend"
+  ],
+  "conceptos": [
+    {
+      "nombre": "API-First Approach",
+      "descripcion": "Metodología donde API se diseña antes que implementación frontend/backend"
+    },
+    {
+      "nombre": "OpenAPI Generator",
+      "descripcion": "Herramienta que genera código cliente/servidor desde especificación OpenAPI"
+    },
+    {
+      "nombre": "Code Generation",
+      "descripcion": "Generación automática de código a partir de especificación"
+    },
+    {
+      "nombre": "TypeScript Models",
+      "descripcion": "Interfaces/clases TypeScript que representan modelos de API"
+    },
+    {
+      "nombre": "Generated Services",
+      "descripcion": "Servicios Angular con métodos para llamar endpoints de API"
+    },
+    {
+      "nombre": "Type Safety",
+      "descripcion": "Verificación de tipos en compile-time gracias a TypeScript"
+    },
+    {
+      "nombre": "Dependency Injection",
+      "descripcion": "Patrón de Angular para inyectar servicios en componentes"
+    },
+    {
+      "nombre": "Base Path Configuration",
+      "descripcion": "URL base del API configurada en módulo Angular"
+    },
+    {
+      "nombre": "API Synchronization",
+      "descripcion": "Mantener frontend sincronizado con cambios en backend"
+    },
+    {
+      "nombre": "Boilerplate Reduction",
+      "descripcion": "Reducir código repetitivo mediante generación automática"
+    }
+  ],
+  "codigoEjemplo": "# 1. Exportar especificación OpenAPI desde Spring Boot\ncurl http://localhost:8081/v3/api-docs > openapi.json\n\n# 2. Instalar OpenAPI Generator\nnpm install -g @openapitools/openapi-generator-cli\n\n# 3. Generar cliente TypeScript/Angular\nopenapi-generator-cli generate \\\n  -i openapi.json \\\n  -g typescript-angular \\\n  -o src/app/generated-api\n\n# Archivos generados:\n# src/app/generated-api/\n#   ├── model/\n#   │   ├── customer-request.ts\n#   │   ├── customer-response.ts\n#   │   └── error-response.ts\n#   ├── api/\n#   │   └── customer.service.ts\n#   └── api.module.ts\n\n// customer.service.ts (generado automáticamente)\nimport { Injectable } from '@angular/core';\nimport { HttpClient } from '@angular/common/http';\nimport { Observable } from 'rxjs';\nimport { CustomerResponse } from '../model/customer-response';\n\n@Injectable()\nexport class CustomerService {\n  constructor(private http: HttpClient) {}\n  \n  findAll(): Observable<Array<CustomerResponse>> {\n    return this.http.get<Array<CustomerResponse>>(\n      '/api/v1/customer'\n    );\n  }\n  \n  findById(id: number): Observable<CustomerResponse> {\n    return this.http.get<CustomerResponse>(\n      `/api/v1/customer/${id}`\n    );\n  }\n  \n  create(body: CustomerRequest): Observable<CustomerResponse> {\n    return this.http.post<CustomerResponse>(\n      '/api/v1/customer',\n      body\n    );\n  }\n}\n\n// app.module.ts - Configurar API Module\nimport { ApiModule, Configuration } from './generated-api';\n\n@NgModule({\n  imports: [\n    ApiModule.forRoot(() => new Configuration({\n      basePath: 'http://localhost:8081'\n    }))\n  ]\n})\nexport class AppModule {}\n\n// component.ts - Usar servicio generado\nimport { CustomerService } from './generated-api/api/customer.service';\n\nexport class CustomerListComponent {\n  customers: CustomerResponse[] = [];\n  \n  constructor(private customerService: CustomerService) {}\n  \n  ngOnInit() {\n    this.customerService.findAll().subscribe(\n      data => this.customers = data,\n      error => console.error(error)\n    );\n  }\n}"
+}

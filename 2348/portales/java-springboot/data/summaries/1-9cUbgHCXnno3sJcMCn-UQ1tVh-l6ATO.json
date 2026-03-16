@@ -1,0 +1,60 @@
+{
+  "titulo": "Refactorizar y Organizar Módulos Business e Infraestructura",
+  "resumen": "Reorganización de microservicios existentes (Customer, Product, Transaction) dentro de la estructura multi-módulo. Se mueven los proyectos a sus módulos correspondientes (business-domain), se ajustan los POMs para heredar del padre, y se verifica que cada microservicio mantenga su configuración individual mientras hereda dependencias comunes.",
+  "puntosClave": [
+    "Mover microservicios existentes dentro de business-domain",
+    "Copiar proyectos Customer, Product, Transaction a la carpeta del módulo",
+    "Actualizar pom.xml de business-domain agregando <modules>",
+    "Cada microservicio debe definir <parent> apuntando a business-domain",
+    "Eliminar dependencias duplicadas que ya están en el padre",
+    "Mantener configuraciones específicas (application.properties, puertos)",
+    "Verificar que cada microservicio compile individualmente",
+    "Compilar desde raíz compila todos los módulos en orden",
+    "Estructura final: Raíz → business-domain → customer/product/transaction",
+    "Los microservicios conservan packaging 'jar' (son ejecutables)",
+    "Beneficio: un solo comando compila toda la solución"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Refactorización",
+      "descripcion": "Proceso de reestructurar código/proyectos sin cambiar funcionalidad, mejorando organización"
+    },
+    {
+      "nombre": "Módulos Anidados",
+      "descripcion": "Estructura jerárquica donde módulos pueden contener sub-módulos"
+    },
+    {
+      "nombre": "Parent POM",
+      "descripcion": "Referencia en pom.xml hijo que indica qué proyecto padre heredar configuración"
+    },
+    {
+      "nombre": "Reactor Maven",
+      "descripcion": "Mecanismo que compila múltiples módulos en el orden correcto según dependencias"
+    },
+    {
+      "nombre": "Build Order",
+      "descripcion": "Orden en que Maven compila módulos (padre primero, luego hijos)"
+    },
+    {
+      "nombre": "Configuración Específica",
+      "descripcion": "Properties y configuraciones únicas de cada microservicio (puerto, BD, etc.)"
+    },
+    {
+      "nombre": "Configuración Heredada",
+      "descripcion": "Dependencias y propiedades que vienen del POM padre automáticamente"
+    },
+    {
+      "nombre": "Clean Install",
+      "descripcion": "Comando Maven que limpia, compila, ejecuta tests e instala en repositorio local"
+    },
+    {
+      "nombre": "Microservicio Ejecutable",
+      "descripcion": "Proyecto con packaging 'jar' que contiene clase main y puede ejecutarse"
+    },
+    {
+      "nombre": "Gestión Centralizada",
+      "descripcion": "Administrar múltiples proyectos desde un punto único de control"
+    }
+  ],
+  "codigoEjemplo": "<!-- business-domain/pom.xml -->\n<project>\n    <parent>\n        <groupId>com.paymentchange</groupId>\n        <artifactId>payment-microservices</artifactId>\n        <version>1.0.0</version>\n    </parent>\n    \n    <artifactId>business-domain</artifactId>\n    <packaging>pom</packaging>\n    \n    <modules>\n        <module>customer</module>\n        <module>product</module>\n        <module>transaction</module>\n    </modules>\n</project>\n\n<!-- business-domain/customer/pom.xml -->\n<project>\n    <parent>\n        <groupId>com.paymentchange</groupId>\n        <artifactId>business-domain</artifactId>\n        <version>1.0.0</version>\n    </parent>\n    \n    <artifactId>customer</artifactId>\n    <packaging>jar</packaging>\n    \n    <dependencies>\n        <!-- Heredan versión del padre -->\n        <dependency>\n            <groupId>org.springframework.boot</groupId>\n            <artifactId>spring-boot-starter-web</artifactId>\n        </dependency>\n    </dependencies>\n</project>"
+}

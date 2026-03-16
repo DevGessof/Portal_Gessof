@@ -1,0 +1,52 @@
+{
+  "titulo": "Reconfigurar Lombok (@Data) y Corregir Errores con Getters/Setters",
+  "resumen": "Solución al problema de compatibilidad entre Lombok y Maven en NetBeans 24+. Se explica cómo configurar el plugin maven-compiler-plugin con el annotation processor de Lombok. El error común es que el IDE no reconoce los métodos getter/setter generados automáticamente, causando errores de compilación.",
+  "puntosClave": [
+    "Problema: NetBeans 24+ no reconoce getters/setters generados por Lombok",
+    "Causa: incompatibilidad entre Lombok, Maven y procesador de anotaciones",
+    "Solución: agregar plugin maven-compiler-plugin al pom.xml",
+    "Configurar annotationProcessorPaths con lombok en el plugin",
+    "Usar versión explícita de Lombok (1.18.38 o superior)",
+    "El plugin se agrega en la sección <build><plugins>",
+    "Recomendación: definir versión de Lombok en <properties>",
+    "Después de agregar: guardar y verificar que desaparecen los errores",
+    "Aplicable a JDK 23+ y Spring Boot 3.x",
+    "Consultar documentación oficial de Lombok para Maven",
+    "Importante al actualizar versiones de Spring Boot o JDK"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Annotation Processor",
+      "descripcion": "Herramienta que procesa anotaciones en tiempo de compilación para generar código"
+    },
+    {
+      "nombre": "maven-compiler-plugin",
+      "descripcion": "Plugin de Maven que compila código Java con configuraciones específicas"
+    },
+    {
+      "nombre": "annotationProcessorPaths",
+      "descripcion": "Configuración que indica qué librerías usar para procesar anotaciones"
+    },
+    {
+      "nombre": "Compatibilidad Lombok-Maven",
+      "descripcion": "Requisito de configurar explícitamente Lombok en el compilador de Maven"
+    },
+    {
+      "nombre": "NetBeans 24+",
+      "descripcion": "Versiones modernas del IDE que requieren configuración adicional para Lombok"
+    },
+    {
+      "nombre": "JDK 23+",
+      "descripcion": "Versiones de Java que requieren procesador de anotaciones explícito para Lombok"
+    },
+    {
+      "nombre": "Build Plugins",
+      "descripcion": "Sección del pom.xml donde se configuran herramientas de construcción del proyecto"
+    },
+    {
+      "nombre": "Properties",
+      "descripcion": "Variables centralizadas en pom.xml para versiones de dependencias"
+    }
+  ],
+  "codigoEjemplo": "<!-- Agregar en pom.xml dentro de <build><plugins> -->\n<plugin>\n    <groupId>org.apache.maven.plugins</groupId>\n    <artifactId>maven-compiler-plugin</artifactId>\n    <version>3.11.0</version>\n    <configuration>\n        <annotationProcessorPaths>\n            <path>\n                <groupId>org.projectlombok</groupId>\n                <artifactId>lombok</artifactId>\n                <version>1.18.38</version>\n            </path>\n        </annotationProcessorPaths>\n    </configuration>\n</plugin>\n\n<!-- Opcional: definir versión en properties -->\n<properties>\n    <lombok.version>1.18.38</lombok.version>\n</properties>"
+}

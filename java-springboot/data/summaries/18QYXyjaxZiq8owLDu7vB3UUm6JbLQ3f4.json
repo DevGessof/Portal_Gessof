@@ -1,0 +1,61 @@
+{
+  "titulo": "Escribir Fichero de Propiedades para Perfil Local/Desarrollo",
+  "resumen": "Creación práctica del archivo application-dev.properties con configuración específica para entorno de desarrollo local. Se configuran propiedades de H2, consola, Swagger, logs y puerto. Se valida que el perfil se active correctamente y que las propiedades se apliquen al iniciar el microservicio.",
+  "puntosClave": [
+    "Crear archivo application-dev.properties en src/main/resources",
+    "Configurar H2: spring.datasource.url=jdbc:h2:mem:devdb",
+    "Activar consola H2: spring.h2.console.enabled=true",
+    "Habilitar Swagger: springdoc.swagger-ui.enabled=true",
+    "Logs detallados: logging.level.root=DEBUG",
+    "Puerto: server.port=8081",
+    "Nombre de aplicación: spring.application.name=customer-service",
+    "Activar perfil en application.properties: spring.profiles.active=dev",
+    "Al iniciar, Spring carga application.properties + application-dev.properties",
+    "Verificar en logs: \"The following profiles are active: dev\"",
+    "Propiedades de dev sobrescriben las del archivo base",
+    "Crear perfiles similares para Product (8082) y Transaction (8083)"
+  ],
+  "conceptos": [
+    {
+      "nombre": "application-dev.properties",
+      "descripcion": "Archivo con configuración específica del entorno de desarrollo"
+    },
+    {
+      "nombre": "src/main/resources",
+      "descripcion": "Carpeta donde se colocan archivos de configuración y recursos"
+    },
+    {
+      "nombre": "Sobrescritura de Propiedades",
+      "descripcion": "Propiedades en archivo de perfil reemplazan las del archivo base"
+    },
+    {
+      "nombre": "jdbc:h2:mem:devdb",
+      "descripcion": "URL de conexión a BD H2 en memoria para desarrollo"
+    },
+    {
+      "nombre": "logging.level.root",
+      "descripcion": "Nivel de detalle de logs (TRACE, DEBUG, INFO, WARN, ERROR)"
+    },
+    {
+      "nombre": "Activación de Perfil",
+      "descripcion": "Spring detecta spring.profiles.active y carga archivo correspondiente"
+    },
+    {
+      "nombre": "Orden de Carga",
+      "descripcion": "Spring carga: 1) application.properties, 2) application-{profile}.properties"
+    },
+    {
+      "nombre": "Verificación en Logs",
+      "descripcion": "Log de inicio muestra qué perfiles están activos"
+    },
+    {
+      "nombre": "Configuración de Desarrollo",
+      "descripcion": "Propiedades optimizadas para facilitar debugging y testing local"
+    },
+    {
+      "nombre": "Consistencia entre Servicios",
+      "descripcion": "Usar misma estructura de perfiles en todos los microservicios"
+    }
+  ],
+  "codigoEjemplo": "# application.properties (archivo base)\nspring.profiles.active=dev\n\n# application-dev.properties (desarrollo)\n# Configuración Base de Datos H2\nspring.datasource.url=jdbc:h2:mem:devdb\nspring.datasource.driverClassName=org.h2.Driver\nspring.datasource.username=sa\nspring.datasource.password=\n\n# Consola H2\nspring.h2.console.enabled=true\nspring.h2.console.path=/h2-console\n\n# JPA/Hibernate\nspring.jpa.database-platform=org.hibernate.dialect.H2Dialect\nspring.jpa.hibernate.ddl-auto=create-drop\nspring.jpa.show-sql=true\n\n# Swagger\nspringdoc.swagger-ui.enabled=true\n\n# Logs\nlogging.level.root=DEBUG\nlogging.level.com.paymentchange=TRACE\n\n# Servidor\nserver.port=8081\nspring.application.name=customer-service\n\n# Output en consola al iniciar:\n# The following profiles are active: dev"
+}

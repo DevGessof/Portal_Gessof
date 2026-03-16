@@ -1,0 +1,948 @@
+{
+  "seccion": "Sección 12 - Autenticación y Autorización con Keycloak y OAuth2",
+  "descripcion": "Implementación de autenticación y autorización enterprise usando Keycloak como servidor OAuth2/OpenID Connect. Se instala y configura Keycloak, se definen realms, roles y usuarios, se obtienen tokens JWT, se crea adaptador para comunicación con Keycloak, y se implementa filtro de autorización en API Gateway validando tokens y roles. El resultado es un sistema con seguridad centralizada, SSO, y autorización basada en roles.",
+  "clases": [
+    {
+      "numero": 1,
+      "archivo": "1__Keycloak_Arquitectura_flujo_acceso_seguridad_api.srt",
+      "titulo": "Keycloak: Arquitectura y Flujo de Acceso para Seguridad de APIs",
+      "resumen": "Introducción a Keycloak como servidor de autenticación y autorización. Se explica arquitectura completa del flujo OAuth2/OpenID Connect, cómo cliente obtiene token de Keycloak, cómo API Gateway valida token, y cómo se extraen roles para autorización. Base conceptual para implementar seguridad enterprise.",
+      "puntosClave": [
+        "Keycloak: servidor open-source de Identity and Access Management (IAM)",
+        "Implementa OAuth2, OpenID Connect, SAML",
+        "Arquitectura de flujo de acceso:",
+        "1. Cliente solicita token a Keycloak (username + password)",
+        "2. Keycloak valida credenciales contra usuarios configurados",
+        "3. Keycloak retorna JWT (JSON Web Token) con claims y roles",
+        "4. Cliente envía request a API Gateway con token en Authorization header",
+        "5. Gateway valida token con clave pública de Keycloak",
+        "6. Gateway extrae roles del token JWT",
+        "7. Gateway verifica que usuario tiene rol requerido para endpoint",
+        "8. Si autorizado, Gateway enruta a microservicio",
+        "Ventajas Keycloak:",
+        "  - Single Sign-On (SSO) entre aplicaciones",
+        "  - Gestión centralizada de usuarios y roles",
+        "  - Tokens JWT auto-contenidos (stateless)",
+        "  - Soporte para federación de identidades (Google, Facebook)",
+        "  - Admin UI completa para configuración"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Keycloak",
+          "descripcion": "Servidor IAM open-source para autenticación y autorización"
+        },
+        {
+          "nombre": "Identity and Access Management (IAM)",
+          "descripcion": "Sistema para gestionar identidades digitales y control de acceso"
+        },
+        {
+          "nombre": "OAuth2",
+          "descripcion": "Protocolo de autorización para delegar acceso a recursos"
+        },
+        {
+          "nombre": "OpenID Connect (OIDC)",
+          "descripcion": "Capa de autenticación sobre OAuth2 que añade identidad de usuario"
+        },
+        {
+          "nombre": "JWT (JSON Web Token)",
+          "descripcion": "Token autónomo que contiene claims firmados digitalmente"
+        },
+        {
+          "nombre": "Claims",
+          "descripcion": "Información contenida en JWT (sub, roles, exp, iat)"
+        },
+        {
+          "nombre": "Access Token",
+          "descripcion": "Token que permite acceder a recursos protegidos"
+        },
+        {
+          "nombre": "Refresh Token",
+          "descripcion": "Token de larga duración para obtener nuevos access tokens"
+        },
+        {
+          "nombre": "Public Key",
+          "descripcion": "Clave pública de Keycloak para validar firma de JWT"
+        },
+        {
+          "nombre": "Token Validation",
+          "descripcion": "Verificar firma, expiración y emisor del JWT"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "archivo": "2__es_OAuth2__Single_Sign_On__Roles_flujo_OAuth2.srt",
+      "titulo": "Qué es OAuth2, Single Sign-On, Roles y Flujo OAuth2 Completo",
+      "resumen": "Explicación detallada de OAuth2, diferentes grant types, concepto de Single Sign-On, y flujo completo de autorización. Se comparan flows: Authorization Code, Client Credentials, Password Grant, y se explica cuándo usar cada uno. Se introduce concepto de roles y scopes.",
+      "puntosClave": [
+        "OAuth2: framework de autorización, NO de autenticación",
+        "Roles OAuth2:",
+        "  - Resource Owner: usuario dueño de recursos",
+        "  - Client: aplicación que accede a recursos",
+        "  - Authorization Server: emite tokens (Keycloak)",
+        "  - Resource Server: API protegida (microservicios)",
+        "Grant Types (flujos de autorización):",
+        "1. Authorization Code: apps web con backend (más seguro)",
+        "2. Implicit: apps SPA (deprecated, usar PKCE)",
+        "3. Resource Owner Password Credentials: usuario + password directo",
+        "4. Client Credentials: machine-to-machine (microservicios)",
+        "Single Sign-On (SSO):",
+        "  - Usuario se autentica una vez",
+        "  - Token válido para múltiples aplicaciones",
+        "  - Logout centralizado",
+        "Scopes: permisos granulares (read, write, admin)",
+        "Roles: grupos de permisos asignados a usuarios",
+        "OpenID Connect añade id_token con info del usuario"
+      ],
+      "conceptos": [
+        {
+          "nombre": "OAuth2 Roles",
+          "descripcion": "Resource Owner, Client, Authorization Server, Resource Server"
+        },
+        {
+          "nombre": "Authorization Code Flow",
+          "descripcion": "Flujo más seguro para apps web con backend"
+        },
+        {
+          "nombre": "Client Credentials Flow",
+          "descripcion": "Flujo para comunicación service-to-service"
+        },
+        {
+          "nombre": "Password Grant Flow",
+          "descripcion": "Cliente envía username/password directamente (menos seguro)"
+        },
+        {
+          "nombre": "PKCE (Proof Key for Code Exchange)",
+          "descripcion": "Extensión de Authorization Code para apps públicas (SPA, mobile)"
+        },
+        {
+          "nombre": "Single Sign-On (SSO)",
+          "descripcion": "Autenticarse una vez, acceder a múltiples aplicaciones"
+        },
+        {
+          "nombre": "Scope",
+          "descripcion": "Permiso granular que limita acceso a recursos"
+        },
+        {
+          "nombre": "Role",
+          "descripcion": "Conjunto de permisos asignados a usuario o grupo"
+        },
+        {
+          "nombre": "id_token",
+          "descripcion": "JWT de OpenID Connect con información del usuario autenticado"
+        },
+        {
+          "nombre": "access_token",
+          "descripcion": "JWT que permite acceder a recursos protegidos"
+        }
+      ]
+    },
+    {
+      "numero": 3,
+      "archivo": "3__Instalación_del_Keycloak_y_configuración_inicial.srt",
+      "titulo": "Instalación de Keycloak y Configuración Inicial",
+      "resumen": "Instalación de Keycloak usando Docker y configuración inicial. Se descarga imagen oficial, se ejecuta contenedor, se accede a Admin Console, se configura admin user, y se explora interfaz de administración. Base para configurar realms y usuarios.",
+      "puntosClave": [
+        "Keycloak disponible como imagen Docker oficial",
+        "Versión recomendada: quay.io/keycloak/keycloak:latest",
+        "Ejecutar Keycloak en dev mode:",
+        "  docker run -p 8180:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:latest start-dev",
+        "Puerto: 8180 (evitar conflicto con Gateway en 8080)",
+        "Acceder a Admin Console: http://localhost:8180",
+        "Login con admin/admin (configurado vía env vars)",
+        "Secciones principales de Admin UI:",
+        "  - Realms: ambientes aislados de configuración",
+        "  - Clients: aplicaciones que usan Keycloak",
+        "  - Users: usuarios del sistema",
+        "  - Roles: roles asignables a usuarios",
+        "  - Groups: agrupaciones de usuarios",
+        "Master realm: realm administrativo (no usar para apps)",
+        "Crear realm propio para aplicación"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Keycloak Docker Image",
+          "descripcion": "Imagen oficial de Keycloak para contenedores"
+        },
+        {
+          "nombre": "Dev Mode",
+          "descripcion": "Modo desarrollo de Keycloak (HTTP, sin config compleja)"
+        },
+        {
+          "nombre": "Admin Console",
+          "descripcion": "Interfaz web para administrar Keycloak"
+        },
+        {
+          "nombre": "Master Realm",
+          "descripcion": "Realm administrativo predeterminado de Keycloak"
+        },
+        {
+          "nombre": "KEYCLOAK_ADMIN",
+          "descripcion": "Variable de entorno para usuario administrador inicial"
+        },
+        {
+          "nombre": "Admin User",
+          "descripcion": "Usuario con privilegios completos en Keycloak"
+        },
+        {
+          "nombre": "Realm",
+          "descripcion": "Espacio aislado de configuración (tenancy)"
+        },
+        {
+          "nombre": "Client",
+          "descripcion": "Aplicación registrada que puede obtener tokens"
+        },
+        {
+          "nombre": "Production Mode",
+          "descripcion": "Modo producción con HTTPS, BD externa, clustering"
+        },
+        {
+          "nombre": "Keycloak Themes",
+          "descripcion": "Personalización de UI de login y admin console"
+        }
+      ]
+    },
+    {
+      "numero": 4,
+      "archivo": "4__Definicion_Realms__Roles__Usuarios_Clientes_keycloak.srt",
+      "titulo": "Definición de Realms, Roles, Usuarios y Clientes en Keycloak",
+      "resumen": "Configuración completa de Keycloak: crear realm para aplicación, definir roles (ADMIN, USER), crear usuarios con roles asignados, y registrar cliente OAuth2 para aplicación. Configuración necesaria para emitir tokens con roles correctos.",
+      "puntosClave": [
+        "Crear Realm:",
+        "  - Click en 'Master' dropdown → Create Realm",
+        "  - Name: paymentchange-realm",
+        "  - Enabled: ON",
+        "Crear Roles de Realm:",
+        "  - Realm Roles → Create Role",
+        "  - Roles: ADMIN, USER, MANAGER",
+        "  - Descripción de cada rol",
+        "Crear Usuarios:",
+        "  - Users → Add User",
+        "  - Username: admin-user, regular-user",
+        "  - Email: admin@company.com",
+        "  - Email Verified: ON",
+        "  - Set Password: temporal=OFF, password=123456",
+        "Asignar Roles a Usuarios:",
+        "  - User Details → Role Mapping",
+        "  - Assign Role → ADMIN (para admin-user)",
+        "  - Assign Role → USER (para regular-user)",
+        "Crear Cliente:",
+        "  - Clients → Create Client",
+        "  - Client ID: payment-app",
+        "  - Client Protocol: openid-connect",
+        "  - Access Type: confidential (requiere client secret)",
+        "  - Valid Redirect URIs: http://localhost:4200/*",
+        "  - Configurar Service Account y Direct Access Grants",
+        "Obtener Client Secret de tab Credentials"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Realm",
+          "descripcion": "Espacio aislado con su propia configuración de usuarios, roles y clientes"
+        },
+        {
+          "nombre": "Realm Role",
+          "descripcion": "Rol global del realm asignable a usuarios"
+        },
+        {
+          "nombre": "Client Role",
+          "descripcion": "Rol específico de un cliente/aplicación"
+        },
+        {
+          "nombre": "User",
+          "descripcion": "Cuenta de usuario con credenciales y roles asignados"
+        },
+        {
+          "nombre": "Client",
+          "descripcion": "Aplicación registrada que puede solicitar tokens"
+        },
+        {
+          "nombre": "Client ID",
+          "descripcion": "Identificador único del cliente en el realm"
+        },
+        {
+          "nombre": "Client Secret",
+          "descripcion": "Credencial secreta del cliente (como password)"
+        },
+        {
+          "nombre": "Confidential Client",
+          "descripcion": "Cliente que puede mantener secret seguro (backend)"
+        },
+        {
+          "nombre": "Public Client",
+          "descripcion": "Cliente que no puede mantener secret (SPA, mobile)"
+        },
+        {
+          "nombre": "Direct Access Grants",
+          "descripcion": "Permite Password Grant flow (username/password directo)"
+        },
+        {
+          "nombre": "Service Account",
+          "descripcion": "Permite Client Credentials flow (machine-to-machine)"
+        },
+        {
+          "nombre": "Role Mapping",
+          "descripcion": "Asignación de roles a usuario específico"
+        }
+      ]
+    },
+    {
+      "numero": 5,
+      "archivo": "5__Obtener_token_mediante_API_keycloak_desde_Postman.srt",
+      "titulo": "Obtener Token JWT mediante API de Keycloak desde Postman",
+      "resumen": "Uso de API REST de Keycloak para obtener access tokens. Se configura request en Postman con credenciales de usuario, client_id y client_secret. Se obtiene JWT, se decodifica para ver claims y roles, y se valida estructura del token.",
+      "puntosClave": [
+        "Endpoint de token: POST /realms/{realm}/protocol/openid-connect/token",
+        "URL completa: http://localhost:8180/realms/paymentchange-realm/protocol/openid-connect/token",
+        "Body (x-www-form-urlencoded):",
+        "  - grant_type: password",
+        "  - client_id: payment-app",
+        "  - client_secret: [secret de Keycloak]",
+        "  - username: admin-user",
+        "  - password: 123456",
+        "  - scope: openid (opcional)",
+        "Response:",
+        "  - access_token: JWT principal",
+        "  - refresh_token: para renovar access_token",
+        "  - expires_in: tiempo de vida en segundos (300 = 5 min)",
+        "  - token_type: Bearer",
+        "Decodificar JWT en jwt.io:",
+        "  - Header: algoritmo (RS256), tipo (JWT)",
+        "  - Payload: sub, roles, exp, iat, iss",
+        "  - Signature: firma digital con private key de Keycloak",
+        "Claims importantes:",
+        "  - realm_access.roles: [\"ADMIN\", \"USER\"]",
+        "  - exp: timestamp de expiración",
+        "  - iss: issuer (Keycloak URL)"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Token Endpoint",
+          "descripcion": "URL de Keycloak para obtener tokens OAuth2"
+        },
+        {
+          "nombre": "grant_type",
+          "descripcion": "Tipo de flujo OAuth2 (password, client_credentials, etc.)"
+        },
+        {
+          "nombre": "client_id",
+          "descripcion": "Identificador del cliente solicitando token"
+        },
+        {
+          "nombre": "client_secret",
+          "descripcion": "Secreto del cliente para autenticación"
+        },
+        {
+          "nombre": "access_token",
+          "descripcion": "JWT que permite acceso a recursos protegidos"
+        },
+        {
+          "nombre": "refresh_token",
+          "descripcion": "Token para obtener nuevo access_token sin re-autenticar"
+        },
+        {
+          "nombre": "expires_in",
+          "descripcion": "Tiempo de vida del token en segundos"
+        },
+        {
+          "nombre": "Bearer Token",
+          "descripcion": "Tipo de token enviado en header Authorization: Bearer {token}"
+        },
+        {
+          "nombre": "JWT Header",
+          "descripcion": "Metadata del token (algoritmo, tipo)"
+        },
+        {
+          "nombre": "JWT Payload",
+          "descripcion": "Claims del token (usuario, roles, expiración)"
+        },
+        {
+          "nombre": "JWT Signature",
+          "descripcion": "Firma digital para verificar integridad"
+        },
+        {
+          "nombre": "realm_access",
+          "descripcion": "Claim que contiene roles del realm"
+        }
+      ]
+    },
+    {
+      "numero": 6,
+      "archivo": "6__Crear_microservicio_adaptador_comunicarse_keycloak.srt",
+      "titulo": "Crear Microservicio Adaptador para Comunicarse con Keycloak",
+      "resumen": "Creación de microservicio KeycloakAdapter que encapsula comunicación con Keycloak. Se implementan métodos para obtener tokens, validar tokens, extraer roles, y obtener información de usuario. Adaptador reutilizable por API Gateway y otros servicios.",
+      "puntosClave": [
+        "Crear módulo keycloak-adapter en infrastructure-services",
+        "Dependencias:",
+        "  - spring-boot-starter-webflux (para WebClient)",
+        "  - spring-boot-starter-oauth2-resource-server",
+        "  - spring-security-oauth2-jose (JWT)",
+        "Crear KeycloakService con WebClient",
+        "Métodos principales:",
+        "  - getToken(username, password): obtener access token",
+        "  - validateToken(token): verificar firma y expiración",
+        "  - extractRoles(token): obtener roles de JWT",
+        "  - getUserInfo(token): obtener info de usuario",
+        "Configuración:",
+        "  keycloak.auth-server-url=http://localhost:8180",
+        "  keycloak.realm=paymentchange-realm",
+        "  keycloak.client-id=payment-app",
+        "  keycloak.client-secret=[secret]",
+        "Decodificar JWT con JwtDecoder",
+        "Validar con JWK Set de Keycloak:",
+        "  {keycloak-url}/realms/{realm}/protocol/openid-connect/certs",
+        "Exponer como librería para otros servicios"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Keycloak Adapter",
+          "descripcion": "Microservicio que encapsula comunicación con Keycloak"
+        },
+        {
+          "nombre": "OAuth2 Resource Server",
+          "descripcion": "Servidor que valida tokens OAuth2"
+        },
+        {
+          "nombre": "JwtDecoder",
+          "descripcion": "Clase Spring Security para decodificar y validar JWT"
+        },
+        {
+          "nombre": "JWK Set",
+          "descripcion": "JSON Web Key Set con claves públicas para validar JWT"
+        },
+        {
+          "nombre": "JWT Validation",
+          "descripcion": "Verificar firma, emisor, audiencia y expiración de JWT"
+        },
+        {
+          "nombre": "Role Extraction",
+          "descripcion": "Obtener lista de roles del claim realm_access.roles"
+        },
+        {
+          "nombre": "UserInfo Endpoint",
+          "descripcion": "Endpoint OpenID Connect para obtener info de usuario"
+        },
+        {
+          "nombre": "WebClient",
+          "descripcion": "Cliente HTTP reactivo de Spring para llamar APIs"
+        },
+        {
+          "nombre": "NimbusJwtDecoder",
+          "descripcion": "Implementación de JwtDecoder usando librería Nimbus"
+        },
+        {
+          "nombre": "Adapter Pattern",
+          "descripcion": "Patrón que adapta interfaz de Keycloak a interfaz interna"
+        }
+      ]
+    },
+    {
+      "numero": 7,
+      "archivo": "7__Dockerizar_probar_adaptador_keycloak__obtener_roles.srt",
+      "titulo": "Dockerizar y Probar Adaptador Keycloak para Obtener Roles",
+      "resumen": "Contenedorización de Keycloak y KeycloakAdapter. Se agrega Keycloak a docker-compose.yml, se dockeriza adaptador, se prueban métodos de validación y extracción de roles. Sistema listo para integración con API Gateway.",
+      "puntosClave": [
+        "Agregar Keycloak a docker-compose.yml",
+        "Usar imagen oficial con PostgreSQL para persistencia",
+        "Configurar variables de entorno para dev mode",
+        "Puerto 8180 para Keycloak",
+        "Crear Dockerfile para keycloak-adapter",
+        "Exponer como librería JAR para otros servicios",
+        "Probar endpoints del adaptador:",
+        "  POST /auth/token → obtener token",
+        "  POST /auth/validate → validar token",
+        "  GET /auth/roles → extraer roles",
+        "  GET /auth/userinfo → info de usuario",
+        "Validar que roles se extraen correctamente del JWT",
+        "Verificar validación de tokens expirados",
+        "Probar con usuarios de diferentes roles",
+        "Integrar adaptador con API Gateway en siguiente clase"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Keycloak Persistence",
+          "descripcion": "Almacenar configuración de Keycloak en BD PostgreSQL"
+        },
+        {
+          "nombre": "Environment Variables",
+          "descripcion": "Configurar Keycloak mediante variables de entorno"
+        },
+        {
+          "nombre": "Adapter Endpoints",
+          "descripcion": "APIs REST expuestas por adaptador para validación"
+        },
+        {
+          "nombre": "Token Expiration Testing",
+          "descripcion": "Probar validación de tokens expirados"
+        },
+        {
+          "nombre": "Role Verification",
+          "descripcion": "Verificar que roles extraídos coinciden con Keycloak"
+        },
+        {
+          "nombre": "Shared Library",
+          "descripcion": "Adaptador como JAR reutilizable por otros servicios"
+        },
+        {
+          "nombre": "Service Integration",
+          "descripcion": "Integrar adaptador con API Gateway"
+        },
+        {
+          "nombre": "Docker Networking",
+          "descripcion": "Comunicación entre Keycloak y adaptador en red Docker"
+        },
+        {
+          "nombre": "Health Check",
+          "descripcion": "Verificar que Keycloak está listo antes de usar adaptador"
+        },
+        {
+          "nombre": "Configuration Management",
+          "descripcion": "Gestionar configuración de Keycloak en diferentes entornos"
+        }
+      ]
+    },
+    {
+      "numero": 8,
+      "archivo": "8__Enrutamiento_Configurar_filtro_personalizado_APi.srt",
+      "titulo": "Enrutamiento: Configurar Filtro Personalizado en API Gateway",
+      "resumen": "Creación de filtro personalizado en API Gateway para validar JWT antes de enrutar a microservicios. Se implementa AuthenticationGatewayFilter que extrae token de header Authorization, valida con KeycloakAdapter, y permite/deniega acceso según validez del token.",
+      "puntosClave": [
+        "Agregar dependencia de keycloak-adapter en pom.xml de api-gateway",
+        "Crear AuthenticationGatewayFilterFactory",
+        "Implementar AbstractGatewayFilterFactory<Config>",
+        "Filter ejecuta en cada request:",
+        "1. Extraer token de header Authorization",
+        "2. Validar formato: Bearer {token}",
+        "3. Llamar keycloakService.validateToken(token)",
+        "4. Si válido: continuar con chain.filter(exchange)",
+        "5. Si inválido: retornar 401 Unauthorized",
+        "Configurar filter en rutas específicas:",
+        "  filters:",
+        "    - Authentication",
+        "Excluir rutas públicas (health, swagger)",
+        "Logging de validaciones exitosas y fallidas",
+        "Manejar excepciones de validación",
+        "Retornar response JSON con error detallado"
+      ],
+      "conceptos": [
+        {
+          "nombre": "GatewayFilterFactory",
+          "descripcion": "Factory que crea instancias de filtros configurables"
+        },
+        {
+          "nombre": "AbstractGatewayFilterFactory",
+          "descripcion": "Clase base para crear filtros personalizados con configuración"
+        },
+        {
+          "nombre": "Authorization Header",
+          "descripcion": "Header HTTP que contiene token: Authorization: Bearer {token}"
+        },
+        {
+          "nombre": "Token Extraction",
+          "descripcion": "Extraer JWT de header quitando prefijo Bearer"
+        },
+        {
+          "nombre": "Filter Chain",
+          "descripcion": "Cadena de filtros que procesa request secuencialmente"
+        },
+        {
+          "nombre": "Early Return",
+          "descripcion": "Retornar response sin continuar cadena si validación falla"
+        },
+        {
+          "nombre": "401 Unauthorized",
+          "descripcion": "Código HTTP cuando token es inválido o falta"
+        },
+        {
+          "nombre": "Public Routes",
+          "descripcion": "Rutas que no requieren autenticación (health, docs)"
+        },
+        {
+          "nombre": "Filter Configuration",
+          "descripcion": "Aplicar filtro a rutas específicas en application.yml"
+        },
+        {
+          "nombre": "Error Response",
+          "descripcion": "Response JSON estructurada con detalles del error"
+        }
+      ]
+    },
+    {
+      "numero": 9,
+      "archivo": "9__Enrutamiento_Comprobar_validez_Authorization_header.srt",
+      "titulo": "Enrutamiento: Comprobar Validez del Authorization Header",
+      "resumen": "Mejora del filtro de autenticación para validar formato y contenido del header Authorization. Se implementan validaciones de formato Bearer, longitud mínima del token, caracteres válidos, y se mejoran mensajes de error para facilitar debugging.",
+      "puntosClave": [
+        "Validaciones de Authorization header:",
+        "1. Verificar que header existe",
+        "2. Verificar que empieza con \"Bearer \"",
+        "3. Verificar que token no esté vacío después de quitar prefijo",
+        "4. Validar longitud mínima del token (> 10 caracteres)",
+        "5. Verificar formato JWT (tres partes separadas por puntos)",
+        "Crear método validateAuthorizationHeader()",
+        "Retornar diferentes mensajes de error según validación fallida:",
+        "  - \"Authorization header is required\"",
+        "  - \"Invalid Authorization header format\"",
+        "  - \"Token is empty\"",
+        "  - \"Token format is invalid\"",
+        "Logging detallado de cada tipo de error",
+        "Facilita debugging para desarrolladores consumiendo API",
+        "Mejorar UX con mensajes claros y específicos"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Header Validation",
+          "descripcion": "Verificar formato y contenido de headers HTTP"
+        },
+        {
+          "nombre": "Bearer Token Format",
+          "descripcion": "Formato estándar: Authorization: Bearer {token}"
+        },
+        {
+          "nombre": "JWT Format",
+          "descripcion": "Tres partes separadas por puntos: header.payload.signature"
+        },
+        {
+          "nombre": "Validation Chain",
+          "descripcion": "Secuencia de validaciones que deben pasar todas"
+        },
+        {
+          "nombre": "Early Validation",
+          "descripcion": "Validar formato antes de validar con Keycloak (performance)"
+        },
+        {
+          "nombre": "Descriptive Error Messages",
+          "descripcion": "Mensajes de error claros que indican exactamente qué falló"
+        },
+        {
+          "nombre": "Developer Experience",
+          "descripcion": "Facilitar debugging con mensajes informativos"
+        },
+        {
+          "nombre": "Input Sanitization",
+          "descripcion": "Limpiar y validar input antes de procesar"
+        },
+        {
+          "nombre": "Security Validation",
+          "descripcion": "Validaciones de seguridad antes de procesamiento costoso"
+        },
+        {
+          "nombre": "Fail Fast",
+          "descripcion": "Retornar error rápido si validación básica falla"
+        }
+      ]
+    },
+    {
+      "numero": 10,
+      "archivo": "10__Enrutamiento_Configurar_filtro_personalizado.srt",
+      "titulo": "Enrutamiento: Configurar Filtro Personalizado de Autorización por Roles",
+      "resumen": "Implementación de filtro de autorización basado en roles extraídos del JWT. Se crea AuthorizationGatewayFilter que verifica que usuario tiene rol requerido para acceder a endpoint específico. Se configuran roles por ruta en application.yml.",
+      "puntosClave": [
+        "Crear AuthorizationGatewayFilterFactory",
+        "Configuración por ruta con roles requeridos",
+        "Extraer roles del token con keycloakService.extractRoles()",
+        "Comparar roles de usuario vs roles requeridos",
+        "Lógica de autorización:",
+        "  - Si usuario tiene al menos un rol requerido → permitir",
+        "  - Si no tiene ningún rol requerido → 403 Forbidden",
+        "Configurar en application.yml:",
+        "  filters:",
+        "    - Authorization=ADMIN,MANAGER",
+        "GET endpoints: rol USER suficiente",
+        "POST/PUT/DELETE endpoints: requiere ADMIN",
+        "Logging de decisiones de autorización",
+        "Diferenciar entre 401 (no autenticado) y 403 (sin permisos)",
+        "Almacenar roles en context para no extraer múltiples veces"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Role-Based Authorization",
+          "descripcion": "Control de acceso basado en roles del usuario"
+        },
+        {
+          "nombre": "Authorization Filter",
+          "descripcion": "Filtro que verifica permisos después de autenticación"
+        },
+        {
+          "nombre": "Required Roles",
+          "descripcion": "Lista de roles que permiten acceso a endpoint"
+        },
+        {
+          "nombre": "Role Intersection",
+          "descripcion": "Verificar si usuario tiene al menos un rol requerido"
+        },
+        {
+          "nombre": "403 Forbidden",
+          "descripcion": "Código HTTP cuando usuario autenticado no tiene permisos"
+        },
+        {
+          "nombre": "401 vs 403",
+          "descripcion": "401: no autenticado, 403: autenticado pero sin permisos"
+        },
+        {
+          "nombre": "Filter Configuration",
+          "descripcion": "Pasar parámetros a filtro desde application.yml"
+        },
+        {
+          "nombre": "Context Attributes",
+          "descripcion": "Almacenar datos en exchange context para reutilizar"
+        },
+        {
+          "nombre": "Least Privilege",
+          "descripcion": "Dar mínimos permisos necesarios para cada endpoint"
+        },
+        {
+          "nombre": "Authorization Decision",
+          "descripcion": "Decisión de permitir/denegar basada en roles"
+        }
+      ]
+    },
+    {
+      "numero": 11,
+      "archivo": "11__Enrutamiento_Prueba_recomendaciones_seguridad_api.srt",
+      "titulo": "Enrutamiento: Prueba E2E y Recomendaciones de Seguridad para API",
+      "resumen": "Prueba end-to-end completa del sistema con autenticación y autorización. Se validan diferentes escenarios: usuarios con diferentes roles, tokens expirados, endpoints públicos vs protegidos. Se documentan mejores prácticas de seguridad y recomendaciones para producción.",
+      "puntosClave": [
+        "Escenarios de prueba E2E:",
+        "1. Usuario sin token → 401",
+        "2. Token inválido → 401",
+        "3. Token expirado → 401",
+        "4. Usuario USER accede GET → 200",
+        "5. Usuario USER intenta POST → 403",
+        "6. Usuario ADMIN accede POST → 201",
+        "7. Endpoint público sin token → 200",
+        "Recomendaciones de seguridad:",
+        "  - HTTPS obligatorio en producción",
+        "  - Tokens con tiempo de expiración corto (5-15 min)",
+        "  - Refresh tokens para renovar sin re-autenticar",
+        "  - Rate limiting en Gateway",
+        "  - Logging de todos los intentos de acceso",
+        "  - Monitorear tokens expirados excesivos (posible ataque)",
+        "  - Rotación de client secrets periódicamente",
+        "  - No loggear tokens completos",
+        "  - Implementar IP whitelisting para endpoints admin",
+        "  - Usar Keycloak en modo producción con BD externa"
+      ],
+      "conceptos": [
+        {
+          "nombre": "E2E Security Testing",
+          "descripcion": "Probar flujo completo de autenticación y autorización"
+        },
+        {
+          "nombre": "Security Best Practices",
+          "descripcion": "Prácticas recomendadas para APIs en producción"
+        },
+        {
+          "nombre": "Token Expiration",
+          "descripcion": "Tiempo limitado de validez de access tokens"
+        },
+        {
+          "nombre": "Refresh Token Flow",
+          "descripcion": "Flujo para renovar access token sin re-autenticar"
+        },
+        {
+          "nombre": "Rate Limiting",
+          "descripcion": "Limitar número de requests por cliente para prevenir abuso"
+        },
+        {
+          "nombre": "Audit Logging",
+          "descripcion": "Registrar todos los accesos para auditoría de seguridad"
+        },
+        {
+          "nombre": "Secret Rotation",
+          "descripcion": "Cambiar client secrets periódicamente"
+        },
+        {
+          "nombre": "IP Whitelisting",
+          "descripcion": "Permitir acceso solo desde IPs específicas"
+        },
+        {
+          "nombre": "HTTPS Enforcement",
+          "descripcion": "Forzar uso de HTTPS para todos los requests"
+        },
+        {
+          "nombre": "Security Monitoring",
+          "descripcion": "Monitorear patrones sospechosos de acceso"
+        }
+      ]
+    },
+    {
+      "numero": 12,
+      "archivo": "12__Enrutamiento_Añadir_tercer_microservicio_al_filtro.srt",
+      "titulo": "Enrutamiento: Añadir Transaction Service al Filtro de Seguridad",
+      "resumen": "Extensión de seguridad a Transaction Service. Se configuran filtros de autenticación y autorización para endpoints de transacciones, se definen roles específicos (TRANSACTION_MANAGER), y se prueba integración E2E completa con todos los microservicios protegidos.",
+      "puntosClave": [
+        "Agregar rutas de Transaction Service a application.yml",
+        "Configurar filtros Authentication y Authorization",
+        "Roles para Transaction:",
+        "  - GET: USER, ADMIN, TRANSACTION_MANAGER",
+        "  - POST: ADMIN, TRANSACTION_MANAGER",
+        "  - PUT/DELETE: solo ADMIN",
+        "Crear rol TRANSACTION_MANAGER en Keycloak",
+        "Asignar rol a usuarios específicos",
+        "Transaction Service consume Customer y Product:",
+        "  - Propagar token en llamadas internas",
+        "  - WebClient con header Authorization",
+        "Probar flujo completo:",
+        "  Cliente → Gateway → Transaction → Customer/Product",
+        "Todos los microservicios ahora protegidos",
+        "Sistema completo con seguridad centralizada en Gateway",
+        "Validar logs de autenticación y autorización en cada capa"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Service-Specific Roles",
+          "descripcion": "Roles específicos para operaciones de un servicio (TRANSACTION_MANAGER)"
+        },
+        {
+          "nombre": "Token Propagation",
+          "descripcion": "Pasar token JWT en llamadas service-to-service"
+        },
+        {
+          "nombre": "Nested Authorization",
+          "descripcion": "Autorización en múltiples niveles (Gateway + Service)"
+        },
+        {
+          "nombre": "WebClient with Auth",
+          "descripcion": "Configurar WebClient para incluir header Authorization"
+        },
+        {
+          "nombre": "End-to-End Security",
+          "descripcion": "Seguridad aplicada en toda la cadena de llamadas"
+        },
+        {
+          "nombre": "Granular Permissions",
+          "descripcion": "Permisos específicos por operación y recurso"
+        },
+        {
+          "nombre": "Role Hierarchy",
+          "descripcion": "ADMIN puede hacer todo, otros roles tienen permisos limitados"
+        },
+        {
+          "nombre": "Centralized Security",
+          "descripcion": "Seguridad configurada centralmente en API Gateway"
+        },
+        {
+          "nombre": "Security Audit Trail",
+          "descripcion": "Rastro completo de decisiones de seguridad en logs"
+        },
+        {
+          "nombre": "Production-Ready Security",
+          "descripcion": "Sistema con seguridad enterprise lista para producción"
+        }
+      ]
+    }
+  ],
+  "resumen_seccion": "Esta sección implementa autenticación y autorización enterprise con Keycloak y OAuth2/OpenID Connect. Se instala Keycloak, se configuran realms/roles/usuarios/clientes, se obtienen tokens JWT, se crea adaptador para comunicación con Keycloak, y se implementan filtros de autenticación y autorización en API Gateway validando tokens y roles. El resultado es un sistema con seguridad centralizada, SSO, y control de acceso basado en roles listo para producción.",
+  "tecnologias_cubiertas": [
+    "Keycloak",
+    "OAuth2",
+    "OpenID Connect",
+    "JWT (JSON Web Tokens)",
+    "Spring Security OAuth2 Resource Server",
+    "Spring Security OAuth2 JOSE",
+    "JwtDecoder",
+    "GatewayFilterFactory",
+    "Role-Based Access Control (RBAC)",
+    "Docker (Keycloak containerizado)"
+  ],
+  "flujo_autenticacion_completo": [
+    "1. Usuario envía credentials a Keycloak",
+    "2. Keycloak valida contra usuarios configurados",
+    "3. Keycloak genera JWT con claims y roles",
+    "4. Cliente recibe access_token y refresh_token",
+    "5. Cliente envía request a Gateway con Bearer token",
+    "6. Gateway valida token con clave pública de Keycloak",
+    "7. Gateway extrae roles del claim realm_access.roles",
+    "8. Gateway verifica que usuario tiene rol requerido",
+    "9. Si autorizado, Gateway enruta a microservicio",
+    "10. Microservicio recibe request con token propagado"
+  ],
+  "configuracion_keycloak": {
+    "realm": "paymentchange-realm",
+    "roles": ["ADMIN", "USER", "MANAGER", "TRANSACTION_MANAGER"],
+    "usuarios": [
+      "admin-user (ADMIN, USER)",
+      "regular-user (USER)",
+      "transaction-manager (TRANSACTION_MANAGER, USER)"
+    ],
+    "cliente": {
+      "client_id": "payment-app",
+      "protocol": "openid-connect",
+      "access_type": "confidential",
+      "flows": ["Password Grant", "Client Credentials", "Authorization Code"]
+    }
+  },
+  "jwt_structure": {
+    "header": {
+      "alg": "RS256",
+      "typ": "JWT"
+    },
+    "payload": {
+      "sub": "user-id",
+      "realm_access": {
+        "roles": ["ADMIN", "USER"]
+      },
+      "exp": "expiration-timestamp",
+      "iat": "issued-at-timestamp",
+      "iss": "keycloak-url",
+      "preferred_username": "admin-user",
+      "email": "admin@company.com"
+    },
+    "signature": "digital-signature"
+  },
+  "filtros_gateway": {
+    "AuthenticationFilter": {
+      "proposito": "Validar JWT",
+      "funciones": [
+        "Extraer token de Authorization header",
+        "Validar formato Bearer {token}",
+        "Validar firma con clave pública Keycloak",
+        "Verificar expiración del token",
+        "Retornar 401 si token inválido"
+      ],
+      "retorna": "401 Unauthorized si token inválido"
+    },
+    "AuthorizationFilter": {
+      "proposito": "Verificar roles del usuario",
+      "funciones": [
+        "Extraer roles del claim realm_access.roles",
+        "Comparar con roles requeridos por endpoint",
+        "Verificar que usuario tiene al menos un rol requerido",
+        "Retornar 403 si sin permisos"
+      ],
+      "retorna": "403 Forbidden si usuario no tiene permisos"
+    }
+  },
+  "mejores_practicas": [
+    "HTTPS obligatorio en producción",
+    "Tokens con expiración corta (5-15 min)",
+    "Usar refresh tokens para renovar access tokens",
+    "Implementar rate limiting en Gateway",
+    "Logging de todos los intentos de acceso para auditoría",
+    "No loggear tokens completos en logs",
+    "Rotación periódica de client secrets",
+    "Keycloak en modo producción con BD externa (PostgreSQL)",
+    "Clustering de Keycloak para alta disponibilidad",
+    "Monitorear patrones de acceso anormales",
+    "IP whitelisting para endpoints administrativos",
+    "Implementar logout centralizado",
+    "Validar tokens en cada capa (Gateway + Services)",
+    "Propagar tokens en llamadas service-to-service",
+    "Usar roles granulares por operación"
+  ],
+  "comandos_utiles": [
+    "docker run -p 8180:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:latest start-dev",
+    "curl -X POST http://localhost:8180/realms/paymentchange-realm/protocol/openid-connect/token",
+    "curl -X GET http://localhost:8080/api/v1/customer -H 'Authorization: Bearer {token}'",
+    "docker-compose up -d keycloak",
+    "docker-compose logs -f keycloak"
+  ],
+  "troubleshooting": {
+    "token_invalido": "Verificar que token no esté expirado con jwt.io",
+    "401_unauthorized": "Verificar formato 'Bearer {token}' en Authorization header",
+    "403_forbidden": "Usuario autenticado pero no tiene rol requerido",
+    "keycloak_no_inicia": "Verificar logs: docker-compose logs keycloak",
+    "client_secret_incorrecto": "Obtener secret correcto de Keycloak Admin Console → Clients → Credentials"
+  }
+}

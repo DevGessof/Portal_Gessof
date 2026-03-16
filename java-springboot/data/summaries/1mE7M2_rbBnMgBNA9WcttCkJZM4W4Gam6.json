@@ -1,0 +1,65 @@
+{
+  "titulo": "Enrutamiento: Añadir Transaction Service al Filtro de Seguridad",
+  "resumen": "Extensión de seguridad a Transaction Service. Se configuran filtros de autenticación y autorización para endpoints de transacciones, se definen roles específicos (TRANSACTION_MANAGER), y se prueba integración E2E completa con todos los microservicios protegidos.",
+  "puntosClave": [
+    "Agregar rutas de Transaction Service a application.yml",
+    "Configurar filtros Authentication y Authorization",
+    "Roles para Transaction:",
+    "  - GET: USER, ADMIN, TRANSACTION_MANAGER",
+    "  - POST: ADMIN, TRANSACTION_MANAGER",
+    "  - PUT/DELETE: solo ADMIN",
+    "Crear rol TRANSACTION_MANAGER en Keycloak",
+    "Asignar rol a usuarios específicos",
+    "Transaction Service consume Customer y Product:",
+    "  - Propagar token en llamadas internas",
+    "  - WebClient con header Authorization",
+    "Probar flujo completo:",
+    "  Cliente → Gateway → Transaction → Customer/Product",
+    "Todos los microservicios ahora protegidos",
+    "Sistema completo con seguridad centralizada en Gateway",
+    "Validar logs de autenticación y autorización en cada capa"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Service-Specific Roles",
+      "descripcion": "Roles específicos para operaciones de un servicio (TRANSACTION_MANAGER)"
+    },
+    {
+      "nombre": "Token Propagation",
+      "descripcion": "Pasar token JWT en llamadas service-to-service"
+    },
+    {
+      "nombre": "Nested Authorization",
+      "descripcion": "Autorización en múltiples niveles (Gateway + Service)"
+    },
+    {
+      "nombre": "WebClient with Auth",
+      "descripcion": "Configurar WebClient para incluir header Authorization"
+    },
+    {
+      "nombre": "End-to-End Security",
+      "descripcion": "Seguridad aplicada en toda la cadena de llamadas"
+    },
+    {
+      "nombre": "Granular Permissions",
+      "descripcion": "Permisos específicos por operación y recurso"
+    },
+    {
+      "nombre": "Role Hierarchy",
+      "descripcion": "ADMIN puede hacer todo, otros roles tienen permisos limitados"
+    },
+    {
+      "nombre": "Centralized Security",
+      "descripcion": "Seguridad configurada centralmente en API Gateway"
+    },
+    {
+      "nombre": "Security Audit Trail",
+      "descripcion": "Rastro completo de decisiones de seguridad en logs"
+    },
+    {
+      "nombre": "Production-Ready Security",
+      "descripcion": "Sistema con seguridad enterprise lista para producción"
+    }
+  ],
+  "codigoEjemplo": null
+}

@@ -1,0 +1,795 @@
+{
+  "seccion": "Sección 4 - Comunicación entre Microservicios y Relaciones de Datos",
+  "descripcion": "Implementación de comunicación entre microservicios usando WebClient (cliente REST reactivo). Se construye el microservicio Product, se establecen relaciones entre Customer y Product, y se implementa comunicación HTTP entre microservicios. Incluye validación end-to-end de la solución completa.",
+  "clases": [
+    {
+      "numero": 1,
+      "archivo": "1__caso_estudio_comunicación_microservicios.srt",
+      "titulo": "Caso de Estudio: Comunicación entre Microservicios",
+      "resumen": "Introducción al desafío de la comunicación entre microservicios independientes. Se presenta el caso donde Customer necesita consultar información de Product para mostrar los productos asociados a un cliente. Se explica por qué NO usar relaciones de base de datos tradicionales y la necesidad de comunicación HTTP/REST entre servicios.",
+      "puntosClave": [
+        "Escenario: Customer necesita mostrar productos asociados a cada cliente",
+        "Problema: Customer y Product son microservicios independientes con BDs separadas",
+        "NO se pueden usar relaciones tradicionales de JPA entre microservicios",
+        "Solución: comunicación mediante APIs REST entre microservicios",
+        "Customer almacena solo IDs de productos, no objetos completos",
+        "Customer debe consumir API de Product para obtener detalles",
+        "Principio de microservicios: independencia y autonomía",
+        "Comunicación sincrona: Customer llama a Product vía HTTP",
+        "WebClient: cliente REST reactivo de Spring para consumir APIs",
+        "Objetivo: cuando se consulta un customer, también se muestran sus productos",
+        "Validación E2E (end-to-end) de toda la solución"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Comunicación entre Microservicios",
+          "descripcion": "Intercambio de datos entre servicios independientes mediante protocolos como HTTP/REST"
+        },
+        {
+          "nombre": "Independencia de Datos",
+          "descripcion": "Cada microservicio tiene su propia base de datos sin relaciones directas entre ellas"
+        },
+        {
+          "nombre": "Relaciones JPA Tradicionales",
+          "descripcion": "Foreign keys y relaciones @OneToMany/@ManyToOne que NO funcionan entre microservicios"
+        },
+        {
+          "nombre": "Comunicación Síncrona",
+          "descripcion": "Llamada HTTP donde el cliente espera respuesta inmediata del servidor"
+        },
+        {
+          "nombre": "Cliente REST",
+          "descripcion": "Componente que consume APIs REST de otros servicios"
+        },
+        {
+          "nombre": "WebClient",
+          "descripcion": "Cliente HTTP reactivo de Spring WebFlux para realizar peticiones REST"
+        },
+        {
+          "nombre": "IDs de Referencia",
+          "descripcion": "Customer almacena solo identificadores de productos, no objetos completos"
+        },
+        {
+          "nombre": "Validación E2E",
+          "descripcion": "Prueba end-to-end que verifica funcionamiento completo del flujo entre servicios"
+        },
+        {
+          "nombre": "Autonomía de Microservicios",
+          "descripcion": "Cada servicio puede funcionar, desplegarse y evolucionar independientemente"
+        },
+        {
+          "nombre": "API Gateway Pattern",
+          "descripcion": "Patrón donde servicios se comunican consumiendo APIs REST expuestas por otros"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "archivo": "2__Crear_microservicio_catálogo_productos_agregarlo_al.srt",
+      "titulo": "Crear Microservicio de Catálogo de Productos y Agregarlo al Repositorio",
+      "resumen": "Construcción del microservicio Product desde cero siguiendo la misma estructura que Customer. Se crea entidad Product, repository, controller con CRUD completo, se configura puerto 8082, y se integra al módulo business-domain. Incluye configuración de H2 y Swagger para pruebas.",
+      "puntosClave": [
+        "Crear proyecto Product con Spring Initializr (mismo proceso que Customer)",
+        "Starters: Web, Data JPA, H2, DevTools, Lombok, Validation",
+        "Entidad Product: id (Long), name (String), price (Double)",
+        "Crear estructura de paquetes: entities, repositories, controller",
+        "ProductRepository extiende JpaRepository<Product, Long>",
+        "ProductRestController con métodos: findAll, findById, create, update, delete",
+        "Configurar puerto: server.port=8082 en application.properties",
+        "Agregar springdoc-openapi para Swagger",
+        "Mover proyecto a business-domain/product",
+        "Actualizar business-domain/pom.xml agregando <module>product</module>",
+        "Configurar parent en product/pom.xml apuntando a business-domain",
+        "Probar CRUD completo con Swagger en http://localhost:8082/swagger-ui.html"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Microservicio Product",
+          "descripcion": "Servicio responsable de gestionar el catálogo de productos/servicios financieros"
+        },
+        {
+          "nombre": "Entidad Product",
+          "descripcion": "Clase JPA que representa productos con atributos id, name y price"
+        },
+        {
+          "nombre": "ProductRepository",
+          "descripcion": "Interfaz JPA que provee métodos CRUD para la entidad Product"
+        },
+        {
+          "nombre": "ProductRestController",
+          "descripcion": "Controlador REST que expone endpoints para gestionar productos"
+        },
+        {
+          "nombre": "CRUD Completo",
+          "descripcion": "Implementación de Create, Read, Update y Delete para gestión de productos"
+        },
+        {
+          "nombre": "Puerto 8082",
+          "descripcion": "Puerto asignado al microservicio Product para evitar conflictos con Customer (8081)"
+        },
+        {
+          "nombre": "Estructura Consistente",
+          "descripcion": "Mismo patrón de paquetes y organización usado en Customer para mantener uniformidad"
+        },
+        {
+          "nombre": "Swagger UI",
+          "descripcion": "Interfaz interactiva para documentar y probar endpoints del microservicio Product"
+        },
+        {
+          "nombre": "Integración al Módulo",
+          "descripcion": "Proceso de agregar el nuevo microservicio a la estructura multi-módulo existente"
+        },
+        {
+          "nombre": "Herencia de Configuración",
+          "descripcion": "Product hereda dependencias del POM padre business-domain automáticamente"
+        }
+      ],
+      "codigoEjemplo": "// Entidad Product\npackage com.paymentchange.product.entities;\n\nimport jakarta.persistence.*;\nimport lombok.Data;\n\n@Data\n@Entity\npublic class Product {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    private String name;\n    private Double price;\n}\n\n// ProductRepository\npackage com.paymentchange.product.repositories;\n\nimport com.paymentchange.product.entities.Product;\nimport org.springframework.data.jpa.repository.JpaRepository;\n\npublic interface ProductRepository extends JpaRepository<Product, Long> {\n}\n\n// ProductRestController\npackage com.paymentchange.product.controller;\n\nimport com.paymentchange.product.entities.Product;\nimport com.paymentchange.product.repositories.ProductRepository;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.web.bind.annotation.*;\nimport java.util.List;\n\n@RestController\n@RequestMapping(\"/product\")\npublic class ProductRestController {\n    \n    @Autowired\n    private ProductRepository productRepository;\n    \n    @GetMapping\n    public List<Product> findAll() {\n        return productRepository.findAll();\n    }\n    \n    @GetMapping(\"/{id}\")\n    public Product findById(@PathVariable Long id) {\n        return productRepository.findById(id).orElse(null);\n    }\n    \n    @PostMapping\n    public Product create(@RequestBody Product product) {\n        return productRepository.save(product);\n    }\n}\n\n# application.properties\nserver.port=8082\nspring.application.name=product-service"
+    },
+    {
+      "numero": 3,
+      "archivo": "3__Crear_relación_cliente_muchos_productos_JPA.srt",
+      "titulo": "Crear Relación Cliente-Productos usando JPA ElementCollection",
+      "resumen": "Implementación de relación uno-a-muchos entre Customer y Product almacenando IDs de productos en Customer. Se usa @ElementCollection de JPA para guardar lista de IDs en tabla separada. Se explica por qué NO usar @OneToMany/@ManyToOne tradicional entre microservicios y la importancia de mantener independencia de datos.",
+      "puntosClave": [
+        "Customer necesita almacenar lista de productos asociados",
+        "NO usar @OneToMany/@ManyToOne (solo funciona en misma BD)",
+        "Solución: almacenar solo IDs de productos con @ElementCollection",
+        "Agregar campo: List<Long> productIds en entidad Customer",
+        "Anotación @ElementCollection para mapear colección de valores simples",
+        "@CollectionTable define tabla intermedia customer_products",
+        "@Column(name = \"product_id\") para nombrar columna de IDs",
+        "JPA crea automáticamente tabla customer_products con customer_id y product_id",
+        "Customer solo guarda referencias (IDs), no objetos Product completos",
+        "Para obtener datos completos: consumir API de Product",
+        "Mantiene independencia: Product puede cambiar sin afectar Customer",
+        "Inicializar lista: private List<Long> productIds = new ArrayList<>()"
+      ],
+      "conceptos": [
+        {
+          "nombre": "@ElementCollection",
+          "descripcion": "Anotación JPA para mapear colecciones de tipos simples (String, Long, etc.) en tabla separada"
+        },
+        {
+          "nombre": "@CollectionTable",
+          "descripcion": "Define nombre y configuración de tabla intermedia que almacena la colección"
+        },
+        {
+          "nombre": "Tabla Intermedia",
+          "descripcion": "Tabla creada automáticamente por JPA para almacenar relación muchos-a-muchos o colecciones"
+        },
+        {
+          "nombre": "IDs de Referencia",
+          "descripcion": "Almacenar solo identificadores en lugar de objetos completos para mantener independencia"
+        },
+        {
+          "nombre": "Relación Lógica",
+          "descripcion": "Relación conceptual entre entidades sin foreign keys directas en BD"
+        },
+        {
+          "nombre": "@OneToMany Tradicional",
+          "descripcion": "Relación JPA que NO debe usarse entre microservicios porque viola independencia"
+        },
+        {
+          "nombre": "Desacoplamiento de Datos",
+          "descripcion": "Práctica de no crear dependencias de BD entre microservicios"
+        },
+        {
+          "nombre": "Join Table",
+          "descripcion": "Tabla intermedia generada por @ElementCollection (customer_products)"
+        },
+        {
+          "nombre": "Colección de Primitivos",
+          "descripcion": "Lista de tipos básicos (Long, String) en lugar de objetos complejos"
+        },
+        {
+          "nombre": "Inicialización de Colecciones",
+          "descripcion": "Importante inicializar listas con new ArrayList<>() para evitar NullPointerException"
+        }
+      ],
+      "codigoEjemplo": "// Entidad Customer actualizada con relación a productos\npackage com.paymentchange.customer.entities;\n\nimport jakarta.persistence.*;\nimport lombok.Data;\nimport java.util.ArrayList;\nimport java.util.List;\n\n@Data\n@Entity\npublic class Customer {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    \n    private String name;\n    private String phoneNumber;\n    \n    // Relación con productos mediante IDs\n    @ElementCollection\n    @CollectionTable(\n        name = \"customer_products\",\n        joinColumns = @JoinColumn(name = \"customer_id\")\n    )\n    @Column(name = \"product_id\")\n    private List<Long> productIds = new ArrayList<>();\n}\n\n/* Tabla generada automáticamente:\ncustomer_products\n- customer_id (FK a customer)\n- product_id (Long, ID de producto en otro microservicio)\n*/"
+    },
+    {
+      "numero": 4,
+      "archivo": "4__Revisión_final_refactorización_prueba_funcional.srt",
+      "titulo": "Revisión Final, Refactorización y Prueba Funcional del Microservicio Customer",
+      "resumen": "Validación completa del microservicio Customer actualizado con relación a productos. Se prueba crear customers con lista de productIds, se verifica persistencia en H2, y se valida que la tabla intermedia se genera correctamente. Incluye uso de consola H2 para inspeccionar datos y estructura de tablas.",
+      "puntosClave": [
+        "Reiniciar microservicio Customer para aplicar cambios de entidad",
+        "Probar crear Customer con lista de productIds en Swagger",
+        "Verificar que se crea tabla customer_products automáticamente",
+        "Activar consola H2: spring.h2.console.enabled=true",
+        "Acceder a consola: http://localhost:8081/h2-console",
+        "URL JDBC: jdbc:h2:mem:testdb (base de datos en memoria)",
+        "Inspeccionar tablas: customer y customer_products",
+        "Validar que productIds se guardan correctamente en tabla intermedia",
+        "Probar actualizar customer agregando/eliminando productos",
+        "Verificar integridad de datos con consultas SQL directas",
+        "Importante: datos en memoria se pierden al reiniciar",
+        "Preparación para implementar comunicación con Product"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Consola H2",
+          "descripcion": "Interfaz web que permite ejecutar consultas SQL directamente en la base de datos H2"
+        },
+        {
+          "nombre": "spring.h2.console.enabled",
+          "descripcion": "Propiedad que activa/desactiva el acceso a la consola web de H2"
+        },
+        {
+          "nombre": "jdbc:h2:mem:testdb",
+          "descripcion": "URL de conexión a base de datos H2 en memoria (nombre por defecto: testdb)"
+        },
+        {
+          "nombre": "Base de Datos en Memoria",
+          "descripcion": "BD temporal que existe solo mientras la aplicación está ejecutándose"
+        },
+        {
+          "nombre": "Tabla Intermedia",
+          "descripcion": "customer_products generada automáticamente por @ElementCollection"
+        },
+        {
+          "nombre": "Validación de Persistencia",
+          "descripcion": "Verificar que datos se guardan correctamente en todas las tablas relacionadas"
+        },
+        {
+          "nombre": "Consultas SQL Directas",
+          "descripcion": "Ejecutar SELECT, INSERT, UPDATE en consola H2 para inspeccionar datos"
+        },
+        {
+          "nombre": "Integridad de Datos",
+          "descripcion": "Asegurar que relaciones y referencias se mantienen correctamente"
+        },
+        {
+          "nombre": "Reinicio de Aplicación",
+          "descripcion": "Necesario para aplicar cambios en entidades JPA (nuevos campos, anotaciones)"
+        },
+        {
+          "nombre": "Prueba Funcional",
+          "descripcion": "Validación manual del comportamiento esperado usando Swagger y consola H2"
+        }
+      ],
+      "codigoEjemplo": "# application.properties - Activar consola H2\nserver.port=8081\nspring.application.name=customer-service\nspring.h2.console.enabled=true\nspring.h2.console.path=/h2-console\n\n# Datos de conexión en consola H2:\n# JDBC URL: jdbc:h2:mem:testdb\n# User Name: sa\n# Password: (vacío)\n\n-- SQL para inspeccionar datos en consola H2\nSELECT * FROM customer;\nSELECT * FROM customer_products;\n\n-- Ver relación completa\nSELECT c.id, c.name, cp.product_id \nFROM customer c \nLEFT JOIN customer_products cp ON c.id = cp.customer_id;\n\n// JSON para crear customer con productos en Swagger\n{\n  \"name\": \"Juan Pérez\",\n  \"phoneNumber\": \"555-1234\",\n  \"productIds\": [1, 2, 3]\n}"
+    },
+    {
+      "numero": 5,
+      "archivo": "5__Modificar_método_guardar_customer_persistir_productos.srt",
+      "titulo": "Modificar Método para Guardar Customer y Persistir Productos Asociados",
+      "resumen": "Mejora del endpoint create de Customer para validar que los productos existen antes de asociarlos. Se implementa lógica que consulta el microservicio Product para cada productId, verifica existencia, y solo guarda el customer si todos los productos son válidos. Preparación para implementar WebClient en siguiente clase.",
+      "puntosClave": [
+        "Problema: Customer acepta cualquier productId sin validar existencia",
+        "Solución: validar que productos existen en microservicio Product",
+        "Crear capa de servicio: CustomerService entre controller y repository",
+        "Mover lógica de negocio de controller a service",
+        "@Service para marcar clase como componente de servicio",
+        "@Autowired para inyectar CustomerRepository en CustomerService",
+        "Lógica: antes de guardar, consultar API de Product para cada ID",
+        "Si producto no existe: lanzar excepción o retornar error",
+        "Solo persistir customer si TODOS los productos son válidos",
+        "Separación de responsabilidades: Controller → Service → Repository",
+        "Controller maneja HTTP, Service contiene lógica, Repository accede BD",
+        "Preparación para usar WebClient en CustomerService"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Capa de Servicio",
+          "descripcion": "Componente intermedio que contiene lógica de negocio entre controller y repository"
+        },
+        {
+          "nombre": "@Service",
+          "descripcion": "Anotación que marca una clase como servicio de Spring (componente de negocio)"
+        },
+        {
+          "nombre": "Validación de Integridad",
+          "descripcion": "Verificar que referencias a otros datos son válidas antes de persistir"
+        },
+        {
+          "nombre": "Separación de Responsabilidades",
+          "descripcion": "Principio que divide funciones: Controller (HTTP), Service (negocio), Repository (datos)"
+        },
+        {
+          "nombre": "Lógica de Negocio",
+          "descripcion": "Reglas y validaciones específicas del dominio (ej: verificar productos existen)"
+        },
+        {
+          "nombre": "Inyección de Dependencias",
+          "descripcion": "Spring inyecta automáticamente CustomerRepository y WebClient en CustomerService"
+        },
+        {
+          "nombre": "Validación Previa",
+          "descripcion": "Verificar condiciones antes de ejecutar operación principal"
+        },
+        {
+          "nombre": "Manejo de Errores",
+          "descripcion": "Lanzar excepciones o retornar mensajes cuando validación falla"
+        },
+        {
+          "nombre": "Cliente REST en Servicio",
+          "descripcion": "Service usa WebClient para consumir APIs de otros microservicios"
+        },
+        {
+          "nombre": "Patrón Tres Capas",
+          "descripcion": "Arquitectura: Presentation (Controller) → Business (Service) → Data (Repository)"
+        }
+      ],
+      "codigoEjemplo": "// CustomerService - Capa de servicio\npackage com.paymentchange.customer.services;\n\nimport com.paymentchange.customer.entities.Customer;\nimport com.paymentchange.customer.repositories.CustomerRepository;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private CustomerRepository customerRepository;\n    \n    // TODO: Inyectar WebClient para consultar Product\n    \n    public Customer create(Customer customer) {\n        // Validar que todos los productos existen\n        for (Long productId : customer.getProductIds()) {\n            // TODO: Consultar Product API con WebClient\n            // Si no existe, lanzar excepción\n        }\n        \n        // Solo guardar si validación pasó\n        return customerRepository.save(customer);\n    }\n    \n    public List<Customer> findAll() {\n        return customerRepository.findAll();\n    }\n}\n\n// CustomerRestController actualizado\n@RestController\n@RequestMapping(\"/customer\")\npublic class CustomerRestController {\n    \n    @Autowired\n    private CustomerService customerService; // Usar Service en vez de Repository\n    \n    @PostMapping\n    public Customer create(@RequestBody Customer customer) {\n        return customerService.create(customer);\n    }\n}"
+    },
+    {
+      "numero": 6,
+      "archivo": "6__comparten_datos_se_comunican_microservicios.srt",
+      "titulo": "Cómo Comparten Datos y se Comunican los Microservicios",
+      "resumen": "Explicación de patrones de comunicación entre microservicios: síncrona vs asíncrona. Se analiza cuándo usar cada tipo, ventajas/desventajas, y se introduce WebClient como solución para comunicación HTTP síncrona reactiva. Incluye comparación con RestTemplate (deprecado) y conceptos de programación reactiva.",
+      "puntosClave": [
+        "Dos tipos principales: comunicación síncrona y asíncrona",
+        "Síncrona: cliente espera respuesta inmediata (HTTP/REST)",
+        "Asíncrona: mensajería con colas (RabbitMQ, Kafka) sin espera bloqueante",
+        "Caso de estudio: Customer → Product es comunicación síncrona",
+        "RestTemplate: cliente HTTP tradicional (marcado como deprecado)",
+        "WebClient: cliente HTTP reactivo recomendado por Spring",
+        "Ventajas WebClient: no bloqueante, mejor rendimiento, reactivo",
+        "Programación reactiva: procesar streams de datos de forma asíncrona",
+        "Starter necesario: spring-boot-starter-webflux (incluye WebClient)",
+        "WebClient es más moderno y eficiente que RestTemplate",
+        "Comunicación síncrona adecuada cuando necesitas respuesta inmediata",
+        "Asíncrona mejor para operaciones que no requieren respuesta inmediata"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Comunicación Síncrona",
+          "descripcion": "Cliente hace petición y espera respuesta antes de continuar (bloqueante)"
+        },
+        {
+          "nombre": "Comunicación Asíncrona",
+          "descripcion": "Cliente envía mensaje y continúa sin esperar respuesta (no bloqueante)"
+        },
+        {
+          "nombre": "RestTemplate",
+          "descripcion": "Cliente HTTP tradicional de Spring, ahora deprecado en favor de WebClient"
+        },
+        {
+          "nombre": "WebClient",
+          "descripcion": "Cliente HTTP reactivo de Spring WebFlux, no bloqueante y más eficiente"
+        },
+        {
+          "nombre": "Programación Reactiva",
+          "descripcion": "Paradigma que maneja flujos de datos asíncronos con operadores funcionales"
+        },
+        {
+          "nombre": "Spring WebFlux",
+          "descripcion": "Framework reactivo de Spring para aplicaciones no bloqueantes"
+        },
+        {
+          "nombre": "No Bloqueante",
+          "descripcion": "Operación que no detiene la ejecución mientras espera respuesta"
+        },
+        {
+          "nombre": "Mensajería",
+          "descripcion": "Comunicación mediante colas de mensajes (RabbitMQ, Kafka, ActiveMQ)"
+        },
+        {
+          "nombre": "HTTP/REST",
+          "descripcion": "Protocolo estándar para comunicación síncrona entre microservicios"
+        },
+        {
+          "nombre": "Deprecado",
+          "descripcion": "Código antiguo que funciona pero no se recomienda usar en proyectos nuevos"
+        }
+      ],
+      "codigoEjemplo": "<!-- Agregar WebFlux para WebClient en pom.xml -->\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-webflux</artifactId>\n</dependency>\n\n// Comparación RestTemplate vs WebClient\n\n// RestTemplate (DEPRECADO - no usar)\nRestTemplate restTemplate = new RestTemplate();\nProduct product = restTemplate.getForObject(\n    \"http://localhost:8082/product/1\", \n    Product.class\n);\n\n// WebClient (RECOMENDADO - reactivo)\nWebClient webClient = WebClient.create(\"http://localhost:8082\");\nProduct product = webClient.get()\n    .uri(\"/product/1\")\n    .retrieve()\n    .bodyToMono(Product.class)\n    .block(); // block() para obtener resultado (usar con cuidado)"
+    },
+    {
+      "numero": 7,
+      "archivo": "7__Configuración_cliente_reactivo_Webclien_cliente_REST.srt",
+      "titulo": "Configuración de WebClient como Cliente REST Reactivo",
+      "resumen": "Configuración e implementación de WebClient en el microservicio Customer para consumir API de Product. Se crea clase de configuración @Configuration con @Bean para WebClient, se inyecta en CustomerService, y se prepara para hacer peticiones HTTP reactivas al servicio Product.",
+      "puntosClave": [
+        "Agregar dependencia spring-boot-starter-webflux al pom.xml",
+        "Crear clase WebClientConfig en paquete config",
+        "@Configuration marca clase como fuente de configuración de Spring",
+        "@Bean define método que retorna instancia de WebClient",
+        "WebClient.builder() para construir instancia personalizada",
+        "baseUrl(\"http://localhost:8082\") define URL base de Product",
+        "build() finaliza construcción del WebClient",
+        "Inyectar WebClient en CustomerService con @Autowired",
+        "WebClient se puede reutilizar en múltiples métodos",
+        "Configuración centralizada facilita cambios (ej: cambiar URL)",
+        "En producción: URL base vendría de configuración externa",
+        "Preparado para consumir endpoints de Product"
+      ],
+      "conceptos": [
+        {
+          "nombre": "@Configuration",
+          "descripcion": "Anotación que marca clase como fuente de definiciones de beans de Spring"
+        },
+        {
+          "nombre": "@Bean",
+          "descripcion": "Anotación en método que indica que retorna un objeto administrado por Spring"
+        },
+        {
+          "nombre": "WebClient.builder()",
+          "descripcion": "Builder pattern para configurar y crear instancia de WebClient"
+        },
+        {
+          "nombre": "baseUrl",
+          "descripcion": "URL base del servicio que se va a consumir (http://localhost:8082)"
+        },
+        {
+          "nombre": "Configuración Centralizada",
+          "descripcion": "Definir beans en clase @Configuration para reutilizar en toda la aplicación"
+        },
+        {
+          "nombre": "Inyección de Bean",
+          "descripcion": "Spring inyecta automáticamente el WebClient configurado donde se necesite"
+        },
+        {
+          "nombre": "Spring WebFlux",
+          "descripcion": "Framework reactivo que provee WebClient para peticiones HTTP no bloqueantes"
+        },
+        {
+          "nombre": "Builder Pattern",
+          "descripcion": "Patrón de diseño para construir objetos complejos paso a paso"
+        },
+        {
+          "nombre": "Service Discovery",
+          "descripcion": "En producción, URL vendría de Registry en vez de hardcodear localhost"
+        },
+        {
+          "nombre": "Configuración por Entorno",
+          "descripcion": "URLs diferentes para desarrollo, testing y producción"
+        }
+      ],
+      "codigoEjemplo": "<!-- Agregar dependencia WebFlux en pom.xml -->\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-webflux</artifactId>\n</dependency>\n\n// WebClientConfig.java\npackage com.paymentchange.customer.config;\n\nimport org.springframework.context.annotation.Bean;\nimport org.springframework.context.annotation.Configuration;\nimport org.springframework.web.reactive.function.client.WebClient;\n\n@Configuration\npublic class WebClientConfig {\n    \n    @Bean\n    public WebClient webClient() {\n        return WebClient.builder()\n            .baseUrl(\"http://localhost:8082\")\n            .build();\n    }\n}\n\n// Inyectar en CustomerService\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private CustomerRepository customerRepository;\n    \n    @Autowired\n    private WebClient webClient; // Inyectado automáticamente\n    \n    // Listo para usar webClient en métodos del servicio\n}"
+    },
+    {
+      "numero": 8,
+      "archivo": "8__Consumir_API_REST.srt",
+      "titulo": "Consumir API REST de Product desde Customer usando WebClient",
+      "resumen": "Implementación completa del consumo de API REST de Product desde CustomerService. Se construye petición GET con WebClient para validar existencia de productos antes de crear customer. Incluye manejo de respuestas, errores, y conversión de datos reactivos con Mono y block().",
+      "puntosClave": [
+        "Validar productIds antes de guardar customer",
+        "webClient.get() inicia petición GET",
+        ".uri(\"/product/{id}\", productId) construye URL con parámetro",
+        ".retrieve() obtiene respuesta del servidor",
+        ".bodyToMono(Product.class) convierte respuesta a objeto Product",
+        "Mono<Product>: tipo reactivo que representa 0 o 1 elemento futuro",
+        ".block() bloquea hasta obtener resultado (síncrono)",
+        "Si producto no existe, block() retorna null",
+        "Lanzar excepción si producto no encontrado",
+        "Solo guardar customer si todos los productos son válidos",
+        "Manejo de errores con try-catch o verificación de null",
+        "En producción: usar manejo reactivo completo sin block()"
+      ],
+      "conceptos": [
+        {
+          "nombre": "webClient.get()",
+          "descripcion": "Inicia construcción de petición HTTP GET"
+        },
+        {
+          "nombre": ".uri()",
+          "descripcion": "Define el endpoint y parámetros de la petición"
+        },
+        {
+          "nombre": ".retrieve()",
+          "descripcion": "Ejecuta la petición y obtiene respuesta del servidor"
+        },
+        {
+          "nombre": ".bodyToMono()",
+          "descripcion": "Convierte cuerpo de respuesta HTTP a tipo Mono del objeto especificado"
+        },
+        {
+          "nombre": "Mono<T>",
+          "descripcion": "Tipo reactivo de Project Reactor que representa 0 o 1 elemento futuro"
+        },
+        {
+          "nombre": ".block()",
+          "descripcion": "Método bloqueante que espera y retorna resultado del Mono (usar con precaución)"
+        },
+        {
+          "nombre": "Manejo de Null",
+          "descripcion": "Verificar si block() retorna null cuando recurso no existe (404)"
+        },
+        {
+          "nombre": "Validación de Existencia",
+          "descripcion": "Confirmar que recurso existe en otro servicio antes de crear referencia"
+        },
+        {
+          "nombre": "Excepción de Negocio",
+          "descripcion": "Lanzar error personalizado cuando validación falla"
+        },
+        {
+          "nombre": "Path Variable",
+          "descripcion": "Parámetro en URL (/product/{id}) reemplazado por valor real"
+        }
+      ],
+      "codigoEjemplo": "// CustomerService - Validar productos con WebClient\npackage com.paymentchange.customer.services;\n\nimport com.paymentchange.customer.entities.Customer;\nimport com.paymentchange.customer.repositories.CustomerRepository;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\nimport org.springframework.web.reactive.function.client.WebClient;\n\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private CustomerRepository customerRepository;\n    \n    @Autowired\n    private WebClient webClient;\n    \n    public Customer create(Customer customer) {\n        // Validar que todos los productos existen\n        for (Long productId : customer.getProductIds()) {\n            Product product = webClient.get()\n                .uri(\"/product/{id}\", productId)\n                .retrieve()\n                .bodyToMono(Product.class)\n                .block(); // Bloquea hasta obtener respuesta\n            \n            if (product == null) {\n                throw new RuntimeException(\n                    \"Producto no encontrado: \" + productId\n                );\n            }\n        }\n        \n        // Solo guardar si todos los productos son válidos\n        return customerRepository.save(customer);\n    }\n}\n\n// Clase Product (DTO en Customer para recibir respuesta)\npackage com.paymentchange.customer.dto;\n\nimport lombok.Data;\n\n@Data\npublic class Product {\n    private Long id;\n    private String name;\n    private Double price;\n}"
+    },
+    {
+      "numero": 9,
+      "archivo": "9__Crear_método_API_customer_consultar_cliente_sus.srt",
+      "titulo": "Crear Método en API de Customer para Consultar Cliente con sus Productos",
+      "resumen": "Implementación de endpoint GET /customer/{id} que retorna customer con información completa de sus productos. Se crea DTO CustomerWithProducts que combina datos de Customer y lista de objetos Product obtenidos mediante WebClient. Enriquecimiento de datos consumiendo múltiples APIs.",
+      "puntosClave": [
+        "Crear endpoint GET /customer/{id} que retorna datos enriquecidos",
+        "No retornar solo IDs, sino objetos Product completos",
+        "Crear DTO: CustomerWithProducts con campos de Customer + List<Product>",
+        "En CustomerService: método findByIdWithProducts(Long id)",
+        "Buscar customer en BD local",
+        "Para cada productId: consumir API Product con WebClient",
+        "Convertir lista de IDs a lista de objetos Product",
+        "Mapear Customer + Products a DTO CustomerWithProducts",
+        "Retornar DTO con información completa al cliente",
+        "Stream API para transformar List<Long> a List<Product>",
+        ".map() para ejecutar WebClient por cada ID",
+        "Agregación de datos de múltiples fuentes"
+      ],
+      "conceptos": [
+        {
+          "nombre": "DTO (Data Transfer Object)",
+          "descripcion": "Objeto diseñado para transferir datos entre capas, combina información de múltiples fuentes"
+        },
+        {
+          "nombre": "CustomerWithProducts",
+          "descripcion": "DTO que contiene datos de Customer más lista completa de objetos Product"
+        },
+        {
+          "nombre": "Enriquecimiento de Datos",
+          "descripcion": "Proceso de agregar información adicional consultando múltiples fuentes"
+        },
+        {
+          "nombre": "Agregación de Datos",
+          "descripcion": "Combinar datos de diferentes microservicios en una sola respuesta"
+        },
+        {
+          "nombre": "Stream API",
+          "descripcion": "API de Java para procesar colecciones de forma funcional (map, filter, collect)"
+        },
+        {
+          "nombre": ".map() Transformation",
+          "descripcion": "Transforma cada elemento de lista (Long → Product usando WebClient)"
+        },
+        {
+          "nombre": "Múltiples Llamadas HTTP",
+          "descripcion": "Ejecutar WebClient N veces para obtener detalles de N productos"
+        },
+        {
+          "nombre": "PathVariable",
+          "descripcion": "@PathVariable para extraer ID de URL en endpoint GET /customer/{id}"
+        },
+        {
+          "nombre": "Mapeo de Entidad a DTO",
+          "descripcion": "Convertir Customer entity a CustomerWithProducts DTO con datos adicionales"
+        },
+        {
+          "nombre": "API Composition Pattern",
+          "descripcion": "Patrón donde un servicio agrega datos de múltiples servicios en respuesta única"
+        }
+      ],
+      "codigoEjemplo": "// CustomerWithProducts DTO\npackage com.paymentchange.customer.dto;\n\nimport lombok.Data;\nimport java.util.List;\n\n@Data\npublic class CustomerWithProducts {\n    private Long id;\n    private String name;\n    private String phoneNumber;\n    private List<Product> products; // Objetos completos, no IDs\n}\n\n// CustomerService - Método para obtener customer con productos\npublic CustomerWithProducts findByIdWithProducts(Long id) {\n    // Buscar customer\n    Customer customer = customerRepository.findById(id)\n        .orElseThrow(() -> new RuntimeException(\"Customer no encontrado\"));\n    \n    // Obtener productos completos\n    List<Product> products = customer.getProductIds().stream()\n        .map(productId -> webClient.get()\n            .uri(\"/product/{id}\", productId)\n            .retrieve()\n            .bodyToMono(Product.class)\n            .block())\n        .collect(Collectors.toList());\n    \n    // Crear DTO con datos completos\n    CustomerWithProducts dto = new CustomerWithProducts();\n    dto.setId(customer.getId());\n    dto.setName(customer.getName());\n    dto.setPhoneNumber(customer.getPhoneNumber());\n    dto.setProducts(products);\n    \n    return dto;\n}\n\n// CustomerRestController - Nuevo endpoint\n@GetMapping(\"/{id}\")\npublic CustomerWithProducts findById(@PathVariable Long id) {\n    return customerService.findByIdWithProducts(id);\n}"
+    },
+    {
+      "numero": 10,
+      "archivo": "10__Probar_comunicación_Customer_Product.srt",
+      "titulo": "Probar Comunicación entre Customer y Product",
+      "resumen": "Validación práctica de la comunicación entre microservicios. Se prueban los flujos completos: crear productos en Product, crear customer con productIds válidos, consultar customer con productos completos, y verificar que validaciones funcionan correctamente. Demostración end-to-end con Swagger.",
+      "puntosClave": [
+        "Paso 1: Iniciar ambos microservicios (Product:8082, Customer:8081)",
+        "Paso 2: Crear productos en Product usando Swagger (puerto 8082)",
+        "Paso 3: Anotar IDs de productos creados (ej: 1, 2, 3)",
+        "Paso 4: Crear customer con productIds válidos en Customer (puerto 8081)",
+        "Paso 5: Verificar validación funciona intentando ID inexistente",
+        "Paso 6: Consultar GET /customer/{id} para ver datos enriquecidos",
+        "Validar que respuesta incluye objetos Product completos (name, price)",
+        "Probar que crear customer con ID inválido retorna error",
+        "Verificar que comunicación HTTP entre servicios funciona",
+        "Swagger muestra respuesta con customer + products anidados",
+        "Demostración de agregación exitosa de datos",
+        "Flujo E2E completo validado"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Flujo End-to-End",
+          "descripcion": "Prueba completa desde creación de productos hasta consulta de customer con productos"
+        },
+        {
+          "nombre": "Validación de Integridad Referencial",
+          "descripcion": "Verificar que IDs referenciados existen en el servicio correspondiente"
+        },
+        {
+          "nombre": "Datos Enriquecidos",
+          "descripcion": "Respuesta que combina datos locales con datos obtenidos de otros servicios"
+        },
+        {
+          "nombre": "Prueba de Integración",
+          "descripcion": "Validar que múltiples componentes funcionan correctamente juntos"
+        },
+        {
+          "nombre": "Manejo de Errores",
+          "descripcion": "Verificar que sistema responde adecuadamente ante datos inválidos"
+        },
+        {
+          "nombre": "Swagger Testing",
+          "descripcion": "Usar interfaz Swagger para probar APIs de ambos microservicios"
+        },
+        {
+          "nombre": "Response Anidado",
+          "descripcion": "JSON con objetos dentro de objetos (customer contiene array de products)"
+        },
+        {
+          "nombre": "Validación Funcional",
+          "descripcion": "Confirmar que sistema cumple requisitos de negocio esperados"
+        },
+        {
+          "nombre": "Comunicación Síncrona",
+          "descripcion": "Customer espera respuesta de Product antes de continuar"
+        },
+        {
+          "nombre": "Microservicios Independientes",
+          "descripcion": "Cada servicio puede probarse por separado pero trabajan juntos"
+        }
+      ],
+      "codigoEjemplo": "// Flujo de prueba E2E\n\n// 1. Crear productos en Product (puerto 8082)\nPOST http://localhost:8082/product\n{\n  \"name\": \"Cuenta de Ahorros\",\n  \"price\": 0.0\n}\n// Respuesta: {\"id\": 1, \"name\": \"Cuenta de Ahorros\", \"price\": 0.0}\n\nPOST http://localhost:8082/product\n{\n  \"name\": \"Tarjeta de Crédito\",\n  \"price\": 50.0\n}\n// Respuesta: {\"id\": 2, \"name\": \"Tarjeta de Crédito\", \"price\": 50.0}\n\n// 2. Crear customer con productos válidos (puerto 8081)\nPOST http://localhost:8081/customer\n{\n  \"name\": \"María González\",\n  \"phoneNumber\": \"555-5678\",\n  \"productIds\": [1, 2]\n}\n// Respuesta: {\"id\": 1, ...}\n\n// 3. Consultar customer con productos completos\nGET http://localhost:8081/customer/1\n// Respuesta:\n{\n  \"id\": 1,\n  \"name\": \"María González\",\n  \"phoneNumber\": \"555-5678\",\n  \"products\": [\n    {\"id\": 1, \"name\": \"Cuenta de Ahorros\", \"price\": 0.0},\n    {\"id\": 2, \"name\": \"Tarjeta de Crédito\", \"price\": 50.0}\n  ]\n}\n\n// 4. Probar validación con ID inválido\nPOST http://localhost:8081/customer\n{\n  \"name\": \"Test\",\n  \"phoneNumber\": \"555-0000\",\n  \"productIds\": [999] // Producto no existe\n}\n// Respuesta: Error 500 con mensaje \"Producto no encontrado: 999\""
+    },
+    {
+      "numero": 11,
+      "archivo": "11__Revisar_comentar_microservicio_transacciones.srt",
+      "titulo": "Revisar y Comentar Microservicio de Transacciones",
+      "resumen": "Revisión del código del microservicio Transaction que implementa lógica de negocio compleja. Se analiza la estructura, entidad Transaction con relaciones a Customer y Product, validaciones, y cómo consume APIs de ambos microservicios. Introducción al tercer microservicio del dominio business.",
+      "puntosClave": [
+        "Transaction: microservicio core que registra transacciones financieras",
+        "Puerto configurado: 8083",
+        "Entidad Transaction: id, customerId, productId, amount, date, status",
+        "Relaciones mediante IDs: customerId y productId (no objetos)",
+        "Lógica compleja: validar customer existe, validar producto existe",
+        "Verificar que customer tiene el producto antes de transaccionar",
+        "Usar WebClient para consumir Customer API y Product API",
+        "Validaciones en cadena antes de persistir transacción",
+        "DTO TransactionWithDetails para retornar datos enriquecidos",
+        "Agregación de datos de Customer + Product + Transaction",
+        "Estructura similar a Customer y Product (entities, repositories, services, controller)",
+        "Demostración de microservicio que consume múltiples servicios"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Microservicio Transaction",
+          "descripcion": "Servicio que gestiona transacciones financieras (depósitos, retiros, transferencias)"
+        },
+        {
+          "nombre": "Entidad Transaction",
+          "descripcion": "Representa transacción financiera con customerId, productId, amount, date, status"
+        },
+        {
+          "nombre": "Validación en Cadena",
+          "descripcion": "Múltiples validaciones secuenciales antes de ejecutar operación principal"
+        },
+        {
+          "nombre": "Múltiples Dependencias",
+          "descripcion": "Transaction depende de Customer y Product para validar datos"
+        },
+        {
+          "nombre": "Lógica de Negocio Compleja",
+          "descripcion": "Reglas como verificar que customer posee el producto antes de transaccionar"
+        },
+        {
+          "nombre": "Consumo Múltiple de APIs",
+          "descripcion": "Transaction consume endpoints de Customer y Product usando WebClient"
+        },
+        {
+          "nombre": "TransactionWithDetails",
+          "descripcion": "DTO que combina Transaction + datos completos de Customer y Product"
+        },
+        {
+          "nombre": "Status de Transacción",
+          "descripcion": "Campo que indica estado (PENDING, COMPLETED, FAILED, etc.)"
+        },
+        {
+          "nombre": "Agregación Triple",
+          "descripcion": "Combinar datos de tres fuentes: Transaction, Customer y Product"
+        },
+        {
+          "nombre": "Validación de Reglas de Negocio",
+          "descripcion": "Verificar condiciones específicas del dominio antes de procesar"
+        }
+      ],
+      "codigoEjemplo": "// Entidad Transaction\npackage com.paymentchange.transaction.entities;\n\nimport jakarta.persistence.*;\nimport lombok.Data;\nimport java.time.LocalDateTime;\n\n@Data\n@Entity\npublic class Transaction {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    \n    private Long customerId; // Referencia a Customer\n    private Long productId;  // Referencia a Product\n    private Double amount;\n    private LocalDateTime date;\n    private String status; // PENDING, COMPLETED, FAILED\n}\n\n// TransactionService - Validaciones\n@Service\npublic class TransactionService {\n    \n    @Autowired\n    private WebClient customerWebClient;\n    \n    @Autowired\n    private WebClient productWebClient;\n    \n    @Autowired\n    private TransactionRepository repository;\n    \n    public Transaction create(Transaction transaction) {\n        // Validar customer existe\n        Customer customer = customerWebClient.get()\n            .uri(\"/customer/{id}\", transaction.getCustomerId())\n            .retrieve()\n            .bodyToMono(Customer.class)\n            .block();\n        \n        if (customer == null) {\n            throw new RuntimeException(\"Customer no encontrado\");\n        }\n        \n        // Validar producto existe\n        Product product = productWebClient.get()\n            .uri(\"/product/{id}\", transaction.getProductId())\n            .retrieve()\n            .bodyToMono(Product.class)\n            .block();\n        \n        if (product == null) {\n            throw new RuntimeException(\"Producto no encontrado\");\n        }\n        \n        // Validar que customer tiene el producto\n        if (!customer.getProductIds().contains(transaction.getProductId())) {\n            throw new RuntimeException(\"Customer no posee este producto\");\n        }\n        \n        // Persistir transacción\n        transaction.setDate(LocalDateTime.now());\n        transaction.setStatus(\"COMPLETED\");\n        return repository.save(transaction);\n    }\n}"
+    },
+    {
+      "numero": 12,
+      "archivo": "12__Prueba_funcional_E2E_comunicación_customer_producto.srt",
+      "titulo": "Prueba Funcional End-to-End de Comunicación Customer-Product-Transaction",
+      "resumen": "Validación completa del sistema con los tres microservicios ejecutándose simultáneamente. Se prueba el flujo completo: crear productos, crear customer con productos, crear transacciones validando reglas de negocio, y consultar datos enriquecidos. Demostración de arquitectura de microservicios funcional.",
+      "puntosClave": [
+        "Ejecutar tres microservicios simultáneamente (8081, 8082, 8083)",
+        "Flujo completo: Product → Customer → Transaction",
+        "Paso 1: Crear productos en Product (IDs: 1, 2, 3)",
+        "Paso 2: Crear customer con productos [1, 2]",
+        "Paso 3: Crear transacción válida (customerId:1, productId:1)",
+        "Paso 4: Intentar transacción inválida (customer sin ese producto)",
+        "Paso 5: Consultar transaction con datos enriquecidos",
+        "Validar que todas las validaciones funcionan correctamente",
+        "Verificar agregación de datos de tres microservicios",
+        "Probar manejo de errores en cada capa",
+        "Demostrar independencia: cada servicio puede reiniciarse sin afectar otros",
+        "Sistema completo de microservicios comunicándose correctamente"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Prueba E2E (End-to-End)",
+          "descripcion": "Validación del flujo completo atravesando múltiples microservicios"
+        },
+        {
+          "nombre": "Orquestación de Microservicios",
+          "descripcion": "Coordinación de múltiples servicios para completar operación de negocio"
+        },
+        {
+          "nombre": "Validación Distribuida",
+          "descripcion": "Verificaciones ejecutadas en diferentes microservicios"
+        },
+        {
+          "nombre": "Consistencia Eventual",
+          "descripcion": "Datos pueden estar temporalmente inconsistentes entre servicios"
+        },
+        {
+          "nombre": "Agregación Multinivel",
+          "descripcion": "Transaction agrega datos de Customer que a su vez consulta Product"
+        },
+        {
+          "nombre": "Ejecución Concurrente",
+          "descripcion": "Múltiples microservicios ejecutándose al mismo tiempo en puertos diferentes"
+        },
+        {
+          "nombre": "Cadena de Llamadas",
+          "descripcion": "Transaction → Customer → Product (llamadas HTTP en cascada)"
+        },
+        {
+          "nombre": "Manejo de Errores Distribuido",
+          "descripcion": "Errores pueden originarse en cualquier punto de la cadena de servicios"
+        },
+        {
+          "nombre": "Validación Funcional Completa",
+          "descripcion": "Verificar que sistema cumple todos los requisitos de negocio"
+        },
+        {
+          "nombre": "Arquitectura Funcional",
+          "descripcion": "Sistema de microservicios operando correctamente como un todo"
+        }
+      ],
+      "codigoEjemplo": "// Flujo de prueba E2E completo\n\n// PASO 1: Crear productos (puerto 8082)\nPOST http://localhost:8082/product\n{\"name\": \"Cuenta Corriente\", \"price\": 0.0}\n// ID: 1\n\nPOST http://localhost:8082/product\n{\"name\": \"Cuenta Ahorros\", \"price\": 0.0}\n// ID: 2\n\n// PASO 2: Crear customer con productos (puerto 8081)\nPOST http://localhost:8081/customer\n{\n  \"name\": \"Carlos Ruiz\",\n  \"phoneNumber\": \"555-9999\",\n  \"productIds\": [1, 2]\n}\n// ID: 1\n\n// PASO 3: Crear transacción válida (puerto 8083)\nPOST http://localhost:8083/transaction\n{\n  \"customerId\": 1,\n  \"productId\": 1,\n  \"amount\": 1000.0\n}\n// Respuesta: {\"id\": 1, \"status\": \"COMPLETED\", ...}\n\n// PASO 4: Intentar transacción inválida\nPOST http://localhost:8083/transaction\n{\n  \"customerId\": 1,\n  \"productId\": 3, // Customer no tiene producto 3\n  \"amount\": 500.0\n}\n// Error: \"Customer no posee este producto\"\n\n// PASO 5: Consultar transaction con detalles\nGET http://localhost:8083/transaction/1\n// Respuesta con datos agregados:\n{\n  \"id\": 1,\n  \"amount\": 1000.0,\n  \"status\": \"COMPLETED\",\n  \"customer\": {\n    \"id\": 1,\n    \"name\": \"Carlos Ruiz\",\n    \"phoneNumber\": \"555-9999\"\n  },\n  \"product\": {\n    \"id\": 1,\n    \"name\": \"Cuenta Corriente\",\n    \"price\": 0.0\n  }\n}"
+    }
+  ],
+  "resumen_seccion": "Esta sección implementa comunicación HTTP entre microservicios usando WebClient de Spring WebFlux. Se construye el microservicio Product, se establece relación Customer-Product mediante IDs con @ElementCollection, y se implementa consumo de APIs REST para validar datos y enriquecer respuestas. El microservicio Transaction demuestra orquestación compleja consumiendo múltiples servicios. Se valida el sistema completo end-to-end con los tres microservicios comunicándose correctamente.",
+  "tecnologias_cubiertas": [
+    "Spring WebFlux",
+    "WebClient (Cliente REST Reactivo)",
+    "Programación Reactiva (Mono)",
+    "JPA @ElementCollection",
+    "DTOs (Data Transfer Objects)",
+    "API Composition Pattern",
+    "Comunicación Síncrona HTTP",
+    "Validación Distribuida",
+    "Stream API Java",
+    "Consola H2"
+  ],
+  "mejores_practicas": [
+    "NO usar relaciones JPA (@OneToMany) entre microservicios",
+    "Almacenar solo IDs de referencia, no objetos completos",
+    "Usar WebClient en vez de RestTemplate (deprecado)",
+    "Configurar WebClient en clase @Configuration con @Bean",
+    "Crear capa de servicio para lógica de negocio y comunicación",
+    "Validar existencia de datos antes de crear referencias",
+    "Usar DTOs para agregar datos de múltiples fuentes",
+    "Implementar manejo de errores robusto en comunicación",
+    "Mantener independencia de datos entre microservicios",
+    "Enriquecer respuestas consultando servicios relacionados",
+    "Documentar puertos y dependencias entre servicios",
+    "Probar flujos E2E con todos los servicios ejecutándose"
+  ],
+  "patrones_implementados": [
+    "API Composition Pattern - agregar datos de múltiples servicios",
+    "Service Layer Pattern - separar lógica de negocio",
+    "DTO Pattern - transferir datos enriquecidos",
+    "Client-Side Discovery - consumir APIs directamente con URLs",
+    "Validation Pattern - validar datos distribuidos",
+    "Repository Pattern - acceso a datos con JPA"
+  ]
+}

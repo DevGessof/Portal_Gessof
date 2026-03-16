@@ -1,0 +1,79 @@
+{
+  "titulo": "Obtener Token JWT mediante API de Keycloak desde Postman",
+  "resumen": "Uso de API REST de Keycloak para obtener access tokens. Se configura request en Postman con credenciales de usuario, client_id y client_secret. Se obtiene JWT, se decodifica para ver claims y roles, y se valida estructura del token.",
+  "puntosClave": [
+    "Endpoint de token: POST /realms/{realm}/protocol/openid-connect/token",
+    "URL completa: http://localhost:8180/realms/paymentchange-realm/protocol/openid-connect/token",
+    "Body (x-www-form-urlencoded):",
+    "  - grant_type: password",
+    "  - client_id: payment-app",
+    "  - client_secret: [secret de Keycloak]",
+    "  - username: admin-user",
+    "  - password: 123456",
+    "  - scope: openid (opcional)",
+    "Response:",
+    "  - access_token: JWT principal",
+    "  - refresh_token: para renovar access_token",
+    "  - expires_in: tiempo de vida en segundos (300 = 5 min)",
+    "  - token_type: Bearer",
+    "Decodificar JWT en jwt.io:",
+    "  - Header: algoritmo (RS256), tipo (JWT)",
+    "  - Payload: sub, roles, exp, iat, iss",
+    "  - Signature: firma digital con private key de Keycloak",
+    "Claims importantes:",
+    "  - realm_access.roles: [\"ADMIN\", \"USER\"]",
+    "  - exp: timestamp de expiración",
+    "  - iss: issuer (Keycloak URL)"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Token Endpoint",
+      "descripcion": "URL de Keycloak para obtener tokens OAuth2"
+    },
+    {
+      "nombre": "grant_type",
+      "descripcion": "Tipo de flujo OAuth2 (password, client_credentials, etc.)"
+    },
+    {
+      "nombre": "client_id",
+      "descripcion": "Identificador del cliente solicitando token"
+    },
+    {
+      "nombre": "client_secret",
+      "descripcion": "Secreto del cliente para autenticación"
+    },
+    {
+      "nombre": "access_token",
+      "descripcion": "JWT que permite acceso a recursos protegidos"
+    },
+    {
+      "nombre": "refresh_token",
+      "descripcion": "Token para obtener nuevo access_token sin re-autenticar"
+    },
+    {
+      "nombre": "expires_in",
+      "descripcion": "Tiempo de vida del token en segundos"
+    },
+    {
+      "nombre": "Bearer Token",
+      "descripcion": "Tipo de token enviado en header Authorization: Bearer {token}"
+    },
+    {
+      "nombre": "JWT Header",
+      "descripcion": "Metadata del token (algoritmo, tipo)"
+    },
+    {
+      "nombre": "JWT Payload",
+      "descripcion": "Claims del token (usuario, roles, expiración)"
+    },
+    {
+      "nombre": "JWT Signature",
+      "descripcion": "Firma digital para verificar integridad"
+    },
+    {
+      "nombre": "realm_access",
+      "descripcion": "Claim que contiene roles del realm"
+    }
+  ],
+  "codigoEjemplo": null
+}

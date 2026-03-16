@@ -1,0 +1,51 @@
+{
+  "titulo": "Configuración de Lombok en Eclipse e IntelliJ IDEA",
+  "resumen": "Solución al problema de Lombok en Eclipse e IntelliJ que causa errores al no reconocer getters/setters generados automáticamente. Se muestra cómo instalar Lombok manualmente como plugin ejecutable (JAR) en el IDE. Incluye explicación de anotaciones Lombok (@Data) y validación de funcionamiento con Swagger.",
+  "puntosClave": [
+    "Lombok facilita escribir código generando getters/setters automáticamente",
+    "En Eclipse/IntelliJ requiere instalación manual del plugin",
+    "NetBeans reconoce Lombok por defecto sin configuración extra",
+    "Descargar lombok.jar del sitio oficial projectlombok.org",
+    "Ejecutar: 'java -jar lombok.jar' y especificar ubicación de Eclipse",
+    "Después de instalar: Project → Clean y Project → Build",
+    "Anotación @Data genera getters, setters y constructores",
+    "Sin Lombok correcto: errores en código y Swagger vacío",
+    "También instalar Spring Tools 4 en Eclipse para Spring Boot",
+    "Validar que no hay errores en métodos getter/setter de las entidades"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Lombok",
+      "descripcion": "Librería Java que genera automáticamente código repetitivo mediante anotaciones"
+    },
+    {
+      "nombre": "@Data",
+      "descripcion": "Anotación Lombok que genera getters, setters, toString, equals y hashCode"
+    },
+    {
+      "nombre": "Getters y Setters",
+      "descripcion": "Métodos para acceder (get) y modificar (set) atributos privados de una clase"
+    },
+    {
+      "nombre": "Plugin Manual",
+      "descripcion": "Instalación de extensión ejecutando un archivo JAR externo al IDE"
+    },
+    {
+      "nombre": "Project Clean",
+      "descripcion": "Elimina archivos compilados para forzar una recompilación completa"
+    },
+    {
+      "nombre": "Project Build",
+      "descripcion": "Compila el proyecto aplicando los cambios de configuración"
+    },
+    {
+      "nombre": "Swagger",
+      "descripcion": "Herramienta que genera documentación interactiva de APIs REST"
+    },
+    {
+      "nombre": "Código Repetitivo (Boilerplate)",
+      "descripcion": "Código que se repite en muchas clases sin aportar lógica de negocio"
+    }
+  ],
+  "codigoEjemplo": "// Sin Lombok - código manual extenso\npublic class Customer {\n    private String code;\n    private String name;\n    \n    public String getCode() { return code; }\n    public void setCode(String code) { this.code = code; }\n    public String getName() { return name; }\n    public void setName(String name) { this.name = name; }\n}\n\n// Con Lombok - código reducido\nimport lombok.Data;\n\n@Data\npublic class Customer {\n    private String code;\n    private String name;\n    // Getters, setters, toString, equals generados automáticamente\n}"
+}

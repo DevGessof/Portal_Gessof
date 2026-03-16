@@ -1,0 +1,59 @@
+{
+  "titulo": "Diseño Guiado por Dominios y Arquitectura Global del Proyecto",
+  "resumen": "Introducción al diseño de microservicios usando Domain-Driven Design (DDD). Se presenta el caso de estudio de una startup financiera y se identifican los microservicios principales: Customer, Product y Transaction. Se explica la arquitectura completa con componentes como Config Server, Registry Discovery, API Gateway y Spring Boot Admin.",
+  "puntosClave": [
+    "Caso de estudio: startup del sector financiero con gestión de transacciones",
+    "Metodología DDD (Domain-Driven Design) para identificar microservicios",
+    "Microservicios identificados: Customer (clientes), Product (servicios), Transaction (transacciones)",
+    "Cada microservicio es una aplicación independiente con su propia base de datos",
+    "Microservicios se comunican entre sí mediante HTTP/APIs REST",
+    "No son relaciones de base de datos, son relaciones entre aplicaciones",
+    "Arquitectura incluye: Config Server, Registry Discovery, API Gateway, Spring Admin",
+    "Cada microservicio puede usar diferente tipo de base de datos (PostgreSQL, MongoDB, etc.)",
+    "Independencia en tiempo de ejecución: cada microservicio puede ejecutarse sin los demás",
+    "Objetivo: construir CRUD completo con Customer, luego añadir capas de infraestructura"
+  ],
+  "conceptos": [
+    {
+      "nombre": "DDD (Domain-Driven Design)",
+      "descripcion": "Metodología de diseño que modela software basándose en los dominios del negocio"
+    },
+    {
+      "nombre": "Microservicio Customer",
+      "descripcion": "Servicio responsable de administrar toda la información de los clientes"
+    },
+    {
+      "nombre": "Microservicio Product",
+      "descripcion": "Servicio que gestiona los productos/servicios que ofrece la startup financiera"
+    },
+    {
+      "nombre": "Microservicio Transaction",
+      "descripcion": "Servicio core que maneja transacciones financieras (abonos, retiros, transferencias)"
+    },
+    {
+      "nombre": "Config Server",
+      "descripcion": "Microservicio que centraliza la configuración conectándose a un repositorio Git"
+    },
+    {
+      "nombre": "Registry Discovery",
+      "descripcion": "Componente que permite a los microservicios descubrirse y comunicarse eficientemente"
+    },
+    {
+      "nombre": "API Gateway",
+      "descripcion": "Puerta de entrada única que gestiona seguridad y enrutamiento a los microservicios"
+    },
+    {
+      "nombre": "Spring Boot Admin",
+      "descripcion": "Herramienta para monitorizar el estado y métricas de todos los microservicios"
+    },
+    {
+      "nombre": "Independencia en Tiempo de Ejecución",
+      "descripcion": "Capacidad de desplegar y ejecutar cada microservicio sin necesidad de que otros estén activos"
+    },
+    {
+      "nombre": "Base de Datos por Microservicio",
+      "descripcion": "Buena práctica donde cada microservicio tiene su propia BD independiente"
+    }
+  ],
+  "codigoEjemplo": null
+}

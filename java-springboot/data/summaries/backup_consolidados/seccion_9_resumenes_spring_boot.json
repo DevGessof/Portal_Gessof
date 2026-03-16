@@ -1,0 +1,565 @@
+{
+  "seccion": "Sección 9 - Seguridad con Spring Security",
+  "descripcion": "Implementación de seguridad en microservicios usando Spring Security. Se configura autenticación básica, autorización por roles, protección contra CSRF, configuración de CORS para aplicaciones frontend, y headers de seguridad. El resultado son APIs seguras protegidas contra ataques comunes y listas para integración con clientes web.",
+  "clases": [
+    {
+      "numero": 1,
+      "archivo": "1__Spring_Security__seguridad_Front_Back.srt",
+      "titulo": "Spring Security: Seguridad en Frontend y Backend",
+      "resumen": "Introducción a la importancia de la seguridad en arquitecturas de microservicios. Se explica por qué la seguridad no es opcional, tipos de ataques comunes (SQL injection, XSS, CSRF), y cómo Spring Security provee protección integral. Se establece diferencia entre autenticación (quién eres) y autorización (qué puedes hacer).",
+      "puntosClave": [
+        "Seguridad es crítica en aplicaciones modernas",
+        "APIs sin seguridad = datos expuestos a cualquiera",
+        "Ataques comunes: SQL injection, XSS, CSRF, DDoS, Man-in-the-Middle",
+        "Spring Security: framework de seguridad para aplicaciones Spring",
+        "Dos conceptos clave:",
+        "  - Autenticación: verificar identidad (usuario/contraseña, token)",
+        "  - Autorización: verificar permisos (roles, authorities)",
+        "Spring Security protege endpoints automáticamente",
+        "Configurable mediante SecurityFilterChain",
+        "Soporte para: Basic Auth, OAuth2, JWT, LDAP, Custom",
+        "Protección contra CSRF (Cross-Site Request Forgery)",
+        "CORS (Cross-Origin Resource Sharing) para frontends",
+        "Headers de seguridad automáticos (X-Frame-Options, X-XSS-Protection)"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Spring Security",
+          "descripcion": "Framework de autenticación y control de acceso para aplicaciones Spring"
+        },
+        {
+          "nombre": "Autenticación",
+          "descripcion": "Proceso de verificar la identidad del usuario (quién eres)"
+        },
+        {
+          "nombre": "Autorización",
+          "descripcion": "Proceso de verificar permisos del usuario (qué puedes hacer)"
+        },
+        {
+          "nombre": "SQL Injection",
+          "descripcion": "Ataque que inyecta código SQL malicioso en queries"
+        },
+        {
+          "nombre": "XSS (Cross-Site Scripting)",
+          "descripcion": "Ataque que inyecta scripts maliciosos en páginas web"
+        },
+        {
+          "nombre": "CSRF (Cross-Site Request Forgery)",
+          "descripcion": "Ataque que fuerza a usuario autenticado a ejecutar acciones no deseadas"
+        },
+        {
+          "nombre": "SecurityFilterChain",
+          "descripcion": "Cadena de filtros que procesan peticiones para aplicar seguridad"
+        },
+        {
+          "nombre": "Basic Authentication",
+          "descripcion": "Autenticación simple con usuario y contraseña en header Authorization"
+        },
+        {
+          "nombre": "JWT (JSON Web Token)",
+          "descripcion": "Token autónomo que contiene claims para autenticación stateless"
+        },
+        {
+          "nombre": "Security Headers",
+          "descripcion": "Headers HTTP que mejoran seguridad (X-Frame-Options, CSP, HSTS)"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "archivo": "2__Restriciciones_tecnicas_ataques_mínimas_se_deben.srt",
+      "titulo": "Restricciones Técnicas y Ataques Mínimos que se Deben Prevenir",
+      "resumen": "Análisis detallado de vectores de ataque comunes y configuraciones mínimas de seguridad. Se explican ataques específicos (CSRF, clickjacking, MIME sniffing), y cómo Spring Security los previene. Se establecen requisitos mínimos de seguridad que toda API debe implementar.",
+      "puntosClave": [
+        "Configuraciones mínimas de seguridad:",
+        "1. HTTPS obligatorio en producción (TLS/SSL)",
+        "2. Autenticación en todos los endpoints (excepto públicos)",
+        "3. Protección CSRF para operaciones que modifican datos",
+        "4. CORS configurado para permitir solo orígenes confiables",
+        "5. Headers de seguridad habilitados",
+        "Ataques a prevenir:",
+        "- CSRF: usar tokens CSRF o deshabilitar para APIs stateless",
+        "- Clickjacking: X-Frame-Options DENY",
+        "- MIME Sniffing: X-Content-Type-Options nosniff",
+        "- XSS: Content-Security-Policy",
+        "- Session Fixation: invalidar sesión al autenticar",
+        "Spring Security habilita protecciones por defecto",
+        "Configurar excepciones para endpoints públicos (/health, /swagger)",
+        "Usar HTTPS Strict Transport Security (HSTS)"
+      ],
+      "conceptos": [
+        {
+          "nombre": "HTTPS/TLS",
+          "descripcion": "Protocolo seguro que encripta comunicación entre cliente y servidor"
+        },
+        {
+          "nombre": "CSRF Token",
+          "descripcion": "Token único por sesión que previene ataques CSRF"
+        },
+        {
+          "nombre": "Clickjacking",
+          "descripcion": "Ataque que engaña usuarios para hacer click en elementos ocultos"
+        },
+        {
+          "nombre": "X-Frame-Options",
+          "descripcion": "Header que previene que sitio sea embebido en iframe"
+        },
+        {
+          "nombre": "MIME Sniffing",
+          "descripcion": "Navegador intenta adivinar tipo de contenido ignorando Content-Type"
+        },
+        {
+          "nombre": "X-Content-Type-Options",
+          "descripcion": "Header que previene MIME sniffing (valor: nosniff)"
+        },
+        {
+          "nombre": "Content-Security-Policy",
+          "descripcion": "Header que define fuentes permitidas de contenido (scripts, estilos)"
+        },
+        {
+          "nombre": "HSTS (HTTP Strict Transport Security)",
+          "descripcion": "Header que fuerza navegador a usar solo HTTPS"
+        },
+        {
+          "nombre": "Session Fixation",
+          "descripcion": "Ataque que reutiliza ID de sesión conocido"
+        },
+        {
+          "nombre": "Public Endpoints",
+          "descripcion": "Endpoints que no requieren autenticación (/health, /swagger)"
+        }
+      ]
+    },
+    {
+      "numero": 3,
+      "archivo": "3__Configuración_autenticación_básica_usuario_contraseña.srt",
+      "titulo": "Configuración de Autenticación Básica con Usuario y Contraseña",
+      "resumen": "Implementación de Spring Security con autenticación básica (Basic Auth). Se crea SecurityConfig con SecurityFilterChain, se configura usuario en memoria, y se protegen endpoints. Se explica flujo de autenticación y cómo enviar credenciales en header Authorization con formato Base64.",
+      "puntosClave": [
+        "Agregar dependencia: spring-boot-starter-security",
+        "Crear clase SecurityConfig con @Configuration y @EnableWebSecurity",
+        "Definir @Bean SecurityFilterChain para configurar seguridad",
+        "Configurar autenticación básica: http.httpBasic()",
+        "Crear usuario en memoria con UserDetailsService:",
+        "  - username: admin",
+        "  - password: {noop}password (noop = sin encriptar)",
+        "  - roles: USER, ADMIN",
+        "Proteger endpoints: .authorizeHttpRequests()",
+        "Permitir públicos: .requestMatchers(\"/actuator/health\").permitAll()",
+        "Requerir autenticación: .anyRequest().authenticated()",
+        "Header Authorization: Basic base64(username:password)",
+        "Ejemplo: Authorization: Basic YWRtaW46cGFzc3dvcmQ=",
+        "Probar con Postman/curl agregando header Authorization"
+      ],
+      "conceptos": [
+        {
+          "nombre": "spring-boot-starter-security",
+          "descripcion": "Starter que incluye Spring Security y autoconfiguraciones"
+        },
+        {
+          "nombre": "@EnableWebSecurity",
+          "descripcion": "Anotación que habilita configuración personalizada de Spring Security"
+        },
+        {
+          "nombre": "SecurityFilterChain",
+          "descripcion": "Bean que define cadena de filtros de seguridad"
+        },
+        {
+          "nombre": "httpBasic()",
+          "descripcion": "Configuración para autenticación HTTP Basic"
+        },
+        {
+          "nombre": "UserDetailsService",
+          "descripcion": "Interfaz para cargar datos de usuario (desde BD, memoria, LDAP)"
+        },
+        {
+          "nombre": "InMemoryUserDetailsManager",
+          "descripcion": "Implementación de UserDetailsService que almacena usuarios en memoria"
+        },
+        {
+          "nombre": "PasswordEncoder",
+          "descripcion": "Interfaz para codificar/verificar contraseñas"
+        },
+        {
+          "nombre": "{noop}",
+          "descripcion": "Prefijo que indica contraseña sin codificar (solo desarrollo)"
+        },
+        {
+          "nombre": "authorizeHttpRequests()",
+          "descripcion": "Configuración de reglas de autorización por URL"
+        },
+        {
+          "nombre": "requestMatchers()",
+          "descripcion": "Define patrones de URL a los que aplicar regla"
+        },
+        {
+          "nombre": "permitAll()",
+          "descripcion": "Permite acceso sin autenticación"
+        },
+        {
+          "nombre": "authenticated()",
+          "descripcion": "Requiere que usuario esté autenticado"
+        },
+        {
+          "nombre": "Base64 Encoding",
+          "descripcion": "Codificación de username:password para header Authorization"
+        }
+      ],
+      "codigoEjemplo": "<!-- pom.xml - Agregar Spring Security -->\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-security</artifactId>\n</dependency>\n\n// SecurityConfig.java\npackage com.paymentchange.customer.config;\n\nimport org.springframework.context.annotation.Bean;\nimport org.springframework.context.annotation.Configuration;\nimport org.springframework.security.config.annotation.web.builders.HttpSecurity;\nimport org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;\nimport org.springframework.security.core.userdetails.User;\nimport org.springframework.security.core.userdetails.UserDetails;\nimport org.springframework.security.core.userdetails.UserDetailsService;\nimport org.springframework.security.provisioning.InMemoryUserDetailsManager;\nimport org.springframework.security.web.SecurityFilterChain;\n\n@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n    \n    @Bean\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) \n            throws Exception {\n        http\n            // Configurar autenticación básica\n            .httpBasic()\n            .and()\n            // Configurar autorización\n            .authorizeHttpRequests(auth -> auth\n                // Permitir endpoints públicos\n                .requestMatchers(\"/actuator/health\").permitAll()\n                .requestMatchers(\"/swagger-ui/**\").permitAll()\n                .requestMatchers(\"/v3/api-docs/**\").permitAll()\n                // Todos los demás requieren autenticación\n                .anyRequest().authenticated()\n            );\n        \n        return http.build();\n    }\n    \n    @Bean\n    public UserDetailsService userDetailsService() {\n        // Usuario en memoria para desarrollo\n        UserDetails user = User.builder()\n            .username(\"admin\")\n            .password(\"{noop}password\")  // {noop} = sin codificar\n            .roles(\"USER\", \"ADMIN\")\n            .build();\n        \n        return new InMemoryUserDetailsManager(user);\n    }\n}\n\n# Probar con curl\ncurl -X GET http://localhost:8081/api/v1/customer \\\n  -H \"Authorization: Basic YWRtaW46cGFzc3dvcmQ=\"\n\n# Generar Base64 de \"admin:password\"\necho -n \"admin:password\" | base64\n# Output: YWRtaW46cGFzc3dvcmQ=\n\n# Probar sin autenticación (debe fallar con 401)\ncurl -X GET http://localhost:8081/api/v1/customer\n# Response: 401 Unauthorized"
+    },
+    {
+      "numero": 4,
+      "archivo": "4__Restricción_permisos_métodos_POST_CSRF_resolverlo.srt",
+      "titulo": "Restricción de Permisos en Métodos POST y Resolver Problema CSRF",
+      "resumen": "Configuración de protección CSRF y cómo afecta métodos POST/PUT/DELETE. Se explica por qué CSRF está habilitado por defecto, cuándo deshabilitarlo (APIs stateless), y cómo configurar tokens CSRF para aplicaciones con sesión. Se implementan reglas de autorización por método HTTP.",
+      "puntosClave": [
+        "CSRF habilitado por defecto en Spring Security",
+        "CSRF protege contra ataques Cross-Site Request Forgery",
+        "Problema: POST/PUT/DELETE fallan con 403 Forbidden si no hay token CSRF",
+        "APIs REST stateless NO necesitan CSRF (no usan sesiones)",
+        "Deshabilitar CSRF: http.csrf().disable()",
+        "CSRF útil para aplicaciones con formularios HTML y sesiones",
+        "Si se mantiene CSRF, cliente debe enviar token CSRF en cada request",
+        "Token CSRF en header: X-XSRF-TOKEN",
+        "Autorización por método HTTP:",
+        "  - GET: requiere rol USER",
+        "  - POST/PUT/DELETE: requiere rol ADMIN",
+        "Usar .hasRole() para verificar roles específicos",
+        "Configurar reglas granulares con requestMatchers + método HTTP"
+      ],
+      "conceptos": [
+        {
+          "nombre": "CSRF Protection",
+          "descripcion": "Protección contra ataques que fuerzan acciones no autorizadas"
+        },
+        {
+          "nombre": "CSRF Token",
+          "descripcion": "Token único por sesión que debe incluirse en requests POST/PUT/DELETE"
+        },
+        {
+          "nombre": "Stateless API",
+          "descripcion": "API sin sesiones del lado servidor (usa tokens como JWT)"
+        },
+        {
+          "nombre": "Stateful API",
+          "descripcion": "API que mantiene sesiones del lado servidor (cookies)"
+        },
+        {
+          "nombre": "csrf().disable()",
+          "descripcion": "Deshabilita protección CSRF (común en APIs REST stateless)"
+        },
+        {
+          "nombre": "X-XSRF-TOKEN",
+          "descripcion": "Header para enviar token CSRF desde cliente"
+        },
+        {
+          "nombre": "hasRole()",
+          "descripcion": "Verifica que usuario tiene rol específico (ADMIN, USER)"
+        },
+        {
+          "nombre": "hasAuthority()",
+          "descripcion": "Verifica que usuario tiene authority específica"
+        },
+        {
+          "nombre": "HttpMethod",
+          "descripcion": "Enumeración de métodos HTTP (GET, POST, PUT, DELETE)"
+        },
+        {
+          "nombre": "Method-Level Security",
+          "descripcion": "Reglas de seguridad basadas en método HTTP del endpoint"
+        }
+      ],
+      "codigoEjemplo": "// SecurityConfig.java - Deshabilitar CSRF para API stateless\n@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n    \n    @Bean\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) \n            throws Exception {\n        http\n            .httpBasic()\n            .and()\n            // Deshabilitar CSRF para API REST stateless\n            .csrf().disable()\n            .authorizeHttpRequests(auth -> auth\n                // Endpoints públicos\n                .requestMatchers(\"/actuator/health\").permitAll()\n                .requestMatchers(\"/swagger-ui/**\", \"/v3/api-docs/**\").permitAll()\n                \n                // GET requiere rol USER\n                .requestMatchers(HttpMethod.GET, \"/api/v1/**\")\n                    .hasRole(\"USER\")\n                \n                // POST/PUT/DELETE requieren rol ADMIN\n                .requestMatchers(HttpMethod.POST, \"/api/v1/**\")\n                    .hasRole(\"ADMIN\")\n                .requestMatchers(HttpMethod.PUT, \"/api/v1/**\")\n                    .hasRole(\"ADMIN\")\n                .requestMatchers(HttpMethod.DELETE, \"/api/v1/**\")\n                    .hasRole(\"ADMIN\")\n                \n                // Resto requiere autenticación\n                .anyRequest().authenticated()\n            );\n        \n        return http.build();\n    }\n    \n    @Bean\n    public UserDetailsService userDetailsService() {\n        // Usuario con rol USER\n        UserDetails user = User.builder()\n            .username(\"user\")\n            .password(\"{noop}user123\")\n            .roles(\"USER\")\n            .build();\n        \n        // Usuario con rol ADMIN\n        UserDetails admin = User.builder()\n            .username(\"admin\")\n            .password(\"{noop}admin123\")\n            .roles(\"USER\", \"ADMIN\")  // ADMIN incluye USER\n            .build();\n        \n        return new InMemoryUserDetailsManager(user, admin);\n    }\n}\n\n// Alternativa: Mantener CSRF habilitado (APIs con sesión)\n@Bean\npublic SecurityFilterChain securityFilterChain(HttpSecurity http) \n        throws Exception {\n    http\n        .httpBasic()\n        .and()\n        // CSRF habilitado (por defecto)\n        .csrf(csrf -> csrf\n            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())\n        )\n        .authorizeHttpRequests(auth -> auth\n            .anyRequest().authenticated()\n        );\n    \n    return http.build();\n}\n\n# Probar con usuario USER (GET funciona, POST falla)\ncurl -X GET http://localhost:8081/api/v1/customer \\\n  -u user:user123\n# Response: 200 OK\n\ncurl -X POST http://localhost:8081/api/v1/customer \\\n  -u user:user123 \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"name\": \"Test\"}'\n# Response: 403 Forbidden (no tiene rol ADMIN)\n\n# Probar con usuario ADMIN (todo funciona)\ncurl -X POST http://localhost:8081/api/v1/customer \\\n  -u admin:admin123 \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"name\": \"Test\"}'\n# Response: 201 Created"
+    },
+    {
+      "numero": 5,
+      "archivo": "5__Configuración_avanzada_seguridad.srt",
+      "titulo": "Configuración Avanzada de Seguridad con Headers y Password Encoding",
+      "resumen": "Implementación de configuraciones avanzadas de seguridad: codificación de contraseñas con BCrypt, headers de seguridad personalizados, configuración de gestión de sesiones, y mejores prácticas de producción. Se usa BCryptPasswordEncoder en lugar de contraseñas en texto plano.",
+      "puntosClave": [
+        "BCryptPasswordEncoder: algoritmo robusto para hash de contraseñas",
+        "Reemplazar {noop} con BCrypt en producción",
+        "@Bean PasswordEncoder para codificar contraseñas",
+        "Generar hash BCrypt de contraseña: passwordEncoder.encode(\"password\")",
+        "Headers de seguridad automáticos:",
+        "  - X-Content-Type-Options: nosniff",
+        "  - X-Frame-Options: DENY",
+        "  - X-XSS-Protection: 1; mode=block",
+        "Configurar HSTS: Strict-Transport-Security",
+        "Gestión de sesiones:",
+        "  - sessionManagement().sessionCreationPolicy(STATELESS) para APIs",
+        "  - ALWAYS para aplicaciones con sesión",
+        "Logout configuration para invalidar sesiones",
+        "Personalizar response de acceso denegado (403) y no autenticado (401)",
+        "Aplicar configuración en todos los microservicios"
+      ],
+      "conceptos": [
+        {
+          "nombre": "BCryptPasswordEncoder",
+          "descripcion": "Algoritmo de hash adaptativo para codificar contraseñas de forma segura"
+        },
+        {
+          "nombre": "Password Hashing",
+          "descripcion": "Proceso de convertir contraseña en hash irreversible"
+        },
+        {
+          "nombre": "Salt",
+          "descripcion": "Valor aleatorio añadido a contraseña antes de hash (BCrypt lo hace automático)"
+        },
+        {
+          "nombre": "Security Headers",
+          "descripcion": "Headers HTTP que mejoran seguridad del cliente/navegador"
+        },
+        {
+          "nombre": "HSTS",
+          "descripcion": "Header que obliga navegador a usar solo HTTPS"
+        },
+        {
+          "nombre": "SessionCreationPolicy",
+          "descripcion": "Estrategia de creación de sesiones (STATELESS, ALWAYS, IF_REQUIRED)"
+        },
+        {
+          "nombre": "STATELESS",
+          "descripcion": "No crear ni usar sesiones HTTP (para APIs REST)"
+        },
+        {
+          "nombre": "Logout Handler",
+          "descripcion": "Componente que maneja proceso de cierre de sesión"
+        },
+        {
+          "nombre": "AuthenticationEntryPoint",
+          "descripcion": "Handler para respuestas cuando usuario no está autenticado (401)"
+        },
+        {
+          "nombre": "AccessDeniedHandler",
+          "descripcion": "Handler para respuestas cuando usuario no tiene permisos (403)"
+        }
+      ],
+      "codigoEjemplo": "// SecurityConfig.java - Configuración avanzada\n@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n    \n    @Bean\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) \n            throws Exception {\n        http\n            .httpBasic()\n            .and()\n            .csrf().disable()\n            \n            // Configurar headers de seguridad\n            .headers(headers -> headers\n                .contentTypeOptions()  // X-Content-Type-Options: nosniff\n                .and()\n                .xssProtection()  // X-XSS-Protection: 1; mode=block\n                .and()\n                .frameOptions().deny()  // X-Frame-Options: DENY\n                .and()\n                .httpStrictTransportSecurity()  // HSTS\n                    .maxAgeInSeconds(31536000)  // 1 año\n                    .includeSubDomains(true)\n            )\n            \n            // Gestión de sesiones (STATELESS para APIs REST)\n            .sessionManagement(session -> session\n                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)\n            )\n            \n            .authorizeHttpRequests(auth -> auth\n                .requestMatchers(\"/actuator/health\").permitAll()\n                .requestMatchers(\"/swagger-ui/**\", \"/v3/api-docs/**\").permitAll()\n                .requestMatchers(HttpMethod.GET, \"/api/v1/**\").hasRole(\"USER\")\n                .requestMatchers(HttpMethod.POST, \"/api/v1/**\").hasRole(\"ADMIN\")\n                .requestMatchers(HttpMethod.PUT, \"/api/v1/**\").hasRole(\"ADMIN\")\n                .requestMatchers(HttpMethod.DELETE, \"/api/v1/**\").hasRole(\"ADMIN\")\n                .anyRequest().authenticated()\n            )\n            \n            // Handler personalizado para 401\n            .exceptionHandling(ex -> ex\n                .authenticationEntryPoint(\n                    (request, response, authException) -> {\n                        response.setStatus(HttpStatus.UNAUTHORIZED.value());\n                        response.setContentType(\"application/json\");\n                        response.getWriter().write(\n                            \"{\\\"error\\\":\\\"Unauthorized\\\",\\\"message\\\":\\\"Authentication required\\\"}\"\n                        );\n                    }\n                )\n                .accessDeniedHandler(\n                    (request, response, accessDeniedException) -> {\n                        response.setStatus(HttpStatus.FORBIDDEN.value());\n                        response.setContentType(\"application/json\");\n                        response.getWriter().write(\n                            \"{\\\"error\\\":\\\"Forbidden\\\",\\\"message\\\":\\\"Insufficient permissions\\\"}\"\n                        );\n                    }\n                )\n            );\n        \n        return http.build();\n    }\n    \n    @Bean\n    public PasswordEncoder passwordEncoder() {\n        return new BCryptPasswordEncoder();\n    }\n    \n    @Bean\n    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {\n        UserDetails user = User.builder()\n            .username(\"user\")\n            .password(passwordEncoder.encode(\"user123\"))  // BCrypt hash\n            .roles(\"USER\")\n            .build();\n        \n        UserDetails admin = User.builder()\n            .username(\"admin\")\n            .password(passwordEncoder.encode(\"admin123\"))  // BCrypt hash\n            .roles(\"USER\", \"ADMIN\")\n            .build();\n        \n        return new InMemoryUserDetailsManager(user, admin);\n    }\n}\n\n// Generar hash BCrypt manualmente\npublic static void main(String[] args) {\n    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();\n    String hash = encoder.encode(\"password123\");\n    System.out.println(hash);\n    // Output: $2a$10$xyzabcdefghijklmnopqrstuvwxyz...\n}"
+    },
+    {
+      "numero": 6,
+      "archivo": "6__Configuración_orígenes_cruzados__CORS_.srt",
+      "titulo": "Configuración de Orígenes Cruzados (CORS) para Aplicaciones Frontend",
+      "resumen": "Configuración de CORS (Cross-Origin Resource Sharing) para permitir que aplicaciones frontend (React, Angular, Vue) consuman la API desde diferentes dominios. Se explica política same-origin, por qué CORS es necesario, y cómo configurar orígenes, métodos y headers permitidos.",
+      "puntosClave": [
+        "Same-Origin Policy: navegadores bloquean requests entre diferentes orígenes",
+        "Origen = protocolo + dominio + puerto",
+        "Ejemplo: http://localhost:3000 ≠ http://localhost:8081",
+        "CORS permite configurar qué orígenes pueden acceder a API",
+        "Problema sin CORS: frontend recibe error \"blocked by CORS policy\"",
+        "Configurar CORS en Spring Security:",
+        "  - http.cors() para habilitar CORS",
+        "  - @Bean CorsConfigurationSource para definir reglas",
+        "Configuración CORS:",
+        "  - allowedOrigins: dominios permitidos (http://localhost:3000)",
+        "  - allowedMethods: GET, POST, PUT, DELETE, OPTIONS",
+        "  - allowedHeaders: *, Authorization, Content-Type",
+        "  - allowCredentials: true (para enviar cookies/auth)",
+        "  - maxAge: tiempo cache preflight request",
+        "Preflight request: OPTIONS enviado por navegador antes de request real",
+        "Producción: especificar orígenes exactos, no usar \"*\""
+      ],
+      "conceptos": [
+        {
+          "nombre": "CORS (Cross-Origin Resource Sharing)",
+          "descripcion": "Mecanismo que permite requests entre diferentes orígenes de forma segura"
+        },
+        {
+          "nombre": "Same-Origin Policy",
+          "descripcion": "Política de seguridad que bloquea requests entre diferentes orígenes"
+        },
+        {
+          "nombre": "Origin",
+          "descripcion": "Combinación de protocolo + dominio + puerto (http://localhost:3000)"
+        },
+        {
+          "nombre": "Preflight Request",
+          "descripcion": "Request OPTIONS enviado por navegador para verificar CORS antes de request real"
+        },
+        {
+          "nombre": "allowedOrigins",
+          "descripcion": "Lista de orígenes permitidos para hacer requests a API"
+        },
+        {
+          "nombre": "allowedMethods",
+          "descripcion": "Métodos HTTP permitidos desde otros orígenes"
+        },
+        {
+          "nombre": "allowedHeaders",
+          "descripcion": "Headers que cliente puede enviar en request cross-origin"
+        },
+        {
+          "nombre": "allowCredentials",
+          "descripcion": "Permite enviar cookies y headers de autenticación cross-origin"
+        },
+        {
+          "nombre": "maxAge",
+          "descripcion": "Tiempo en segundos que navegador cachea resultado de preflight"
+        },
+        {
+          "nombre": "CorsConfigurationSource",
+          "descripcion": "Bean que define configuración CORS para la aplicación"
+        }
+      ],
+      "codigoEjemplo": "// SecurityConfig.java - Configurar CORS\n@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n    \n    @Bean\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) \n            throws Exception {\n        http\n            .httpBasic()\n            .and()\n            .csrf().disable()\n            \n            // Habilitar CORS con configuración personalizada\n            .cors(cors -> cors.configurationSource(corsConfigurationSource()))\n            \n            .sessionManagement(session -> session\n                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)\n            )\n            .authorizeHttpRequests(auth -> auth\n                .requestMatchers(\"/actuator/health\").permitAll()\n                .requestMatchers(\"/swagger-ui/**\", \"/v3/api-docs/**\").permitAll()\n                .anyRequest().authenticated()\n            );\n        \n        return http.build();\n    }\n    \n    @Bean\n    public CorsConfigurationSource corsConfigurationSource() {\n        CorsConfiguration configuration = new CorsConfiguration();\n        \n        // Orígenes permitidos (desarrollo)\n        configuration.setAllowedOrigins(Arrays.asList(\n            \"http://localhost:3000\",      // React dev server\n            \"http://localhost:4200\",      // Angular dev server\n            \"http://localhost:8080\"       // Vue dev server\n        ));\n        \n        // Producción: especificar dominio exacto\n        // configuration.setAllowedOrigins(Arrays.asList(\n        //     \"https://app.paymentchange.com\"\n        // ));\n        \n        // Métodos permitidos\n        configuration.setAllowedMethods(Arrays.asList(\n            \"GET\", \"POST\", \"PUT\", \"DELETE\", \"OPTIONS\"\n        ));\n        \n        // Headers permitidos\n        configuration.setAllowedHeaders(Arrays.asList(\n            \"*\"  // Permitir todos los headers\n            // O específicos: \"Authorization\", \"Content-Type\", \"X-Requested-With\"\n        ));\n        \n        // Permitir envío de credenciales (cookies, auth headers)\n        configuration.setAllowCredentials(true);\n        \n        // Tiempo de cache para preflight (1 hora)\n        configuration.setMaxAge(3600L);\n        \n        // Aplicar configuración a todos los endpoints\n        UrlBasedCorsConfigurationSource source = \n            new UrlBasedCorsConfigurationSource();\n        source.registerCorsConfiguration(\"/**\", configuration);\n        \n        return source;\n    }\n    \n    // ... resto de beans (PasswordEncoder, UserDetailsService)\n}\n\n// Alternativa: CORS global con @CrossOrigin en controllers\n@RestController\n@RequestMapping(\"/api/v1/customer\")\n@CrossOrigin(origins = \"http://localhost:3000\")  // Por controller\npublic class CustomerRestController {\n    // ...\n}\n\n// O por método\n@GetMapping\n@CrossOrigin(origins = \"http://localhost:3000\")\npublic ResponseEntity<List<CustomerResponse>> findAll() {\n    // ...\n}\n\n# Probar CORS desde navegador (JavaScript)\nfetch('http://localhost:8081/api/v1/customer', {\n  method: 'GET',\n  headers: {\n    'Authorization': 'Basic YWRtaW46YWRtaW4xMjM=',\n    'Content-Type': 'application/json'\n  },\n  credentials: 'include'  // Enviar cookies\n})\n.then(response => response.json())\n.then(data => console.log(data))\n.catch(error => console.error('Error:', error));"
+    },
+    {
+      "numero": 7,
+      "archivo": "7__enviar_Header_Authorization_peticiones_al_API_usando.srt",
+      "titulo": "Enviar Header Authorization en Peticiones al API usando WebClient",
+      "resumen": "Configuración de WebClient para incluir header Authorization automáticamente al consumir APIs protegidas de otros microservicios. Se implementa interceptor que agrega credenciales Basic Auth en cada request, permitiendo comunicación segura entre microservicios.",
+      "puntosClave": [
+        "Problema: microservicios necesitan autenticarse entre sí",
+        "Customer llama Product con WebClient, Product está protegido",
+        "Solución: agregar header Authorization automáticamente en WebClient",
+        "Configurar defaultHeader con Authorization en WebClient.Builder",
+        "Usar filter() para interceptor personalizado",
+        "Codificar credenciales en Base64: username:password",
+        "Formato: Authorization: Basic <base64(username:password)>",
+        "Alternativa 1: default header estático",
+        "Alternativa 2: filtro que obtiene credenciales de configuración",
+        "Alternativa 3: usar OAuth2 client credentials grant (producción)",
+        "Buena práctica: almacenar credenciales en variables de entorno",
+        "Evitar hardcodear credenciales en código",
+        "Para producción: implementar OAuth2/JWT entre microservicios"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Service-to-Service Authentication",
+          "descripcion": "Autenticación entre microservicios en arquitectura distribuida"
+        },
+        {
+          "nombre": "WebClient Filter",
+          "descripcion": "Interceptor que modifica requests/responses de WebClient"
+        },
+        {
+          "nombre": "defaultHeader()",
+          "descripcion": "Método para agregar header estático a todas las peticiones WebClient"
+        },
+        {
+          "nombre": "filter()",
+          "descripcion": "Método para agregar lógica personalizada a cada request/response"
+        },
+        {
+          "nombre": "ExchangeFilterFunction",
+          "descripcion": "Función que intercepta y modifica exchange de WebClient"
+        },
+        {
+          "nombre": "Basic Auth Propagation",
+          "descripcion": "Propagar credenciales Basic Auth entre microservicios"
+        },
+        {
+          "nombre": "Client Credentials",
+          "descripcion": "Credenciales de aplicación (vs credenciales de usuario)"
+        },
+        {
+          "nombre": "OAuth2 Client Credentials Grant",
+          "descripcion": "Flujo OAuth2 para autenticación servicio-a-servicio"
+        },
+        {
+          "nombre": "Environment Variables",
+          "descripcion": "Variables externas para almacenar credenciales de forma segura"
+        },
+        {
+          "nombre": "Hardcoded Credentials",
+          "descripcion": "Credenciales en código fuente (NUNCA hacer en producción)"
+        }
+      ],
+      "codigoEjemplo": "// WebClientConfig.java - Con autenticación automática\n@Configuration\npublic class WebClientConfig {\n    \n    @Value(\"${service.product.username:admin}\")\n    private String productServiceUsername;\n    \n    @Value(\"${service.product.password:admin123}\")\n    private String productServicePassword;\n    \n    @Bean\n    @LoadBalanced\n    public WebClient.Builder webClientBuilder() {\n        return WebClient.builder();\n    }\n    \n    @Bean\n    public WebClient productWebClient(WebClient.Builder builder) {\n        // Opción 1: Header estático con credenciales\n        String credentials = productServiceUsername + \":\" + productServicePassword;\n        String base64Credentials = Base64.getEncoder()\n            .encodeToString(credentials.getBytes(StandardCharsets.UTF_8));\n        \n        return builder\n            .baseUrl(\"http://product-service/api/v1\")\n            .defaultHeader(HttpHeaders.AUTHORIZATION, \n                          \"Basic \" + base64Credentials)\n            .defaultHeader(HttpHeaders.CONTENT_TYPE, \n                          MediaType.APPLICATION_JSON_VALUE)\n            .build();\n    }\n    \n    // Opción 2: Usar filtro personalizado\n    @Bean\n    public WebClient productWebClientWithFilter(WebClient.Builder builder) {\n        return builder\n            .baseUrl(\"http://product-service/api/v1\")\n            .filter(addAuthenticationHeader())\n            .build();\n    }\n    \n    private ExchangeFilterFunction addAuthenticationHeader() {\n        return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {\n            String credentials = productServiceUsername + \":\" + \n                               productServicePassword;\n            String base64 = Base64.getEncoder()\n                .encodeToString(credentials.getBytes(StandardCharsets.UTF_8));\n            \n            ClientRequest authorizedRequest = ClientRequest.from(clientRequest)\n                .header(HttpHeaders.AUTHORIZATION, \"Basic \" + base64)\n                .build();\n            \n            return Mono.just(authorizedRequest);\n        });\n    }\n}\n\n# application.properties - Credenciales desde configuración\n# Credenciales para Product Service\nservice.product.username=admin\nservice.product.password=admin123\n\n# Mejor: usar variables de entorno\n# service.product.username=${PRODUCT_SERVICE_USER}\n# service.product.password=${PRODUCT_SERVICE_PASSWORD}\n\n// CustomerService.java - Uso normal, autenticación automática\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private WebClient productWebClient;\n    \n    public Product getProduct(Long productId) {\n        // WebClient incluye automáticamente header Authorization\n        return productWebClient.get()\n            .uri(\"/product/{id}\", productId)\n            .retrieve()\n            .bodyToMono(Product.class)\n            .block();\n        \n        // Header Authorization: Basic YWRtaW46YWRtaW4xMjM=\n        // se agrega automáticamente\n    }\n}\n\n// Alternativa producción: OAuth2 Client Credentials\n// (requiere servidor OAuth2/Authorization Server)\n@Bean\npublic WebClient productWebClientOAuth2(WebClient.Builder builder,\n                                       OAuth2AuthorizedClientManager clientManager) {\n    ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2 = \n        new ServletOAuth2AuthorizedClientExchangeFilterFunction(clientManager);\n    oauth2.setDefaultClientRegistrationId(\"product-service\");\n    \n    return builder\n        .baseUrl(\"http://product-service/api/v1\")\n        .filter(oauth2)\n        .build();\n}"
+    }
+  ],
+  "resumen_seccion": "Esta sección implementa seguridad completa en microservicios con Spring Security. Se configura autenticación básica, autorización por roles, codificación de contraseñas con BCrypt, protección CSRF, CORS para frontends, headers de seguridad, y propagación de credenciales entre microservicios. El resultado son APIs seguras protegidas contra ataques comunes y listas para integración con clientes.",
+  "tecnologias_cubiertas": [
+    "Spring Security",
+    "Basic Authentication",
+    "BCryptPasswordEncoder",
+    "CSRF Protection",
+    "CORS Configuration",
+    "Security Headers",
+    "Role-Based Authorization",
+    "WebClient Authentication",
+    "SessionCreationPolicy",
+    "Custom Error Handlers"
+  ],
+  "configuraciones_seguridad": {
+    "autenticacion": [
+      "httpBasic() - Autenticación básica",
+      "UserDetailsService - Cargar usuarios",
+      "PasswordEncoder - Codificar contraseñas",
+      "BCrypt - Hash seguro de passwords"
+    ],
+    "autorizacion": [
+      "authorizeHttpRequests() - Reglas de acceso",
+      "hasRole() - Verificar rol",
+      "hasAuthority() - Verificar authority",
+      "permitAll() - Acceso público",
+      "authenticated() - Requiere autenticación"
+    ],
+    "proteccion": [
+      "csrf().disable() - APIs stateless",
+      "cors() - Peticiones cross-origin",
+      "headers() - Headers de seguridad",
+      "sessionManagement() - Gestión de sesiones"
+    ]
+  },
+  "mejores_practicas": [
+    "Usar BCryptPasswordEncoder en producción (nunca {noop})",
+    "Deshabilitar CSRF para APIs REST stateless",
+    "Configurar CORS con orígenes específicos (no *)",
+    "Habilitar headers de seguridad (HSTS, X-Frame-Options)",
+    "Usar SessionCreationPolicy.STATELESS para APIs",
+    "Almacenar credenciales en variables de entorno",
+    "No hardcodear passwords en código",
+    "Implementar handlers personalizados para 401/403",
+    "Usar HTTPS obligatorio en producción",
+    "Documentar endpoints públicos en Swagger",
+    "Propagar autenticación entre microservicios",
+    "Migrar a OAuth2/JWT para producción"
+  ],
+  "headers_seguridad": {
+    "X-Content-Type-Options": "nosniff - Previene MIME sniffing",
+    "X-Frame-Options": "DENY - Previene clickjacking",
+    "X-XSS-Protection": "1; mode=block - Protección XSS",
+    "Strict-Transport-Security": "max-age=31536000 - Fuerza HTTPS",
+    "Content-Security-Policy": "Controla fuentes permitidas"
+  },
+  "flujo_autenticacion": [
+    "1. Cliente envía request con header Authorization: Basic <base64>",
+    "2. Spring Security intercepta con filtro de autenticación",
+    "3. Decodifica Base64 → extrae username:password",
+    "4. UserDetailsService carga usuario de BD/memoria",
+    "5. PasswordEncoder verifica password contra hash",
+    "6. Si correcto, crea Authentication object",
+    "7. Verifica roles/authorities contra reglas de autorización",
+    "8. Si autorizado, continúa a controller",
+    "9. Si no autorizado, retorna 401 (no autenticado) o 403 (sin permisos)"
+  ],
+  "cors_configuracion": {
+    "desarrollo": {
+      "allowedOrigins": ["http://localhost:3000", "http://localhost:4200"],
+      "allowedMethods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      "allowedHeaders": ["*"],
+      "allowCredentials": true
+    },
+    "produccion": {
+      "allowedOrigins": ["https://app.company.com"],
+      "allowedMethods": ["GET", "POST", "PUT", "DELETE"],
+      "allowedHeaders": ["Authorization", "Content-Type"],
+      "allowCredentials": true,
+      "maxAge": 3600
+    }
+  },
+  "migracion_produccion": [
+    "Reemplazar Basic Auth con OAuth2/JWT",
+    "Implementar Authorization Server (Keycloak, Auth0)",
+    "Usar tokens JWT para autenticación stateless",
+    "Configurar refresh tokens para renovación",
+    "Implementar rate limiting",
+    "Agregar API Gateway con autenticación centralizada",
+    "Usar secrets manager para credenciales (AWS Secrets, Vault)",
+    "Habilitar audit logging de accesos",
+    "Implementar MFA (Multi-Factor Authentication)",
+    "Monitorear intentos de acceso fallidos"
+  ]
+}

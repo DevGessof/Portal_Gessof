@@ -1,0 +1,63 @@
+{
+  "titulo": "Crear Mappers con MapStruct para Mapeo Automático entre Modelos",
+  "resumen": "Creación de interfaces Mapper con @Mapper de MapStruct para convertir entre Customer, CustomerRequest y CustomerResponse. MapStruct genera implementación automáticamente. Se define CustomerMapper con métodos toEntity() y toResponse(), se configura componentModel Spring, y se usa @Mapping para campos personalizados.",
+  "puntosClave": [
+    "Crear interfaz CustomerMapper con @Mapper(componentModel = \"spring\")",
+    "componentModel = \"spring\" permite inyectar mapper con @Autowired",
+    "Definir métodos de mapeo:",
+    "  - Customer toEntity(CustomerRequest request)",
+    "  - CustomerResponse toResponse(Customer entity)",
+    "  - List<CustomerResponse> toResponseList(List<Customer> entities)",
+    "MapStruct mapea automáticamente campos con mismo nombre",
+    "@Mapping para campos con nombres diferentes:",
+    "  @Mapping(source = \"name\", target = \"fullName\")",
+    "Ignorar campos: @Mapping(target = \"createdAt\", ignore = true)",
+    "MapStruct genera clase CustomerMapperImpl en compilación",
+    "Compilar proyecto: mvn clean compile",
+    "Verificar código generado en target/generated-sources",
+    "Inyectar mapper en Service como bean Spring"
+  ],
+  "conceptos": [
+    {
+      "nombre": "@Mapper",
+      "descripcion": "Anotación MapStruct que marca interfaz como generadora de mapper"
+    },
+    {
+      "nombre": "componentModel",
+      "descripcion": "Configuración que define cómo usar mapper (spring, cdi, default)"
+    },
+    {
+      "nombre": "componentModel = \"spring\"",
+      "descripcion": "Genera mapper como @Component Spring, inyectable con @Autowired"
+    },
+    {
+      "nombre": "toEntity()",
+      "descripcion": "Método que convierte DTO Request a Entidad"
+    },
+    {
+      "nombre": "toResponse()",
+      "descripcion": "Método que convierte Entidad a DTO Response"
+    },
+    {
+      "nombre": "@Mapping",
+      "descripcion": "Anotación para mapeo personalizado entre campos con nombres diferentes"
+    },
+    {
+      "nombre": "ignore = true",
+      "descripcion": "Configuración para ignorar campo en mapeo (no copiar valor)"
+    },
+    {
+      "nombre": "MapperImpl",
+      "descripcion": "Clase de implementación generada por MapStruct"
+    },
+    {
+      "nombre": "Collection Mapping",
+      "descripcion": "MapStruct mapea automáticamente listas usando método individual"
+    },
+    {
+      "nombre": "Bidirectional Mapping",
+      "descripcion": "Mapeo en ambas direcciones: Entity ↔ DTO"
+    }
+  ],
+  "codigoEjemplo": "// CustomerMapper.java - Interfaz Mapper\npackage com.paymentchange.customer.mapper;\n\nimport com.paymentchange.customer.dto.request.CustomerRequest;\nimport com.paymentchange.customer.dto.response.CustomerResponse;\nimport com.paymentchange.customer.entities.Customer;\nimport org.mapstruct.Mapper;\nimport org.mapstruct.Mapping;\nimport java.util.List;\n\n@Mapper(componentModel = \"spring\")\npublic interface CustomerMapper {\n    \n    /**\n     * Convierte CustomerRequest (DTO entrada) a Customer (Entidad)\n     */\n    @Mapping(target = \"id\", ignore = true)  // ID se genera automático\n    @Mapping(target = \"createdAt\", ignore = true)\n    @Mapping(target = \"updatedAt\", ignore = true)\n    @Mapping(target = \"status\", constant = \"ACTIVE\")  // Valor por defecto\n    Customer toEntity(CustomerRequest request);\n    \n    /**\n     * Convierte Customer (Entidad) a CustomerResponse (DTO salida)\n     */\n    CustomerResponse toResponse(Customer entity);\n    \n    /**\n     * Convierte lista de Customer a lista de CustomerResponse\n     * MapStruct usa toResponse() para cada elemento automáticamente\n     */\n    List<CustomerResponse> toResponseList(List<Customer> entities);\n    \n    /**\n     * Actualizar entidad existente con datos de request\n     * Útil para operaciones PUT\n     */\n    @Mapping(target = \"id\", ignore = true)\n    @Mapping(target = \"createdAt\", ignore = true)\n    void updateEntityFromRequest(CustomerRequest request, \n                                 @MappingTarget Customer entity);\n}\n\n// CustomerMapperImpl.java - Generado automáticamente\n// target/generated-sources/annotations/.../CustomerMapperImpl.java\n@Component\npublic class CustomerMapperImpl implements CustomerMapper {\n    \n    @Override\n    public Customer toEntity(CustomerRequest request) {\n        if (request == null) {\n            return null;\n        }\n        Customer customer = new Customer();\n        customer.setName(request.getName());\n        customer.setPhoneNumber(request.getPhoneNumber());\n        customer.setEmail(request.getEmail());\n        customer.setProductIds(request.getProductIds());\n        customer.setStatus(\"ACTIVE\");\n        return customer;\n    }\n    \n    @Override\n    public CustomerResponse toResponse(Customer entity) {\n        if (entity == null) {\n            return null;\n        }\n        CustomerResponse response = new CustomerResponse();\n        response.setId(entity.getId());\n        response.setName(entity.getName());\n        response.setPhoneNumber(entity.getPhoneNumber());\n        response.setEmail(entity.getEmail());\n        response.setStatus(entity.getStatus());\n        response.setProductIds(entity.getProductIds());\n        return response;\n    }\n    \n    // ... otros métodos generados\n}"
+}

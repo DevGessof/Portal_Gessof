@@ -1,0 +1,68 @@
+{
+  "titulo": "Enrutamiento: Prueba E2E y Recomendaciones de Seguridad para API",
+  "resumen": "Prueba end-to-end completa del sistema con autenticación y autorización. Se validan diferentes escenarios: usuarios con diferentes roles, tokens expirados, endpoints públicos vs protegidos. Se documentan mejores prácticas de seguridad y recomendaciones para producción.",
+  "puntosClave": [
+    "Escenarios de prueba E2E:",
+    "1. Usuario sin token → 401",
+    "2. Token inválido → 401",
+    "3. Token expirado → 401",
+    "4. Usuario USER accede GET → 200",
+    "5. Usuario USER intenta POST → 403",
+    "6. Usuario ADMIN accede POST → 201",
+    "7. Endpoint público sin token → 200",
+    "Recomendaciones de seguridad:",
+    "  - HTTPS obligatorio en producción",
+    "  - Tokens con tiempo de expiración corto (5-15 min)",
+    "  - Refresh tokens para renovar sin re-autenticar",
+    "  - Rate limiting en Gateway",
+    "  - Logging de todos los intentos de acceso",
+    "  - Monitorear tokens expirados excesivos (posible ataque)",
+    "  - Rotación de client secrets periódicamente",
+    "  - No loggear tokens completos",
+    "  - Implementar IP whitelisting para endpoints admin",
+    "  - Usar Keycloak en modo producción con BD externa"
+  ],
+  "conceptos": [
+    {
+      "nombre": "E2E Security Testing",
+      "descripcion": "Probar flujo completo de autenticación y autorización"
+    },
+    {
+      "nombre": "Security Best Practices",
+      "descripcion": "Prácticas recomendadas para APIs en producción"
+    },
+    {
+      "nombre": "Token Expiration",
+      "descripcion": "Tiempo limitado de validez de access tokens"
+    },
+    {
+      "nombre": "Refresh Token Flow",
+      "descripcion": "Flujo para renovar access token sin re-autenticar"
+    },
+    {
+      "nombre": "Rate Limiting",
+      "descripcion": "Limitar número de requests por cliente para prevenir abuso"
+    },
+    {
+      "nombre": "Audit Logging",
+      "descripcion": "Registrar todos los accesos para auditoría de seguridad"
+    },
+    {
+      "nombre": "Secret Rotation",
+      "descripcion": "Cambiar client secrets periódicamente"
+    },
+    {
+      "nombre": "IP Whitelisting",
+      "descripcion": "Permitir acceso solo desde IPs específicas"
+    },
+    {
+      "nombre": "HTTPS Enforcement",
+      "descripcion": "Forzar uso de HTTPS para todos los requests"
+    },
+    {
+      "nombre": "Security Monitoring",
+      "descripcion": "Monitorear patrones sospechosos de acceso"
+    }
+  ],
+  "codigoEjemplo": null
+}

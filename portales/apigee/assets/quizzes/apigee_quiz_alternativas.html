@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Apigee</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+      animation: rotate 18s linear infinite;
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .header h1 {
+      font-size: 2.3em;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header p {
+      font-size: 1.05em;
+      opacity: 0.92;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 26px;
+      margin-top: 18px;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 12px 22px;
+      border-radius: 14px;
+      backdrop-filter: blur(10px);
+      min-width: 120px;
+    }
+
+    .stat-number {
+      font-size: 1.8em;
+      font-weight: 800;
+      display: block;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.22);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+      width: 0%;
+      transition: width 0.8s ease;
+    }
+
+    .content {
+      padding: 36px;
+    }
+
+    .btn {
+      padding: 12px 22px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.02em;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.14);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: #222;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #f44336 0%, #da190b 100%);
+      color: white;
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .final {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 34px;
+      border-radius: 20px;
+      text-align: center;
+      display: none;
+      margin-top: 18px;
+    }
+
+    .final.show {
+      display: block;
+      animation: slideIn 0.45s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .score-circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 2.4em;
+      font-weight: 900;
+      backdrop-filter: blur(10px);
+    }
+
+    .small {
+      font-size: 0.95em;
+      opacity: 0.95;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    @media(max-width:768px) {
+      body {
+        padding: 10px
+      }
+
+      .content {
+        padding: 18px
+      }
+
+      .header {
+        padding: 18px
+      }
+
+      .header h1 {
+        font-size: 1.7em
+      }
+
+      .btn {
+        width: 100%
+      }
+    }
+
+    /* quiz-specific */
+    .question-card {
+      background: white;
+      border-radius: 16px;
+      padding: 26px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-left: 5px solid #667eea;
+      display: none;
+      transform: translateY(18px);
+      opacity: 0;
+      transition: all .45s ease;
+    }
+
+    .question-card.active {
+      display: block;
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .options {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .option {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 18px;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+
+    .option:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.14);
+    }
+
+    .option.selected {
+      border-color: #667eea;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .option.correct {
+      border-color: #4CAF50;
+      background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+      color: white;
+    }
+
+    .option.incorrect {
+      border-color: #f44336;
+      background: linear-gradient(135deg, #f44336 0%, #da190b 100%);
+      color: white;
+    }
+
+    .explanation {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+      border-left: 4px solid #4CAF50;
+      display: none;
+    }
+
+    .explanation.show {
+      display: block;
+      animation: slideIn .45s ease;
+    }
+
+    .meta {
+      margin-top: 10px;
+      font-size: 0.95em;
+      color: rgba(255, 255, 255, 0.92);
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎯 Quiz Apigee </h1>
+      <div class="stats">
+        <div class="stat-item"><span class="stat-number" id="currentQuestion">1</span><span>Pregunta</span></div>
+        <div class="stat-item"><span class="stat-number" id="totalQuestions">10</span><span>Total</span></div>
+        <div class="stat-item"><span class="stat-number" id="score">0</span><span>Puntaje</span></div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="pill">Selecciona → Confirmar → Ver explicación → Siguiente</div>
+    </div>
+
+    <div class="content">
+      <div id="questionContainer"></div>
+
+      <div class="final" id="finalScore">
+        <div class="score-circle" id="finalScoreCircle">0%</div>
+        <h2>¡Quiz completado!</h2>
+        <p class="small" id="scoreMessage"></p>
+        <div class="buttons" style="margin-top:18px;">
+          <button class="btn btn-secondary" onclick="restartQuiz()">Reiniciar (nuevas 10)</button>
+          <button class="btn btn-primary" onclick="reviewMistakes()">Revisar errores</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const pool = [{ "id": "2.1", "question": "¿Cuál es el propósito principal de un API Proxy en Apigee?", "options": ["Configurar balanceadores de carga", "Exponer una API y aplicar políticas de control", "Almacenar datos de negocio", "Administrar certificados SSL"], "correct": 1, "explanation": "El API Proxy es la fachada: recibe requests y permite aplicar políticas antes de enviar al backend." }, { "id": "2.2", "question": "¿Qué componente define el backend al que Apigee enviará la solicitud?", "options": ["API Product", "Proxy Endpoint", "Target Endpoint", "Shared Flow"], "correct": 2, "explanation": "El Target Endpoint define cómo Apigee se conecta y enruta hacia el backend." }, { "id": "2.3", "question": "¿Para qué se utiliza un Shared Flow?", "options": ["Publicar APIs públicas", "Compartir configuraciones entre entornos", "Reutilizar políticas comunes entre proxies", "Definir targets dinámicos"], "correct": 2, "explanation": "Shared Flow permite reutilizar políticas comunes entre proxies." }, { "id": "2.4", "question": "¿Qué policy se usa para limitar la cantidad total de requests en un periodo?", "options": ["Spike Arrest", "Quota", "OAuth", "Cache"], "correct": 1, "explanation": "Quota limita el total de requests en una ventana de tiempo por consumidor." }, { "id": "2.5", "question": "¿Qué policy permite validar que un request tenga un API Key válido?", "options": ["VerifyJWT", "OAuthV2", "Spike Arrest", "VerifyAPIKey"], "correct": 3, "explanation": "VerifyAPIKey valida la API Key asociada a una Developer App / API Product." }, { "id": "2.6", "question": "¿Cuál es el objetivo principal de Spike Arrest?", "options": ["Autenticar usuarios", "Cachear respuestas", "Proteger contra picos de tráfico", "Validar payloads"], "correct": 2, "explanation": "Spike Arrest limita la tasa para suavizar picos/bursts." }, { "id": "2.7", "question": "¿En qué parte del flujo se ejecutan las validaciones iniciales de una API?", "options": ["PostFlow", "Fault Rules", "PreFlow", "Target Endpoint"], "correct": 2, "explanation": "PreFlow (Request) se usa para validaciones iniciales antes de enrutar." }, { "id": "2.8", "question": "¿Cuál es el propósito del API Cache?", "options": ["Persistir datos de negocio", "Mejorar performance reutilizando respuestas", "Autenticar usuarios", "Versionar APIs"], "correct": 1, "explanation": "API Cache guarda respuestas temporalmente para mejorar performance y reducir llamadas al backend." }, { "id": "2.9", "question": "¿Qué policy se usa para manejar errores de forma controlada en Apigee?", "options": ["Conditional Flows", "Fault Rules", "Target Servers", "API Products"], "correct": 1, "explanation": "Fault Rules interceptan errores y devuelven respuestas controladas/estandarizadas." }, { "id": "2.10", "question": "¿Dónde se guardan los Keys Tokens?", "options": ["Config", "Analytics", "Runtime Data", "Environments"], "correct": 2, "explanation": "La verificación/gestión de keys y tokens ocurre en runtime." }, { "id": "1.1", "question": "En Apigee, ¿qué describe mejor a un API Proxy?", "options": ["El backend real con la lógica de negocio", "La fachada/punto de entrada que expone la API y aplica políticas", "Un repositorio de datos permanentes", "Un balanceador físico L7"], "correct": 1, "explanation": "API Proxy es la fachada: recibe requests, ejecuta políticas y enruta al backend." }, { "id": "1.1b", "question": "¿Cuál es el rol principal del Target Endpoint?", "options": ["Definir conexión/ruteo al backend (URL/TargetServer, path, TLS, timeouts)", "Definir UI del portal", "Guardar parámetros runtime", "Registrar analytics"], "correct": 0, "explanation": "Target Endpoint define cómo Apigee llama al backend." }, { "id": "1.1c", "question": "¿Qué es un Shared Flow?", "options": ["Conjunto reutilizable de políticas/flows para múltiples proxies", "Un environment (dev/eval/prod)", "Un API Product con cuotas", "Un mecanismo de versionamiento"], "correct": 0, "explanation": "Shared Flow permite reutilización y consistencia de políticas." }, { "id": "1.2", "question": "¿Qué describe mejor a Spike Arrest?", "options": ["Limita el total por día", "Protege contra picos instantáneos limitando la tasa", "Emite tokens OAuth", "Cachea respuestas"], "correct": 1, "explanation": "Spike Arrest controla bursts (tasa instantánea)." }, { "id": "1.2b", "question": "¿Qué describe mejor a Quota?", "options": ["Bloquea IPs", "Transforma JSON a XML", "Limita el total en una ventana por consumidor", "Configura TLS"], "correct": 2, "explanation": "Quota limita consumo total por ventana (min/hora/día) normalmente por app/product." }, { "id": "1.3", "question": "¿Dónde ejecutar validaciones iniciales (auth, headers, formato) en Apigee?", "options": ["Target Endpoint", "ProxyEndpoint PreFlow (Request)", "PostFlow", "Analytics"], "correct": 1, "explanation": "PreFlow del ProxyEndpoint es el lugar típico para validaciones iniciales." }, { "id": "1.4", "question": "¿Cuál conjunto contiene solo mecanismos de seguridad típicos en Apigee?", "options": ["VerifyAPIKey, OAuthV2, VerifyJWT, mTLS/TLS, AccessControl, Quota/SpikeArrest", "Cache, Analytics, Trace, Reports", "TargetServer, KVM, Environment, Organization", "JSONToXML, XSL, AssignMessage, ExtractVariables"], "correct": 0, "explanation": "AuthN/AuthZ + transporte + control de abuso." }, { "id": "1.5", "question": "¿Qué es la federación de tokens?", "options": ["Guardar tokens sin expiración", "Integración con IdP externo (OIDC/OAuth/SAML) para emitir/validar/intercambiar tokens", "Codificar tokens en Base64", "Deshabilitar validación de tokens"], "correct": 1, "explanation": "Identidad centralizada en un IdP; Apigee valida o intercambia tokens." }, { "id": "1.6", "question": "¿Qué validaciones mínimas debería tener un request antes del backend?", "options": ["Solo validar path", "AuthN/AuthZ + rate limiting + validación payload + content-type + límites de tamaño", "Solo cache", "Solo analytics"], "correct": 1, "explanation": "Mínimos: seguridad, control de consumo y validación de contrato/payload." }, { "id": "1.7", "question": "¿Por qué es importante versionar APIs?", "options": ["Para evitar OpenAPI", "Para aplicar Quota automáticamente", "Para evolucionar sin romper clientes, coexistir v1/v2 y deprecar con control", "Para evitar 500"], "correct": 2, "explanation": "Evita breaking changes abruptos y facilita evolución controlada." }, { "id": "1.8", "question": "¿Qué relación es correcta en Apigee?", "options": ["API Product se despliega dentro de ProxyEndpoint", "Organization contiene Environments donde se despliegan API Proxies", "Developer App contiene Environments", "KVM = Analytics"], "correct": 1, "explanation": "Org → Environments → despliegue de Proxies por entorno (revisions)." }, { "id": "1.9", "question": "¿Dónde guardar config runtime sin hard-code (URLs, flags)?", "options": ["Hard-code en JS", "Analytics Reports", "KVM y/o propiedades de environment (y secretos en un gestor si aplica)", "Portal como doc"], "correct": 2, "explanation": "KVM/props permiten cambiar config por entorno sin tocar código." }, { "id": "1.10", "question": "¿Cuáles son 4 categorías típicas de policies en Apigee?", "options": ["Security, Traffic Management, Mediation/Transformation, Extension/Integration", "UI, Storage, OS, Hardware", "Deploy, Compile, Build, Package", "DNS, DHCP, NAT, VLAN"], "correct": 0, "explanation": "Clasificación común: seguridad, tráfico, mediación, extensión." }];
+    const QUIZ_SIZE = 10;
+
+    let questions = [];
+    let current = 0;
+    let userAnswers = [];
+    let locked = false;
+
+    function shuffleArray(array) {
+      const a = [...array];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function pickRandomQuestions() {
+      // 1) tomar 10 preguntas random del pool
+      const picked = shuffleArray(pool).slice(0, Math.min(QUIZ_SIZE, pool.length));
+
+      // 2) mezclar alternativas y recalcular correcto
+      const randomized = picked.map(q => {
+        const correctText = q.options[q.correct];
+        const shuffledOptions = shuffleArray(q.options);
+        const newCorrect = shuffledOptions.indexOf(correctText);
+        return { ...q, options: shuffledOptions, correct: newCorrect };
+      });
+
+      // 3) mezclar el orden final de esas 10
+      return shuffleArray(randomized);
+    }
+
+    function init() {
+      questions = pickRandomQuestions();
+      current = 0;
+      userAnswers = new Array(questions.length).fill(undefined);
+      locked = false;
+
+      document.getElementById('finalScore').classList.remove('show');
+      document.getElementById('questionContainer').style.display = 'block';
+      document.getElementById('totalQuestions').textContent = questions.length;
+
+      render();
+      updateProgress();
+    }
+
+    function render() {
+      const q = questions[current];
+      const container = document.getElementById('questionContainer');
+      container.innerHTML = `
+    <div class="question-card active">
+      <div class="question-number">Pregunta ${current + 1} de ${questions.length}</div>
+      <div class="question-text">${q.question}</div>
+      <div class="options">
+        ${q.options.map((opt, idx) => `
+          <div class="option" data-idx="${idx}" onclick="selectOption(${idx})">
+            <strong>${String.fromCharCode(65 + idx)})</strong> ${opt}
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="explanation" id="explanation">
+        <h4 style="color:#2e7d32; margin-bottom:8px;">💡 Explicación</h4>
+        <div>${q.explanation}</div>
+      </div>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="prev()" ${current === 0 ? 'disabled' : ''}>← Anterior</button>
+        <button class="btn btn-primary" id="confirmBtn" onclick="confirm()" disabled>Confirmar</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="next()" style="display:none;">
+          ${current === questions.length - 1 ? 'Ver resultados' : 'Siguiente →'}
+        </button>
+      </div>
+    </div>
+  `;
+
+      if (userAnswers[current] !== undefined) {
+        selectOption(userAnswers[current], true);
+        confirm(true);
+      }
+    }
+
+    function selectOption(idx, restoring = false) {
+      if (locked && !restoring) return;
+      const opts = document.querySelectorAll('.option');
+      opts.forEach(o => o.classList.remove('selected'));
+      const el = document.querySelector(`.option[data-idx="${idx}"]`);
+      if (el) el.classList.add('selected');
+      if (!restoring) {
+        document.getElementById('confirmBtn').disabled = false;
+      }
+    }
+
+    function confirm(restoring = false) {
+      const selected = document.querySelector('.option.selected');
+      if (!selected) return;
+      const idx = parseInt(selected.dataset.idx, 10);
+      userAnswers[current] = idx;
+
+      const q = questions[current];
+      const opts = document.querySelectorAll('.option');
+      opts.forEach((o, i) => {
+        o.onclick = null;
+        if (i === q.correct) o.classList.add('correct');
+        else if (i === idx && i !== q.correct) o.classList.add('incorrect');
+      });
+
+      locked = true;
+      document.getElementById('explanation').classList.add('show');
+      document.getElementById('confirmBtn').style.display = 'none';
+      document.getElementById('nextBtn').style.display = 'inline-block';
+
+      updateProgress();
+    }
+
+    function score() {
+      let s = 0;
+      for (let i = 0; i < questions.length; i++) {
+        if (userAnswers[i] !== undefined && userAnswers[i] === questions[i].correct) s++;
+      }
+      return s;
+    }
+
+    function updateProgress() {
+      document.getElementById('currentQuestion').textContent = (current + 1);
+      document.getElementById('score').textContent = score();
+      const p = ((current + 1) / questions.length) * 100;
+      document.getElementById('progressFill').style.width = p + '%';
+    }
+
+    function next() {
+      locked = false;
+      if (current < questions.length - 1) {
+        current++;
+        render();
+        updateProgress();
+      } else {
+        showFinal();
+      }
+    }
+
+    function prev() {
+      locked = false;
+      if (current > 0) {
+        current--;
+        render();
+        updateProgress();
+      }
+    }
+
+    function showFinal() {
+      const s = score();
+      const pct = Math.round((s / questions.length) * 100);
+      document.getElementById('questionContainer').style.display = 'none';
+      document.getElementById('finalScore').classList.add('show');
+      document.getElementById('finalScoreCircle').textContent = pct + '%';
+
+      let msg = '';
+      if (pct >= 85) msg = '🎉 Excelente: dominado.';
+      else if (pct >= 65) msg = '👍 Bien: repasa KVM, estructura Org/Product/App y Traffic Mgmt.';
+      else msg = '⚠️ Reforzar: definiciones base, flujo, validaciones y policies clave.';
+
+      document.getElementById('scoreMessage').innerHTML = `Puntaje: <b>${s}/${questions.length}</b><br/>${msg}`;
+    }
+
+    function reviewMistakes() {
+      for (let idx = 0; idx < questions.length; idx++) {
+        if (userAnswers[idx] !== questions[idx].correct) {
+          current = idx;
+          document.getElementById('finalScore').classList.remove('show');
+          document.getElementById('questionContainer').style.display = 'block';
+          render();
+          updateProgress();
+          return;
+        }
+      }
+      alert("¡No tienes errores! 🎉");
+    }
+
+    function restartQuiz() {
+      init();
+    }
+
+    window.onload = init;
+  </script>
+</body>
+
+</html>

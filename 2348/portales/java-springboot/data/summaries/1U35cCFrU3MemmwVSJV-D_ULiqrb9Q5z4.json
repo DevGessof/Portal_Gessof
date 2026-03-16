@@ -1,0 +1,61 @@
+{
+  "titulo": "Registro y Descubrimiento de Servicios con Eureka",
+  "resumen": "Introducción al problema de descubrimiento de servicios en arquitecturas distribuidas y cómo Eureka Server lo resuelve. Se explica por qué hardcodear URLs (localhost:8082) no funciona en producción con múltiples instancias. Eureka permite descubrimiento dinámico de servicios por nombre en lugar de URL fija.",
+  "puntosClave": [
+    "Problema actual: URLs hardcodeadas en WebClient (http://localhost:8082)",
+    "En producción: múltiples instancias en diferentes servidores/IPs",
+    "Imposible saber de antemano todas las IPs de instancias",
+    "Solución: Service Registry (Eureka Server)",
+    "Eureka Server: directorio centralizado de microservicios",
+    "Microservicios se registran al iniciar (nombre + IP + puerto)",
+    "Otros servicios consultan Eureka para descubrir instancias",
+    "Client-side load balancing: cliente elige instancia disponible",
+    "Heartbeat: servicios envían pulso para indicar que están vivos",
+    "Eureka elimina servicios que no responden",
+    "Descubrimiento por nombre: product-service en vez de localhost:8082",
+    "Permite escalado horizontal transparente"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Service Registry",
+      "descripcion": "Servidor centralizado que mantiene directorio de todos los microservicios disponibles"
+    },
+    {
+      "nombre": "Eureka Server",
+      "descripcion": "Implementación de Netflix de Service Registry para Spring Cloud"
+    },
+    {
+      "nombre": "Service Discovery",
+      "descripcion": "Mecanismo para que servicios se encuentren dinámicamente sin URLs hardcodeadas"
+    },
+    {
+      "nombre": "Eureka Client",
+      "descripcion": "Microservicio que se registra en Eureka Server y consulta otros servicios"
+    },
+    {
+      "nombre": "Registro de Servicio",
+      "descripcion": "Proceso donde microservicio informa a Eureka su nombre, IP y puerto al iniciar"
+    },
+    {
+      "nombre": "Heartbeat",
+      "descripcion": "Señal periódica que servicio envía a Eureka indicando que está activo"
+    },
+    {
+      "nombre": "Client-Side Load Balancing",
+      "descripcion": "Cliente elige entre múltiples instancias disponibles (LoadBalancer de Spring)"
+    },
+    {
+      "nombre": "Health Check",
+      "descripcion": "Verificación automática de que servicios están respondiendo correctamente"
+    },
+    {
+      "nombre": "Escalado Horizontal",
+      "descripcion": "Agregar más instancias del mismo servicio para distribuir carga"
+    },
+    {
+      "nombre": "Descubrimiento Dinámico",
+      "descripcion": "Encontrar servicios en runtime sin configuración previa de IPs"
+    }
+  ],
+  "codigoEjemplo": null
+}

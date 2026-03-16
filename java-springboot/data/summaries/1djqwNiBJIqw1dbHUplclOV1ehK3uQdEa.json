@@ -1,0 +1,61 @@
+{
+  "titulo": "Crear Capa Intermedia Service para Manejo de Lógica y Validaciones",
+  "resumen": "Refactorización de CustomerRestController moviendo lógica de negocio a CustomerService. Se implementan validaciones en capa de servicio que lanzan excepciones personalizadas, permitiendo que GlobalExceptionHandler las capture y convierta en respuestas HTTP apropiadas. Separación clara de responsabilidades.",
+  "puntosClave": [
+    "Controller debe ser delgado: solo recibir request y retornar response",
+    "Service contiene lógica de negocio y validaciones",
+    "Mover validaciones de controller a service",
+    "CustomerService.findById() valida si existe, lanza NotFoundException si no",
+    "CustomerService.create() valida datos, lanza IllegalArgumentException si inválidos",
+    "Service lanza excepciones, GlobalExceptionHandler las convierte en HTTP",
+    "Controller solo llama service y retorna ResponseEntity",
+    "Beneficio: controllers consistentes, lógica centralizada en service",
+    "Facilita testing: mockear service en tests de controller",
+    "Reutilización: misma validación si se agrega otro controller",
+    "Aplicar patrón en todos los microservicios",
+    "Service puede usar @Transactional para gestión de transacciones"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Service Layer",
+      "descripcion": "Capa que contiene lógica de negocio, validaciones y orquestación"
+    },
+    {
+      "nombre": "Thin Controller",
+      "descripcion": "Controller minimalista que delega trabajo a service"
+    },
+    {
+      "nombre": "Business Validation",
+      "descripcion": "Reglas de negocio verificadas en service antes de persistir"
+    },
+    {
+      "nombre": "Exception Propagation",
+      "descripcion": "Service lanza excepción, controller no la captura, llega a @ControllerAdvice"
+    },
+    {
+      "nombre": "Separation of Concerns",
+      "descripcion": "Controller (HTTP), Service (negocio), Repository (datos)"
+    },
+    {
+      "nombre": "Service Reusability",
+      "descripcion": "Misma lógica reutilizable desde múltiples controllers o capas"
+    },
+    {
+      "nombre": "Testability",
+      "descripcion": "Fácil testear service aislado con JUnit, mockear en controller tests"
+    },
+    {
+      "nombre": "@Transactional",
+      "descripcion": "Anotación en service para gestionar transacciones de BD"
+    },
+    {
+      "nombre": "Domain Validation",
+      "descripcion": "Validaciones específicas del dominio (no solo formato)"
+    },
+    {
+      "nombre": "Error Propagation",
+      "descripcion": "Dejar que excepciones suban hasta GlobalExceptionHandler"
+    }
+  ],
+  "codigoEjemplo": "// CustomerService.java - Con validaciones\npackage com.paymentchange.customer.services;\n\nimport com.paymentchange.customer.entities.Customer;\nimport com.paymentchange.customer.exceptions.NotFoundException;\nimport com.paymentchange.customer.repositories.CustomerRepository;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\nimport java.util.List;\n\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private CustomerRepository customerRepository;\n    \n    public List<Customer> findAll() {\n        return customerRepository.findAll();\n    }\n    \n    public Customer findById(Long id) {\n        return customerRepository.findById(id)\n            .orElseThrow(() -> new NotFoundException(\n                \"Customer with ID \" + id + \" not found\"\n            ));\n    }\n    \n    public Customer create(Customer customer) {\n        // Validaciones de negocio\n        if (customer.getName() == null || customer.getName().isEmpty()) {\n            throw new IllegalArgumentException(\"Customer name is required\");\n        }\n        \n        if (customer.getPhoneNumber() == null || \n            customer.getPhoneNumber().isEmpty()) {\n            throw new IllegalArgumentException(\"Phone number is required\");\n        }\n        \n        // Validar productos si existen (usando WebClient)\n        if (customer.getProductIds() != null) {\n            for (Long productId : customer.getProductIds()) {\n                // WebClient valida producto existe\n                // Si no existe, lanza NotFoundException\n            }\n        }\n        \n        return customerRepository.save(customer);\n    }\n    \n    public Customer update(Long id, Customer customer) {\n        // Verificar que existe\n        Customer existing = findById(id);\n        \n        // Validar datos\n        if (customer.getName() == null || customer.getName().isEmpty()) {\n            throw new IllegalArgumentException(\"Customer name is required\");\n        }\n        \n        // Actualizar campos\n        existing.setName(customer.getName());\n        existing.setPhoneNumber(customer.getPhoneNumber());\n        \n        return customerRepository.save(existing);\n    }\n    \n    public void delete(Long id) {\n        // Verificar que existe antes de eliminar\n        Customer customer = findById(id);\n        customerRepository.delete(customer);\n    }\n}\n\n// CustomerRestController - Delgado, solo delega a service\n@RestController\n@RequestMapping(\"/api/v1/customer\")\npublic class CustomerRestController {\n    \n    @Autowired\n    private CustomerService customerService;\n    \n    @GetMapping\n    public ResponseEntity<List<Customer>> findAll() {\n        return ResponseEntity.ok(customerService.findAll());\n    }\n    \n    @GetMapping(\"/{id}\")\n    public ResponseEntity<Customer> findById(@PathVariable Long id) {\n        // Service valida y lanza excepción si no existe\n        return ResponseEntity.ok(customerService.findById(id));\n    }\n    \n    @PostMapping\n    public ResponseEntity<Customer> create(@RequestBody Customer customer) {\n        // Service valida datos\n        Customer saved = customerService.create(customer);\n        return ResponseEntity.status(HttpStatus.CREATED).body(saved);\n    }\n    \n    @PutMapping(\"/{id}\")\n    public ResponseEntity<Customer> update(\n            @PathVariable Long id, \n            @RequestBody Customer customer) {\n        return ResponseEntity.ok(customerService.update(id, customer));\n    }\n    \n    @DeleteMapping(\"/{id}\")\n    public ResponseEntity<Void> delete(@PathVariable Long id) {\n        customerService.delete(id);\n        return ResponseEntity.noContent().build();\n    }\n}"
+}

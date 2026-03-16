@@ -1,0 +1,65 @@
+{
+  "titulo": "Arquitectura de un API Gateway y sus Componentes",
+  "resumen": "Análisis detallado de arquitectura interna de API Gateway. Se explican componentes: router, filtros (pre/post), predicates, load balancer, circuit breaker. Se muestra flujo de request completo desde entrada hasta microservicio y respuesta.",
+  "puntosClave": [
+    "Componentes principales de API Gateway:",
+    "1. Router: decide a qué microservicio enrutar",
+    "2. Predicates: condiciones para aplicar ruta (path, method, header)",
+    "3. Filters: transformaciones pre/post request",
+    "   - Pre-filters: antes de enviar a backend (auth, logging)",
+    "   - Post-filters: después de recibir response (headers, logging)",
+    "4. Load Balancer: distribuir entre instancias",
+    "5. Circuit Breaker: prevenir llamadas a servicios caídos",
+    "6. Rate Limiter: limitar requests por cliente",
+    "Flujo de request:",
+    "  Cliente → Gateway → Predicates → Pre-filters → Router → Load Balancer → Microservicio",
+    "  Microservicio → Response → Post-filters → Cliente",
+    "Gateway puede modificar: headers, body, status code",
+    "Configuración declarativa: rutas definidas en YAML/properties",
+    "Configuración programática: RouteLocator @Bean",
+    "Spring Cloud Gateway usa WebFlux (reactivo, non-blocking)"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Router",
+      "descripcion": "Componente que determina a qué backend enviar request"
+    },
+    {
+      "nombre": "Predicate",
+      "descripcion": "Condición que debe cumplirse para aplicar ruta (path, header, time)"
+    },
+    {
+      "nombre": "Filter",
+      "descripcion": "Componente que modifica request o response"
+    },
+    {
+      "nombre": "Pre-Filter",
+      "descripcion": "Filter ejecutado antes de enviar request a backend"
+    },
+    {
+      "nombre": "Post-Filter",
+      "descripcion": "Filter ejecutado después de recibir response de backend"
+    },
+    {
+      "nombre": "Global Filter",
+      "descripcion": "Filter aplicado a todas las rutas"
+    },
+    {
+      "nombre": "Route-Specific Filter",
+      "descripcion": "Filter aplicado solo a ruta específica"
+    },
+    {
+      "nombre": "RouteLocator",
+      "descripcion": "Interfaz Spring para definir rutas programáticamente"
+    },
+    {
+      "nombre": "Spring Cloud Gateway",
+      "descripcion": "Implementación de API Gateway basada en Spring WebFlux"
+    },
+    {
+      "nombre": "WebFlux",
+      "descripcion": "Framework reactivo no-bloqueante de Spring"
+    }
+  ],
+  "codigoEjemplo": null
+}

@@ -1,0 +1,72 @@
+{
+  "titulo": "Actualizar Java Correctamente en Cada Proyecto y Resolver Conflictos",
+  "resumen": "Proceso paso a paso para actualizar versión de Java en proyecto Maven multi-módulo. Se modifican POMs (parent y módulos), se resuelven errores de compilación, se actualizan plugins Maven, y se valida build exitoso. Guía práctica para migration sin romper proyecto.",
+  "puntosClave": [
+    "Pasos para actualizar Java en proyecto Maven:",
+    "1. Actualizar POM padre con nuevas versiones:",
+    "   - <java.version>17</java.version>",
+    "   - <maven.compiler.source>17</maven.compiler.source>",
+    "   - <maven.compiler.target>17</maven.compiler.target>",
+    "2. Actualizar versión de Spring Boot si es necesario",
+    "3. Actualizar plugins Maven a versiones compatibles:",
+    "   - maven-compiler-plugin: 3.11.0+",
+    "   - maven-surefire-plugin: 3.0.0+",
+    "   - spring-boot-maven-plugin: versión de Spring Boot",
+    "4. Limpiar artifacts anteriores: mvn clean",
+    "5. Compilar proyecto: mvn compile",
+    "6. Resolver errores de compilación si los hay",
+    "7. Ejecutar tests: mvn test",
+    "8. Generar package: mvn package",
+    "Errores comunes y soluciones:",
+    "  - 'class file has wrong version': limpiar target/ y recompilar",
+    "  - 'package javax.annotation does not exist': agregar jakarta.annotation-api",
+    "  - Lombok no funciona: actualizar a versión 1.18.30+",
+    "  - Tests fallan: actualizar JUnit 5",
+    "Verificar IDE configurado con JDK 17:",
+    "  - IntelliJ: Project Structure → SDK",
+    "  - Eclipse: Java Build Path → JRE System Library"
+  ],
+  "conceptos": [
+    {
+      "nombre": "maven.compiler.source",
+      "descripcion": "Versión de Java del código fuente a compilar"
+    },
+    {
+      "nombre": "maven.compiler.target",
+      "descripcion": "Versión de Java de bytecode generado"
+    },
+    {
+      "nombre": "java.version",
+      "descripcion": "Propiedad Spring Boot que configura versión de Java"
+    },
+    {
+      "nombre": "maven-compiler-plugin",
+      "descripcion": "Plugin Maven que compila código Java"
+    },
+    {
+      "nombre": "maven-surefire-plugin",
+      "descripcion": "Plugin Maven que ejecuta tests unitarios"
+    },
+    {
+      "nombre": "Class File Version",
+      "descripcion": "Versión de bytecode Java en archivos .class"
+    },
+    {
+      "nombre": "javax vs jakarta",
+      "descripcion": "Cambio de namespace en Jakarta EE 9+ (javax.* → jakarta.*)"
+    },
+    {
+      "nombre": "Backward Compatibility",
+      "descripcion": "Compatibilidad con versiones anteriores"
+    },
+    {
+      "nombre": "Forward Compatibility",
+      "descripcion": "Compatibilidad con versiones futuras"
+    },
+    {
+      "nombre": "Clean Build",
+      "descripcion": "Eliminar artifacts compilados y recompilar desde cero"
+    }
+  ],
+  "codigoEjemplo": "<!-- pom.xml - Parent POM ANTES (Java 11) -->\n<properties>\n    <java.version>11</java.version>\n    <maven.compiler.source>11</maven.compiler.source>\n    <maven.compiler.target>11</maven.compiler.target>\n    <spring-boot.version>2.7.18</spring-boot.version>\n</properties>\n\n<!-- pom.xml - Parent POM DESPUÉS (Java 17) -->\n<properties>\n    <!-- Actualizar versión de Java -->\n    <java.version>17</java.version>\n    <maven.compiler.source>17</maven.compiler.source>\n    <maven.compiler.target>17</maven.compiler.target>\n    \n    <!-- Actualizar Spring Boot a 3.x (requiere Java 17+) -->\n    <spring-boot.version>3.2.0</spring-boot.version>\n    \n    <!-- Actualizar versiones de plugins -->\n    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>\n    <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>\n</properties>\n\n<build>\n    <pluginManagement>\n        <plugins>\n            <!-- Compiler Plugin -->\n            <plugin>\n                <groupId>org.apache.maven.plugins</groupId>\n                <artifactId>maven-compiler-plugin</artifactId>\n                <version>${maven-compiler-plugin.version}</version>\n                <configuration>\n                    <source>${java.version}</source>\n                    <target>${java.version}</target>\n                    <release>${java.version}</release>\n                </configuration>\n            </plugin>\n            \n            <!-- Surefire Plugin (Tests) -->\n            <plugin>\n                <groupId>org.apache.maven.plugins</groupId>\n                <artifactId>maven-surefire-plugin</artifactId>\n                <version>${maven-surefire-plugin.version}</version>\n            </plugin>\n            \n            <!-- Spring Boot Plugin -->\n            <plugin>\n                <groupId>org.springframework.boot</groupId>\n                <artifactId>spring-boot-maven-plugin</artifactId>\n                <version>${spring-boot.version}</version>\n            </plugin>\n        </plugins>\n    </pluginManagement>\n</build>\n\n<!-- Si usas Spring Boot 3.x, actualizar dependencias javax → jakarta -->\n<dependencies>\n    <!-- ANTES (Spring Boot 2.x con Java 11) -->\n    <!-- <dependency> -->\n    <!--     <groupId>javax.annotation</groupId> -->\n    <!--     <artifactId>javax.annotation-api</artifactId> -->\n    <!-- </dependency> -->\n    \n    <!-- DESPUÉS (Spring Boot 3.x con Java 17) -->\n    <dependency>\n        <groupId>jakarta.annotation</groupId>\n        <artifactId>jakarta.annotation-api</artifactId>\n    </dependency>\n</dependencies>\n\n# Proceso de actualización\n\n# 1. Verificar versión actual\njava -version\nmvn -version\n\n# 2. Instalar Java 17\nsdk install java 17.0.9-tem\nsdk use java 17.0.9-tem\n\n# 3. Actualizar POMs\n# Editar pom.xml padre con cambios arriba\n\n# 4. Limpiar artifacts anteriores\nmvn clean\n\n# 5. Compilar\nmvn compile\n\n# Posibles errores:\n\n# Error 1: Class file has wrong version\n# Solución: Limpiar completamente\nrm -rf target/\nrm -rf */target/\nmvn clean compile\n\n# Error 2: package javax.annotation does not exist\n# Solución: Actualizar a jakarta\n# Ver cambio en pom.xml arriba\n\n# Error 3: Lombok no reconoce records\n# Solución: Actualizar Lombok (ver clase 3)\n\n# 6. Ejecutar tests\nmvn test\n\n# 7. Generar package\nmvn package\n\n# 8. Verificar que JAR funciona\njava -jar business-domain/customer/target/customer-service-1.0.0.jar\n\n# Verificar versión en IDE\n\n# IntelliJ IDEA:\n# File → Project Structure → Project\n# Project SDK: 17\n# Project language level: 17\n\n# File → Project Structure → Modules\n# Para cada módulo: Language level: 17\n\n# Eclipse:\n# Project → Properties → Java Build Path\n# Libraries → JRE System Library → Edit → Workspace default JRE (java-17)\n\n# Validar build completo\nmvn clean install\n\n# Output esperado:\n# [INFO] BUILD SUCCESS\n# [INFO] Total time: 45.123 s"
+}

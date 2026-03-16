@@ -1,0 +1,61 @@
+{
+  "titulo": "Alternativas Web Modernas para Desarrollo Frontend",
+  "resumen": "Introducción a frameworks modernos de frontend (React, Angular, Vue) y por qué son necesarios para consumir APIs REST. Se explica arquitectura SPA (Single Page Application), diferencias entre frameworks, y cómo se conectan con backend mediante HTTP. Base conceptual para integración frontend-backend.",
+  "puntosClave": [
+    "Frontend moderno: aplicaciones SPA (Single Page Application)",
+    "Frameworks principales: React, Angular, Vue.js",
+    "SPA: cargan una vez, navegan sin recargar página",
+    "Consumen APIs REST mediante HTTP/AJAX",
+    "React: librería minimalista, componentes funcionales, hooks",
+    "Angular: framework completo con CLI, TypeScript, RxJS",
+    "Vue: progresivo, fácil aprender, reactivo",
+    "Comunicación con backend: fetch API, axios, HttpClient",
+    "JSON como formato de intercambio de datos",
+    "CORS necesario para permitir comunicación cross-origin",
+    "Autenticación: enviar token/credentials en headers",
+    "Separación clara: Frontend (UI) ↔ Backend (API/Datos)"
+  ],
+  "conceptos": [
+    {
+      "nombre": "SPA (Single Page Application)",
+      "descripcion": "Aplicación web que carga una sola página HTML y actualiza contenido dinámicamente"
+    },
+    {
+      "nombre": "React",
+      "descripcion": "Librería JavaScript para construir interfaces de usuario con componentes"
+    },
+    {
+      "nombre": "Angular",
+      "descripcion": "Framework TypeScript completo para aplicaciones web empresariales"
+    },
+    {
+      "nombre": "Vue.js",
+      "descripcion": "Framework progresivo JavaScript para interfaces reactivas"
+    },
+    {
+      "nombre": "Component-Based Architecture",
+      "descripcion": "Arquitectura donde UI se compone de componentes reutilizables"
+    },
+    {
+      "nombre": "HTTP Client",
+      "descripcion": "Librería para hacer peticiones HTTP (fetch, axios, HttpClient)"
+    },
+    {
+      "nombre": "REST API Consumption",
+      "descripcion": "Consumir endpoints REST desde aplicación frontend"
+    },
+    {
+      "nombre": "TypeScript",
+      "descripcion": "Superset de JavaScript con tipado estático"
+    },
+    {
+      "nombre": "Frontend-Backend Separation",
+      "descripcion": "Arquitectura donde frontend y backend son aplicaciones independientes"
+    },
+    {
+      "nombre": "API-First Development",
+      "descripcion": "Diseñar API antes de implementar frontend"
+    }
+  ],
+  "codigoEjemplo": null
+}

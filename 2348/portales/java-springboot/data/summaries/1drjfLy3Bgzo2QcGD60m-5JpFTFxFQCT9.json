@@ -1,0 +1,63 @@
+{
+  "titulo": "Definir Dependencias Compartidas en POM Padre",
+  "resumen": "Configuración de dependencias comunes en el POM padre para que todos los microservicios las hereden automáticamente. Se usa <dependencyManagement> para centralizar versiones sin forzar inclusión. Se añaden starters comunes (Web, JPA, H2, DevTools, Lombok, Validation) y se explica la diferencia entre dependencies y dependencyManagement.",
+  "puntosClave": [
+    "POM padre centraliza dependencias para evitar duplicación",
+    "Usar <dependencyManagement> para definir versiones centralizadas",
+    "Diferencia clave: <dependencies> incluye obligatorio, <dependencyManagement> solo define versión",
+    "Módulos hijos deciden si usan la dependencia, pero versión viene del padre",
+    "Dependencias comunes a todos los microservicios:",
+    "- spring-boot-starter-web",
+    "- spring-boot-starter-data-jpa",
+    "- spring-boot-starter-validation",
+    "- h2 (base de datos en memoria)",
+    "- lombok",
+    "- spring-boot-devtools",
+    "Ventaja: cambiar versión en un solo lugar afecta todos los módulos",
+    "Los microservicios solo declaran groupId y artifactId (sin version)",
+    "Facilita actualizaciones y mantiene consistencia"
+  ],
+  "conceptos": [
+    {
+      "nombre": "dependencyManagement",
+      "descripcion": "Sección del POM que centraliza versiones de dependencias sin forzar su inclusión"
+    },
+    {
+      "nombre": "dependencies",
+      "descripcion": "Sección que incluye dependencias obligatorias en el proyecto actual"
+    },
+    {
+      "nombre": "Herencia de Dependencias",
+      "descripcion": "Módulos hijos heredan configuración de dependencias del POM padre"
+    },
+    {
+      "nombre": "Versionado Centralizado",
+      "descripcion": "Definir versiones en un solo lugar (padre) para mantener consistencia"
+    },
+    {
+      "nombre": "Scope Runtime",
+      "descripcion": "Dependencia necesaria solo en ejecución, no en compilación (ej: H2, DevTools)"
+    },
+    {
+      "nombre": "Scope Provided",
+      "descripcion": "Dependencia usada en compilación pero no empaquetada (ej: Lombok)"
+    },
+    {
+      "nombre": "Dependencias Transitivas",
+      "descripcion": "Librerías incluidas automáticamente por otras dependencias"
+    },
+    {
+      "nombre": "Bill of Materials (BOM)",
+      "descripcion": "POM especial que define versiones compatibles de un conjunto de librerías"
+    },
+    {
+      "nombre": "Spring Boot Parent",
+      "descripcion": "POM padre de Spring Boot que incluye dependencyManagement para todos los starters"
+    },
+    {
+      "nombre": "Gestión de Versiones",
+      "descripcion": "Práctica de controlar versiones desde POM padre para evitar conflictos"
+    }
+  ],
+  "codigoEjemplo": "<!-- pom.xml del proyecto padre -->\n<project>\n    <parent>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-parent</artifactId>\n        <version>3.2.0</version>\n    </parent>\n    \n    <dependencyManagement>\n        <dependencies>\n            <dependency>\n                <groupId>org.springframework.boot</groupId>\n                <artifactId>spring-boot-starter-web</artifactId>\n            </dependency>\n            <dependency>\n                <groupId>org.springframework.boot</groupId>\n                <artifactId>spring-boot-starter-data-jpa</artifactId>\n            </dependency>\n            <dependency>\n                <groupId>org.projectlombok</groupId>\n                <artifactId>lombok</artifactId>\n                <version>1.18.30</version>\n                <scope>provided</scope>\n            </dependency>\n        </dependencies>\n    </dependencyManagement>\n</project>\n\n<!-- pom.xml de microservicio hijo -->\n<dependencies>\n    <!-- No necesita especificar version, la hereda del padre -->\n    <dependency>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-web</artifactId>\n    </dependency>\n</dependencies>"
+}

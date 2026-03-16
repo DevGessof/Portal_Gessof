@@ -1,0 +1,66 @@
+{
+  "titulo": "Codificación: Iniciar Eureka y Registrar Gateway",
+  "resumen": "Inicio de Eureka Server y registro de API Gateway en Eureka. Se verifica descubrimiento de servicios, se prueba enrutamiento dinámico vía Eureka, y se valida que Gateway balancea carga entre instancias. Gateway se convierte en cliente Eureka.",
+  "puntosClave": [
+    "Iniciar Eureka Server primero: java -jar eureka-server.jar",
+    "Verificar Eureka UI: http://localhost:8761",
+    "Iniciar API Gateway: java -jar api-gateway.jar",
+    "Gateway se registra automáticamente en Eureka",
+    "Verificar en Eureka Dashboard: API-GATEWAY aparece",
+    "Configurar Gateway para usar Eureka:",
+    "  eureka.client.fetch-registry=true",
+    "  eureka.client.register-with-eureka=true",
+    "Gateway resuelve nombres de servicio vía Eureka:",
+    "  lb://CUSTOMER-SERVICE → http://customer-instance:8081",
+    "Iniciar múltiples instancias de Customer:",
+    "  java -jar customer.jar --server.port=8081",
+    "  java -jar customer.jar --server.port=8091",
+    "Gateway balancea automáticamente entre instancias",
+    "Algoritmo por defecto: Round Robin",
+    "Probar: múltiples requests van a diferentes instancias",
+    "Verificar logs: Gateway loggea a qué instancia enruta"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Service Registration",
+      "descripcion": "Servicio se registra en Eureka al iniciar"
+    },
+    {
+      "nombre": "Service Discovery",
+      "descripcion": "Gateway consulta Eureka para resolver nombres de servicio"
+    },
+    {
+      "nombre": "Dynamic Routing",
+      "descripcion": "Enrutamiento basado en registro dinámico de servicios"
+    },
+    {
+      "nombre": "Load Balancing",
+      "descripcion": "Gateway distribuye requests entre instancias disponibles"
+    },
+    {
+      "nombre": "Round Robin",
+      "descripcion": "Algoritmo de balanceo que alterna entre instancias secuencialmente"
+    },
+    {
+      "nombre": "Instance Health",
+      "descripcion": "Eureka verifica salud de instancias, Gateway solo enruta a healthy"
+    },
+    {
+      "nombre": "Heartbeat",
+      "descripcion": "Ping periódico de instancia a Eureka para indicar que está viva"
+    },
+    {
+      "nombre": "Service Instance",
+      "descripcion": "Instancia específica de microservicio con IP:puerto único"
+    },
+    {
+      "nombre": "fetch-registry",
+      "descripcion": "Gateway obtiene lista de servicios registrados de Eureka"
+    },
+    {
+      "nombre": "Client-Side Load Balancing",
+      "descripcion": "Gateway hace balanceo, no servidor externo"
+    }
+  ],
+  "codigoEjemplo": "# application.yml - API Gateway con Eureka\nserver:\n  port: 8080\n\nspring:\n  application:\n    name: api-gateway\n  cloud:\n    gateway:\n      discovery:\n        locator:\n          enabled: true  # Auto-crear rutas desde Eureka\n          lower-case-service-id: true  # Convertir a lowercase\n      routes:\n        - id: customer-service\n          uri: lb://CUSTOMER-SERVICE  # Load balance vía Eureka\n          predicates:\n            - Path=/api/v1/customer/**\n\neureka:\n  client:\n    serviceUrl:\n      defaultZone: http://localhost:8761/eureka/\n    register-with-eureka: true  # Registrarse en Eureka\n    fetch-registry: true        # Obtener registro de servicios\n  instance:\n    prefer-ip-address: true\n    instance-id: ${spring.application.name}:${server.port}\n\n# 1. Iniciar Eureka Server\ncd infrastructure-services/eureka-server\nmvn spring-boot:run\n# Eureka: http://localhost:8761\n\n# 2. Iniciar API Gateway\ncd infrastructure-services/api-gateway\nmvn spring-boot:run\n# Gateway: http://localhost:8080\n\n# 3. Verificar registro en Eureka\n# Eureka Dashboard mostrará:\n# Application          AMIs        Availability Zones    Status\n# API-GATEWAY          n/a (1)     (1)                  UP (1) - api-gateway:8080\n\n# 4. Iniciar múltiples instancias de Customer\ncd business-domain/customer\n\n# Instancia 1\njava -jar target/customer-service.jar --server.port=8081\n\n# Instancia 2 (otra terminal)\njava -jar target/customer-service.jar --server.port=8091\n\n# Eureka mostrará:\n# CUSTOMER-SERVICE     n/a (2)     (2)                  UP (2) - customer:8081, customer:8091\n\n# 5. Probar load balancing\nfor i in {1..10}; do\n  curl http://localhost:8080/api/v1/customer\n  echo \"Request $i\"\ndone\n\n# Logs del Gateway mostrarán alternancia:\n# [PRE-FILTER] Routing to: http://192.168.1.10:8081/api/v1/customer\n# [PRE-FILTER] Routing to: http://192.168.1.10:8091/api/v1/customer\n# [PRE-FILTER] Routing to: http://192.168.1.10:8081/api/v1/customer\n# [PRE-FILTER] Routing to: http://192.168.1.10:8091/api/v1/customer\n# → Round Robin funcionando ✅\n\n# 6. Probar failover (detener una instancia)\n# Detener instancia en puerto 8091\n# Todas las requests ahora van a 8081\n# Gateway automáticamente deja de enrutar a instancia caída"
+}

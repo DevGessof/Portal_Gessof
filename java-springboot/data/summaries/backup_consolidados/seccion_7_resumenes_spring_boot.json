@@ -1,0 +1,838 @@
+{
+  "seccion": "Sección 7 - Diseño de APIs REST y Manejo de Excepciones",
+  "descripcion": "Mejores prácticas para diseñar APIs REST profesionales: versionado, códigos de estado HTTP estándar, manejo centralizado de excepciones, validaciones, y patrones de respuesta consistentes. Se implementa manejo robusto de errores con @ControllerAdvice, excepciones personalizadas, y validación de respuestas al consumir APIs externas.",
+  "clases": [
+    {
+      "numero": 1,
+      "archivo": "1__APIS_corazón_potencia_comunicación_aplicaciones.srt",
+      "titulo": "APIs: El Corazón y Potencia de la Comunicación entre Aplicaciones",
+      "resumen": "Introducción a la importancia de las APIs REST en arquitecturas de microservicios. Se explica por qué las APIs son el contrato entre servicios, la necesidad de diseñarlas correctamente desde el inicio, y las consecuencias de APIs mal diseñadas (difícil de mantener, consumir, evolucionar). Se establecen fundamentos para construir APIs profesionales y escalables.",
+      "puntosClave": [
+        "APIs REST: contrato de comunicación entre microservicios",
+        "APIs son la interfaz pública que otros servicios/clientes consumen",
+        "Diseño incorrecto causa: código duplicado, dificultad mantenimiento, bugs",
+        "APIs mal diseñadas dificultan integración de nuevos consumidores",
+        "Cambios en APIs pueden romper clientes existentes (breaking changes)",
+        "Importancia de diseño previo antes de codificar",
+        "Aspectos clave: versionado, códigos HTTP, estructura de respuesta, excepciones",
+        "REST: Representational State Transfer (arquitectura estándar)",
+        "APIs deben ser consistentes en todos los microservicios",
+        "Documentación clara es esencial (Swagger/OpenAPI)",
+        "Diseño pensando en consumidores (desarrolladores externos/internos)",
+        "APIs bien diseñadas facilitan escalabilidad y mantenimiento"
+      ],
+      "conceptos": [
+        {
+          "nombre": "API REST",
+          "descripcion": "Interfaz de programación basada en HTTP que expone recursos mediante URLs y métodos estándar"
+        },
+        {
+          "nombre": "Contrato de API",
+          "descripcion": "Acuerdo implícito entre proveedor y consumidor sobre estructura de peticiones/respuestas"
+        },
+        {
+          "nombre": "Breaking Change",
+          "descripcion": "Modificación en API que rompe compatibilidad con clientes existentes"
+        },
+        {
+          "nombre": "Diseño API-First",
+          "descripcion": "Enfoque de diseñar contrato de API antes de implementar código"
+        },
+        {
+          "nombre": "REST Principles",
+          "descripcion": "Principios arquitectónicos: recursos, verbos HTTP, stateless, representaciones"
+        },
+        {
+          "nombre": "Consumidor de API",
+          "descripcion": "Aplicación/servicio que utiliza endpoints expuestos por API"
+        },
+        {
+          "nombre": "Interfaz Pública",
+          "descripcion": "Endpoints y contratos expuestos externamente para consumo"
+        },
+        {
+          "nombre": "Consistencia de API",
+          "descripcion": "Mantener patrones similares en todos los endpoints y servicios"
+        },
+        {
+          "nombre": "Escalabilidad de API",
+          "descripcion": "Capacidad de API para manejar crecimiento sin rediseño completo"
+        },
+        {
+          "nombre": "Mantenibilidad",
+          "descripcion": "Facilidad de modificar y evolucionar API sin romper funcionalidad existente"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "archivo": "2__Anatomía_APIs_aspectos_mínimos_diseño_antes.srt",
+      "titulo": "Anatomía de APIs REST: Aspectos Mínimos de Diseño",
+      "resumen": "Análisis detallado de los elementos fundamentales que componen una API REST bien diseñada. Se cubren recursos, verbos HTTP correctos, estructura de URLs, códigos de estado, formato de respuestas (JSON), headers importantes, y convenciones de nombrado. Fundamentos para construir APIs consistentes y profesionales.",
+      "puntosClave": [
+        "Elementos esenciales de API REST:",
+        "1. Recursos: sustantivos que representan entidades (/customers, /products)",
+        "2. Verbos HTTP: GET (leer), POST (crear), PUT (actualizar), DELETE (eliminar)",
+        "3. Códigos de estado: 200 OK, 201 Created, 404 Not Found, 500 Error",
+        "4. Formato: JSON como estándar (no XML en microservicios modernos)",
+        "5. Versionado: /v1/customers, /v2/customers para evolución",
+        "URLs deben ser sustantivos plurales: /customers, no /getCustomers",
+        "Evitar verbos en URLs: POST /customers, no POST /createCustomer",
+        "Estructura jerárquica: /customers/{id}/products/{productId}",
+        "Headers importantes: Content-Type, Accept, Authorization",
+        "Respuestas consistentes: siempre mismo formato de error/éxito",
+        "Nombres en minúsculas con guiones: /customer-accounts, no /CustomerAccounts",
+        "Documentar cada endpoint con Swagger/OpenAPI"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Recurso REST",
+          "descripcion": "Entidad del dominio expuesta via URL (customer, product, transaction)"
+        },
+        {
+          "nombre": "Verbo HTTP",
+          "descripcion": "Método que indica acción: GET (leer), POST (crear), PUT (actualizar), DELETE (eliminar)"
+        },
+        {
+          "nombre": "Código de Estado HTTP",
+          "descripcion": "Número que indica resultado de petición (2xx éxito, 4xx cliente, 5xx servidor)"
+        },
+        {
+          "nombre": "JSON (JavaScript Object Notation)",
+          "descripcion": "Formato estándar de intercambio de datos en APIs REST modernas"
+        },
+        {
+          "nombre": "Versionado de API",
+          "descripcion": "Estrategia para evolucionar API sin romper clientes existentes (/v1, /v2)"
+        },
+        {
+          "nombre": "Sustantivos Plurales",
+          "descripcion": "Convención de usar nombres en plural para colecciones (/customers, /products)"
+        },
+        {
+          "nombre": "URLs sin Verbos",
+          "descripcion": "Buena práctica: usar sustantivos + verbo HTTP (no /createCustomer sino POST /customers)"
+        },
+        {
+          "nombre": "Jerarquía de Recursos",
+          "descripcion": "URLs anidadas para relaciones: /customers/{id}/orders"
+        },
+        {
+          "nombre": "Content-Type Header",
+          "descripcion": "Indica formato del cuerpo de petición/respuesta (application/json)"
+        },
+        {
+          "nombre": "Convención de Nombrado",
+          "descripcion": "Reglas para nombres consistentes: minúsculas, guiones, plurales"
+        }
+      ],
+      "codigoEjemplo": "// ✅ BUENAS PRÁCTICAS - API REST bien diseñada\n\n// Recursos con sustantivos plurales\nGET    /api/v1/customers          // Listar clientes\nGET    /api/v1/customers/{id}     // Obtener cliente específico\nPOST   /api/v1/customers          // Crear cliente\nPUT    /api/v1/customers/{id}     // Actualizar cliente\nDELETE /api/v1/customers/{id}     // Eliminar cliente\n\n// Recursos anidados (relaciones)\nGET    /api/v1/customers/{id}/products        // Productos del cliente\nPOST   /api/v1/customers/{id}/products/{pid}  // Asociar producto\n\n// ❌ MALAS PRÁCTICAS - Evitar\n\n// Verbos en URL\nPOST   /api/createCustomer          // ❌ No usar verbos\nGET    /api/getCustomerById/{id}    // ❌ Redundante\n\n// Nombres inconsistentes\nGET    /api/Customer                // ❌ Singular y mayúscula\nGET    /api/get_customers           // ❌ Snake case\n\n// Headers correctos\nContent-Type: application/json\nAccept: application/json\nAuthorization: Bearer {token}\n\n// Estructura de respuesta JSON consistente\n{\n  \"data\": { /* recurso */ },\n  \"status\": \"success\",\n  \"timestamp\": \"2024-01-15T10:30:00Z\"\n}"
+    },
+    {
+      "numero": 3,
+      "archivo": "3__Codificar_versionado_API_recurso_microservicio.srt",
+      "titulo": "Codificar Versionado de API en Recursos de Microservicio",
+      "resumen": "Implementación práctica de versionado de API usando prefijo /v1 en URLs. Se modifica @RequestMapping en controllers para incluir versión, permitiendo evolución futura de API sin romper clientes. Se explican estrategias de versionado (URI, header, query param) y por qué URI versioning es más común.",
+      "puntosClave": [
+        "Versionado en URI: /api/v1/customers, /api/v2/customers",
+        "Modificar @RequestMapping(\"/customer\") a @RequestMapping(\"/api/v1/customer\")",
+        "Aplicar en CustomerRestController, ProductRestController, TransactionRestController",
+        "Permite evolucionar API manteniendo versión anterior funcionando",
+        "Clientes antiguos siguen usando /v1, nuevos usan /v2",
+        "Estrategias de versionado:",
+        "  - URI Versioning: /v1/customers (más común y visible)",
+        "  - Header Versioning: Accept: application/vnd.company.v1+json",
+        "  - Query Param: /customers?version=1",
+        "URI versioning recomendado por claridad y facilidad de uso",
+        "Actualizar WebClient baseUrl: http://product-service/api/v1",
+        "Documentar versión en Swagger/OpenAPI",
+        "Planificar deprecación de versiones antiguas"
+      ],
+      "conceptos": [
+        {
+          "nombre": "API Versioning",
+          "descripcion": "Estrategia para mantener múltiples versiones de API simultáneamente"
+        },
+        {
+          "nombre": "URI Versioning",
+          "descripcion": "Incluir versión en la URL (/v1, /v2) - método más común"
+        },
+        {
+          "nombre": "Header Versioning",
+          "descripcion": "Especificar versión en header Accept o custom header"
+        },
+        {
+          "nombre": "Query Parameter Versioning",
+          "descripcion": "Versión como parámetro de consulta (?version=1)"
+        },
+        {
+          "nombre": "Breaking Change",
+          "descripcion": "Cambio que requiere nueva versión porque rompe compatibilidad"
+        },
+        {
+          "nombre": "Backward Compatibility",
+          "descripcion": "Mantener versión anterior funcionando mientras se introduce nueva"
+        },
+        {
+          "nombre": "API Evolution",
+          "descripcion": "Proceso de mejorar API sin interrumpir consumidores existentes"
+        },
+        {
+          "nombre": "Deprecation Strategy",
+          "descripcion": "Plan para anunciar y eventualmente eliminar versiones antiguas"
+        },
+        {
+          "nombre": "Semantic Versioning",
+          "descripcion": "Numeración v1, v2, v3 para cambios mayores (breaking changes)"
+        },
+        {
+          "nombre": "API Gateway Routing",
+          "descripcion": "Enrutar peticiones a versión correcta según URL/header"
+        }
+      ],
+      "codigoEjemplo": "// CustomerRestController - Antes (sin versión)\n@RestController\n@RequestMapping(\"/customer\")  // ❌ Sin versionado\npublic class CustomerRestController {\n    // ...\n}\n\n// CustomerRestController - Después (con versión)\n@RestController\n@RequestMapping(\"/api/v1/customer\")  // ✅ Con versionado\npublic class CustomerRestController {\n    \n    @GetMapping\n    public List<Customer> findAll() {\n        return customerService.findAll();\n    }\n    \n    @GetMapping(\"/{id}\")\n    public Customer findById(@PathVariable Long id) {\n        return customerService.findById(id);\n    }\n}\n\n// ProductRestController\n@RestController\n@RequestMapping(\"/api/v1/product\")\npublic class ProductRestController {\n    // ...\n}\n\n// WebClientConfig - Actualizar URLs\n@Configuration\npublic class WebClientConfig {\n    \n    @Bean\n    @LoadBalanced\n    public WebClient.Builder webClientBuilder() {\n        return WebClient.builder();\n    }\n    \n    @Bean\n    public WebClient productWebClient(WebClient.Builder builder) {\n        return builder\n            .baseUrl(\"http://product-service/api/v1\")  // ✅ Con versión\n            .build();\n    }\n}\n\n// URLs finales:\n// http://localhost:8081/api/v1/customer\n// http://localhost:8082/api/v1/product\n// http://localhost:8083/api/v1/transaction\n\n// Evolución futura (ejemplo):\n// v2 con cambio de estructura\n@RestController\n@RequestMapping(\"/api/v2/customer\")\npublic class CustomerV2RestController {\n    // Nueva estructura de respuesta\n    // Clientes antiguos siguen usando /v1\n}"
+    },
+    {
+      "numero": 4,
+      "archivo": "4__Códigos_respuesta_estándar_APIs_customer_200_OK.srt",
+      "titulo": "Códigos de Respuesta HTTP Estándar en APIs - Implementar 200 OK",
+      "resumen": "Implementación de códigos de estado HTTP apropiados en respuestas de API. Se usa ResponseEntity<T> para controlar código de estado, headers y body. Se implementan respuestas 200 OK para operaciones exitosas, 201 Created para recursos nuevos, y se prepara base para otros códigos (404, 400, 500).",
+      "puntosClave": [
+        "ResponseEntity<T>: clase que permite control total de respuesta HTTP",
+        "Retornar ResponseEntity en vez de objeto directo",
+        "ResponseEntity.ok(data): código 200 + body con datos",
+        "ResponseEntity.status(HttpStatus.CREATED).body(data): código 201",
+        "Códigos de éxito principales:",
+        "  - 200 OK: operación exitosa (GET, PUT, DELETE)",
+        "  - 201 Created: recurso creado exitosamente (POST)",
+        "  - 204 No Content: éxito sin cuerpo (DELETE a veces)",
+        "Actualizar métodos de controller: findAll(), findById(), create(), update()",
+        "findAll() → ResponseEntity.ok(customerList)",
+        "create() → ResponseEntity.status(CREATED).body(newCustomer)",
+        "Permite agregar headers personalizados si es necesario",
+        "Base para implementar códigos de error más adelante"
+      ],
+      "conceptos": [
+        {
+          "nombre": "ResponseEntity<T>",
+          "descripcion": "Clase Spring que encapsula código HTTP, headers y body de respuesta"
+        },
+        {
+          "nombre": "HTTP Status 200 OK",
+          "descripcion": "Código de éxito estándar para operaciones que completaron correctamente"
+        },
+        {
+          "nombre": "HTTP Status 201 Created",
+          "descripcion": "Código específico para creación exitosa de recurso nuevo"
+        },
+        {
+          "nombre": "HTTP Status 204 No Content",
+          "descripcion": "Éxito sin cuerpo de respuesta (común en DELETE)"
+        },
+        {
+          "nombre": "HttpStatus Enum",
+          "descripcion": "Enumeración Spring con todos los códigos HTTP estándar"
+        },
+        {
+          "nombre": "Response Body",
+          "descripcion": "Contenido JSON de la respuesta HTTP"
+        },
+        {
+          "nombre": "Response Headers",
+          "descripcion": "Metadata de respuesta (Content-Type, Location, etc.)"
+        },
+        {
+          "nombre": "Semantic HTTP Codes",
+          "descripcion": "Usar código correcto según tipo de operación y resultado"
+        },
+        {
+          "nombre": "Location Header",
+          "descripcion": "Header con URL del recurso creado (usado con 201 Created)"
+        },
+        {
+          "nombre": "Builder Pattern",
+          "descripcion": "ResponseEntity.status().header().body() para construir respuestas"
+        }
+      ],
+      "codigoEjemplo": "// CustomerRestController - Con ResponseEntity\n@RestController\n@RequestMapping(\"/api/v1/customer\")\npublic class CustomerRestController {\n    \n    @Autowired\n    private CustomerService customerService;\n    \n    // GET - Retornar lista (200 OK)\n    @GetMapping\n    public ResponseEntity<List<Customer>> findAll() {\n        List<Customer> customers = customerService.findAll();\n        return ResponseEntity.ok(customers);  // 200 OK\n    }\n    \n    // GET - Retornar uno (200 OK)\n    @GetMapping(\"/{id}\")\n    public ResponseEntity<Customer> findById(@PathVariable Long id) {\n        Customer customer = customerService.findById(id);\n        return ResponseEntity.ok(customer);  // 200 OK\n    }\n    \n    // POST - Crear (201 Created)\n    @PostMapping\n    public ResponseEntity<Customer> create(@RequestBody Customer customer) {\n        Customer saved = customerService.create(customer);\n        \n        // Opción 1: Simple 201 Created\n        return ResponseEntity.status(HttpStatus.CREATED).body(saved);\n        \n        // Opción 2: 201 Created con Location header\n        // URI location = ServletUriComponentsBuilder\n        //     .fromCurrentRequest()\n        //     .path(\"/{id}\")\n        //     .buildAndExpand(saved.getId())\n        //     .toUri();\n        // return ResponseEntity.created(location).body(saved);\n    }\n    \n    // PUT - Actualizar (200 OK)\n    @PutMapping(\"/{id}\")\n    public ResponseEntity<Customer> update(\n            @PathVariable Long id, \n            @RequestBody Customer customer) {\n        Customer updated = customerService.update(id, customer);\n        return ResponseEntity.ok(updated);  // 200 OK\n    }\n    \n    // DELETE - Eliminar (204 No Content)\n    @DeleteMapping(\"/{id}\")\n    public ResponseEntity<Void> delete(@PathVariable Long id) {\n        customerService.delete(id);\n        return ResponseEntity.noContent().build();  // 204 No Content\n    }\n}"
+    },
+    {
+      "numero": 5,
+      "archivo": "5__Códigos_HTTP_estandarizar_APIs.srt",
+      "titulo": "Códigos HTTP para Estandarizar APIs - Guía Completa",
+      "resumen": "Guía exhaustiva de códigos de estado HTTP y cuándo usar cada uno. Se categorizan en: éxito (2xx), redirección (3xx), error del cliente (4xx), y error del servidor (5xx). Se explica semántica de cada código principal y mejores prácticas para usarlos consistentemente en todas las APIs.",
+      "puntosClave": [
+        "Familias de códigos HTTP:",
+        "2xx - Éxito:",
+        "  - 200 OK: éxito general (GET, PUT)",
+        "  - 201 Created: recurso creado (POST)",
+        "  - 204 No Content: éxito sin body (DELETE)",
+        "4xx - Error del cliente:",
+        "  - 400 Bad Request: datos inválidos, validación falla",
+        "  - 401 Unauthorized: falta autenticación",
+        "  - 403 Forbidden: autenticado pero sin permisos",
+        "  - 404 Not Found: recurso no existe",
+        "  - 409 Conflict: conflicto de estado (ej: duplicado)",
+        "5xx - Error del servidor:",
+        "  - 500 Internal Server Error: error genérico servidor",
+        "  - 502 Bad Gateway: error en servicio upstream",
+        "  - 503 Service Unavailable: servicio temporalmente no disponible",
+        "Usar código correcto mejora debugging y experiencia del consumidor",
+        "Evitar usar siempre 200 o 500 para todo"
+      ],
+      "conceptos": [
+        {
+          "nombre": "2xx Success Codes",
+          "descripcion": "Familia de códigos que indican operación completada exitosamente"
+        },
+        {
+          "nombre": "4xx Client Error Codes",
+          "descripcion": "Errores causados por petición incorrecta del cliente"
+        },
+        {
+          "nombre": "5xx Server Error Codes",
+          "descripcion": "Errores causados por fallo en el servidor"
+        },
+        {
+          "nombre": "400 Bad Request",
+          "descripcion": "Datos de entrada inválidos, falla validación, JSON malformado"
+        },
+        {
+          "nombre": "401 Unauthorized",
+          "descripcion": "Requiere autenticación (token ausente o inválido)"
+        },
+        {
+          "nombre": "403 Forbidden",
+          "descripcion": "Autenticado pero sin permisos para recurso solicitado"
+        },
+        {
+          "nombre": "404 Not Found",
+          "descripcion": "Recurso solicitado no existe en el servidor"
+        },
+        {
+          "nombre": "409 Conflict",
+          "descripcion": "Conflicto de estado (ej: crear recurso que ya existe)"
+        },
+        {
+          "nombre": "500 Internal Server Error",
+          "descripcion": "Error genérico no manejado en servidor"
+        },
+        {
+          "nombre": "502 Bad Gateway",
+          "descripcion": "Error al comunicarse con servicio upstream (otro microservicio)"
+        },
+        {
+          "nombre": "503 Service Unavailable",
+          "descripcion": "Servicio temporalmente no disponible (mantenimiento, sobrecarga)"
+        }
+      ],
+      "codigoEjemplo": "// Ejemplo de uso correcto de códigos HTTP\n\n// 200 OK - Operación exitosa\nGET /api/v1/customers/123\nResponse: 200 OK\n{\n  \"id\": 123,\n  \"name\": \"John Doe\"\n}\n\n// 201 Created - Recurso creado\nPOST /api/v1/customers\nRequest: {\"name\": \"Jane Doe\"}\nResponse: 201 Created\nLocation: /api/v1/customers/124\n{\n  \"id\": 124,\n  \"name\": \"Jane Doe\"\n}\n\n// 204 No Content - Eliminación exitosa\nDELETE /api/v1/customers/123\nResponse: 204 No Content\n(sin body)\n\n// 400 Bad Request - Validación falla\nPOST /api/v1/customers\nRequest: {\"name\": \"\"}  // nombre vacío\nResponse: 400 Bad Request\n{\n  \"error\": \"Validation failed\",\n  \"details\": [\"Name is required\"]\n}\n\n// 404 Not Found - Recurso no existe\nGET /api/v1/customers/999\nResponse: 404 Not Found\n{\n  \"error\": \"Customer not found\",\n  \"id\": 999\n}\n\n// 409 Conflict - Duplicado\nPOST /api/v1/customers\nRequest: {\"email\": \"existing@email.com\"}\nResponse: 409 Conflict\n{\n  \"error\": \"Customer with this email already exists\"\n}\n\n// 500 Internal Server Error - Error no manejado\nGET /api/v1/customers\nResponse: 500 Internal Server Error\n{\n  \"error\": \"Database connection failed\"\n}\n\n// 502 Bad Gateway - Servicio externo falla\nGET /api/v1/customers/123/products\nResponse: 502 Bad Gateway\n{\n  \"error\": \"Product service unavailable\"\n}"
+    },
+    {
+      "numero": 6,
+      "archivo": "6__Manejo_standard_excepciones_orientación_Aspectos.srt",
+      "titulo": "Manejo Estándar de Excepciones con Programación Orientada a Aspectos",
+      "resumen": "Introducción al manejo centralizado de excepciones usando @ControllerAdvice y programación orientada a aspectos (AOP). Se explica por qué manejar excepciones de forma distribuida (try-catch en cada método) es ineficiente, y cómo @ControllerAdvice permite interceptar todas las excepciones en un solo lugar con código reutilizable.",
+      "puntosClave": [
+        "Problema: try-catch en cada método del controller es repetitivo",
+        "Solución: @ControllerAdvice intercepta excepciones globalmente",
+        "Programación Orientada a Aspectos (AOP): separar concerns transversales",
+        "Concerns transversales: logging, seguridad, manejo de excepciones",
+        "@ControllerAdvice: componente Spring que actúa como proxy",
+        "Intercepta excepciones antes de llegar al cliente",
+        "Permite transformar excepciones en respuestas HTTP consistentes",
+        "@ExceptionHandler: método que maneja tipo específico de excepción",
+        "Un handler centralizado para cada tipo: @ExceptionHandler(NotFoundException.class)",
+        "Retornar ResponseEntity con código HTTP apropiado",
+        "Evita código duplicado en controllers",
+        "Facilita cambios: modificar respuesta de error en un solo lugar"
+      ],
+      "conceptos": [
+        {
+          "nombre": "@ControllerAdvice",
+          "descripcion": "Anotación Spring que permite manejar excepciones globalmente para todos los controllers"
+        },
+        {
+          "nombre": "AOP (Aspect-Oriented Programming)",
+          "descripcion": "Paradigma que separa concerns transversales del código de negocio"
+        },
+        {
+          "nombre": "@ExceptionHandler",
+          "descripcion": "Anotación en método que maneja tipo específico de excepción"
+        },
+        {
+          "nombre": "Cross-Cutting Concerns",
+          "descripcion": "Funcionalidades que afectan múltiples capas (logging, seguridad, excepciones)"
+        },
+        {
+          "nombre": "Global Exception Handler",
+          "descripcion": "Componente centralizado que maneja todas las excepciones de la aplicación"
+        },
+        {
+          "nombre": "Exception Interception",
+          "descripcion": "Interceptar excepciones antes de que lleguen al cliente"
+        },
+        {
+          "nombre": "Proxy Pattern",
+          "descripcion": "@ControllerAdvice actúa como proxy interceptando llamadas"
+        },
+        {
+          "nombre": "Código Reutilizable",
+          "descripcion": "Un handler sirve para todas las ocurrencias del mismo tipo de excepción"
+        },
+        {
+          "nombre": "Centralización de Lógica",
+          "descripcion": "Manejar excepciones en un solo lugar en vez de distribuido"
+        },
+        {
+          "nombre": "Respuestas Consistentes",
+          "descripcion": "Mismo formato de error para todas las APIs del microservicio"
+        }
+      ]
+    },
+    {
+      "numero": 7,
+      "archivo": "7__Crear_clase_estandarizada_manejar_respuesta.srt",
+      "titulo": "Crear Clase Estandarizada para Manejar Respuestas de Error",
+      "resumen": "Creación de DTO ErrorResponse para estandarizar estructura de respuestas de error en toda la API. Se define clase con campos timestamp, status, message, details, path para proporcionar información completa y consistente sobre errores. Facilita debugging y mejora experiencia del consumidor.",
+      "puntosClave": [
+        "Crear clase ErrorResponse en paquete dto o exceptions",
+        "Campos estándar:",
+        "  - timestamp: fecha/hora del error (LocalDateTime)",
+        "  - status: código HTTP (int)",
+        "  - error: descripción corta del tipo de error (String)",
+        "  - message: mensaje detallado (String)",
+        "  - path: URL donde ocurrió el error (String)",
+        "  - details: información adicional opcional (List<String>)",
+        "Usar @Data de Lombok para getters/setters",
+        "ErrorResponse usado en todos los @ExceptionHandler",
+        "Formato JSON consistente para todos los errores",
+        "Cliente puede parsear respuesta de error fácilmente",
+        "Facilita logging y debugging",
+        "Incluir solo información necesaria (no stack traces en producción)"
+      ],
+      "conceptos": [
+        {
+          "nombre": "ErrorResponse DTO",
+          "descripcion": "Objeto de transferencia de datos para respuestas de error estandarizadas"
+        },
+        {
+          "nombre": "Timestamp",
+          "descripcion": "Marca de tiempo cuando ocurrió el error para auditoría y debugging"
+        },
+        {
+          "nombre": "HTTP Status Code",
+          "descripcion": "Código numérico del error (400, 404, 500) incluido en body"
+        },
+        {
+          "nombre": "Error Message",
+          "descripcion": "Descripción legible del error para desarrollador"
+        },
+        {
+          "nombre": "Request Path",
+          "descripcion": "URL del endpoint donde ocurrió el error"
+        },
+        {
+          "nombre": "Error Details",
+          "descripcion": "Lista de mensajes específicos (validaciones, campos faltantes)"
+        },
+        {
+          "nombre": "Structured Error Response",
+          "descripcion": "Respuesta de error con formato consistente y predecible"
+        },
+        {
+          "nombre": "Client-Friendly Errors",
+          "descripcion": "Errores con información útil sin exponer detalles internos"
+        },
+        {
+          "nombre": "Error Serialization",
+          "descripcion": "Convertir ErrorResponse a JSON automáticamente"
+        },
+        {
+          "nombre": "Production vs Development Errors",
+          "descripcion": "Mostrar más/menos detalles según entorno"
+        }
+      ],
+      "codigoEjemplo": "// ErrorResponse.java - Clase estandarizada\npackage com.paymentchange.customer.dto;\n\nimport lombok.AllArgsConstructor;\nimport lombok.Data;\nimport lombok.NoArgsConstructor;\nimport java.time.LocalDateTime;\nimport java.util.List;\n\n@Data\n@AllArgsConstructor\n@NoArgsConstructor\npublic class ErrorResponse {\n    \n    private LocalDateTime timestamp;\n    private int status;\n    private String error;\n    private String message;\n    private String path;\n    private List<String> details;\n    \n    // Constructor para errores simples\n    public ErrorResponse(int status, String error, String message, String path) {\n        this.timestamp = LocalDateTime.now();\n        this.status = status;\n        this.error = error;\n        this.message = message;\n        this.path = path;\n        this.details = null;\n    }\n    \n    // Constructor con detalles\n    public ErrorResponse(int status, String error, String message, \n                        String path, List<String> details) {\n        this.timestamp = LocalDateTime.now();\n        this.status = status;\n        this.error = error;\n        this.message = message;\n        this.path = path;\n        this.details = details;\n    }\n}\n\n// Ejemplo de respuesta JSON\n{\n  \"timestamp\": \"2024-01-15T10:30:45\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"Customer with ID 999 not found\",\n  \"path\": \"/api/v1/customer/999\",\n  \"details\": null\n}\n\n// Ejemplo con detalles (validación)\n{\n  \"timestamp\": \"2024-01-15T10:30:45\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Validation failed\",\n  \"path\": \"/api/v1/customer\",\n  \"details\": [\n    \"Name is required\",\n    \"Email format is invalid\",\n    \"Phone number must be 10 digits\"\n  ]\n}"
+    },
+    {
+      "numero": 8,
+      "archivo": "8__Codificar_manejador_excepciones_siguiendo_patron.srt",
+      "titulo": "Codificar Manejador de Excepciones Siguiendo Patrón @ControllerAdvice",
+      "resumen": "Implementación completa de GlobalExceptionHandler con @ControllerAdvice. Se crean handlers para excepciones comunes: NotFoundException (404), IllegalArgumentException (400), y Exception genérica (500). Cada handler retorna ResponseEntity<ErrorResponse> con código HTTP apropiado y mensaje descriptivo.",
+      "puntosClave": [
+        "Crear clase GlobalExceptionHandler con @ControllerAdvice",
+        "@RestControllerAdvice combina @ControllerAdvice + @ResponseBody",
+        "Crear método para cada tipo de excepción con @ExceptionHandler",
+        "Handler para 404: @ExceptionHandler(NotFoundException.class)",
+        "Handler para 400: @ExceptionHandler(IllegalArgumentException.class)",
+        "Handler genérico 500: @ExceptionHandler(Exception.class)",
+        "Cada handler retorna ResponseEntity<ErrorResponse>",
+        "Extraer información del request con WebRequest parameter",
+        "Usar request.getDescription(false) para obtener path",
+        "Construir ErrorResponse con timestamp, status, message, path",
+        "Logger para registrar excepciones en servidor",
+        "Aplicar mismo patrón en todos los microservicios"
+      ],
+      "conceptos": [
+        {
+          "nombre": "GlobalExceptionHandler",
+          "descripcion": "Clase que maneja todas las excepciones de la aplicación centralizadamente"
+        },
+        {
+          "nombre": "@RestControllerAdvice",
+          "descripcion": "Combinación de @ControllerAdvice y @ResponseBody para APIs REST"
+        },
+        {
+          "nombre": "NotFoundException",
+          "descripcion": "Excepción personalizada para recursos no encontrados (404)"
+        },
+        {
+          "nombre": "IllegalArgumentException",
+          "descripcion": "Excepción Java para argumentos inválidos (usar para 400)"
+        },
+        {
+          "nombre": "WebRequest",
+          "descripcion": "Objeto Spring que contiene información del request HTTP"
+        },
+        {
+          "nombre": "Exception Hierarchy",
+          "descripcion": "Handlers específicos primero, handler genérico al final"
+        },
+        {
+          "nombre": "Logger",
+          "descripcion": "Registrar excepciones en logs del servidor para debugging"
+        },
+        {
+          "nombre": "Error Logging",
+          "descripcion": "Importante loggear excepciones antes de retornar respuesta"
+        },
+        {
+          "nombre": "Response Builder",
+          "descripcion": "Construir ErrorResponse y ResponseEntity en handler"
+        },
+        {
+          "nombre": "Centralized Error Handling",
+          "descripcion": "Todos los controllers usan automáticamente el handler global"
+        }
+      ],
+      "codigoEjemplo": "// GlobalExceptionHandler.java\npackage com.paymentchange.customer.exceptions;\n\nimport com.paymentchange.customer.dto.ErrorResponse;\nimport lombok.extern.slf4j.Slf4j;\nimport org.springframework.http.HttpStatus;\nimport org.springframework.http.ResponseEntity;\nimport org.springframework.web.bind.annotation.ExceptionHandler;\nimport org.springframework.web.bind.annotation.RestControllerAdvice;\nimport org.springframework.web.context.request.WebRequest;\n\n@RestControllerAdvice\n@Slf4j\npublic class GlobalExceptionHandler {\n    \n    // Handler para recursos no encontrados (404)\n    @ExceptionHandler(NotFoundException.class)\n    public ResponseEntity<ErrorResponse> handleNotFoundException(\n            NotFoundException ex, \n            WebRequest request) {\n        \n        log.error(\"Resource not found: {}\", ex.getMessage());\n        \n        ErrorResponse error = new ErrorResponse(\n            HttpStatus.NOT_FOUND.value(),\n            \"Not Found\",\n            ex.getMessage(),\n            request.getDescription(false).replace(\"uri=\", \"\")\n        );\n        \n        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);\n    }\n    \n    // Handler para datos inválidos (400)\n    @ExceptionHandler(IllegalArgumentException.class)\n    public ResponseEntity<ErrorResponse> handleIllegalArgument(\n            IllegalArgumentException ex, \n            WebRequest request) {\n        \n        log.error(\"Invalid argument: {}\", ex.getMessage());\n        \n        ErrorResponse error = new ErrorResponse(\n            HttpStatus.BAD_REQUEST.value(),\n            \"Bad Request\",\n            ex.getMessage(),\n            request.getDescription(false).replace(\"uri=\", \"\")\n        );\n        \n        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);\n    }\n    \n    // Handler genérico para errores no manejados (500)\n    @ExceptionHandler(Exception.class)\n    public ResponseEntity<ErrorResponse> handleGlobalException(\n            Exception ex, \n            WebRequest request) {\n        \n        log.error(\"Unexpected error occurred: \", ex);\n        \n        ErrorResponse error = new ErrorResponse(\n            HttpStatus.INTERNAL_SERVER_ERROR.value(),\n            \"Internal Server Error\",\n            \"An unexpected error occurred. Please try again later.\",\n            request.getDescription(false).replace(\"uri=\", \"\")\n        );\n        \n        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)\n            .body(error);\n    }\n}\n\n// NotFoundException.java - Excepción personalizada\npackage com.paymentchange.customer.exceptions;\n\npublic class NotFoundException extends RuntimeException {\n    public NotFoundException(String message) {\n        super(message);\n    }\n}"
+    },
+    {
+      "numero": 9,
+      "archivo": "9__Crear_capa_intermedia_manejo_lógica_validaciones.srt",
+      "titulo": "Crear Capa Intermedia Service para Manejo de Lógica y Validaciones",
+      "resumen": "Refactorización de CustomerRestController moviendo lógica de negocio a CustomerService. Se implementan validaciones en capa de servicio que lanzan excepciones personalizadas, permitiendo que GlobalExceptionHandler las capture y convierta en respuestas HTTP apropiadas. Separación clara de responsabilidades.",
+      "puntosClave": [
+        "Controller debe ser delgado: solo recibir request y retornar response",
+        "Service contiene lógica de negocio y validaciones",
+        "Mover validaciones de controller a service",
+        "CustomerService.findById() valida si existe, lanza NotFoundException si no",
+        "CustomerService.create() valida datos, lanza IllegalArgumentException si inválidos",
+        "Service lanza excepciones, GlobalExceptionHandler las convierte en HTTP",
+        "Controller solo llama service y retorna ResponseEntity",
+        "Beneficio: controllers consistentes, lógica centralizada en service",
+        "Facilita testing: mockear service en tests de controller",
+        "Reutilización: misma validación si se agrega otro controller",
+        "Aplicar patrón en todos los microservicios",
+        "Service puede usar @Transactional para gestión de transacciones"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Service Layer",
+          "descripcion": "Capa que contiene lógica de negocio, validaciones y orquestación"
+        },
+        {
+          "nombre": "Thin Controller",
+          "descripcion": "Controller minimalista que delega trabajo a service"
+        },
+        {
+          "nombre": "Business Validation",
+          "descripcion": "Reglas de negocio verificadas en service antes de persistir"
+        },
+        {
+          "nombre": "Exception Propagation",
+          "descripcion": "Service lanza excepción, controller no la captura, llega a @ControllerAdvice"
+        },
+        {
+          "nombre": "Separation of Concerns",
+          "descripcion": "Controller (HTTP), Service (negocio), Repository (datos)"
+        },
+        {
+          "nombre": "Service Reusability",
+          "descripcion": "Misma lógica reutilizable desde múltiples controllers o capas"
+        },
+        {
+          "nombre": "Testability",
+          "descripcion": "Fácil testear service aislado con JUnit, mockear en controller tests"
+        },
+        {
+          "nombre": "@Transactional",
+          "descripcion": "Anotación en service para gestionar transacciones de BD"
+        },
+        {
+          "nombre": "Domain Validation",
+          "descripcion": "Validaciones específicas del dominio (no solo formato)"
+        },
+        {
+          "nombre": "Error Propagation",
+          "descripcion": "Dejar que excepciones suban hasta GlobalExceptionHandler"
+        }
+      ],
+      "codigoEjemplo": "// CustomerService.java - Con validaciones\npackage com.paymentchange.customer.services;\n\nimport com.paymentchange.customer.entities.Customer;\nimport com.paymentchange.customer.exceptions.NotFoundException;\nimport com.paymentchange.customer.repositories.CustomerRepository;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\nimport java.util.List;\n\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private CustomerRepository customerRepository;\n    \n    public List<Customer> findAll() {\n        return customerRepository.findAll();\n    }\n    \n    public Customer findById(Long id) {\n        return customerRepository.findById(id)\n            .orElseThrow(() -> new NotFoundException(\n                \"Customer with ID \" + id + \" not found\"\n            ));\n    }\n    \n    public Customer create(Customer customer) {\n        // Validaciones de negocio\n        if (customer.getName() == null || customer.getName().isEmpty()) {\n            throw new IllegalArgumentException(\"Customer name is required\");\n        }\n        \n        if (customer.getPhoneNumber() == null || \n            customer.getPhoneNumber().isEmpty()) {\n            throw new IllegalArgumentException(\"Phone number is required\");\n        }\n        \n        // Validar productos si existen (usando WebClient)\n        if (customer.getProductIds() != null) {\n            for (Long productId : customer.getProductIds()) {\n                // WebClient valida producto existe\n                // Si no existe, lanza NotFoundException\n            }\n        }\n        \n        return customerRepository.save(customer);\n    }\n    \n    public Customer update(Long id, Customer customer) {\n        // Verificar que existe\n        Customer existing = findById(id);\n        \n        // Validar datos\n        if (customer.getName() == null || customer.getName().isEmpty()) {\n            throw new IllegalArgumentException(\"Customer name is required\");\n        }\n        \n        // Actualizar campos\n        existing.setName(customer.getName());\n        existing.setPhoneNumber(customer.getPhoneNumber());\n        \n        return customerRepository.save(existing);\n    }\n    \n    public void delete(Long id) {\n        // Verificar que existe antes de eliminar\n        Customer customer = findById(id);\n        customerRepository.delete(customer);\n    }\n}\n\n// CustomerRestController - Delgado, solo delega a service\n@RestController\n@RequestMapping(\"/api/v1/customer\")\npublic class CustomerRestController {\n    \n    @Autowired\n    private CustomerService customerService;\n    \n    @GetMapping\n    public ResponseEntity<List<Customer>> findAll() {\n        return ResponseEntity.ok(customerService.findAll());\n    }\n    \n    @GetMapping(\"/{id}\")\n    public ResponseEntity<Customer> findById(@PathVariable Long id) {\n        // Service valida y lanza excepción si no existe\n        return ResponseEntity.ok(customerService.findById(id));\n    }\n    \n    @PostMapping\n    public ResponseEntity<Customer> create(@RequestBody Customer customer) {\n        // Service valida datos\n        Customer saved = customerService.create(customer);\n        return ResponseEntity.status(HttpStatus.CREATED).body(saved);\n    }\n    \n    @PutMapping(\"/{id}\")\n    public ResponseEntity<Customer> update(\n            @PathVariable Long id, \n            @RequestBody Customer customer) {\n        return ResponseEntity.ok(customerService.update(id, customer));\n    }\n    \n    @DeleteMapping(\"/{id}\")\n    public ResponseEntity<Void> delete(@PathVariable Long id) {\n        customerService.delete(id);\n        return ResponseEntity.noContent().build();\n    }\n}"
+    },
+    {
+      "numero": 10,
+      "archivo": "10__Excepciones_personalizadas_manejar_reglas.srt",
+      "titulo": "Excepciones Personalizadas para Manejar Reglas de Negocio Específicas",
+      "resumen": "Creación de excepciones personalizadas para representar errores específicos del dominio. Se implementan BusinessException, DuplicateResourceException, InvalidStateException para capturar reglas de negocio complejas. Cada excepción tiene handler específico en GlobalExceptionHandler con código HTTP apropiado.",
+      "puntosClave": [
+        "Crear jerarquía de excepciones personalizadas",
+        "BusinessException: clase base para excepciones de negocio",
+        "NotFoundException: recurso no encontrado (404)",
+        "DuplicateResourceException: recurso duplicado (409 Conflict)",
+        "InvalidStateException: operación no permitida por estado (400/409)",
+        "Cada excepción puede llevar información adicional (campos, códigos)",
+        "GlobalExceptionHandler tiene handler para cada tipo",
+        "Permite códigos HTTP específicos según tipo de error",
+        "Mensajes descriptivos específicos del dominio",
+        "Facilita debugging: tipo de excepción indica problema",
+        "Ejemplo: customer no puede tener transacción sin producto",
+        "Lanzar InvalidStateException con mensaje claro"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Custom Exception",
+          "descripcion": "Excepción creada para representar error específico del dominio"
+        },
+        {
+          "nombre": "BusinessException",
+          "descripcion": "Clase base para todas las excepciones de lógica de negocio"
+        },
+        {
+          "nombre": "DuplicateResourceException",
+          "descripcion": "Excepción cuando se intenta crear recurso que ya existe (409)"
+        },
+        {
+          "nombre": "InvalidStateException",
+          "descripcion": "Operación no permitida por estado actual del recurso"
+        },
+        {
+          "nombre": "Exception Hierarchy",
+          "descripcion": "Árbol de excepciones relacionadas heredando de clase base"
+        },
+        {
+          "nombre": "Domain-Specific Errors",
+          "descripcion": "Errores que reflejan reglas de negocio del dominio"
+        },
+        {
+          "nombre": "HTTP 409 Conflict",
+          "descripcion": "Código para conflictos de estado (duplicados, operaciones inválidas)"
+        },
+        {
+          "nombre": "Error Context",
+          "descripcion": "Información adicional en excepción (qué recurso, qué operación)"
+        },
+        {
+          "nombre": "Typed Exception Handling",
+          "descripcion": "Handler diferente según tipo exacto de excepción"
+        },
+        {
+          "nombre": "Meaningful Error Messages",
+          "descripcion": "Mensajes que explican claramente qué regla se violó"
+        }
+      ],
+      "codigoEjemplo": "// BusinessException.java - Clase base\npackage com.paymentchange.customer.exceptions;\n\npublic class BusinessException extends RuntimeException {\n    public BusinessException(String message) {\n        super(message);\n    }\n    \n    public BusinessException(String message, Throwable cause) {\n        super(message, cause);\n    }\n}\n\n// NotFoundException.java\npublic class NotFoundException extends BusinessException {\n    public NotFoundException(String message) {\n        super(message);\n    }\n}\n\n// DuplicateResourceException.java\npublic class DuplicateResourceException extends BusinessException {\n    public DuplicateResourceException(String message) {\n        super(message);\n    }\n}\n\n// InvalidStateException.java\npublic class InvalidStateException extends BusinessException {\n    private String currentState;\n    private String attemptedOperation;\n    \n    public InvalidStateException(String message) {\n        super(message);\n    }\n    \n    public InvalidStateException(String message, String currentState, \n                                String attemptedOperation) {\n        super(message);\n        this.currentState = currentState;\n        this.attemptedOperation = attemptedOperation;\n    }\n}\n\n// GlobalExceptionHandler - Handlers específicos\n@RestControllerAdvice\n@Slf4j\npublic class GlobalExceptionHandler {\n    \n    @ExceptionHandler(NotFoundException.class)\n    public ResponseEntity<ErrorResponse> handleNotFound(\n            NotFoundException ex, WebRequest request) {\n        ErrorResponse error = new ErrorResponse(\n            HttpStatus.NOT_FOUND.value(),\n            \"Not Found\",\n            ex.getMessage(),\n            request.getDescription(false).replace(\"uri=\", \"\")\n        );\n        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);\n    }\n    \n    @ExceptionHandler(DuplicateResourceException.class)\n    public ResponseEntity<ErrorResponse> handleDuplicate(\n            DuplicateResourceException ex, WebRequest request) {\n        ErrorResponse error = new ErrorResponse(\n            HttpStatus.CONFLICT.value(),\n            \"Conflict\",\n            ex.getMessage(),\n            request.getDescription(false).replace(\"uri=\", \"\")\n        );\n        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);\n    }\n    \n    @ExceptionHandler(InvalidStateException.class)\n    public ResponseEntity<ErrorResponse> handleInvalidState(\n            InvalidStateException ex, WebRequest request) {\n        ErrorResponse error = new ErrorResponse(\n            HttpStatus.BAD_REQUEST.value(),\n            \"Invalid State\",\n            ex.getMessage(),\n            request.getDescription(false).replace(\"uri=\", \"\")\n        );\n        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);\n    }\n}\n\n// Uso en Service\npublic Customer create(Customer customer) {\n    // Validar duplicado por email\n    if (customerRepository.existsByEmail(customer.getEmail())) {\n        throw new DuplicateResourceException(\n            \"Customer with email \" + customer.getEmail() + \" already exists\"\n        );\n    }\n    \n    // Validar estado\n    if (customer.getStatus().equals(\"INACTIVE\") && \n        customer.getProductIds().size() > 0) {\n        throw new InvalidStateException(\n            \"Cannot assign products to inactive customer\",\n            \"INACTIVE\",\n            \"ASSIGN_PRODUCTS\"\n        );\n    }\n    \n    return customerRepository.save(customer);\n}"
+    },
+    {
+      "numero": 11,
+      "archivo": "11__Validación_respuestas_HTTP_excepciones_al_consumir.srt",
+      "titulo": "Validación de Respuestas HTTP y Manejo de Excepciones al Consumir APIs Externas",
+      "resumen": "Implementación de manejo robusto de errores al consumir APIs de otros microservicios con WebClient. Se validan códigos de estado HTTP, se interceptan errores (4xx, 5xx), y se lanzan excepciones apropiadas. Se usa onStatus() de WebClient para transformar errores HTTP en excepciones de negocio.",
+      "puntosClave": [
+        "Problema: WebClient puede fallar si servicio externo retorna error",
+        "Solución: validar respuestas HTTP y manejar errores apropiadamente",
+        ".onStatus() de WebClient intercepta respuestas según código HTTP",
+        "Verificar 4xx (error cliente) y 5xx (error servidor)",
+        "404 al llamar Product → lanzar NotFoundException",
+        "500 de servicio externo → lanzar ServiceUnavailableException",
+        "Extraer mensaje de error del body de respuesta si está disponible",
+        ".bodyToMono(String.class) para leer mensaje de error",
+        "Transformar errores de servicios externos en excepciones locales",
+        "GlobalExceptionHandler las convierte en respuestas apropiadas",
+        "Logging de errores de comunicación para debugging",
+        "Circuit Breaker pattern para manejar servicios caídos (próximas secciones)"
+      ],
+      "conceptos": [
+        {
+          "nombre": "WebClient Error Handling",
+          "descripcion": "Manejo de errores al consumir APIs con WebClient reactivo"
+        },
+        {
+          "nombre": ".onStatus()",
+          "descripcion": "Método de WebClient para interceptar respuestas según código HTTP"
+        },
+        {
+          "nombre": "HTTP Status Validation",
+          "descripcion": "Verificar código de respuesta y actuar según sea error o éxito"
+        },
+        {
+          "nombre": "Error Response Parsing",
+          "descripcion": "Extraer mensaje de error del body de respuesta 4xx/5xx"
+        },
+        {
+          "nombre": "Service Unavailable",
+          "descripcion": "Error cuando servicio externo no está disponible o retorna 5xx"
+        },
+        {
+          "nombre": "External API Errors",
+          "descripcion": "Errores originados en otros microservicios al comunicarse"
+        },
+        {
+          "nombre": "Error Propagation",
+          "descripcion": "Convertir errores HTTP en excepciones de negocio locales"
+        },
+        {
+          "nombre": "Resilience",
+          "descripcion": "Capacidad de manejar fallos de servicios externos elegantemente"
+        },
+        {
+          "nombre": "Timeout Handling",
+          "descripcion": "Manejar timeouts cuando servicio no responde a tiempo"
+        },
+        {
+          "nombre": "Retry Logic",
+          "descripcion": "Reintentar llamada si falla por error temporal (opcional)"
+        }
+      ],
+      "codigoEjemplo": "// CustomerService - Validar respuestas de Product API\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private WebClient productWebClient;\n    \n    public Customer create(Customer customer) {\n        // Validar que productos existen\n        if (customer.getProductIds() != null) {\n            for (Long productId : customer.getProductIds()) {\n                validateProductExists(productId);\n            }\n        }\n        \n        return customerRepository.save(customer);\n    }\n    \n    private void validateProductExists(Long productId) {\n        try {\n            Product product = productWebClient.get()\n                .uri(\"/product/{id}\", productId)\n                .retrieve()\n                .onStatus(\n                    status -> status.is4xxClientError(),\n                    clientResponse -> {\n                        if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) {\n                            return Mono.error(new NotFoundException(\n                                \"Product with ID \" + productId + \" not found\"\n                            ));\n                        }\n                        return Mono.error(new IllegalArgumentException(\n                            \"Invalid product ID: \" + productId\n                        ));\n                    }\n                )\n                .onStatus(\n                    status -> status.is5xxServerError(),\n                    clientResponse -> {\n                        log.error(\"Product service error: {}\", \n                                 clientResponse.statusCode());\n                        return Mono.error(new ServiceUnavailableException(\n                            \"Product service is currently unavailable\"\n                        ));\n                    }\n                )\n                .bodyToMono(Product.class)\n                .block();\n                \n        } catch (WebClientException e) {\n            log.error(\"Error calling Product service\", e);\n            throw new ServiceUnavailableException(\n                \"Unable to validate product: \" + e.getMessage()\n            );\n        }\n    }\n}\n\n// ServiceUnavailableException.java\npublic class ServiceUnavailableException extends BusinessException {\n    public ServiceUnavailableException(String message) {\n        super(message);\n    }\n}\n\n// GlobalExceptionHandler - Handler para service unavailable\n@ExceptionHandler(ServiceUnavailableException.class)\npublic ResponseEntity<ErrorResponse> handleServiceUnavailable(\n        ServiceUnavailableException ex, WebRequest request) {\n    \n    log.error(\"Service unavailable: {}\", ex.getMessage());\n    \n    ErrorResponse error = new ErrorResponse(\n        HttpStatus.SERVICE_UNAVAILABLE.value(),\n        \"Service Unavailable\",\n        ex.getMessage(),\n        request.getDescription(false).replace(\"uri=\", \"\")\n    );\n    \n    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)\n        .body(error);\n}\n\n// WebClientConfig - Con timeout\n@Bean\npublic WebClient productWebClient(WebClient.Builder builder) {\n    return builder\n        .baseUrl(\"http://product-service/api/v1\")\n        .defaultHeader(HttpHeaders.CONTENT_TYPE, \n                      MediaType.APPLICATION_JSON_VALUE)\n        .build();\n}"
+    },
+    {
+      "numero": 12,
+      "archivo": "13__Overview_Transacciones_distribuidas.srt",
+      "titulo": "Overview de Transacciones Distribuidas en Microservicios",
+      "resumen": "Introducción al desafío de transacciones distribuidas en arquitecturas de microservicios. Se explica por qué las transacciones ACID tradicionales no funcionan entre microservicios con bases de datos separadas, y se presentan patrones alternativos: Saga Pattern, Event Sourcing, y Compensating Transactions. Base conceptual para futuras implementaciones.",
+      "puntosClave": [
+        "Problema: operación requiere modificar datos en múltiples microservicios",
+        "Ejemplo: crear transacción requiere actualizar Customer, Product, Transaction",
+        "ACID tradicional no funciona: cada servicio tiene su propia BD",
+        "No se puede usar transacción global (2PC) por complejidad y acoplamiento",
+        "Soluciones para consistencia eventual:",
+        "1. Saga Pattern: secuencia de transacciones locales con compensaciones",
+        "2. Event Sourcing: eventos inmutables que reconstruyen estado",
+        "3. Compensating Transactions: deshacer cambios si algo falla",
+        "Saga Choreography: servicios reaccionan a eventos (descentralizado)",
+        "Saga Orchestration: orquestador central coordina pasos",
+        "Importante: aceptar consistencia eventual en vez de inmediata",
+        "Monitoreo y logging críticos para debugging transacciones distribuidas"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Transacciones Distribuidas",
+          "descripcion": "Operación que afecta datos en múltiples servicios/bases de datos"
+        },
+        {
+          "nombre": "ACID",
+          "descripcion": "Atomicity, Consistency, Isolation, Durability - propiedades de transacciones tradicionales"
+        },
+        {
+          "nombre": "Two-Phase Commit (2PC)",
+          "descripcion": "Protocolo de transacciones distribuidas tradicional (evitar en microservicios)"
+        },
+        {
+          "nombre": "Saga Pattern",
+          "descripcion": "Secuencia de transacciones locales con transacciones compensatorias para rollback"
+        },
+        {
+          "nombre": "Event Sourcing",
+          "descripcion": "Almacenar cambios como secuencia de eventos inmutables en vez de estado actual"
+        },
+        {
+          "nombre": "Compensating Transaction",
+          "descripcion": "Transacción que deshace efectos de transacción anterior"
+        },
+        {
+          "nombre": "Choreography Saga",
+          "descripcion": "Servicios publican/escuchan eventos sin coordinador central"
+        },
+        {
+          "nombre": "Orchestration Saga",
+          "descripcion": "Servicio orquestador central coordina pasos de saga"
+        },
+        {
+          "nombre": "Eventual Consistency",
+          "descripcion": "Datos eventualmente consistentes en vez de inmediatamente"
+        },
+        {
+          "nombre": "Idempotency",
+          "descripcion": "Operación puede ejecutarse múltiples veces con mismo resultado"
+        }
+      ]
+    }
+  ],
+  "resumen_seccion": "Esta sección eleva la calidad de las APIs REST mediante mejores prácticas profesionales: versionado con /v1, códigos HTTP semánticos, manejo centralizado de excepciones con @ControllerAdvice, validaciones en capa service, excepciones personalizadas por dominio, y validación robusta de respuestas al consumir APIs externas. El resultado son APIs consistentes, mantenibles y resilientes listas para producción.",
+  "tecnologias_cubiertas": [
+    "@ControllerAdvice / @RestControllerAdvice",
+    "@ExceptionHandler",
+    "ResponseEntity<T>",
+    "HTTP Status Codes",
+    "Custom Exceptions",
+    "ErrorResponse DTO",
+    "WebClient Error Handling",
+    ".onStatus() para validación HTTP",
+    "API Versioning",
+    "Service Layer Pattern"
+  ],
+  "mejores_practicas_api": [
+    "Versionar APIs desde inicio con /v1",
+    "Usar sustantivos plurales para recursos (/customers)",
+    "Evitar verbos en URLs (usar HTTP verbs)",
+    "Retornar códigos HTTP semánticos (200, 201, 400, 404, 500)",
+    "Estructura de error consistente con ErrorResponse",
+    "Manejo centralizado con @ControllerAdvice",
+    "Validaciones en Service, no en Controller",
+    "Excepciones personalizadas por tipo de error",
+    "Validar respuestas al consumir APIs externas",
+    "Loggear excepciones antes de retornar respuesta",
+    "No exponer stack traces en producción",
+    "Incluir timestamp, status, message, path en errores"
+  ],
+  "codigos_http_principales": {
+    "2xx_exito": {
+      "200": "OK - Operación exitosa",
+      "201": "Created - Recurso creado",
+      "204": "No Content - Éxito sin body"
+    },
+    "4xx_cliente": {
+      "400": "Bad Request - Datos inválidos",
+      "401": "Unauthorized - Sin autenticación",
+      "403": "Forbidden - Sin permisos",
+      "404": "Not Found - Recurso no existe",
+      "409": "Conflict - Duplicado/estado inválido"
+    },
+    "5xx_servidor": {
+      "500": "Internal Server Error - Error genérico",
+      "502": "Bad Gateway - Error servicio upstream",
+      "503": "Service Unavailable - Servicio no disponible"
+    }
+  },
+  "excepciones_personalizadas": [
+    "BusinessException - Clase base excepciones negocio",
+    "NotFoundException - Recurso no encontrado (404)",
+    "DuplicateResourceException - Recurso duplicado (409)",
+    "InvalidStateException - Operación no permitida (400)",
+    "ServiceUnavailableException - Servicio externo no disponible (503)"
+  ],
+  "patrones_implementados": [
+    "API Versioning - /v1, /v2 para evolución",
+    "Global Exception Handling - @ControllerAdvice",
+    "Structured Error Response - ErrorResponse DTO",
+    "Service Layer - Separación de responsabilidades",
+    "Custom Exceptions - Excepciones por dominio",
+    "HTTP Status Semantics - Códigos apropiados",
+    "Error Propagation - Service → Controller → ExceptionHandler",
+    "External API Validation - WebClient .onStatus()",
+    "Thin Controller - Delegar a service",
+    "AOP - Concerns transversales centralizados"
+  ]
+}

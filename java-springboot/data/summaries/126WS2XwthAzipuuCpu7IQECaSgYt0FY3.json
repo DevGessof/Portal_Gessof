@@ -1,0 +1,61 @@
+{
+  "titulo": "Indicar Ruta del Repositorio Git al Ejecutar Config Server",
+  "resumen": "Configuración flexible de la URI del repositorio Git mediante variables de entorno o argumentos de línea de comandos. Se explica cómo no hardcodear rutas en código y permitir cambio dinámico de repositorio según entorno. Incluye ejemplos de ejecución con diferentes configuraciones.",
+  "puntosClave": [
+    "No hardcodear ruta Git en application.properties",
+    "Usar variable de entorno: SPRING_CLOUD_CONFIG_SERVER_GIT_URI",
+    "O argumento de línea de comandos al ejecutar JAR",
+    "Sintaxis: --spring.cloud.config.server.git.uri=file:///path",
+    "Permitir configuración diferente por entorno (dev, test, prod)",
+    "Desarrollo: repositorio local file:///",
+    "Producción: repositorio remoto https://github.com/...",
+    "Variable de entorno tiene mayor prioridad que application.properties",
+    "Ejemplo ejecución: java -jar config-server.jar --spring.cloud.config.server.git.uri=...",
+    "En Docker/Kubernetes: pasar como variable de entorno",
+    "Permite usar mismo JAR con diferentes repositorios",
+    "Buena práctica de 12-factor apps: configuración externa"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Variable de Entorno",
+      "descripcion": "Configuración externa al código que se inyecta en runtime"
+    },
+    {
+      "nombre": "SPRING_CLOUD_CONFIG_SERVER_GIT_URI",
+      "descripcion": "Variable de entorno para configurar URI del repositorio Git"
+    },
+    {
+      "nombre": "Argumentos de Línea de Comandos",
+      "descripcion": "Parámetros --spring.property=value al ejecutar java -jar"
+    },
+    {
+      "nombre": "Prioridad de Configuración",
+      "descripcion": "Orden: argumentos CLI > variables entorno > application.properties"
+    },
+    {
+      "nombre": "Configuración Externa",
+      "descripcion": "Separar configuración del código para facilitar despliegues"
+    },
+    {
+      "nombre": "12-Factor Apps",
+      "descripcion": "Metodología que recomienda configuración via variables de entorno"
+    },
+    {
+      "nombre": "Portabilidad de Artefactos",
+      "descripcion": "Mismo JAR puede ejecutarse en diferentes entornos con config diferente"
+    },
+    {
+      "nombre": "Hardcodear",
+      "descripcion": "Escribir valores fijos en código (mala práctica para rutas/URLs)"
+    },
+    {
+      "nombre": "Flexibilidad de Despliegue",
+      "descripcion": "Cambiar comportamiento sin recompilar modificando configuración externa"
+    },
+    {
+      "nombre": "Configuración en Docker",
+      "descripcion": "Usar variables de entorno (-e) o archivos .env para configurar contenedores"
+    }
+  ],
+  "codigoEjemplo": "# application.properties del Config Server (sin hardcodear ruta)\nserver.port=8888\nspring.application.name=config-server\n# NO hardcodear:\n# spring.cloud.config.server.git.uri=file:///C:/config-repo\n\n# Opción 1: Variable de entorno (Linux/Mac)\nexport SPRING_CLOUD_CONFIG_SERVER_GIT_URI=file:///home/user/config-repo\njava -jar config-server.jar\n\n# Opción 1: Variable de entorno (Windows)\nset SPRING_CLOUD_CONFIG_SERVER_GIT_URI=file:///C:/config-repo\njava -jar config-server.jar\n\n# Opción 2: Argumento de línea de comandos\njava -jar config-server.jar \\\n  --spring.cloud.config.server.git.uri=file:///C:/config-repo\n\n# Opción 3: Repositorio remoto en producción\njava -jar config-server.jar \\\n  --spring.cloud.config.server.git.uri=https://github.com/company/config-repo.git \\\n  --spring.cloud.config.server.git.username=${GIT_USER} \\\n  --spring.cloud.config.server.git.password=${GIT_TOKEN}\n\n# Docker\ndocker run -e SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/... \\\n  config-server:latest\n\n# Kubernetes ConfigMap\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: config-server-config\ndata:\n  GIT_URI: \"https://github.com/company/config-repo.git\""
+}

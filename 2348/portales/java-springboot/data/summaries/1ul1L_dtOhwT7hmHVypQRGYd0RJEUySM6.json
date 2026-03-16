@@ -1,0 +1,63 @@
+{
+  "titulo": "Crear Modelos Request y Response para Separar Capas de API",
+  "resumen": "Implementación del patrón DTO para separar modelos de API (Request/Response) de entidades de dominio. Se crean CustomerRequest para entrada y CustomerResponse para salida, permitiendo evolución independiente de API y modelo de datos. Mejora seguridad y flexibilidad.",
+  "puntosClave": [
+    "Problema: exponer entidades JPA directamente en API es riesgo de seguridad",
+    "Solución: crear DTOs (Data Transfer Objects) específicos para API",
+    "CustomerRequest: modelo para recibir datos en POST/PUT",
+    "CustomerResponse: modelo para retornar datos en GET",
+    "Ventajas de DTOs:",
+    "  - Ocultar campos internos (createdAt, updatedAt)",
+    "  - Evitar exposición de relaciones JPA",
+    "  - Validaciones específicas de API sin afectar entidad",
+    "  - API puede evolucionar sin cambiar modelo de datos",
+    "  - Mayor control sobre qué datos se exponen",
+    "Crear paquete dto.request y dto.response",
+    "DTOs son POJOs simples sin anotaciones JPA",
+    "Usar @Data de Lombok para getters/setters",
+    "Documentar DTOs con @Schema igual que entidades"
+  ],
+  "conceptos": [
+    {
+      "nombre": "DTO (Data Transfer Object)",
+      "descripcion": "Objeto diseñado específicamente para transferir datos entre capas"
+    },
+    {
+      "nombre": "Request DTO",
+      "descripcion": "Modelo que representa datos de entrada en operaciones POST/PUT"
+    },
+    {
+      "nombre": "Response DTO",
+      "descripcion": "Modelo que representa datos de salida en operaciones GET"
+    },
+    {
+      "nombre": "API-Domain Separation",
+      "descripcion": "Separar modelos de API de modelos de dominio/persistencia"
+    },
+    {
+      "nombre": "Security Best Practice",
+      "descripcion": "No exponer entidades JPA directamente para evitar fuga de información"
+    },
+    {
+      "nombre": "Field Hiding",
+      "descripcion": "Ocultar campos internos que no deben ser públicos (IDs internos, timestamps)"
+    },
+    {
+      "nombre": "API Evolution",
+      "descripcion": "Capacidad de cambiar API sin afectar modelo de datos"
+    },
+    {
+      "nombre": "Validation Separation",
+      "descripcion": "Validaciones de API diferentes de validaciones de dominio"
+    },
+    {
+      "nombre": "POJO (Plain Old Java Object)",
+      "descripcion": "Clase Java simple sin dependencias de frameworks"
+    },
+    {
+      "nombre": "Loose Coupling",
+      "descripcion": "Bajo acoplamiento entre capa de API y capa de persistencia"
+    }
+  ],
+  "codigoEjemplo": "// CustomerRequest.java - DTO de entrada\npackage com.paymentchange.customer.dto.request;\n\nimport io.swagger.v3.oas.annotations.media.Schema;\nimport lombok.Data;\nimport java.util.List;\n\n@Data\n@Schema(description = \"Modelo de petición para crear/actualizar cliente\")\npublic class CustomerRequest {\n    \n    @Schema(\n        description = \"Nombre completo del cliente\",\n        example = \"María González\",\n        required = true\n    )\n    private String name;\n    \n    @Schema(\n        description = \"Número de teléfono\",\n        example = \"+52-555-9876-5432\"\n    )\n    private String phoneNumber;\n    \n    @Schema(\n        description = \"Correo electrónico\",\n        example = \"maria.gonzalez@email.com\"\n    )\n    private String email;\n    \n    @Schema(\n        description = \"IDs de productos a asociar\",\n        example = \"[1, 2]\"\n    )\n    private List<Long> productIds;\n    \n    // Sin ID, sin timestamps, sin campos internos\n}\n\n// CustomerResponse.java - DTO de salida\npackage com.paymentchange.customer.dto.response;\n\nimport io.swagger.v3.oas.annotations.media.Schema;\nimport lombok.Data;\nimport java.util.List;\n\n@Data\n@Schema(description = \"Modelo de respuesta con datos del cliente\")\npublic class CustomerResponse {\n    \n    @Schema(description = \"ID del cliente\", example = \"1\")\n    private Long id;\n    \n    @Schema(description = \"Nombre del cliente\", example = \"María González\")\n    private String name;\n    \n    @Schema(description = \"Teléfono\", example = \"+52-555-9876-5432\")\n    private String phoneNumber;\n    \n    @Schema(description = \"Email\", example = \"maria.gonzalez@email.com\")\n    private String email;\n    \n    @Schema(description = \"Estado del cliente\", example = \"ACTIVE\")\n    private String status;\n    \n    @Schema(description = \"IDs de productos asociados\", example = \"[1, 2]\")\n    private List<Long> productIds;\n    \n    // Incluye ID para referencia\n    // NO incluye: createdAt, updatedAt, versión, etc.\n}\n\n// Entidad Customer original (NO exponer directamente)\n@Data\n@Entity\npublic class Customer {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    \n    private String name;\n    private String phoneNumber;\n    private String email;\n    private String status;\n    \n    @ElementCollection\n    private List<Long> productIds;\n    \n    // Campos internos NO expuestos en API\n    private LocalDateTime createdAt;\n    private LocalDateTime updatedAt;\n    private Integer version;\n    private String internalNotes;  // Campo interno\n}"
+}

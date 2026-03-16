@@ -1,0 +1,60 @@
+{
+  "titulo": "Comprender la Estructura del Fichero pom.xml del Microservicio",
+  "resumen": "Explicación detallada del archivo pom.xml que configura proyectos Maven. Se analizan secciones clave: parent (Spring Boot), metadata del proyecto, properties (versión JDK), dependencies (starters y librerías), y plugins (Maven). Incluye consejos sobre actualización de versiones y compatibilidad entre framework, JDK y dependencias.",
+  "puntosClave": [
+    "pom.xml es el archivo de configuración principal de proyectos Maven",
+    "Sección parent: hereda configuración base de Spring Boot Framework",
+    "Metadata: groupId, artifactId, version, name, description",
+    "Properties: define versión del JDK y otras variables del proyecto",
+    "Dependencies: contiene todos los starters y librerías necesarias",
+    "Starters son paquetes pre-configurados de Spring Boot (web, h2, devtools)",
+    "Plugins: herramientas para compilar, empaquetar y ejecutar el proyecto",
+    "Al abrir código existente: SIEMPRE revisar versiones de framework y JDK",
+    "Cambiar versión Spring Boot 2.x a 3.2 si el código es antiguo",
+    "Lombok requiere definir versión explícita (1.18.28 o superior)",
+    "Build on Save: activar en propiedades del proyecto para compilación automática"
+  ],
+  "conceptos": [
+    {
+      "nombre": "pom.xml",
+      "descripcion": "Project Object Model, archivo XML que define configuración, dependencias y plugins de Maven"
+    },
+    {
+      "nombre": "Parent POM",
+      "descripcion": "Proyecto padre del cual se heredan configuraciones (spring-boot-starter-parent)"
+    },
+    {
+      "nombre": "Metadata del Proyecto",
+      "descripcion": "Información identificativa: groupId, artifactId, version, name, description"
+    },
+    {
+      "nombre": "Properties",
+      "descripcion": "Sección para definir variables como versión de Java, encoding, etc."
+    },
+    {
+      "nombre": "Dependencies",
+      "descripcion": "Sección que lista todas las librerías/starters que el proyecto necesita"
+    },
+    {
+      "nombre": "Starters",
+      "descripcion": "Dependencias pre-configuradas que incluyen múltiples librerías relacionadas"
+    },
+    {
+      "nombre": "Plugins",
+      "descripcion": "Herramientas Maven para tareas como compilar, empaquetar, ejecutar tests"
+    },
+    {
+      "nombre": "Scope",
+      "descripcion": "Define cuándo se usa una dependencia (compile, provided, test, runtime)"
+    },
+    {
+      "nombre": "Lombok",
+      "descripcion": "Librería que reduce código repetitivo generando getters/setters automáticamente"
+    },
+    {
+      "nombre": "Compatibilidad de Versiones",
+      "descripcion": "Relación entre versiones de Spring Boot, JDK y dependencias que deben ser compatibles"
+    }
+  ],
+  "codigoEjemplo": "<!-- Estructura básica del pom.xml -->\n<project>\n    <!-- Hereda de Spring Boot -->\n    <parent>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-parent</artifactId>\n        <version>3.2.0</version>\n    </parent>\n    \n    <!-- Metadata del proyecto -->\n    <groupId>com.paymentchange</groupId>\n    <artifactId>customer</artifactId>\n    <version>0.0.1-SNAPSHOT</version>\n    \n    <!-- Propiedades -->\n    <properties>\n        <java.version>17</java.version>\n    </properties>\n    \n    <!-- Dependencias -->\n    <dependencies>\n        <dependency>\n            <groupId>org.springframework.boot</groupId>\n            <artifactId>spring-boot-starter-web</artifactId>\n        </dependency>\n        <dependency>\n            <groupId>org.projectlombok</groupId>\n            <artifactId>lombok</artifactId>\n            <scope>provided</scope>\n        </dependency>\n    </dependencies>\n</project>"
+}

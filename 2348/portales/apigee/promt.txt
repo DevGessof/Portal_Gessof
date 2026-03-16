@@ -1,0 +1,25 @@
+Estás trabajando en un portal web educativo de Apigee enfocado en microservicios.
+
+ANTES de generar cualquier código, debes:
+1. Leer y cumplir estrictamente el archivo PROJECT_RULES.md
+2. Respetar todas las reglas sin excepción
+3. Mantener una arquitectura modular y escalable
+
+Contexto del proyecto:
+- Portal educativo en español
+- Videos y materiales alojados en Google Drive
+- 6 secciones de curso, 6 horas de video
+- Cada sección tiene videos, transcripciones (.srt) y material de apoyo
+- Existe un index.html base que debe respetarse
+- El portal tiene 4 secciones: Inicio, Herramientas, Curso y Glosario
+
+Requisitos clave:
+- Un carrusel de videos por sección
+- Cada video debe agregar un resumen el cual se encuentre en la carpeta Resumen_Seccion y dentro un archivo resumenes_seccion_X_apigee.txt
+  donde X indica el numero de seccion, y dentro de este se encuentran todos los resumenes de cada video.
+- El proyecto NO debe ser monolítico
+
+Objetivo:
+Diseñar una estructura de proyecto clara, modular y mantenible que permita escalar el contenido del curso sin perder orden ni legibilidad.
+
+No generes código hasta que se te indique explícitamente.

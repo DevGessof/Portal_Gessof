@@ -1,0 +1,61 @@
+{
+  "titulo": "Crear y Configurar Servidor de Registro Eureka Server",
+  "resumen": "Creación del microservicio Eureka Server que actúa como registro central. Se configura @EnableEurekaServer, puerto 8761, y propiedades para evitar que se registre a sí mismo. Se accede a dashboard web de Eureka para visualizar servicios registrados. Base para implementar descubrimiento de servicios.",
+  "puntosClave": [
+    "Crear proyecto Eureka Server en infraestructure-domain",
+    "Starter: spring-cloud-starter-netflix-eureka-server",
+    "Clase principal: @EnableEurekaServer",
+    "Puerto convencional: server.port=8761",
+    "Configurar: eureka.client.register-with-eureka=false",
+    "Configurar: eureka.client.fetch-registry=false",
+    "Estas propiedades evitan que Eureka se registre a sí mismo",
+    "Dashboard web: http://localhost:8761",
+    "Interfaz muestra servicios registrados, instancias, estado",
+    "Sección 'Instances currently registered': lista de microservicios",
+    "Inicialmente vacío hasta que servicios se registren",
+    "Eureka Server debe iniciarse antes que los clientes"
+  ],
+  "conceptos": [
+    {
+      "nombre": "@EnableEurekaServer",
+      "descripcion": "Anotación que convierte aplicación Spring Boot en servidor Eureka"
+    },
+    {
+      "nombre": "Puerto 8761",
+      "descripcion": "Puerto convencional para Eureka Server"
+    },
+    {
+      "nombre": "eureka.client.register-with-eureka",
+      "descripcion": "Propiedad que indica si la app debe registrarse como cliente (false para server)"
+    },
+    {
+      "nombre": "eureka.client.fetch-registry",
+      "descripcion": "Propiedad que indica si debe obtener registro de otros Eureka (false para standalone)"
+    },
+    {
+      "nombre": "Dashboard Eureka",
+      "descripcion": "Interfaz web en /eureka que muestra servicios registrados y estado"
+    },
+    {
+      "nombre": "Instances Registered",
+      "descripcion": "Lista de microservicios actualmente registrados en Eureka"
+    },
+    {
+      "nombre": "Application Name",
+      "descripcion": "Nombre lógico del servicio usado para descubrimiento (ej: CUSTOMER-SERVICE)"
+    },
+    {
+      "nombre": "Status",
+      "descripcion": "Estado del servicio: UP (disponible), DOWN (no disponible)"
+    },
+    {
+      "nombre": "Standalone Mode",
+      "descripcion": "Configuración de Eureka Server único sin replicación"
+    },
+    {
+      "nombre": "Peer Awareness",
+      "descripcion": "Modo de alta disponibilidad con múltiples Eureka Servers sincronizados"
+    }
+  ],
+  "codigoEjemplo": "<!-- pom.xml del Eureka Server -->\n<dependencies>\n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>\n    </dependency>\n</dependencies>\n\n// EurekaServerApplication.java\npackage com.paymentchange.eurekaserver;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\nimport org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;\n\n@SpringBootApplication\n@EnableEurekaServer\npublic class EurekaServerApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(EurekaServerApplication.class, args);\n    }\n}\n\n# application.properties del Eureka Server\nserver.port=8761\nspring.application.name=eureka-server\n\n# No registrarse a sí mismo como cliente\neureka.client.register-with-eureka=false\neureka.client.fetch-registry=false\n\n# URL del dashboard\n# http://localhost:8761\n# Muestra:\n# - Instances currently registered with Eureka\n# - General Info\n# - Instance Info"
+}

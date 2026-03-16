@@ -1,0 +1,36 @@
+Actúa como un profesor de programación especializado en Angular para principiantes absolutos.
+Te proporcionaré el script (subtítulos) de una lección de un curso de Java Básico.Angular
+Tu tarea es generar un RESUMEN DIDÁCTICO de la lección cumpliendo estrictamente estas reglas:
+REGLAS IMPORTANTES:
+- Usa ÚNICAMENTE la información contenida en el script.
+- NO agregues conocimientos externos ni temas que no aparezcan en el texto.
+- Asume que el lector NO tiene conocimientos previos de programación.
+- El resumen debe ser claro, sencillo y fácil de entender.
+- No debe ser excesivamente largo ni técnico.
+ESTRUCTURA OBLIGATORIA DEL RESUMEN:
+1️⃣ Título de la lección  
+   - Usa el nombre o tema principal detectado en el script.
+2️⃣ ¿Qué se aprende en esta lección?  
+   - Explica brevemente el objetivo de la lección en 2–4 líneas.
+   - Lenguaje simple, sin tecnicismos innecesarios.
+3️⃣ Puntos clave explicados  
+   - Lista los conceptos importantes vistos en la lección.
+   - Cada punto debe tener una explicación corta y clara.
+   - Usa viñetas o numeración.
+4️⃣ Ejemplo sencillo (si el script lo permite)  
+   - Muestra un ejemplo simple relacionado con el tema.
+   - El ejemplo debe ser fácil de entender y breve.
+   - Si el script no incluye ejemplos claros, indica:
+     “En esta lección no se muestra un ejemplo práctico explícito.”
+5️⃣ Funciones, palabras clave o elementos importantes  
+   - Lista funciones, palabras clave o conceptos relevantes mencionados.
+   - Explica cada uno en una sola línea y en lenguaje sencillo.
+6️⃣ Resumen final en pocas palabras  
+   - 2–3 líneas que refuercen lo aprendido.
+FORMATO:
+- Usa títulos claros
+- Usa listas
+- Evita párrafos largos
+- Evita texto plano
+- No uses emojis
+se adjunta script de la seccion 11.

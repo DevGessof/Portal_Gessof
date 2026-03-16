@@ -1,0 +1,64 @@
+{
+  "titulo": "Enrutamiento: Configurar Filtro Personalizado de Autorización por Roles",
+  "resumen": "Implementación de filtro de autorización basado en roles extraídos del JWT. Se crea AuthorizationGatewayFilter que verifica que usuario tiene rol requerido para acceder a endpoint específico. Se configuran roles por ruta en application.yml.",
+  "puntosClave": [
+    "Crear AuthorizationGatewayFilterFactory",
+    "Configuración por ruta con roles requeridos",
+    "Extraer roles del token con keycloakService.extractRoles()",
+    "Comparar roles de usuario vs roles requeridos",
+    "Lógica de autorización:",
+    "  - Si usuario tiene al menos un rol requerido → permitir",
+    "  - Si no tiene ningún rol requerido → 403 Forbidden",
+    "Configurar en application.yml:",
+    "  filters:",
+    "    - Authorization=ADMIN,MANAGER",
+    "GET endpoints: rol USER suficiente",
+    "POST/PUT/DELETE endpoints: requiere ADMIN",
+    "Logging de decisiones de autorización",
+    "Diferenciar entre 401 (no autenticado) y 403 (sin permisos)",
+    "Almacenar roles en context para no extraer múltiples veces"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Role-Based Authorization",
+      "descripcion": "Control de acceso basado en roles del usuario"
+    },
+    {
+      "nombre": "Authorization Filter",
+      "descripcion": "Filtro que verifica permisos después de autenticación"
+    },
+    {
+      "nombre": "Required Roles",
+      "descripcion": "Lista de roles que permiten acceso a endpoint"
+    },
+    {
+      "nombre": "Role Intersection",
+      "descripcion": "Verificar si usuario tiene al menos un rol requerido"
+    },
+    {
+      "nombre": "403 Forbidden",
+      "descripcion": "Código HTTP cuando usuario autenticado no tiene permisos"
+    },
+    {
+      "nombre": "401 vs 403",
+      "descripcion": "401: no autenticado, 403: autenticado pero sin permisos"
+    },
+    {
+      "nombre": "Filter Configuration",
+      "descripcion": "Pasar parámetros a filtro desde application.yml"
+    },
+    {
+      "nombre": "Context Attributes",
+      "descripcion": "Almacenar datos en exchange context para reutilizar"
+    },
+    {
+      "nombre": "Least Privilege",
+      "descripcion": "Dar mínimos permisos necesarios para cada endpoint"
+    },
+    {
+      "nombre": "Authorization Decision",
+      "descripcion": "Decisión de permitir/denegar basada en roles"
+    }
+  ],
+  "codigoEjemplo": null
+}

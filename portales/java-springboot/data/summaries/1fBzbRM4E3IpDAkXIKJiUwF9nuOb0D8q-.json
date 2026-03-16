@@ -1,0 +1,62 @@
+{
+  "titulo": "Restricción de Permisos en Métodos POST y Resolver Problema CSRF",
+  "resumen": "Configuración de protección CSRF y cómo afecta métodos POST/PUT/DELETE. Se explica por qué CSRF está habilitado por defecto, cuándo deshabilitarlo (APIs stateless), y cómo configurar tokens CSRF para aplicaciones con sesión. Se implementan reglas de autorización por método HTTP.",
+  "puntosClave": [
+    "CSRF habilitado por defecto en Spring Security",
+    "CSRF protege contra ataques Cross-Site Request Forgery",
+    "Problema: POST/PUT/DELETE fallan con 403 Forbidden si no hay token CSRF",
+    "APIs REST stateless NO necesitan CSRF (no usan sesiones)",
+    "Deshabilitar CSRF: http.csrf().disable()",
+    "CSRF útil para aplicaciones con formularios HTML y sesiones",
+    "Si se mantiene CSRF, cliente debe enviar token CSRF en cada request",
+    "Token CSRF en header: X-XSRF-TOKEN",
+    "Autorización por método HTTP:",
+    "  - GET: requiere rol USER",
+    "  - POST/PUT/DELETE: requiere rol ADMIN",
+    "Usar .hasRole() para verificar roles específicos",
+    "Configurar reglas granulares con requestMatchers + método HTTP"
+  ],
+  "conceptos": [
+    {
+      "nombre": "CSRF Protection",
+      "descripcion": "Protección contra ataques que fuerzan acciones no autorizadas"
+    },
+    {
+      "nombre": "CSRF Token",
+      "descripcion": "Token único por sesión que debe incluirse en requests POST/PUT/DELETE"
+    },
+    {
+      "nombre": "Stateless API",
+      "descripcion": "API sin sesiones del lado servidor (usa tokens como JWT)"
+    },
+    {
+      "nombre": "Stateful API",
+      "descripcion": "API que mantiene sesiones del lado servidor (cookies)"
+    },
+    {
+      "nombre": "csrf().disable()",
+      "descripcion": "Deshabilita protección CSRF (común en APIs REST stateless)"
+    },
+    {
+      "nombre": "X-XSRF-TOKEN",
+      "descripcion": "Header para enviar token CSRF desde cliente"
+    },
+    {
+      "nombre": "hasRole()",
+      "descripcion": "Verifica que usuario tiene rol específico (ADMIN, USER)"
+    },
+    {
+      "nombre": "hasAuthority()",
+      "descripcion": "Verifica que usuario tiene authority específica"
+    },
+    {
+      "nombre": "HttpMethod",
+      "descripcion": "Enumeración de métodos HTTP (GET, POST, PUT, DELETE)"
+    },
+    {
+      "nombre": "Method-Level Security",
+      "descripcion": "Reglas de seguridad basadas en método HTTP del endpoint"
+    }
+  ],
+  "codigoEjemplo": "// SecurityConfig.java - Deshabilitar CSRF para API stateless\n@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n    \n    @Bean\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) \n            throws Exception {\n        http\n            .httpBasic()\n            .and()\n            // Deshabilitar CSRF para API REST stateless\n            .csrf().disable()\n            .authorizeHttpRequests(auth -> auth\n                // Endpoints públicos\n                .requestMatchers(\"/actuator/health\").permitAll()\n                .requestMatchers(\"/swagger-ui/**\", \"/v3/api-docs/**\").permitAll()\n                \n                // GET requiere rol USER\n                .requestMatchers(HttpMethod.GET, \"/api/v1/**\")\n                    .hasRole(\"USER\")\n                \n                // POST/PUT/DELETE requieren rol ADMIN\n                .requestMatchers(HttpMethod.POST, \"/api/v1/**\")\n                    .hasRole(\"ADMIN\")\n                .requestMatchers(HttpMethod.PUT, \"/api/v1/**\")\n                    .hasRole(\"ADMIN\")\n                .requestMatchers(HttpMethod.DELETE, \"/api/v1/**\")\n                    .hasRole(\"ADMIN\")\n                \n                // Resto requiere autenticación\n                .anyRequest().authenticated()\n            );\n        \n        return http.build();\n    }\n    \n    @Bean\n    public UserDetailsService userDetailsService() {\n        // Usuario con rol USER\n        UserDetails user = User.builder()\n            .username(\"user\")\n            .password(\"{noop}user123\")\n            .roles(\"USER\")\n            .build();\n        \n        // Usuario con rol ADMIN\n        UserDetails admin = User.builder()\n            .username(\"admin\")\n            .password(\"{noop}admin123\")\n            .roles(\"USER\", \"ADMIN\")  // ADMIN incluye USER\n            .build();\n        \n        return new InMemoryUserDetailsManager(user, admin);\n    }\n}\n\n// Alternativa: Mantener CSRF habilitado (APIs con sesión)\n@Bean\npublic SecurityFilterChain securityFilterChain(HttpSecurity http) \n        throws Exception {\n    http\n        .httpBasic()\n        .and()\n        // CSRF habilitado (por defecto)\n        .csrf(csrf -> csrf\n            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())\n        )\n        .authorizeHttpRequests(auth -> auth\n            .anyRequest().authenticated()\n        );\n    \n    return http.build();\n}\n\n# Probar con usuario USER (GET funciona, POST falla)\ncurl -X GET http://localhost:8081/api/v1/customer \\\n  -u user:user123\n# Response: 200 OK\n\ncurl -X POST http://localhost:8081/api/v1/customer \\\n  -u user:user123 \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"name\": \"Test\"}'\n# Response: 403 Forbidden (no tiene rol ADMIN)\n\n# Probar con usuario ADMIN (todo funciona)\ncurl -X POST http://localhost:8081/api/v1/customer \\\n  -u admin:admin123 \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"name\": \"Test\"}'\n# Response: 201 Created"
+}

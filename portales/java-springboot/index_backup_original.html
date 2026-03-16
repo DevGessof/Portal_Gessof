@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Spring Boot | GESSOF Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0099d8;
+            --primary-dark: #0077a8;
+            --primary-light: #00b4ff;
+            --primary-glow: rgba(0, 153, 216, 0.4);
+            --accent-cyan: #00d4ff;
+            --accent-purple: #7c3aed;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-elevated: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 0 60px var(--primary-glow);
+            --sidebar-width: 0px;
+            /* No sidebar */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        body.dark {
+            --bg-main: #0a0f1a;
+            --bg-card: #111827;
+            --bg-elevated: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #1e293b;
+            --border-hover: #334155;
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            /* opacity: 0.4; Removed foggy effect */
+            background-image: none;
+            /* Removed radial gradients */
+            background-color: var(--bg-main);
+        }
+
+        body.dark .bg-pattern {
+            opacity: 1;
+        }
+
+        /* Main Nav Tabs (Sticky Header) */
+        .main-nav-tabs {
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+            margin: 0 auto 2rem;
+            max-width: 1400px;
+            padding: 0 2rem;
+        }
+
+        .nav-container {
+            background: var(--bg-card);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        body.dark .nav-container {
+            background: rgba(17, 24, 39, 0.8);
+        }
+
+        .main-nav-tab {
+            padding: 0.75rem 1.5rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .main-nav-tab:hover {
+            color: var(--primary);
+            background: var(--bg-main);
+        }
+
+        .main-nav-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 100px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Modules / Tools */
+        .grid-modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .module {
+            background: var(--bg-card);
+            border: none;
+            /* Removed border */
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            transition: all 0.4s ease;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            /* Enhanced shadow */
+        }
+
+        .module-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 14px;
+            color: white;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 153, 216, 0.25);
+        }
+
+        /* Video Cards */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Carousel Logic */
+        .carousel-wrapper {
+            position: relative;
+            margin: 0 -1rem;
+            padding: 1rem;
+        }
+
+        .videos-grid:not(.layout-grid) {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 1.5rem;
+            padding-bottom: 2rem;
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .videos-grid:not(.layout-grid)::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari */
+        }
+
+        .video-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s var(--ease-out);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            flex: 0 0 300px;
+            /* Fixed width for carousel */
+            scroll-snap-align: start;
+        }
+
+        .video-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            aspect-ratio: 16/9;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        /* Force Image Clarity */
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s var(--ease-out);
+            opacity: 1 !important;
+            filter: none !important;
+            -webkit-filter: none !important;
+        }
+
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.05);
+        }
+
+
+
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-card:hover .play-overlay {
+            opacity: 1;
+        }
+
+        .play-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 20px var(--primary-glow);
+            transform: scale(0.8);
+            transition: transform 0.3s var(--ease-spring);
+        }
+
+        .video-card:hover .play-icon {
+            transform: scale(1);
+        }
+
+        .video-info {
+            padding: 1.25rem;
+        }
+
+        .video-number {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .video-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .video-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        /* Checkbox & Progress */
+        .video-checkbox {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .video-card.watched::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--accent-green);
+            border-radius: var(--radius-lg);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .video-card.watched {
+            opacity: 1 !important;
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: var(--radius-xl);
+            width: 90%;
+            max-width: 800px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            animation: modalSlideIn 0.3s var(--ease-out);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-main);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close {
+            color: var(--text-muted);
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close:hover {
+            color: var(--primary);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: #d4d4d4;
+            margin: 1rem 0;
+        }
+
+        .summary-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .important-note {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--accent-orange);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin: 1rem 0;
+        }
+
+        .key-points {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--accent-green);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin: 1rem 0;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .main-content-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .main-content-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s;
+            color: var(--text-primary);
+        }
+
+        .carousel-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .carousel-btn.prev {
+            left: -20px;
+        }
+
+        .carousel-btn.next {
+            right: -20px;
+        }
+
+        body.dark .carousel-btn {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-pattern"></div>
+
+    <!-- Sticky Header -->
+    <nav class="main-nav-tabs">
+        <div class="nav-container">
+            <div style="display: flex; gap: 0.5rem; align-items:center;">
+                <img src="./logo_gessof_academy_header_v2.png" alt="GESSOF Academy"
+                    style="height:40px; margin-right:2rem; object-fit: contain;" id="headerLogo">
+
+                <button class="main-nav-tab active" onclick="switchMainTab(event, 'section-inicio')">
+                    <i class="fas fa-home"></i> Inicio
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-herramientas')">
+                    <i class="fas fa-tools"></i> Herramientas
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-clases')">
+                    <i class="fas fa-graduation-cap"></i> Clases
+                </button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <!-- Progreso -->
+                <div style="display:flex; flex-direction:column; min-width:150px;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:4px;">
+                        <span style="font-weight:600; color:var(--text-secondary);">Tu Progreso</span>
+                        <span id="progressText" style="font-weight:700; color:var(--primary);">0%</span>
+                    </div>
+                    <div style="height:6px; background:var(--border); border-radius:10px; overflow:hidden;">
+                        <div id="progressFill"
+                            style="height:100%; background:var(--primary); width:0%; transition:width 0.5s;"></div>
+                    </div>
+                </div>
+
+                <!-- Usuario -->
+                <div
+                    style="display:flex; align-items:center; gap:0.75rem; border-left:1px solid var(--border); padding-left:1.5rem;">
+                    <div style="text-align:right;">
+                        <div id="userNameDisplay" style="font-weight:600; font-size:0.9rem; color:var(--text-primary);">
+                            Usuario</div>
+                    </div>
+                    <button onclick="changeUser()"
+                        style="width:36px; height:36px; background:var(--primary-light); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1rem; border:none; cursor:pointer;"
+                        title="Cambiar usuario">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <button onclick="toggleTheme()" class="theme-toggle-header"
+                        style="background:none; border:none; cursor:pointer; color:var(--text-secondary); font-size:1.2rem; margin-left: 0.5rem;"
+                        title="Cambiar Tema">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Section: Inicio -->
+        <section id="section-inicio" class="main-content-section active">
+            <!-- Hero Section -->
+            <div class="hero">
+                <div class="hero-logo-bg">
+                    <i class="fab fa-java" style="font-size: 15rem; color: rgba(0,0,0,0.05);"></i>
+                </div>
+                <div class="hero-content">
+                    <div class="hero-badge"><i class="fas fa-bolt"></i> Spring Boot 3.0</div>
+                    <h1>Aprende Java Spring Boot desde Cero</h1>
+                    <p>Domina el framework líder en el desarrollo backend empresarial. Construye APIs REST seguras,
+                        escalables y robustas con la mejor arquitectura.</p>
+
+                    <div class="hero-stats">
+                        <div>
+                            <div class="stat-value">+20</div>
+                            <div class="stat-label">Horas de Video</div>
+                        </div>
+                        <div>
+                            <div class="stat-value">+500</div>
+                            <div class="stat-label">Alumnos</div>
+                        </div>
+                        <div>
+                            <div class="stat-value"><i class="fas fa-certificate"></i></div>
+                            <div class="stat-label">Certificado</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Herramientas -->
+        <section id="section-herramientas" class="main-content-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="section-icon"><i class="fas fa-tools"></i></div>
+                    <div>
+                        <h2>Herramientas del Curso</h2>
+                        <span>Recursos esenciales para el desarrollo</span>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-modules">
+                <!-- Tool 1 -->
+                <div class="module">
+                    <div class="module-icon"><i class="fab fa-java"></i></div>
+                    <h3>Java JDK 17+</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">Versión LTS (Long Term
+                        Support) recomendada para producción.</p>
+                </div>
+                <!-- Tool 2 -->
+                <div class="module">
+                    <div class="module-icon"><i class="fas fa-code"></i></div>
+                    <h3>IntelliJ IDEA</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">El entorno de
+                        desarrollo (IDE) más potente para Java.</p>
+                </div>
+                <!-- Tool 3 -->
+                <div class="module">
+                    <div class="module-icon"><i class="fas fa-feather"></i></div>
+                    <h3>Maven</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">Gestión de dependencias
+                        y ciclo de vida del proyecto.</p>
+                </div>
+                <!-- Tool 4 -->
+                <div class="module">
+                    <div class="module-icon"><i class="fas fa-paper-plane"></i></div>
+                    <h3>Postman</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">Herramienta esencial
+                        para probar y documentar APIs REST.</p>
+                </div>
+                <!-- Tool 5 -->
+                <div class="module">
+                    <div class="module-icon"><i class="fab fa-docker"></i></div>
+                    <h3>Docker</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">Despliegue de
+                        aplicaciones en contenedores ligeros.</p>
+                </div>
+                <!-- Tool 6 -->
+                <div class="module">
+                    <div class="module-icon"><i class="fas fa-leaf"></i></div>
+                    <h3>Spring Initializr</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">Generador oficial de la
+                        estructura base de proyectos Spring.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Clases -->
+        <section id="section-clases" class="main-content-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="section-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div>
+                        <h2>Programa de Estudios</h2>
+                        <span>Domina Spring Boot paso a paso</span>
+                    </div>
+                </div>
+            </div>
+            <div class="videos-grid">
+                <!-- Clase 1 -->
+                <div class="video-card" data-id="sMHdH1lspis" onclick="openCourse(0)">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/sMHdH1lspis/maxresdefault.jpg" alt="Clase 1"
+                            onerror="this.src='https://img.youtube.com/vi/sMHdH1lspis/mqdefault.jpg'">
+                        <!-- Using Class 3 thumb as placeholder -->
+                        <div class="play-overlay">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-number">Clase 1</span>
+                        <h3 class="video-title">Introducción a Java y Spring Boot</h3>
+                        <p class="video-description">Fundamentos esenciales de Java, los 4 pilares de la POO y
+                            estructura básica de Spring Boot.</p>
+                        <button class="nav-link.active"
+                            style="width:100%; margin-top:10px; padding:8px; border:1px solid var(--primary); background:transparent; color:var(--primary); border-radius:8px; cursor:pointer;"
+                            onclick="event.stopPropagation(); openModal('modal1')">Ver Resumen</button>
+                    </div>
+                </div>
+                <!-- Clase 2 -->
+                <div class="video-card" data-id="10FywtI8ACVIK9C7cam6RjVzV857-H8df" onclick="openCourse(1)">
+                    <div class="video-thumbnail">
+                        <div
+                            style="width:100%; height:100%; background: linear-gradient(135deg, #34A853 0%, #1A73E8 100%); display:flex; align-items:center; justify-content:center; color:white;">
+                            <i class="fab fa-google-drive" style="font-size: 3rem;"></i>
+                        </div>
+                        <div class="play-overlay">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-number">Clase 2</span>
+                        <h3 class="video-title">Arquitectura y Componentes Spring</h3>
+                        <p class="video-description">Patrón MVC, anotaciones principales y ciclo de vida de la
+                            aplicación con Spring Boot.</p>
+                        <button
+                            style="width:100%; margin-top:10px; padding:8px; border:1px solid var(--primary); background:transparent; color:var(--primary); border-radius:8px; cursor:pointer;"
+                            onclick="event.stopPropagation(); openCourse(1)">Ver Video</button>
+                    </div>
+                </div>
+                <!-- Clase 3 -->
+                <div class="video-card" data-id="YaaYSynJU4o" onclick="openModal('modal3')">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/YaaYSynJU4o/maxresdefault.jpg" alt="Clase 3"
+                            onerror="handleImgError(this)">
+                        <div class="play-overlay">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-number">Clase 3</span>
+                        <h3 class="video-title">Componentes y Anotaciones Avanzadas</h3>
+                        <p class="video-description">Protcolo HTTP, métodos REST, profundización en estereotipos y
+                            manejo de errores.</p>
+                        <button
+                            style="width:100%; margin-top:10px; padding:8px; border:1px solid var(--primary); background:transparent; color:var(--primary); border-radius:8px; cursor:pointer;"
+                            onclick="event.stopPropagation(); openModal('modal3')">Ver Resumen</button>
+                    </div>
+                </div>
+                <!-- Clase 4 -->
+                <div class="video-card" data-id="q61twttU20s" onclick="openModal('modal4')">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/q61twttU20s/maxresdefault.jpg" alt="Clase 4"
+                            onerror="handleImgError(this)">
+                        <div class="play-overlay">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-number">Clase 4</span>
+                        <h3 class="video-title">Consumo de APIs con RestTemplate</h3>
+                        <p class="video-description">Primer consumo HTTP, RestTemplate, mapeo JSON a DTOs y buenas
+                            prácticas.</p>
+                        <button
+                            style="width:100%; margin-top:10px; padding:8px; border:1px solid var(--primary); background:transparent; color:var(--primary); border-radius:8px; cursor:pointer;"
+                            onclick="event.stopPropagation(); openModal('modal4')">Ver Resumen</button>
+                    </div>
+                </div>
+                <!-- Clase 5 -->
+                <div class="video-card" data-id="Xo0q7zhXB9E" onclick="openModal('modal5')">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/Xo0q7zhXB9E/maxresdefault.jpg" alt="Clase 5"
+                            onerror="handleImgError(this)">
+                        <div class="play-overlay">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-number">Clase 5</span>
+                        <h3 class="video-title">Mappers y Filtrado de Datos</h3>
+                        <p class="video-description">Programación funcional con Streams, creación de Mappers y
+                            optimización de respuestas.</p>
+                        <button
+                            style="width:100%; margin-top:10px; padding:8px; border:1px solid var(--primary); background:transparent; color:var(--primary); border-radius:8px; cursor:pointer;"
+                            onclick="event.stopPropagation(); openModal('modal5')">Ver Resumen</button>
+                    </div>
+                </div>
+                <!-- Clase 6 -->
+                <div class="video-card" data-id="-SzxCBFoA88" onclick="openModal('modal6')">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/-SzxCBFoA88/maxresdefault.jpg" alt="Clase 6"
+                            onerror="handleImgError(this)">
+                        <div class="play-overlay">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-number">Clase 6</span>
+                        <h3 class="video-title">WebClient y Programación Reactiva</h3>
+                        <p class="video-description">Introducción a WebClient, diferencias con RestTemplate y manejo
+                            asíncrono.</p>
+                        <button
+                            style="width:100%; margin-top:10px; padding:8px; border:1px solid var(--primary); background:transparent; color:var(--primary); border-radius:8px; cursor:pointer;"
+                            onclick="event.stopPropagation(); openModal('modal6')">Ver Resumen</button>
+                    </div>
+                </div>
+                <!-- Clase 7 -->
+                <div class="video-card" data-id="jgmp3H4lSF0" onclick="openModal('modal7')">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/jgmp3H4lSF0/maxresdefault.jpg" alt="Clase 7"
+                            onerror="handleImgError(this)">
+                        <div class="play-overlay">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-number">Clase 7</span>
+                        <h3 class="video-title">Builders y Buenas Prácticas</h3>
+                        <p class="video-description">Patrón Builder con Lombok, construcción de objetos complejos y
+                            validaciones.</p>
+                        <button
+                            style="width:100%; margin-top:10px; padding:8px; border:1px solid var(--primary); background:transparent; color:var(--primary); border-radius:8px; cursor:pointer;"
+                            onclick="event.stopPropagation(); openModal('modal7')">Ver Resumen</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals Container (Dynamic) -->
+    <div id="modals-container">
+        <div id="courseModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle"><i class="fas fa-play-circle"></i> Titulo Clase</h2>
+                    <span class="close" onclick="closeVideo()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <!-- Video Player -->
+                    <div
+                        style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; margin-bottom: 2rem; background: #000;">
+                        <iframe id="videoFrame" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                            src="" title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <div id="modalContent"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function handleImgError(img) {
+                if (img.src.includes('maxresdefault')) {
+                    img.src = img.src.replace('maxresdefault', 'sddefault');
+                } else if (img.src.includes('sddefault')) {
+                    img.src = img.src.replace('sddefault', 'mqdefault');
+                } else if (img.src.includes('mqdefault')) {
+                    img.src = 'https://via.placeholder.com/320x180?text=Video+No+Disponible';
+                }
+            }
+        </script>
+    </div>
+
+    <div class="footer">
+        <p><strong>GESSOF Academy - Portal de Aprendizaje Java Spring</strong></p>
+        <p>Curso completo desde cero hasta microservicios profesionales</p>
+        <p>© 2024 GESSOF - Todos los derechos reservados</p>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'javaspring_progress_v1';
+        const THEME_KEY = 'javaspring_theme_v1';
+        const USER_KEY = 'javaspring_user_id';
+
+        // --- DATA SOURCE ---
+        const coursesData = [
+            {
+                id: "sMHdH1lspis", // Updated ID provided by user
+                modalId: "modal1",
+                number: "Clase 1",
+                title: "Introducción a Java y Spring Boot",
+                htmlContent: `
+                    <div class="summary-section">
+                        <h3><i class="fas fa-info-circle"></i> Resumen General</h3>
+                        <p>Esta primera clase establece los fundamentos esenciales de Java y Spring Boot. Se introduce Java como lenguaje orientado a objetos robusto y Spring Boot como el estándar para desarrollo empresarial.</p>
+                    </div>
+                    <div class="summary-section">
+                        <h3><i class="fas fa-cubes"></i> Los 4 Pilares de la POO</h3>
+                        <h4>1. Encapsulamiento</h4>
+                        <p>Oculta los detalles internos usando getters y setters.</p>
+                        <div class="code-block"><code>private String nombre;\npublic String getNombre() { return nombre; }</code></div>
+                        <h4>2. Herencia</h4>
+                        <p>Reutilización de código con <code>extends</code>.</p>
+                        <h4>3. Polimorfismo</h4>
+                        <p>Múltiples formas de comportarse (Sobrescritura de métodos).</p>
+                        <h4>4. Abstracción</h4>
+                        <p>Interfaces y clases abstractas que definen contratos.</p>
+                    </div>
+                `
+            },
+            {
+                id: "10FywtI8ACVIK9C7cam6RjVzV857-H8df",
+                type: "drive-video",
+                modalId: "modal2",
+                number: "Clase 2",
+                title: "Arquitectura y Componentes Spring",
+                htmlContent: `
+                    <div class="summary-section">
+                        <h3><i class="fas fa-layer-group"></i> Arquitectura MVC</h3>
+                        <p>Análisis profundo de la separación de responsabilidades: Controller, Service y Repository.</p>
+                        <div class="important-note">
+                            <h4>Conceptos Clave:</h4>
+                            <ul>
+                                <li>Inyección de dependencias.</li>
+                                <li>Ciclo de vida de un Bean.</li>
+                                <li>Anotaciones de estereotipo (@Component, @Service).</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: "Qj5wAAn7E4I", // HTTP Methods
+                modalId: "modal3",
+                number: "Clase 3",
+                title: "Componentes y Anotaciones Avanzadas",
+                htmlContent: `
+                    <div class="summary-section">
+                        <h3><i class="fas fa-globe"></i> Protocolo HTTP</h3>
+                        <p>Métodos principales: GET (Obtener), POST (Crear), PUT (Actualizar), DELETE (Eliminar).</p>
+                    </div>
+                    <div class="code-block"><code>@GetMapping("/{id}")\npublic User getUser(@PathVariable Long id) {\n    return service.findById(id);\n}</code></div>
+                    <div class="important-note">
+                        <h4>Códigos de Estado</h4>
+                        <p>200 OK, 201 Created, 400 Bad Request, 404 Not Found, 500 Server Error.</p>
+                    </div>
+                `
+            },
+            {
+                id: "8v_WTe6aDvc", // RestTemplate/API
+                modalId: "modal4",
+                number: "Clase 4",
+                title: "Consumo de APIs con RestTemplate",
+                htmlContent: `
+                    <div class="summary-section">
+                        <h3><i class="fas fa-plug"></i> Consumo de APIs</h3>
+                        <p>Uso de RestTemplate para comunicar microservicios de forma síncrona.</p>
+                    </div>
+                    <div class="code-block"><code>ResponseEntity&lt;String&gt; response = restTemplate.getForEntity(url, String.class);</code></div>
+                    <div class="key-points">
+                        <h4>DTOs (Data Transfer Objects)</h4>
+                        <p>Objetos planos para transportar datos entre procesos sin lógica de negocio.</p>
+                    </div>
+                `
+            },
+            {
+                id: "t2jsdE3s7zM", // Java Streams
+                modalId: "modal5",
+                number: "Clase 5",
+                title: "Mappers y Filtrado de Datos",
+                htmlContent: `
+                    <div class="summary-section">
+                        <h3><i class="fas fa-exchange-alt"></i> Mappers</h3>
+                        <p>Transformación de objetos (Entity a DTO) para desacoplar capas.</p>
+                    </div>
+                    <div class="summary-section">
+                        <h3><i class="fas fa-water"></i> Java Streams</h3>
+                        <p>Programación funcional para procesar colecciones.</p>
+                        <div class="code-block"><code>list.stream()\n    .filter(x -> x.isActive())\n    .map(x -> x.getName())\n    .collect(Collectors.toList());</code></div>
+                    </div>
+                `
+            },
+            {
+                id: "zN1sWykY2E4", // WebClient
+                modalId: "modal6",
+                number: "Clase 6",
+                title: "WebClient y Programación Reactiva",
+                htmlContent: `
+                    <div class="summary-section">
+                        <h3><i class="fas fa-bolt"></i> WebClient vs RestTemplate</h3>
+                        <p>WebClient es asíncrono y no bloqueante, ideal para alto rendimiento.</p>
+                    </div>
+                    <div class="code-block"><code>webClient.get().uri("/users")\n    .retrieve()\n    .bodyToFlux(User.class)\n    .subscribe();</code></div>
+                `
+            },
+            {
+                id: "pW_e7M3iXAg", // Builder Pattern
+                modalId: "modal7",
+                number: "Clase 7",
+                title: "Builder Pattern",
+                htmlContent: `
+                    <div class="summary-section">
+                        <h3><i class="fas fa-hammer"></i> Patrón Builder con Lombok</h3>
+                        <p>Construcción fluida de objetos complejos.</p>
+                        <div class="code-block"><code>User user = User.builder()\n    .name("Juan")\n    .email("juan@gessof.cl")\n    .build();</code></div>
+                    </div>
+                    <div class="key-points">
+                        <h4>Ventajas</h4>
+                        <p>Código más limpio, legible e inmutable.</p>
+                    </div>
+                `
+            }
+        ];
+
+        let watchedVideos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        let userId = localStorage.getItem(USER_KEY) || 'Invitado';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            updateUserDisplay();
+            initProgress();
+            initCarousels();
+        });
+
+        // Tabs Logic
+        function switchMainTab(event, sectionId) {
+            document.querySelectorAll('.main-content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.main-nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            event.currentTarget.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Theme Logic
+        function initTheme() {
+            if (localStorage.getItem(THEME_KEY) === 'dark') {
+                document.body.classList.add('dark');
+            }
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+            localStorage.setItem(THEME_KEY, document.body.classList.contains('dark') ? 'dark' : 'light');
+        }
+
+        // User Logic
+        function updateUserDisplay() {
+            document.getElementById('userNameDisplay').textContent = userId;
+        }
+        function changeUser() {
+            const newName = prompt('Ingresa tu nombre:', userId);
+            if (newName) {
+                userId = newName;
+                localStorage.setItem(USER_KEY, userId);
+                updateUserDisplay();
+            }
+        }
+
+        // Progress Logic
+        function initProgress() {
+            const cards = document.querySelectorAll('.video-card');
+            cards.forEach(card => {
+                const videoId = card.dataset.id;
+                if (!videoId) return;
+
+                // Checkbox creation if not exists
+                if (!card.querySelector('.video-checkbox')) {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'video-checkbox';
+                    checkbox.onclick = (e) => {
+                        e.stopPropagation();
+                        toggleWatched(videoId, checkbox.checked, card);
+                    };
+                    card.querySelector('.video-thumbnail').appendChild(checkbox);
+                }
+
+                // State sync
+                const checkbox = card.querySelector('.video-checkbox');
+                if (watchedVideos.includes(videoId)) {
+                    checkbox.checked = true;
+                    card.classList.add('watched');
+                } else {
+                    checkbox.checked = false;
+                    card.classList.remove('watched');
+                }
+            });
+            updateProgressBar();
+        }
+
+        function toggleWatched(id, checked, card) {
+            if (checked) {
+                if (!watchedVideos.includes(id)) watchedVideos.push(id);
+                card.classList.add('watched');
+            } else {
+                watchedVideos = watchedVideos.filter(v => v !== id);
+                card.classList.remove('watched');
+            }
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(watchedVideos));
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const total = document.querySelectorAll('.video-card').length;
+            const watched = watchedVideos.length;
+            const percent = total > 0 ? Math.round((watched / total) * 100) : 0;
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = percent + '%';
+        }
+
+        // --- NEW MODAL & VIDEO LOGIC ---
+        function openCourse(index) {
+            const course = coursesData[index];
+            if (!course) return;
+
+            const modal = document.getElementById('courseModal');
+            const titleEl = document.getElementById('modalTitle');
+            const contentEl = document.getElementById('modalContent');
+            const videoFrame = document.getElementById('videoFrame');
+            const videoContainer = videoFrame.parentElement;
+
+            // Reset UI
+            videoContainer.style.display = 'block';
+            contentEl.innerHTML = course.htmlContent;
+
+            // Update Content
+            if (course.type === 'drive-video') {
+                titleEl.innerHTML = `<i class="fab fa-google-drive" style="color:#34A853; margin-right:10px;"></i> ${course.number}: ${course.title}`;
+                // Google Drive video embed URL format
+                videoFrame.src = `https://drive.google.com/file/d/${course.id}/preview`;
+            } else if (course.type === 'drive') {
+                titleEl.innerHTML = `<i class="fab fa-google-drive" style="color:#34A853; margin-right:10px;"></i> ${course.number}: ${course.title}`;
+                videoContainer.style.display = 'none';
+
+                const driveHtml = `
+                    <div style="text-align: center; padding: 2rem; background: var(--bg-main); border-radius: 16px; border: 2px dashed var(--border); margin-bottom: 2rem;">
+                        <i class="fab fa-google-drive" style="font-size: 4rem; color: #34A853; margin-bottom: 1.5rem; display: block;"></i>
+                        <h4 style="margin-bottom: 1rem;">Acceder al Material en Drive</h4>
+                        <a href="${course.id}" target="_blank" class="main-nav-tab active" style="display: inline-flex; text-decoration: none; justify-content: center;">
+                            <i class="fas fa-external-link-alt"></i> Abrir Carpeta de Google Drive
+                        </a>
+                    </div>
+                `;
+                contentEl.innerHTML = driveHtml + course.htmlContent;
+            } else {
+                titleEl.innerHTML = `<i class="fab fa-youtube" style="color:#ff0000; margin-right:10px;"></i> ${course.number}: ${course.title}`;
+                videoFrame.src = `https://www.youtube.com/embed/${course.id}?autoplay=1&rel=0`;
+            }
+
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideo() {
+            const modal = document.getElementById('courseModal');
+            const videoFrame = document.getElementById('videoFrame');
+
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+
+            // Stop Video
+            videoFrame.src = "";
+        }
+
+        // Helper to maintain backwards compatibility if buttons call openModal('modalX')
+        // We will override this by updating HTML, but as a fallback:
+        window.openModal = function (modalId) {
+            // Find index by modalId
+            const index = coursesData.findIndex(c => c.modalId === modalId);
+            if (index !== -1) openCourse(index);
+        }
+        window.closeModal = closeVideo; // Map to new closer
+
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) {
+                closeVideo();
+            }
+        }
+
+        // Carousel Logic
+        function initCarousels() {
+            const grids = document.querySelectorAll('.videos-grid:not(.layout-grid)');
+            grids.forEach(grid => {
+                // Check if wrapper already exists
+                if (grid.parentElement.classList.contains('carousel-wrapper')) return;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'carousel-wrapper';
+                grid.parentNode.insertBefore(wrapper, grid);
+                wrapper.appendChild(grid);
+
+                const prev = document.createElement('button');
+                prev.className = 'carousel-btn prev';
+                prev.innerHTML = '<i class="fas fa-chevron-left"></i>';
+
+                const next = document.createElement('button');
+                next.className = 'carousel-btn next';
+                next.innerHTML = '<i class="fas fa-chevron-right"></i>';
+
+                wrapper.appendChild(prev);
+                wrapper.appendChild(next);
+
+                prev.onclick = () => grid.scrollBy({ left: -320, behavior: 'smooth' });
+                next.onclick = () => grid.scrollBy({ left: 320, behavior: 'smooth' });
+            });
+        }
+    </script>
+</body>
+
+</html>

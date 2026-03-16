@@ -1,0 +1,69 @@
+{
+  "titulo": "Patrones para Implementar Proxy Inverso: Service Mesh vs API Gateway",
+  "resumen": "Comparación entre dos patrones principales para implementar proxy inverso en microservicios: Service Mesh (Istio, Linkerd) y API Gateway (Spring Cloud Gateway, Kong). Se explican casos de uso, ventajas y desventajas de cada patrón para elegir apropiadamente.",
+  "puntosClave": [
+    "Dos patrones principales para proxy inverso:",
+    "1. API Gateway (North-South traffic):",
+    "   - Punto de entrada para tráfico externo",
+    "   - Ejemplo: Spring Cloud Gateway, Kong, Apigee",
+    "   - Funcionalidades: routing, auth, rate limiting, API versioning",
+    "   - Un solo componente centralizado",
+    "2. Service Mesh (East-West traffic):",
+    "   - Comunicación entre microservicios internos",
+    "   - Ejemplo: Istio, Linkerd, Consul Connect",
+    "   - Sidecar proxy junto a cada microservicio",
+    "   - Funcionalidades: mTLS, circuit breaking, observability, traffic management",
+    "Cuándo usar API Gateway:",
+    "  - Exponer APIs a clientes externos",
+    "  - Autenticación/autorización centralizada",
+    "  - Transformación de requests/responses",
+    "Cuándo usar Service Mesh:",
+    "  - Muchos microservicios comunicándose entre sí",
+    "  - Necesidad de observabilidad profunda",
+    "  - mTLS automático entre servicios",
+    "Pueden coexistir: Gateway para entrada + Mesh para comunicación interna"
+  ],
+  "conceptos": [
+    {
+      "nombre": "North-South Traffic",
+      "descripcion": "Tráfico entre clientes externos e infraestructura interna"
+    },
+    {
+      "nombre": "East-West Traffic",
+      "descripcion": "Tráfico entre microservicios dentro de infraestructura"
+    },
+    {
+      "nombre": "Service Mesh",
+      "descripcion": "Capa de infraestructura para comunicación service-to-service"
+    },
+    {
+      "nombre": "Sidecar Proxy",
+      "descripcion": "Proxy deployado junto a cada instancia de microservicio"
+    },
+    {
+      "nombre": "Istio",
+      "descripcion": "Service mesh popular con Envoy como data plane"
+    },
+    {
+      "nombre": "Linkerd",
+      "descripcion": "Service mesh ligero y performante"
+    },
+    {
+      "nombre": "mTLS (Mutual TLS)",
+      "descripcion": "Autenticación bidireccional con certificados entre servicios"
+    },
+    {
+      "nombre": "Circuit Breaking",
+      "descripcion": "Patrón para prevenir cascading failures en servicios"
+    },
+    {
+      "nombre": "Data Plane",
+      "descripcion": "Componente que maneja tráfico real (Envoy sidecars)"
+    },
+    {
+      "nombre": "Control Plane",
+      "descripcion": "Componente que configura y gestiona data plane (Istio Pilot)"
+    }
+  ],
+  "codigoEjemplo": null
+}

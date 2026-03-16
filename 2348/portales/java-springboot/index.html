@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fix: evita que Google Drive bloquee los iframes cuando se sirve desde localhost -->
+    <meta name="referrer" content="no-referrer">
+    <title>Java Spring Boot | GESSOF Academy</title>
+
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Estilos CSS Modulares -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+
+<body>
+    <div class="bg-pattern"></div>
+
+    <!-- Navegación Principal (Sticky Header) -->
+    <nav class="main-nav-tabs">
+        <div class="nav-container">
+            <div style="display: flex; gap: 0.5rem; align-items:center;">
+                <img src="assets/images/logo_gessof.png" alt="GESSOF Academy"
+                    style="height:82px; margin-right:2rem; object-fit: contain;" id="headerLogo">
+
+                <button class="main-nav-tab active" onclick="switchMainTab(event, 'section-inicio')">
+                    <i class="fas fa-home"></i> Inicio
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-herramientas')">
+                    <i class="fas fa-tools"></i> Herramientas
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-clases')">
+                    <i class="fas fa-graduation-cap"></i> Curso
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-evaluacion')">
+                    <i class="fas fa-clipboard-check"></i> Evaluación
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-glosario')">
+                    <i class="fas fa-book"></i> Glosario
+                </button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <!-- Progreso -->
+                <div style="display:flex; flex-direction:column; min-width:150px;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:4px;">
+                        <span style="font-weight:600; color:var(--text-secondary);">Tu Progreso</span>
+                        <span id="progressText" style="font-weight:700; color:var(--primary);">0%</span>
+                    </div>
+                    <div style="height:6px; background:var(--border); border-radius:10px; overflow:hidden;">
+                        <div id="progressFill"
+                            style="height:100%; background:var(--primary); width:0%; transition:width 0.5s;"></div>
+                    </div>
+                </div>
+
+                <!-- Toggle tema -->
+                <button onclick="toggleTheme()" class="theme-toggle-header"
+                    style="background:none; border:none; cursor:pointer; color:var(--text-secondary); font-size:1.2rem; margin-left: 0.5rem;"
+                    title="Cambiar Tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Sección: Inicio -->
+        <section id="section-inicio" class="main-content-section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <div class="hero-badge"><i class="fas fa-bolt"></i> Spring Boot 3.0</div>
+                    <h1>Aprende Java Spring Boot desde Cero</h1>
+                    <p>Domina el framework líder en el desarrollo backend empresarial. Construye APIs REST seguras,
+                        escalables y robustas con la mejor arquitectura.</p>
+
+                    <div class="hero-stats">
+                        <div>
+                            <div class="stat-value">+18</div>
+                            <div class="stat-label">Horas de Video</div>
+                        </div>
+                        <div>
+                            <div class="stat-value">13</div>
+                            <div class="stat-label">Secciones</div>
+                        </div>
+                        <div>
+                            <div class="stat-value"><i class="fas fa-certificate"></i></div>
+                            <div class="stat-label">Certificado</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lo que aprenderás -->
+            <div
+                style="background: var(--bg-card); border-radius: var(--radius-xl); padding: 2rem; margin-bottom: 2rem; box-shadow: var(--shadow-md);">
+                <h2 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text-primary);">
+                    <i class="fas fa-check-circle" style="color: var(--accent-green);"></i> Lo que aprenderás
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                    <div style="display: flex; gap: 0.75rem;">
+                        <i class="fas fa-check" style="color: var(--accent-green); margin-top: 0.25rem;"></i>
+                        <span>Diseñar y desarrollar microservicios con buenas prácticas y estándares de seguridad</span>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <i class="fas fa-check" style="color: var(--accent-green); margin-top: 0.25rem;"></i>
+                        <span>Seguridad en APIs con OAuth2, JWT, SSO, OpenID Connect y Keycloak</span>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <i class="fas fa-check" style="color: var(--accent-green); margin-top: 0.25rem;"></i>
+                        <span>Construcción de aplicaciones con Spring Boot + Angular</span>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <i class="fas fa-check" style="color: var(--accent-green); margin-top: 0.25rem;"></i>
+                        <span>Contenedores Docker y orquestación con Docker Compose</span>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <i class="fas fa-check" style="color: var(--accent-green); margin-top: 0.25rem;"></i>
+                        <span>Spring Cloud, Eureka, Config Server, Spring Admin</span>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <i class="fas fa-check" style="color: var(--accent-green); margin-top: 0.25rem;"></i>
+                        <span>Programación reactiva con Spring WebFlux</span>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <i class="fas fa-check" style="color: var(--accent-green); margin-top: 0.25rem;"></i>
+                        <span>Spring Data, PostgreSQL y manejo centralizado de excepciones</span>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <i class="fas fa-check" style="color: var(--accent-green); margin-top: 0.25rem;"></i>
+                        <span>APIs con OpenAPI, Swagger y API First</span>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <i class="fas fa-check" style="color: var(--accent-green); margin-top: 0.25rem;"></i>
+                        <span>Conceptos avanzados: reverse proxy, service mesh, API Manager</span>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <i class="fas fa-check" style="color: var(--accent-green); margin-top: 0.25rem;"></i>
+                        <span>Variables de entorno, configuración centralizada y Maven</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Herramientas -->
+        <section id="section-herramientas" class="main-content-section">
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div
+                        style="width: 4px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 4px;">
+                    </div>
+                    <div>
+                        <h2 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin: 0;">
+                            Herramientas del Curso</h2>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Recursos esenciales para el
+                            desarrollo</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-modules">
+                <!-- Java JDK -->
+                <div class="module">
+                    <div class="module-icon"><i class="fab fa-java"></i></div>
+                    <h3>Java JDK 21+</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">Versión LTS (Long Term
+                        Support) recomendada para producción.</p>
+                    <a href="https://www.oracle.com/java/technologies/downloads/" target="_blank"
+                        style="display: inline-block; margin-top: 1rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                        Descargar <i class="fas fa-external-link-alt" style="font-size: 0.8rem;"></i>
+                    </a>
+                </div>
+
+                <!-- IntelliJ IDEA -->
+                <div class="module">
+                    <div class="module-icon"><i class="fas fa-code"></i></div>
+                    <h3>IntelliJ IDEA</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">El entorno de
+                        desarrollo (IDE) más potente para Java.</p>
+                    <a href="https://www.jetbrains.com/idea/download/" target="_blank"
+                        style="display: inline-block; margin-top: 1rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                        Descargar <i class="fas fa-external-link-alt" style="font-size: 0.8rem;"></i>
+                    </a>
+                </div>
+
+                <!-- Maven -->
+                <div class="module">
+                    <div class="module-icon"><i class="fas fa-feather"></i></div>
+                    <h3>Maven</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">Gestión de dependencias
+                        y ciclo de vida del proyecto.</p>
+                    <a href="https://maven.apache.org/download.cgi" target="_blank"
+                        style="display: inline-block; margin-top: 1rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                        Descargar <i class="fas fa-external-link-alt" style="font-size: 0.8rem;"></i>
+                    </a>
+                </div>
+
+                <!-- Postman -->
+                <div class="module">
+                    <div class="module-icon"><i class="fas fa-paper-plane"></i></div>
+                    <h3>Postman</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">Herramienta esencial
+                        para probar y documentar APIs REST.</p>
+                    <a href="https://www.postman.com/downloads/" target="_blank"
+                        style="display: inline-block; margin-top: 1rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                        Descargar <i class="fas fa-external-link-alt" style="font-size: 0.8rem;"></i>
+                    </a>
+                </div>
+
+                <!-- Docker -->
+                <div class="module">
+                    <div class="module-icon"><i class="fab fa-docker"></i></div>
+                    <h3>Docker</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">Despliegue de
+                        aplicaciones en contenedores ligeros.</p>
+                    <a href="https://www.docker.com/products/docker-desktop/" target="_blank"
+                        style="display: inline-block; margin-top: 1rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                        Descargar <i class="fas fa-external-link-alt" style="font-size: 0.8rem;"></i>
+                    </a>
+                </div>
+
+                <!-- Spring Initializr -->
+                <div class="module">
+                    <div class="module-icon"><i class="fas fa-leaf"></i></div>
+                    <h3>Spring Initializr</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">Generador oficial de la
+                        estructura base de proyectos Spring.</p>
+                    <a href="https://start.spring.io/" target="_blank"
+                        style="display: inline-block; margin-top: 1rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                        Abrir <i class="fas fa-external-link-alt" style="font-size: 0.8rem;"></i>
+                    </a>
+                </div>
+
+                <!-- PostgreSQL -->
+                <div class="module">
+                    <div class="module-icon"><i class="fas fa-database"></i></div>
+                    <h3>PostgreSQL</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">Base de datos
+                        relacional de código abierto más avanzada.</p>
+                    <a href="https://www.postgresql.org/download/" target="_blank"
+                        style="display: inline-block; margin-top: 1rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                        Descargar <i class="fas fa-external-link-alt" style="font-size: 0.8rem;"></i>
+                    </a>
+                </div>
+
+                <!-- Git -->
+                <div class="module">
+                    <div class="module-icon"><i class="fab fa-git-alt"></i></div>
+                    <h3>Git</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">Sistema de control de
+                        versiones distribuido.</p>
+                    <a href="https://git-scm.com/downloads" target="_blank"
+                        style="display: inline-block; margin-top: 1rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                        Descargar <i class="fas fa-external-link-alt" style="font-size: 0.8rem;"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Curso (Se cargará dinámicamente) -->
+        <section id="section-clases" class="main-content-section">
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div
+                        style="width: 4px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 4px;">
+                    </div>
+                    <div>
+                        <h2 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin: 0;">
+                            Programa de Estudios</h2>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Domina Spring Boot paso a paso</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Las secciones del curso se cargarán aquí dinámicamente -->
+        </section>
+
+        <!-- Sección: Evaluación -->
+        <section id="section-evaluacion" class="main-content-section">
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div
+                        style="width: 4px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 4px;">
+                    </div>
+                    <div>
+                        <h2 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin: 0;">
+                            Evaluación Final</h2>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Pon a prueba tus conocimientos
+                            técnico</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-tabs de Evaluación -->
+            <div class="eval-tabs"
+                style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 0;">
+                <button class="eval-tab active" onclick="switchEvalTab(event, 'eval-teorica')"
+                    style="padding: 0.75rem 1.5rem; background: transparent; border: none; border-bottom: 3px solid var(--primary); color: var(--text-primary); font-weight: 700; cursor: pointer; transition: all 0.3s ease;">
+                    <i class="fas fa-list-check" style="margin-right: 8px;"></i> Evaluación Teórica
+                </button>
+                <button class="eval-tab" onclick="switchEvalTab(event, 'eval-practica')"
+                    style="padding: 0.75rem 1.5rem; background: transparent; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                    <i class="fas fa-code" style="margin-right: 8px;"></i> Evaluación Práctica (Nueva)
+                </button>
+            </div>
+
+            <div id="eval-teorica" class="eval-tab-content active">
+                <div id="evaluationContainer" class="evaluation-container">
+                    <!-- El contenido de la evaluación se cargará aquí dinámicamente -->
+                </div>
+            </div>
+
+            <div id="eval-practica" class="eval-tab-content" style="display: none;">
+                <!-- El contenido de la evaluación práctica se cargará aquí dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Sección: Glosario -->
+        <section id="section-glosario" class="main-content-section">
+            <div class="section-header"
+                style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div
+                        style="width: 4px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 4px;">
+                    </div>
+                    <div>
+                        <h2 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin: 0;">
+                            Glosario Técnico</h2>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Conceptos clave y mejores prácticas
+                            del curso</span>
+                    </div>
+                </div>
+
+                <!-- Buscador de Glosario -->
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="glossarySearch" placeholder="Buscar concepto o término..."
+                        class="search-input">
+                </div>
+            </div>
+
+            <div id="glossaryContainer">
+                <p style="text-align: center; color: var(--text-muted); padding: 3rem;">Cargando glosario...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de Video -->
+    <div id="courseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"><i class="fas fa-play-circle"></i> Título Clase</h2>
+                <span class="close" onclick="closeVideo()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- Video Player -->
+                <div
+                    style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; margin-bottom: 2rem; background: #000;">
+                    <iframe id="videoFrame" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                        src="" title="Video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+                <div id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p><strong>GESSOF Academy - Portal de Aprendizaje Java Spring</strong></p>
+        <p>Curso completo desde cero hasta microservicios profesionales</p>
+        <p>© 2024 GESSOF - Todos los derechos reservados</p>
+    </div>
+
+    <!-- Scripts Modulares -->
+    <script src="./js/config.js"></script>
+    <script src="./js/microservicios-summaries.js"></script>
+    <script src="./js/microservicios-data.js"></script>
+    <script src="./js/data-loader.js"></script>
+    <script src="./js/ui-builder.js"></script>
+    <script src="./js/progress_v2.js"></script>
+    <script src="./js/player.js"></script>
+    <script src="./js/evaluation-data.js"></script>
+    <script src="./js/evaluation.js"></script>
+    <script src="./js/practical-evaluation-data.js"></script>
+    <script src="./js/practical-evaluation.js"></script>
+    <script src="./js/app_v2.js"></script>
+</body>
+
+</html>

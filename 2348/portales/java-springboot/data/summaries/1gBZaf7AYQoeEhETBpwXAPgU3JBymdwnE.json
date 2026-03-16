@@ -1,0 +1,63 @@
+{
+  "titulo": "Codificación: Resolver Conflictos de Dependencias entre WebFlux y WebMVC",
+  "resumen": "Solución de conflictos cuando Gateway (WebFlux) y otros servicios (WebMVC) están en mismo multi-módulo Maven. Se excluyen dependencias conflictivas, se verifica classpath, y se asegura que Gateway usa solo WebFlux mientras otros servicios usan WebMVC.",
+  "puntosClave": [
+    "Problema: Gateway usa WebFlux, otros servicios usan WebMVC",
+    "Error común: Cannot determine embedded server (both in classpath)",
+    "WebFlux y WebMVC son incompatibles en mismo classpath",
+    "Solución: excluir spring-boot-starter-web de Gateway",
+    "En pom.xml de Gateway: NO incluir starter-web",
+    "Si heredado de parent, usar <exclusion>",
+    "Verificar dependencias: mvn dependency:tree",
+    "Buscar conflictos: grep -i \"spring-boot-starter-web\"",
+    "Gateway debe tener solo: WebFlux, Gateway, Eureka Client",
+    "Otros servicios tienen: Web, JPA, Security, etc.",
+    "Reactor vs Servlet API: diferentes modelos de threading",
+    "Gateway usa Netty (non-blocking), otros usan Tomcat (blocking)",
+    "Validar: logs de inicio deben mostrar Netty en Gateway",
+    "Logs de Customer/Product deben mostrar Tomcat"
+  ],
+  "conceptos": [
+    {
+      "nombre": "WebFlux vs WebMVC",
+      "descripcion": "WebFlux reactivo vs WebMVC tradicional, incompatibles en mismo classpath"
+    },
+    {
+      "nombre": "Dependency Conflict",
+      "descripcion": "Múltiples versiones o implementaciones incompatibles de librería"
+    },
+    {
+      "nombre": "Maven Exclusion",
+      "descripcion": "Excluir dependencia transitiva no deseada"
+    },
+    {
+      "nombre": "dependency:tree",
+      "descripcion": "Comando Maven para ver árbol de dependencias"
+    },
+    {
+      "nombre": "Netty",
+      "descripcion": "Servidor HTTP asíncrono usado por WebFlux"
+    },
+    {
+      "nombre": "Tomcat",
+      "descripcion": "Servidor servlet tradicional usado por WebMVC"
+    },
+    {
+      "nombre": "Reactor",
+      "descripcion": "Librería de programación reactiva usada por WebFlux"
+    },
+    {
+      "nombre": "Servlet API",
+      "descripcion": "API estándar Java para aplicaciones web tradicionales"
+    },
+    {
+      "nombre": "Classpath Conflict",
+      "descripcion": "Múltiples implementaciones incompatibles en runtime classpath"
+    },
+    {
+      "nombre": "Transitive Dependency",
+      "descripcion": "Dependencia traída indirectamente por otra dependencia"
+    }
+  ],
+  "codigoEjemplo": "<!-- pom.xml - Gateway (CORRECTO) -->\n<dependencies>\n    <!-- ✅ Solo WebFlux, NO WebMVC -->\n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-starter-gateway</artifactId>\n        <!-- Gateway incluye WebFlux automáticamente -->\n    </dependency>\n    \n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>\n    </dependency>\n    \n    <!-- ❌ NO incluir spring-boot-starter-web -->\n    <!-- <dependency> -->\n    <!--     <groupId>org.springframework.boot</groupId> -->\n    <!--     <artifactId>spring-boot-starter-web</artifactId> -->\n    <!-- </dependency> -->\n</dependencies>\n\n<!-- Si parent POM incluye starter-web, excluirlo -->\n<dependencies>\n    <dependency>\n        <groupId>com.paymentchange</groupId>\n        <artifactId>common-dependencies</artifactId>\n        <exclusions>\n            <exclusion>\n                <groupId>org.springframework.boot</groupId>\n                <artifactId>spring-boot-starter-web</artifactId>\n            </exclusion>\n        </exclusions>\n    </dependency>\n</dependencies>\n\n<!-- pom.xml - Customer Service (CORRECTO) -->\n<dependencies>\n    <!-- ✅ WebMVC para REST APIs tradicionales -->\n    <dependency>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-web</artifactId>\n    </dependency>\n    \n    <dependency>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-data-jpa</artifactId>\n    </dependency>\n</dependencies>\n\n# Verificar dependencias\nmvn dependency:tree -pl api-gateway\n\n# Buscar conflictos\nmvn dependency:tree -pl api-gateway | grep \"spring-boot-starter-web\"\n# No debe aparecer nada\n\nmvn dependency:tree -pl api-gateway | grep \"spring-webflux\"\n# Debe aparecer spring-webflux\n\n# Logs de inicio - Gateway (CORRECTO)\n# Netty started on port(s): 8080\n# Started ApiGatewayApplication in 3.456 seconds\n\n# Logs de inicio - Customer Service (CORRECTO)\n# Tomcat started on port(s): 8081 (http)\n# Started CustomerServiceApplication in 4.123 seconds\n\n# Error común (INCORRECTO)\n# Web application could not be started as there was \n# no org.springframework.boot.web.servlet.server.ServletWebServerFactory \n# bean defined in the context.\n# → Significa que WebMVC y WebFlux están en classpath"
+}

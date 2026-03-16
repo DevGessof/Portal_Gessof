@@ -1,0 +1,65 @@
+{
+  "titulo": "Enrutamiento: Configurar Filtro Personalizado en API Gateway",
+  "resumen": "Creación de filtro personalizado en API Gateway para validar JWT antes de enrutar a microservicios. Se implementa AuthenticationGatewayFilter que extrae token de header Authorization, valida con KeycloakAdapter, y permite/deniega acceso según validez del token.",
+  "puntosClave": [
+    "Agregar dependencia de keycloak-adapter en pom.xml de api-gateway",
+    "Crear AuthenticationGatewayFilterFactory",
+    "Implementar AbstractGatewayFilterFactory<Config>",
+    "Filter ejecuta en cada request:",
+    "1. Extraer token de header Authorization",
+    "2. Validar formato: Bearer {token}",
+    "3. Llamar keycloakService.validateToken(token)",
+    "4. Si válido: continuar con chain.filter(exchange)",
+    "5. Si inválido: retornar 401 Unauthorized",
+    "Configurar filter en rutas específicas:",
+    "  filters:",
+    "    - Authentication",
+    "Excluir rutas públicas (health, swagger)",
+    "Logging de validaciones exitosas y fallidas",
+    "Manejar excepciones de validación",
+    "Retornar response JSON con error detallado"
+  ],
+  "conceptos": [
+    {
+      "nombre": "GatewayFilterFactory",
+      "descripcion": "Factory que crea instancias de filtros configurables"
+    },
+    {
+      "nombre": "AbstractGatewayFilterFactory",
+      "descripcion": "Clase base para crear filtros personalizados con configuración"
+    },
+    {
+      "nombre": "Authorization Header",
+      "descripcion": "Header HTTP que contiene token: Authorization: Bearer {token}"
+    },
+    {
+      "nombre": "Token Extraction",
+      "descripcion": "Extraer JWT de header quitando prefijo Bearer"
+    },
+    {
+      "nombre": "Filter Chain",
+      "descripcion": "Cadena de filtros que procesa request secuencialmente"
+    },
+    {
+      "nombre": "Early Return",
+      "descripcion": "Retornar response sin continuar cadena si validación falla"
+    },
+    {
+      "nombre": "401 Unauthorized",
+      "descripcion": "Código HTTP cuando token es inválido o falta"
+    },
+    {
+      "nombre": "Public Routes",
+      "descripcion": "Rutas que no requieren autenticación (health, docs)"
+    },
+    {
+      "nombre": "Filter Configuration",
+      "descripcion": "Aplicar filtro a rutas específicas en application.yml"
+    },
+    {
+      "nombre": "Error Response",
+      "descripcion": "Response JSON estructurada con detalles del error"
+    }
+  ],
+  "codigoEjemplo": null
+}

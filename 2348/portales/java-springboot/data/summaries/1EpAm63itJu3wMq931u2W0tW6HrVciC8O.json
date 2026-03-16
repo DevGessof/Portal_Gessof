@@ -1,0 +1,61 @@
+{
+  "titulo": "Validación de Respuestas HTTP y Manejo de Excepciones al Consumir APIs Externas",
+  "resumen": "Implementación de manejo robusto de errores al consumir APIs de otros microservicios con WebClient. Se validan códigos de estado HTTP, se interceptan errores (4xx, 5xx), y se lanzan excepciones apropiadas. Se usa onStatus() de WebClient para transformar errores HTTP en excepciones de negocio.",
+  "puntosClave": [
+    "Problema: WebClient puede fallar si servicio externo retorna error",
+    "Solución: validar respuestas HTTP y manejar errores apropiadamente",
+    ".onStatus() de WebClient intercepta respuestas según código HTTP",
+    "Verificar 4xx (error cliente) y 5xx (error servidor)",
+    "404 al llamar Product → lanzar NotFoundException",
+    "500 de servicio externo → lanzar ServiceUnavailableException",
+    "Extraer mensaje de error del body de respuesta si está disponible",
+    ".bodyToMono(String.class) para leer mensaje de error",
+    "Transformar errores de servicios externos en excepciones locales",
+    "GlobalExceptionHandler las convierte en respuestas apropiadas",
+    "Logging de errores de comunicación para debugging",
+    "Circuit Breaker pattern para manejar servicios caídos (próximas secciones)"
+  ],
+  "conceptos": [
+    {
+      "nombre": "WebClient Error Handling",
+      "descripcion": "Manejo de errores al consumir APIs con WebClient reactivo"
+    },
+    {
+      "nombre": ".onStatus()",
+      "descripcion": "Método de WebClient para interceptar respuestas según código HTTP"
+    },
+    {
+      "nombre": "HTTP Status Validation",
+      "descripcion": "Verificar código de respuesta y actuar según sea error o éxito"
+    },
+    {
+      "nombre": "Error Response Parsing",
+      "descripcion": "Extraer mensaje de error del body de respuesta 4xx/5xx"
+    },
+    {
+      "nombre": "Service Unavailable",
+      "descripcion": "Error cuando servicio externo no está disponible o retorna 5xx"
+    },
+    {
+      "nombre": "External API Errors",
+      "descripcion": "Errores originados en otros microservicios al comunicarse"
+    },
+    {
+      "nombre": "Error Propagation",
+      "descripcion": "Convertir errores HTTP en excepciones de negocio locales"
+    },
+    {
+      "nombre": "Resilience",
+      "descripcion": "Capacidad de manejar fallos de servicios externos elegantemente"
+    },
+    {
+      "nombre": "Timeout Handling",
+      "descripcion": "Manejar timeouts cuando servicio no responde a tiempo"
+    },
+    {
+      "nombre": "Retry Logic",
+      "descripcion": "Reintentar llamada si falla por error temporal (opcional)"
+    }
+  ],
+  "codigoEjemplo": "// CustomerService - Validar respuestas de Product API\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private WebClient productWebClient;\n    \n    public Customer create(Customer customer) {\n        // Validar que productos existen\n        if (customer.getProductIds() != null) {\n            for (Long productId : customer.getProductIds()) {\n                validateProductExists(productId);\n            }\n        }\n        \n        return customerRepository.save(customer);\n    }\n    \n    private void validateProductExists(Long productId) {\n        try {\n            Product product = productWebClient.get()\n                .uri(\"/product/{id}\", productId)\n                .retrieve()\n                .onStatus(\n                    status -> status.is4xxClientError(),\n                    clientResponse -> {\n                        if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) {\n                            return Mono.error(new NotFoundException(\n                                \"Product with ID \" + productId + \" not found\"\n                            ));\n                        }\n                        return Mono.error(new IllegalArgumentException(\n                            \"Invalid product ID: \" + productId\n                        ));\n                    }\n                )\n                .onStatus(\n                    status -> status.is5xxServerError(),\n                    clientResponse -> {\n                        log.error(\"Product service error: {}\", \n                                 clientResponse.statusCode());\n                        return Mono.error(new ServiceUnavailableException(\n                            \"Product service is currently unavailable\"\n                        ));\n                    }\n                )\n                .bodyToMono(Product.class)\n                .block();\n                \n        } catch (WebClientException e) {\n            log.error(\"Error calling Product service\", e);\n            throw new ServiceUnavailableException(\n                \"Unable to validate product: \" + e.getMessage()\n            );\n        }\n    }\n}\n\n// ServiceUnavailableException.java\npublic class ServiceUnavailableException extends BusinessException {\n    public ServiceUnavailableException(String message) {\n        super(message);\n    }\n}\n\n// GlobalExceptionHandler - Handler para service unavailable\n@ExceptionHandler(ServiceUnavailableException.class)\npublic ResponseEntity<ErrorResponse> handleServiceUnavailable(\n        ServiceUnavailableException ex, WebRequest request) {\n    \n    log.error(\"Service unavailable: {}\", ex.getMessage());\n    \n    ErrorResponse error = new ErrorResponse(\n        HttpStatus.SERVICE_UNAVAILABLE.value(),\n        \"Service Unavailable\",\n        ex.getMessage(),\n        request.getDescription(false).replace(\"uri=\", \"\")\n    );\n    \n    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)\n        .body(error);\n}\n\n// WebClientConfig - Con timeout\n@Bean\npublic WebClient productWebClient(WebClient.Builder builder) {\n    return builder\n        .baseUrl(\"http://product-service/api/v1\")\n        .defaultHeader(HttpHeaders.CONTENT_TYPE, \n                      MediaType.APPLICATION_JSON_VALUE)\n        .build();\n}"
+}

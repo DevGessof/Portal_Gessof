@@ -1,0 +1,61 @@
+{
+  "titulo": "Excepciones Personalizadas para Manejar Reglas de Negocio Específicas",
+  "resumen": "Creación de excepciones personalizadas para representar errores específicos del dominio. Se implementan BusinessException, DuplicateResourceException, InvalidStateException para capturar reglas de negocio complejas. Cada excepción tiene handler específico en GlobalExceptionHandler con código HTTP apropiado.",
+  "puntosClave": [
+    "Crear jerarquía de excepciones personalizadas",
+    "BusinessException: clase base para excepciones de negocio",
+    "NotFoundException: recurso no encontrado (404)",
+    "DuplicateResourceException: recurso duplicado (409 Conflict)",
+    "InvalidStateException: operación no permitida por estado (400/409)",
+    "Cada excepción puede llevar información adicional (campos, códigos)",
+    "GlobalExceptionHandler tiene handler para cada tipo",
+    "Permite códigos HTTP específicos según tipo de error",
+    "Mensajes descriptivos específicos del dominio",
+    "Facilita debugging: tipo de excepción indica problema",
+    "Ejemplo: customer no puede tener transacción sin producto",
+    "Lanzar InvalidStateException con mensaje claro"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Custom Exception",
+      "descripcion": "Excepción creada para representar error específico del dominio"
+    },
+    {
+      "nombre": "BusinessException",
+      "descripcion": "Clase base para todas las excepciones de lógica de negocio"
+    },
+    {
+      "nombre": "DuplicateResourceException",
+      "descripcion": "Excepción cuando se intenta crear recurso que ya existe (409)"
+    },
+    {
+      "nombre": "InvalidStateException",
+      "descripcion": "Operación no permitida por estado actual del recurso"
+    },
+    {
+      "nombre": "Exception Hierarchy",
+      "descripcion": "Árbol de excepciones relacionadas heredando de clase base"
+    },
+    {
+      "nombre": "Domain-Specific Errors",
+      "descripcion": "Errores que reflejan reglas de negocio del dominio"
+    },
+    {
+      "nombre": "HTTP 409 Conflict",
+      "descripcion": "Código para conflictos de estado (duplicados, operaciones inválidas)"
+    },
+    {
+      "nombre": "Error Context",
+      "descripcion": "Información adicional en excepción (qué recurso, qué operación)"
+    },
+    {
+      "nombre": "Typed Exception Handling",
+      "descripcion": "Handler diferente según tipo exacto de excepción"
+    },
+    {
+      "nombre": "Meaningful Error Messages",
+      "descripcion": "Mensajes que explican claramente qué regla se violó"
+    }
+  ],
+  "codigoEjemplo": "// BusinessException.java - Clase base\npackage com.paymentchange.customer.exceptions;\n\npublic class BusinessException extends RuntimeException {\n    public BusinessException(String message) {\n        super(message);\n    }\n    \n    public BusinessException(String message, Throwable cause) {\n        super(message, cause);\n    }\n}\n\n// NotFoundException.java\npublic class NotFoundException extends BusinessException {\n    public NotFoundException(String message) {\n        super(message);\n    }\n}\n\n// DuplicateResourceException.java\npublic class DuplicateResourceException extends BusinessException {\n    public DuplicateResourceException(String message) {\n        super(message);\n    }\n}\n\n// InvalidStateException.java\npublic class InvalidStateException extends BusinessException {\n    private String currentState;\n    private String attemptedOperation;\n    \n    public InvalidStateException(String message) {\n        super(message);\n    }\n    \n    public InvalidStateException(String message, String currentState, \n                                String attemptedOperation) {\n        super(message);\n        this.currentState = currentState;\n        this.attemptedOperation = attemptedOperation;\n    }\n}\n\n// GlobalExceptionHandler - Handlers específicos\n@RestControllerAdvice\n@Slf4j\npublic class GlobalExceptionHandler {\n    \n    @ExceptionHandler(NotFoundException.class)\n    public ResponseEntity<ErrorResponse> handleNotFound(\n            NotFoundException ex, WebRequest request) {\n        ErrorResponse error = new ErrorResponse(\n            HttpStatus.NOT_FOUND.value(),\n            \"Not Found\",\n            ex.getMessage(),\n            request.getDescription(false).replace(\"uri=\", \"\")\n        );\n        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);\n    }\n    \n    @ExceptionHandler(DuplicateResourceException.class)\n    public ResponseEntity<ErrorResponse> handleDuplicate(\n            DuplicateResourceException ex, WebRequest request) {\n        ErrorResponse error = new ErrorResponse(\n            HttpStatus.CONFLICT.value(),\n            \"Conflict\",\n            ex.getMessage(),\n            request.getDescription(false).replace(\"uri=\", \"\")\n        );\n        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);\n    }\n    \n    @ExceptionHandler(InvalidStateException.class)\n    public ResponseEntity<ErrorResponse> handleInvalidState(\n            InvalidStateException ex, WebRequest request) {\n        ErrorResponse error = new ErrorResponse(\n            HttpStatus.BAD_REQUEST.value(),\n            \"Invalid State\",\n            ex.getMessage(),\n            request.getDescription(false).replace(\"uri=\", \"\")\n        );\n        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);\n    }\n}\n\n// Uso en Service\npublic Customer create(Customer customer) {\n    // Validar duplicado por email\n    if (customerRepository.existsByEmail(customer.getEmail())) {\n        throw new DuplicateResourceException(\n            \"Customer with email \" + customer.getEmail() + \" already exists\"\n        );\n    }\n    \n    // Validar estado\n    if (customer.getStatus().equals(\"INACTIVE\") && \n        customer.getProductIds().size() > 0) {\n        throw new InvalidStateException(\n            \"Cannot assign products to inactive customer\",\n            \"INACTIVE\",\n            \"ASSIGN_PRODUCTS\"\n        );\n    }\n    \n    return customerRepository.save(customer);\n}"
+}

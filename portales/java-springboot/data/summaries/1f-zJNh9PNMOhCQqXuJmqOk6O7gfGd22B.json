@@ -1,0 +1,61 @@
+{
+  "titulo": "Revisar y Comentar Microservicio de Transacciones",
+  "resumen": "Revisión del código del microservicio Transaction que implementa lógica de negocio compleja. Se analiza la estructura, entidad Transaction con relaciones a Customer y Product, validaciones, y cómo consume APIs de ambos microservicios. Introducción al tercer microservicio del dominio business.",
+  "puntosClave": [
+    "Transaction: microservicio core que registra transacciones financieras",
+    "Puerto configurado: 8083",
+    "Entidad Transaction: id, customerId, productId, amount, date, status",
+    "Relaciones mediante IDs: customerId y productId (no objetos)",
+    "Lógica compleja: validar customer existe, validar producto existe",
+    "Verificar que customer tiene el producto antes de transaccionar",
+    "Usar WebClient para consumir Customer API y Product API",
+    "Validaciones en cadena antes de persistir transacción",
+    "DTO TransactionWithDetails para retornar datos enriquecidos",
+    "Agregación de datos de Customer + Product + Transaction",
+    "Estructura similar a Customer y Product (entities, repositories, services, controller)",
+    "Demostración de microservicio que consume múltiples servicios"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Microservicio Transaction",
+      "descripcion": "Servicio que gestiona transacciones financieras (depósitos, retiros, transferencias)"
+    },
+    {
+      "nombre": "Entidad Transaction",
+      "descripcion": "Representa transacción financiera con customerId, productId, amount, date, status"
+    },
+    {
+      "nombre": "Validación en Cadena",
+      "descripcion": "Múltiples validaciones secuenciales antes de ejecutar operación principal"
+    },
+    {
+      "nombre": "Múltiples Dependencias",
+      "descripcion": "Transaction depende de Customer y Product para validar datos"
+    },
+    {
+      "nombre": "Lógica de Negocio Compleja",
+      "descripcion": "Reglas como verificar que customer posee el producto antes de transaccionar"
+    },
+    {
+      "nombre": "Consumo Múltiple de APIs",
+      "descripcion": "Transaction consume endpoints de Customer y Product usando WebClient"
+    },
+    {
+      "nombre": "TransactionWithDetails",
+      "descripcion": "DTO que combina Transaction + datos completos de Customer y Product"
+    },
+    {
+      "nombre": "Status de Transacción",
+      "descripcion": "Campo que indica estado (PENDING, COMPLETED, FAILED, etc.)"
+    },
+    {
+      "nombre": "Agregación Triple",
+      "descripcion": "Combinar datos de tres fuentes: Transaction, Customer y Product"
+    },
+    {
+      "nombre": "Validación de Reglas de Negocio",
+      "descripcion": "Verificar condiciones específicas del dominio antes de procesar"
+    }
+  ],
+  "codigoEjemplo": "// Entidad Transaction\npackage com.paymentchange.transaction.entities;\n\nimport jakarta.persistence.*;\nimport lombok.Data;\nimport java.time.LocalDateTime;\n\n@Data\n@Entity\npublic class Transaction {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    \n    private Long customerId; // Referencia a Customer\n    private Long productId;  // Referencia a Product\n    private Double amount;\n    private LocalDateTime date;\n    private String status; // PENDING, COMPLETED, FAILED\n}\n\n// TransactionService - Validaciones\n@Service\npublic class TransactionService {\n    \n    @Autowired\n    private WebClient customerWebClient;\n    \n    @Autowired\n    private WebClient productWebClient;\n    \n    @Autowired\n    private TransactionRepository repository;\n    \n    public Transaction create(Transaction transaction) {\n        // Validar customer existe\n        Customer customer = customerWebClient.get()\n            .uri(\"/customer/{id}\", transaction.getCustomerId())\n            .retrieve()\n            .bodyToMono(Customer.class)\n            .block();\n        \n        if (customer == null) {\n            throw new RuntimeException(\"Customer no encontrado\");\n        }\n        \n        // Validar producto existe\n        Product product = productWebClient.get()\n            .uri(\"/product/{id}\", transaction.getProductId())\n            .retrieve()\n            .bodyToMono(Product.class)\n            .block();\n        \n        if (product == null) {\n            throw new RuntimeException(\"Producto no encontrado\");\n        }\n        \n        // Validar que customer tiene el producto\n        if (!customer.getProductIds().contains(transaction.getProductId())) {\n            throw new RuntimeException(\"Customer no posee este producto\");\n        }\n        \n        // Persistir transacción\n        transaction.setDate(LocalDateTime.now());\n        transaction.setStatus(\"COMPLETED\");\n        return repository.save(transaction);\n    }\n}"
+}

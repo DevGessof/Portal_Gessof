@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fix: evita que Google Drive bloquee los iframes cuando se sirve desde localhost -->
+    <meta name="referrer" content="no-referrer">
+    <title>Java Básico | Portal de Aprendizaje</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- CSS Modular -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+
+<body>
+    <!-- Fondo decorativo -->
+    <div class="bg-pattern"></div>
+
+    <!-- Navegación Principal -->
+    <nav class="main-nav-tabs">
+        <div class="nav-container">
+            <div style="display: flex; gap: 0.5rem; align-items:center;">
+                <img src="assets/images/logo_gessof.png" alt="GESSOF Academy"
+                    style="height:82px; margin-right:2rem; object-fit: contain;" id="headerLogo">
+                <button class="main-nav-tab active" onclick="switchMainTab(event, 'section-inicio')">
+                    <i class="fas fa-home"></i> Inicio
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-herramientas')">
+                    <i class="fas fa-tools"></i> Herramientas
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-clases')">
+                    <i class="fas fa-graduation-cap"></i> Curso
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-evaluacion')">
+                    <i class="fas fa-clipboard-check"></i> Evaluación
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-glosario')">
+                    <i class="fas fa-book"></i> Glosario
+                </button>
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <!-- Barra de progreso -->
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div
+                        style="width: 120px; height: 8px; background: var(--bg-main); border-radius: 10px; overflow: hidden;">
+                        <div id="progressFill"
+                            style="height: 100%; width: 0%; background: var(--primary); transition: width 0.5s ease; border-radius: 10px;">
+                        </div>
+                    </div>
+                    <span id="progressText"
+                        style="font-size: 0.85rem; font-weight: 700; color: var(--primary); min-width: 40px;">0%</span>
+                </div>
+
+                <!-- Toggle tema -->
+                <button class="main-nav-tab theme-toggle-header" onclick="toggleTheme()"
+                    style="border: 1px solid var(--border);">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="main-content">
+
+        <!-- SECCIÓN: INICIO -->
+        <div id="section-inicio" class="main-content-section active">
+            <div class="hero">
+                <div class="hero-badge">
+                    <i class="fab fa-java"></i>
+                    Programación Java
+                </div>
+                <h1>Aprende Java desde Cero</h1>
+                <p>Domina los fundamentos de la programación en Java con este curso 100% práctico y didáctico. Desde la
+                    instalación del entorno hasta programación orientada a objetos.</p>
+
+                <div class="hero-stats">
+                    <div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Secciones</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">39</div>
+                        <div class="stat-label">Videos</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">~4.5h</div>
+                        <div class="stat-label">Duración</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Práctico</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objetivos de Aprendizaje -->
+            <div class="objetivos-section">
+                <h2 style="margin-bottom: 1.5rem; color: var(--text-primary);">
+                    <i class="fas fa-bullseye"></i> Lo que aprenderás
+                </h2>
+                <div class="objetivos-grid">
+                    <div class="objetivo-card">
+                        <div class="objetivo-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="objetivo-text">
+                            Conocer el manejo y desarrollo de uno de los lenguajes de programación más usado en el
+                            mercado laboral
+                        </div>
+                    </div>
+                    <div class="objetivo-card">
+                        <div class="objetivo-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <div class="objetivo-text">
+                            Aprendizaje 100% práctico con ejemplos claros en cada lección del proceso de desarrollo
+                        </div>
+                    </div>
+                    <div class="objetivo-card">
+                        <div class="objetivo-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="objetivo-text">
+                            Formación base sólida en el mundo del lenguaje de programación Java
+                        </div>
+                    </div>
+                    <div class="objetivo-card">
+                        <div class="objetivo-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="objetivo-text">
+                            Preparación para aplicar Java en diferentes situaciones de la industria del desarrollo de
+                            software
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: HERRAMIENTAS -->
+        <div id="section-herramientas" class="main-content-section">
+            <h2 style="margin-bottom: 2rem; color: var(--text-primary);">
+                <i class="fas fa-tools"></i> Herramientas Necesarias
+            </h2>
+            <div class="grid-modules" id="herramientas-grid">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+        </div>
+
+        <!-- SECCIÓN: CURSO -->
+        <div id="section-clases" class="main-content-section">
+            <h2 style="margin-bottom: 2rem; color: var(--text-primary);">
+                <i class="fas fa-graduation-cap"></i> Contenido del Curso
+            </h2>
+            <div id="curso-container">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+        </div>
+
+        <!-- SECCIÓN: EVALUACIÓN -->
+        <div id="section-evaluacion" class="main-content-section">
+            <div id="evaluacion-container">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+        </div>
+
+        <!-- SECCIÓN: GLOSARIO -->
+        <div id="section-glosario" class="main-content-section">
+            <h2 style="margin-bottom: 2rem; color: var(--text-primary);">
+                <i class="fas fa-book"></i> Glosario de Java
+            </h2>
+
+            <div class="glosario-search">
+                <input type="text" id="glosario-search" class="search-input"
+                    placeholder="🔍 Buscar término, definición o propósito..." />
+            </div>
+
+            <div class="glosario-categorias" id="glosario-container">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p><strong>Portal de Aprendizaje Java Básico</strong></p>
+        <p>Curso completo de Java para principiantes</p>
+        <p>© 2026 - Todos los derechos reservados</p>
+    </div>
+
+    <!-- JavaScript Modular - ORDEN IMPORTANTE -->
+    <!-- 1. Datos -->
+    <script src="assets/js/data/driveData.js"></script>
+    <script src="assets/js/data/resumenes.js"></script>
+    <script src="assets/js/data/glosario.js"></script>
+    <script src="assets/js/data/evaluacionData.js"></script>
+
+    <!-- 2. Core -->
+    <script src="assets/js/core/config.js"></script>
+    <script src="assets/js/core/utils.js"></script>
+    <script src="assets/js/core/storage.js"></script>
+    <script src="assets/js/core/modal.js"></script>
+    <script src="assets/js/core/progressBar.js"></script>
+    <script src="assets/js/core/themeToggle.js"></script>
+    <script src="assets/js/core/userManager.js"></script>
+
+    <!-- 3. Componentes -->
+    <script src="assets/js/components/sections.js"></script>
+    <script src="assets/js/components/evaluacion.js"></script>
+
+    <!-- 4. Main (Inicialización) -->
+    <script src="assets/js/main.js?v=2"></script>
+</body>
+
+</html>

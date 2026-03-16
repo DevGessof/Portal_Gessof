@@ -1,0 +1,61 @@
+{
+  "titulo": "Crear Método en API de Customer para Consultar Cliente con sus Productos",
+  "resumen": "Implementación de endpoint GET /customer/{id} que retorna customer con información completa de sus productos. Se crea DTO CustomerWithProducts que combina datos de Customer y lista de objetos Product obtenidos mediante WebClient. Enriquecimiento de datos consumiendo múltiples APIs.",
+  "puntosClave": [
+    "Crear endpoint GET /customer/{id} que retorna datos enriquecidos",
+    "No retornar solo IDs, sino objetos Product completos",
+    "Crear DTO: CustomerWithProducts con campos de Customer + List<Product>",
+    "En CustomerService: método findByIdWithProducts(Long id)",
+    "Buscar customer en BD local",
+    "Para cada productId: consumir API Product con WebClient",
+    "Convertir lista de IDs a lista de objetos Product",
+    "Mapear Customer + Products a DTO CustomerWithProducts",
+    "Retornar DTO con información completa al cliente",
+    "Stream API para transformar List<Long> a List<Product>",
+    ".map() para ejecutar WebClient por cada ID",
+    "Agregación de datos de múltiples fuentes"
+  ],
+  "conceptos": [
+    {
+      "nombre": "DTO (Data Transfer Object)",
+      "descripcion": "Objeto diseñado para transferir datos entre capas, combina información de múltiples fuentes"
+    },
+    {
+      "nombre": "CustomerWithProducts",
+      "descripcion": "DTO que contiene datos de Customer más lista completa de objetos Product"
+    },
+    {
+      "nombre": "Enriquecimiento de Datos",
+      "descripcion": "Proceso de agregar información adicional consultando múltiples fuentes"
+    },
+    {
+      "nombre": "Agregación de Datos",
+      "descripcion": "Combinar datos de diferentes microservicios en una sola respuesta"
+    },
+    {
+      "nombre": "Stream API",
+      "descripcion": "API de Java para procesar colecciones de forma funcional (map, filter, collect)"
+    },
+    {
+      "nombre": ".map() Transformation",
+      "descripcion": "Transforma cada elemento de lista (Long → Product usando WebClient)"
+    },
+    {
+      "nombre": "Múltiples Llamadas HTTP",
+      "descripcion": "Ejecutar WebClient N veces para obtener detalles de N productos"
+    },
+    {
+      "nombre": "PathVariable",
+      "descripcion": "@PathVariable para extraer ID de URL en endpoint GET /customer/{id}"
+    },
+    {
+      "nombre": "Mapeo de Entidad a DTO",
+      "descripcion": "Convertir Customer entity a CustomerWithProducts DTO con datos adicionales"
+    },
+    {
+      "nombre": "API Composition Pattern",
+      "descripcion": "Patrón donde un servicio agrega datos de múltiples servicios en respuesta única"
+    }
+  ],
+  "codigoEjemplo": "// CustomerWithProducts DTO\npackage com.paymentchange.customer.dto;\n\nimport lombok.Data;\nimport java.util.List;\n\n@Data\npublic class CustomerWithProducts {\n    private Long id;\n    private String name;\n    private String phoneNumber;\n    private List<Product> products; // Objetos completos, no IDs\n}\n\n// CustomerService - Método para obtener customer con productos\npublic CustomerWithProducts findByIdWithProducts(Long id) {\n    // Buscar customer\n    Customer customer = customerRepository.findById(id)\n        .orElseThrow(() -> new RuntimeException(\"Customer no encontrado\"));\n    \n    // Obtener productos completos\n    List<Product> products = customer.getProductIds().stream()\n        .map(productId -> webClient.get()\n            .uri(\"/product/{id}\", productId)\n            .retrieve()\n            .bodyToMono(Product.class)\n            .block())\n        .collect(Collectors.toList());\n    \n    // Crear DTO con datos completos\n    CustomerWithProducts dto = new CustomerWithProducts();\n    dto.setId(customer.getId());\n    dto.setName(customer.getName());\n    dto.setPhoneNumber(customer.getPhoneNumber());\n    dto.setProducts(products);\n    \n    return dto;\n}\n\n// CustomerRestController - Nuevo endpoint\n@GetMapping(\"/{id}\")\npublic CustomerWithProducts findById(@PathVariable Long id) {\n    return customerService.findByIdWithProducts(id);\n}"
+}

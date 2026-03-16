@@ -1,0 +1,65 @@
+{
+  "titulo": "Conectar API Gateway a Eureka y Usar Puertos Aleatorios para Escalado",
+  "resumen": "Configuración de puertos aleatorios para microservicios permitiendo múltiples instancias sin conflictos. Se usa ${random.int} en server.port, se asegura registro correcto en Eureka con instance-id único, y se valida escalado horizontal automático.",
+  "puntosClave": [
+    "Problema: puerto fijo impide múltiples instancias en mismo host",
+    "Solución: puerto aleatorio con server.port=${random.int[8081,8999]}",
+    "Rango customizable: 8081-8999 para servicios business",
+    "Eureka identifica instancias por instance-id, no solo puerto",
+    "Configurar instance-id único:",
+    "  instance-id: ${spring.application.name}:${random.value}",
+    "Gateway consulta Eureka, no necesita saber puertos",
+    "Iniciar múltiples instancias fácilmente:",
+    "  java -jar customer.jar (puerto aleatorio)",
+    "  java -jar customer.jar (otro puerto aleatorio)",
+    "Eureka muestra todas las instancias",
+    "Gateway balancea automáticamente",
+    "Ideal para containers: cada container puerto aleatorio",
+    "Docker: usar -p 8081:${random.int} en docker run",
+    "Kubernetes: Service abstrae puertos completamente",
+    "Ventaja: escalar sin coordinación de puertos"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Random Port",
+      "descripcion": "Puerto asignado aleatoriamente en rango para evitar conflictos"
+    },
+    {
+      "nombre": "Port Range",
+      "descripcion": "Rango de puertos disponibles para asignación aleatoria"
+    },
+    {
+      "nombre": "Instance ID",
+      "descripcion": "Identificador único de instancia en Eureka"
+    },
+    {
+      "nombre": "Horizontal Scaling",
+      "descripcion": "Agregar más instancias del mismo servicio"
+    },
+    {
+      "nombre": "Port Conflict",
+      "descripcion": "Error cuando dos procesos intentan usar mismo puerto"
+    },
+    {
+      "nombre": "Dynamic Port Assignment",
+      "descripcion": "Asignación de puerto en runtime, no en configuración"
+    },
+    {
+      "nombre": "Ephemeral Port",
+      "descripcion": "Puerto temporal asignado dinámicamente por OS"
+    },
+    {
+      "nombre": "Service Abstraction",
+      "descripcion": "Ocultar detalles de puerto detrás de nombre de servicio"
+    },
+    {
+      "nombre": "Container Orchestration",
+      "descripcion": "Gestión automática de contenedores (Kubernetes, Docker Swarm)"
+    },
+    {
+      "nombre": "Zero-Configuration Scaling",
+      "descripcion": "Escalar sin configuración manual de puertos"
+    }
+  ],
+  "codigoEjemplo": "# application.yml - Customer Service con puerto aleatorio\nserver:\n  port: ${random.int[8081,8999]}  # Puerto aleatorio en rango\n\nspring:\n  application:\n    name: customer-service\n\neureka:\n  client:\n    serviceUrl:\n      defaultZone: http://localhost:8761/eureka/\n    register-with-eureka: true\n    fetch-registry: true\n  instance:\n    prefer-ip-address: true\n    # Instance ID único con valor aleatorio\n    instance-id: ${spring.application.name}:${random.value}\n    # Alternativa: usar hostname + puerto\n    # instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${server.port}\n\n# Iniciar múltiples instancias fácilmente\n\n# Terminal 1\njava -jar customer-service.jar\n# Output: Tomcat started on port(s): 8234 (http)\n\n# Terminal 2\njava -jar customer-service.jar\n# Output: Tomcat started on port(s): 8567 (http)\n\n# Terminal 3\njava -jar customer-service.jar\n# Output: Tomcat started on port(s): 8912 (http)\n\n# Eureka Dashboard mostrará:\n# CUSTOMER-SERVICE (3 instances)\n#   customer-service:a1b2c3d4 - 192.168.1.10:8234 - UP\n#   customer-service:e5f6g7h8 - 192.168.1.10:8567 - UP\n#   customer-service:i9j0k1l2 - 192.168.1.10:8912 - UP\n\n# Gateway enruta a cualquiera de las 3\ncurl http://localhost:8080/api/v1/customer\n# Gateway balancea entre: 8234, 8567, 8912\n\n# Docker con puerto aleatorio\ndocker run -d \\\n  -p 8081-8999:8081-8999 \\\n  -e SERVER_PORT=${RANDOM} \\\n  customer-service:1.0.0\n\n# docker-compose.yml - Escalar fácilmente\nservices:\n  customer-service:\n    image: customer-service:1.0.0\n    environment:\n      - SERVER_PORT=0  # 0 = puerto aleatorio asignado por OS\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/\n    deploy:\n      replicas: 3  # 3 instancias automáticamente\n\n# Kubernetes - Puerto abstracto completamente\napiVersion: v1\nkind: Service\nmetadata:\n  name: customer-service\nspec:\n  selector:\n    app: customer-service\n  ports:\n    - port: 80\n      targetPort: 8080  # Puerto interno del container\n---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: customer-service\nspec:\n  replicas: 5  # 5 instancias, Kubernetes asigna puertos\n  template:\n    spec:\n      containers:\n      - name: customer\n        image: customer-service:1.0.0\n        ports:\n        - containerPort: 8080\n        env:\n        - name: SERVER_PORT\n          value: \"8080\"  # Puerto interno fijo, externo dinámico"
+}

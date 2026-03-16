@@ -1,0 +1,64 @@
+{
+  "titulo": "Cómo se Empaquetan Microservicios en Contenedores y se Unen al Ecosistema",
+  "resumen": "Introducción a contenedores Docker y por qué son esenciales para microservicios. Se explica diferencia entre máquinas virtuales y contenedores, ventajas de Docker (portabilidad, aislamiento, eficiencia), y cómo múltiples contenedores forman un ecosistema orquestado. Base para dockerizar microservicios.",
+  "puntosClave": [
+    "Problema: cada microservicio necesita su entorno de ejecución",
+    "Solución: contenedores Docker empaquetan app + dependencias",
+    "Contenedor: proceso aislado que comparte kernel del host",
+    "VM vs Contenedor:",
+    "  - VM: sistema operativo completo (GB, minutos inicio)",
+    "  - Contenedor: solo app y deps (MB, segundos inicio)",
+    "Docker: plataforma para crear, ejecutar y distribuir contenedores",
+    "Imagen Docker: plantilla inmutable con app + runtime + deps",
+    "Contenedor: instancia en ejecución de una imagen",
+    "Ventajas Docker:",
+    "  - Portabilidad: \"funciona en mi máquina\" → funciona en todas",
+    "  - Aislamiento: cada contenedor tiene su filesystem, network",
+    "  - Eficiencia: menos overhead que VMs",
+    "  - Consistencia: mismo entorno dev/test/prod",
+    "Orquestación: coordinar múltiples contenedores (Docker Compose, Kubernetes)"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Docker",
+      "descripcion": "Plataforma para desarrollar, enviar y ejecutar aplicaciones en contenedores"
+    },
+    {
+      "nombre": "Contenedor",
+      "descripcion": "Proceso aislado que empaqueta aplicación con todas sus dependencias"
+    },
+    {
+      "nombre": "Imagen Docker",
+      "descripcion": "Plantilla inmutable de filesystem con app, runtime, librerías y config"
+    },
+    {
+      "nombre": "Docker Engine",
+      "descripcion": "Motor que ejecuta y gestiona contenedores en el host"
+    },
+    {
+      "nombre": "Dockerfile",
+      "descripcion": "Script con instrucciones para construir imagen Docker"
+    },
+    {
+      "nombre": "Container vs VM",
+      "descripcion": "Contenedores comparten kernel OS, VMs tienen OS completo"
+    },
+    {
+      "nombre": "Portabilidad",
+      "descripcion": "Contenedor funciona igual en cualquier sistema con Docker"
+    },
+    {
+      "nombre": "Aislamiento",
+      "descripcion": "Contenedores tienen filesystem, network y processes aislados"
+    },
+    {
+      "nombre": "Orquestación",
+      "descripcion": "Gestión coordinada de múltiples contenedores"
+    },
+    {
+      "nombre": "Microservices Ecosystem",
+      "descripcion": "Conjunto de microservicios contenedorizados trabajando juntos"
+    }
+  ],
+  "codigoEjemplo": null
+}

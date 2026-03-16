@@ -1,0 +1,650 @@
+Seccion;Nombre Seccion;Nombre_Archivo;ID_Archivo_Drive;Tipo Archivo
+1;Sección 1;1. Introducción.mp4;18VUuceytfaGMGRtamA9SBZs2j0niz6In;video/mp4
+1;Sección 1;1. Introducción.srt;13g1aeTPJpbg9F0SrUmRfi9NAwbD3BsuU;application/octet-stream
+1;Sección 1;2. ¿Cómo funciona el curso.mp4;1o_0h_WtVmGy0reLuKjvY248V4oEJtS7Q;video/mp4
+1;Sección 1;2. ¿Cómo funciona el curso.srt;122BScTkg_OpF5RCRA-7yDCeDmRFxMTnL;application/octet-stream
+1;Sección 1;3. Instalaciones recomendadas.mp4;1QEcs7zKNu4e6NePqErZbS_NvVamJkoBY;video/mp4
+1;Sección 1;3. Instalaciones recomendadas.srt;16Pdwaqs81KtEeIVnthSTk_fCDINEP6lA;application/octet-stream
+1;Sección 1;3.1 Gist - Instalaciones recomendadas.html;12oDvbv-9fo2RqxCACBQyPPopvw-ypyF6;text/html
+1;Sección 1;4. Hoja de atajos - Recomendaciones.mp4;1py-mc1HRJZjOsPqqjHkJah4-TVlEWzNt;video/mp4
+1;Sección 1;4. Hoja de atajos - Recomendaciones.srt;1f7oMSuO_5Foo5z7kqz_BflPox5auX9tz;application/octet-stream
+1;Sección 1;5. ¡Únete a Nuestra Comunidad de DevTalles en Discord!.html;1uyX7vGGud2cqpCc5_Rv5h8sD4VV-PyXc;text/html
+2;Sección 2;1. Introducción.mp4;1IpigYVAVxh_6YJSafbWfvNZ5uzdgUnuY;video/mp4
+2;Sección 2;1. Introducción.srt;1Co8EA3poHOH3a_XhYLWTSN-yDf-c6ju6;application/octet-stream
+2;Sección 2;2. ¿Qué es TypeScript ¿Por qué Angular lo usa.mp4;1B3u3Q1pT2AzpMIq02RTWRaoeIPda_x3k;video/mp4
+2;Sección 2;2. ¿Qué es TypeScript ¿Por qué Angular lo usa.srt;1i2u-l-LUh0fKtmZoGxLa7NMwO4bKaGso;application/octet-stream
+2;Sección 2;3. 10 Mitos y realidades de Angular.mp4;1yuCNR5M-ShWQBvpwjaclAQ8M75hq8Uo3;video/mp4
+2;Sección 2;3. 10 Mitos y realidades de Angular.srt;1wnjn1JpCxQhF8ZlGnpauWMOqMDH7tt7P;application/octet-stream
+3;Sección 3;01. Introducción.mp4;1g1SGBAJt5YdEBoXQhMTbzsFWPW9ioKT3;video/mp4
+3;Sección 3;01. Introducción.srt;11cKKJuUktUo2fu_xrEYeLf3xY_y1xlh-;application/octet-stream
+3;Sección 3;02. Temas puntuales.html;1vVh2sQrNNXiCu4Tdhin1ziTzTthzOhzR;text/html
+3;Sección 3;03. Inicio de proyecto - Bases de TypeScript.mp4;1NwztJDjRahjWvctHwexmVfkJCTzs6wVV;video/mp4
+3;Sección 3;03. Inicio de proyecto - Bases de TypeScript.srt;1Sd5yE1-Fh_V1PS7_aaE7a6ojqRloaE-m;application/octet-stream
+3;Sección 3;03.1 Stackblitz - Online editor.html;1e7AoOLTbAllt_utPfx7q1e_v-vieDdAF;text/html
+3;Sección 3;04. Tipos básicos y conceptos generales.mp4;1HqHLznzJB5U3_bjVNJSVdppdYjDLdhOK;video/mp4
+3;Sección 3;04. Tipos básicos y conceptos generales.srt;1ImKdlTtiEtw5XdiQNoQZR1z4g3tIOmoP;application/octet-stream
+3;Sección 3;05. Objetos, arreglos e interfaces.mp4;1xuwYZ90e3PeQDiTxnEOQFiZ21D6y9t7s;video/mp4
+3;Sección 3;05. Objetos, arreglos e interfaces.srt;1XfZsR2DoJ5rV6-OyzQmwh1P0MWXmOD-z;application/octet-stream
+3;Sección 3;06. Funciones básicas.mp4;11i-Awg8st00N0EryhUpTm2JAaCIxM166;video/mp4
+3;Sección 3;06. Funciones básicas.srt;1ze_WeG4RYJ9nm3ICrqnbF3SPvIdGLbbu;application/octet-stream
+3;Sección 3;07. Funciones con objetos como argumentos.mp4;1vdgGfDmW3O8AFOV3QwX6U-qL6Ym1o3SR;video/mp4
+3;Sección 3;07. Funciones con objetos como argumentos.srt;1QyizTcBOWL8aPqgYXaW_sIhNWEkDfSUD;application/octet-stream
+3;Sección 3;08. Tarea sobre objetos e interfaces.mp4;1qvtRvea2ScBjmKnScFEklD3Cche-3P8D;video/mp4
+3;Sección 3;08. Tarea sobre objetos e interfaces.srt;1buh75E0AER89d55jRZ722IDTCwdmT3Zq;application/octet-stream
+3;Sección 3;08.1 Tarea sobre Objetos e Interfaces.html;12yIAiycXo6EultFKtBs1esfq_4MvvpGG;text/html
+3;Sección 3;09. Desestructuración de Objetos.mp4;1wnIVsLe_LHnGHJR49bsTk6TJ95VEEXmf;video/mp4
+3;Sección 3;09. Desestructuración de Objetos.srt;1UNjqBszJGPbE55buaSsb_R0Hp6Y9T5df;application/octet-stream
+3;Sección 3;10. Desestructuración de Arreglos.mp4;1mps4y_-U86P-QUpzT7ZCMXm3SEiWQ6Bq;video/mp4
+3;Sección 3;10. Desestructuración de Arreglos.srt;1UzwRKqzSfqDknq_2TdaKgFx44x-EuCRQ;application/octet-stream
+3;Sección 3;11. Desestructuración de Argumentos.mp4;1Szm-lt8AzOH3Q0a5ywfdF_Ps6CgvTtB6;video/mp4
+3;Sección 3;11. Desestructuración de Argumentos.srt;1eTzO3lmpm_bFtcxAHXDZz5G99RLUtRWR;application/octet-stream
+3;Sección 3;12. Resolución de la tarea - Desestructuración.mp4;1eXN9dSkYJCDEm4HavkZk_BqeI0ZjQXpg;video/mp4
+3;Sección 3;12. Resolución de la tarea - Desestructuración.srt;1kr5BINajKp8m9_6L3l2TNgoPC32VGj8R;application/octet-stream
+3;Sección 3;13. Importaciones y exportaciones.mp4;1d8r7uqPu452GpcNdq5Fo-sxt5QzQviCt;video/mp4
+3;Sección 3;13. Importaciones y exportaciones.srt;1nBN3dMM-dUYAZjYv6mMxNaa6zvgFvUNk;application/octet-stream
+3;Sección 3;14. Clases básicas.mp4;1GPBl_Es7i6iJTHSXnrEzyK9JkNDSTUr9;video/mp4
+3;Sección 3;14. Clases básicas.srt;1Ct2QmfEZxpnY3NBkwLdRqpYGruu4ZuPv;application/octet-stream
+3;Sección 3;15. Constructor de una clase.mp4;1FAGzjZlWfi0dfF2b6XodkMaf5g3FjdE5;video/mp4
+3;Sección 3;15. Constructor de una clase.srt;161IR21Cqw-U5r6dIp8uQ00UJ9U30JlJ_;application/octet-stream
+3;Sección 3;16. Extender una clase.mp4;17GC7Jd_nSlQvMkiw7zlsoLVmqHtG9NkS;video/mp4
+3;Sección 3;16. Extender una clase.srt;1NWXqvqV1-jDwnqWKBZZmZ_fA_6jZRr4W;application/octet-stream
+3;Sección 3;17. Priorizar composición sobre herencia.mp4;1u_IOuv0q_o3wNsE7fVmRqLutbsxdUrrs;video/mp4
+3;Sección 3;17. Priorizar composición sobre herencia.srt;1IE9AquG-lW3G17KDZHsMRyLlCLhXC-Ek;application/octet-stream
+3;Sección 3;18. Genéricos.mp4;1ophEee_MVwpXNvdr8v1cwgx3F_y_fx7j;video/mp4
+3;Sección 3;18. Genéricos.srt;1KORtwIY-1X47p_337G0l58tBxyblO40g;application/octet-stream
+3;Sección 3;19. Decoradores.mp4;16x98BVGBashwEc6l4PaoMyMywE21G8IX;video/mp4
+3;Sección 3;19. Decoradores.srt;11AhXHjWmVcw2hXrIiZMLyZA2xgH_wBXN;application/octet-stream
+3;Sección 3;19.1 Decoradores de TypeScript.html;1Y5EtBkvXhFk5TOGYBwUuQSy_b40LNRYE;text/html
+3;Sección 3;20. Encadenamiento opcional.mp4;1kA5l0A7dCRHuet8VkOKWk_fgKC7QoJaK;video/mp4
+3;Sección 3;20. Encadenamiento opcional.srt;1x9ytT4Vs-RfD_ODvgl31BUThSN2EWKXF;application/octet-stream
+3;Sección 3;21. Código fuente.html;1xZsRGE_y_w-kW8GsCIjhUTeFmMNnEVFr;text/html
+4;Sección 4;01. Introducción.mp4;1Kf1KWU48kLr1F2TguLDhCek1r3qjEyzz;video/mp4
+4;Sección 4;01. Introducción.srt;1EHNoJj-ZbArLrkOCQW9VMUjeHA3PDvhW;application/octet-stream
+4;Sección 4;02. Temas puntuales.html;1KMuJfgcR3n3ZegzwUB2AbDnwHjD-26nj;text/html
+4;Sección 4;03. Introducción a Angular.mp4;16bz2pcNupNgrlZRX-10TtGpwJ5j241R3;video/mp4
+4;Sección 4;03. Introducción a Angular.srt;1rpQ6uO4QHdNyYqGy-BcyDBi_i8B-0HnU;application/octet-stream
+4;Sección 4;03.1 Presentación.html;18rQwTlXjNsFIPNWdCqzQmvucnG4c1lH1;text/html
+4;Sección 4;04. Primer proyecto en Angular.mp4;1C7Af6WkLDw8orB_ZyA1b7FHJtdjGGxVn;video/mp4
+4;Sección 4;04. Primer proyecto en Angular.srt;1GR28EAREab2i4Gj9Bzf6KRkCU1pcrvnO;application/octet-stream
+4;Sección 4;04.1 Warp Terminal - Referido.html;17QLS4VN77Z9oyONDBUwsVvjOENOdmojW;text/html
+4;Sección 4;05. Explicación de archivos y directorios.mp4;1N5Jvx9zl9HlqpL5gJNsMc6AMiLZ32eOi;video/mp4
+4;Sección 4;05. Explicación de archivos y directorios.srt;1uzXZaItaTp_VSjeQ53B8E5Br5ZY2Kq7_;application/octet-stream
+4;Sección 4;06. Explicación del directorio SRC.mp4;1FIVijltRwuPckIhwzSFj7xw9zwKUFguJ;video/mp4
+4;Sección 4;06. Explicación del directorio SRC.srt;1ltYG77RWrUMD31d41R_YsDgn_y0lCkLa;application/octet-stream
+4;Sección 4;07. Counter Page - Componente.mp4;1-1FKVgtWZYowMnL1RWfjfAbgpZur74ll;video/mp4
+4;Sección 4;07. Counter Page - Componente.srt;1U2EXD5vHfJSTTmMYfZC-LyY0NIwzfN-o;application/octet-stream
+4;Sección 4;08. Tarea - Separar template de la lógica.mp4;1ePmJF5E5IyFGHeUDz77h55vEK5ueFsNN;video/mp4
+4;Sección 4;08. Tarea - Separar template de la lógica.srt;1JzOfPLvBZodOov1cY5Fvr0opVOmD4a-k;application/octet-stream
+4;Sección 4;09. Señales.mp4;10EpvZ3US7oM0FiKaBDdhj3xcXS2ni66g;video/mp4
+4;Sección 4;09. Señales.srt;12cPmVwEBa7oYXswHw2qhvf-ahvw0bwXR;application/octet-stream
+4;Sección 4;10. Zoneless Angular.mp4;1ZUCSbyan0gWx24F6gcV0AKNVpaPsQ1BM;video/mp4
+4;Sección 4;10. Zoneless Angular.srt;1XZtOKSIc0Ow6rOSujGlPh687jBTVaFEQ;application/octet-stream
+4;Sección 4;11. Tarea - Reforzar lo aprendido hasta el momento.mp4;1Z_3ct4D0-Xwq2cxxrp2Q084sg6yGgs34;video/mp4
+4;Sección 4;11. Tarea - Reforzar lo aprendido hasta el momento.srt;18oQT-wUerk6cAacdOuZCJ_cURmirWZga;application/octet-stream
+4;Sección 4;11.1 Gist - Tarea de reforzamiento.html;11zAkuvSKMJ481iHSqWCizF_1F4ZsPipI;text/html
+4;Sección 4;12. Solución a la tarea.mp4;1_hpQUzLd_M_5oSv1jttfzMx0ustykpMe;video/mp4
+4;Sección 4;12. Solución a la tarea.srt;12aAcrHu3rwyz_pIK3uePWaWAHE5N9wA_;application/octet-stream
+4;Sección 4;13. Señales computadas - Readonly Signals.mp4;1_DseN69QOCwuBTlT6-I587hpTscBqBqk;video/mp4
+4;Sección 4;13. Señales computadas - Readonly Signals.srt;1fyc0ZrhcqpLpGYtExUVFvYN7C83qH8be;application/octet-stream
+4;Sección 4;14. Resumen de lo aprendido.mp4;19mrs15Y3PbK-WBtWkYiJM0t6dOZ4GCRP;video/mp4
+4;Sección 4;14. Resumen de lo aprendido.srt;1lRMd8c69TieHNgZr2hH0Cd5xwHFo6xkb;application/octet-stream
+4;Sección 4;15. Código fuente de la sección.html;1nBtASkfqn887y63YO-RIsm6SuvC6BF4D;text/html
+5;Sección 5;01. Introducción.mp4;1IKh0tL6yorWXXge3QKu-BYOYmRvTco8k;video/mp4
+5;Sección 5;01. Introducción.srt;1T0z_v1vy-uT13CXFZ7vLLZ1gDqxoEb2I;application/octet-stream
+5;Sección 5;02. Temas puntuales.html;1KaviQ1vORQeJQet1XdvtJs7bVDbWrvrT;text/html
+5;Sección 5;03. Continuación de proyecto.mp4;1_9pctO0CIIwSXnYn-nkFopPMQ8DY2XEu;video/mp4
+5;Sección 5;03. Continuación de proyecto.srt;19u_10XeoHsTL2V9SOIwA5PLPitjvSKju;application/octet-stream
+5;Sección 5;04. RouterLink.mp4;1jcZlTifpU6mCiCP0DAGk_Fw0LXcegJ0Q;video/mp4
+5;Sección 5;04. RouterLink.srt;1EV-NdqhAc99cM9PClO8ABmnVuQjvs81w;application/octet-stream
+5;Sección 5;05. RouterLink Active.mp4;1CLDYUPxlszpQ2y8q_VCbcI6RH5zfMNoG;video/mp4
+5;Sección 5;05. RouterLink Active.srt;1h7ZYOLiw_VCDNCKpXlmu8-S-A_XlggQp;application/octet-stream
+5;Sección 5;06. Tarea - Preparación de página.mp4;17XNzQBu0I5VtxVluhjPEY4cdsRCVb_jL;video/mp4
+5;Sección 5;06. Tarea - Preparación de página.srt;1_GElHTE6TxeMOdcO1o6UHf4TmxjtTIKy;application/octet-stream
+5;Sección 5;07. @for - Realizar iteraciones de elementos.mp4;1D3wmKFo7RXZCizUfn6V2RgzciRC_vKq_;video/mp4
+5;Sección 5;07. @for - Realizar iteraciones de elementos.srt;11vJ7Zp9W6uinOgOPFKnpvPEFyc10hxKT;application/octet-stream
+5;Sección 5;08. ngClass - Clases de CSS de forma condicional.mp4;17k5px-_iUKVybVzNiztD4Hwv_CGuIJIa;video/mp4
+5;Sección 5;08. ngClass - Clases de CSS de forma condicional.srt;16dalp2j5FOWlPzRRdF_Uwsq9mutRDepr;application/octet-stream
+5;Sección 5;09. @if - Mostrar elementos de forma condicional.mp4;1TB2p7VzXKxOQ4TixX7IEmcsJX3_h1qPP;video/mp4
+5;Sección 5;09. @if - Mostrar elementos de forma condicional.srt;1ATHP82qsOeCYITwaK4p2UCrBtbju7b4F;application/octet-stream
+5;Sección 5;10. Inputs - Agregar personaje.mp4;1IHUP56--TbxDQvKEgkQtwe6ZpF9WGrjZ;video/mp4
+5;Sección 5;10. Inputs - Agregar personaje.srt;1djNBHoo1B6KTyxiufvu-WGNwLCPTVQHJ;application/octet-stream
+5;Sección 5;11. Solución a la tarea.mp4;1q46KbCf0vnj0NYZPG0JJOIrgXUQjqhln;video/mp4
+5;Sección 5;11. Solución a la tarea.srt;1MwRiqMyX2r1Vrej-B9eSoDg9DdmpX5OH;application/octet-stream
+5;Sección 5;12. Preparación de una nueva página.mp4;12ldrvRAVxxpgU2aLQLyZXfidSJ1BbLj7;video/mp4
+5;Sección 5;12. Preparación de una nueva página.srt;1Wj1qY6U4asyHLEt46w26g4nkYgwz8ji1;application/octet-stream
+5;Sección 5;13. Función input - Comunicación entre componentes.mp4;1QFDVNdsJW5sRtlBiqBQMMfVwQ1wL-_j8;video/mp4
+5;Sección 5;13. Función input - Comunicación entre componentes.srt;1FbvdOm4_fY77RQJ6QX4K4ruij_CJR7Tt;application/octet-stream
+5;Sección 5;14. Tarea - Signal Inputs y creación de componentes.mp4;1Y2al6ZKQnM0gEGL4jq19z0VWXzlxO4xx;video/mp4
+5;Sección 5;14. Tarea - Signal Inputs y creación de componentes.srt;1sRubHosPk4P0IBEtQBosYQ0KKpZb89Aa;application/octet-stream
+5;Sección 5;15. Output - Emitir valores.mp4;1SlziaGrGx3BHqxtetEa_jgmnD_MiYtHH;video/mp4
+5;Sección 5;15. Output - Emitir valores.srt;1sHxutpcgHaVLe5i4AERBQ01XZ0hhHrPM;application/octet-stream
+5;Sección 5;16. Servicios en Angular.mp4;1qpMfQgDC0Mxs77Ti4JLn1GnYqwEXykIN;video/mp4
+5;Sección 5;16. Servicios en Angular.srt;1IWvevemWVPQck0JcWUc5toTTBc3ijIeX;application/octet-stream
+5;Sección 5;17. Efectos y LocalStorage.mp4;1SLPXT8MSzirZ9R1btwmhc45aUTDNhTS1;video/mp4
+5;Sección 5;17. Efectos y LocalStorage.srt;1QvzUDZWvyJ3ee58KtUqmDgNyfSnEX6dN;application/octet-stream
+5;Sección 5;18. LinkedSignal - Cargar del LocalStorage.mp4;1IIivdtZALJmjxB_tX78j4qPtKEtxGtML;video/mp4
+5;Sección 5;18. LinkedSignal - Cargar del LocalStorage.srt;1VrVSKWFWh3-vYs4ietG0yYZXI8U4HBLX;application/octet-stream
+5;Sección 5;19. Despliegues y HashRouter.mp4;1PcnhdF0nH_cxfQSWPUtYVZUAFvQbfffC;video/mp4
+5;Sección 5;19. Despliegues y HashRouter.srt;11kRrKXA8VbXaUEfLSZ8btQjHq7dWu9I3;application/octet-stream
+5;Sección 5;20. Código fuente.html;1Ce-bxSmal9C4b7xe--qGmbPbKnbmbIPU;text/html
+6;Sección 6;01. Introducción.mp4;1p_WV-3MaglS3WJfGPK1n_8k1B9h0Zic4;video/mp4
+6;Sección 6;01. Introducción.srt;1Lt40Zz1_m2SmjtZq2QVRWYQQiPTa_PIB;application/octet-stream
+6;Sección 6;02. Temas puntuales.html;1OqRiA2-g_HjSL1KiT56tnGWXYGqSvrIX;text/html
+6;Sección 6;03. Demostración.mp4;1ggdIZgY5X-Iv8Cb0h09VP4zzL-AmLI3d;video/mp4
+6;Sección 6;03. Demostración.srt;1Sxeny1UGYn2GHVukVyvdSC4V8jq1FAMm;application/octet-stream
+6;Sección 6;04. Inicio de proyecto - GifsApp.mp4;1-cbVqdSAdj5f9xbuQirQYfFZx1TYEG1A;video/mp4
+6;Sección 6;04. Inicio de proyecto - GifsApp.srt;1UuxtKGOH2ktkbK_Q37FLCSDMzmJ3xtoV;application/octet-stream
+6;Sección 6;04.2 Tailwindcomponents - dashboard-navigation.html;1ca9uSHsVN_XqsMdWvUnDGH2JSr9NpSO6;text/html
+6;Sección 6;05. Pensemos en componentes.mp4;1kitnWPEUjAs_y5LWWDWNvak_WeOqVCuX;video/mp4
+6;Sección 6;05. Pensemos en componentes.srt;1pm9MfuK9GozebUWEzwUFbjTyAw8dQwsb;application/octet-stream
+6;Sección 6;06. Rutas Hijas.mp4;1VtP2aJo_z640h_XX-Ut_Jg-c8MKVmY3D;video/mp4
+6;Sección 6;06. Rutas Hijas.srt;1iMpFaVLYRWQvppJONpHByaF58s0KliYb;application/octet-stream
+6;Sección 6;07. Componentes para el menú lateral.mp4;1yLOdXEnnGmXL2WPESttQhk8O5E8EQuEq;video/mp4
+6;Sección 6;07. Componentes para el menú lateral.srt;1z5bVaRy60_UwIiVyPtIdS1YNu-OiTxze;application/octet-stream
+6;Sección 6;08. RouterLinks - Desde componentes hijos.mp4;1NXfkebIgS_uGRgjaLcxPNXi77m1Xbxfd;video/mp4
+6;Sección 6;08. RouterLinks - Desde componentes hijos.srt;1w1nEuaFzFYZqDyyu0xtt1qmqvEuWJ4dp;application/octet-stream
+6;Sección 6;09. Angular Environments y Path Alias.mp4;1v6J4CsOzyG4CqXFFtjMbl-jQRr-L-sET;video/mp4
+6;Sección 6;09. Angular Environments y Path Alias.srt;15ejjpMvG6NbwNqIb9qERxLpzeeKZINqD;application/octet-stream
+6;Sección 6;10. Mostrar imágenes de relleno.mp4;14-8MWpladzOcMkbvfoBcDqZIxam6j3mx;video/mp4
+6;Sección 6;10. Mostrar imágenes de relleno.srt;1DIVLW07_dtb2Tft5yI2KpRDmfusTADho;application/octet-stream
+6;Sección 6;11. Tarea - input de imágenes.mp4;1JkAO09b0FkucvvCeeqTU_66KhsHyUAIX;video/mp4
+6;Sección 6;11. Tarea - input de imágenes.srt;1OCqzp-DpEcMAbbLMYlgm88X8fBvObtB6;application/octet-stream
+6;Sección 6;11.1 Listado de imágenes - Gist.html;1OIziAOHhj-ri1jSQWupJGe6SWYZLHE8L;text/html
+6;Sección 6;12. Código fuente.html;1jzwSRUvExLcPpYDNYt5JhVVIRHZrvZdh;text/html
+7;Sección 7;01. Introducción.mp4;1xK-uFqVotlwh_MOienJixrYIT7ZRQwj-;video/mp4
+7;Sección 7;01. Introducción.srt;1g5QXTcBlX091Z0oTFs_puUZ1RGS2J7eI;application/octet-stream
+7;Sección 7;02. Temas puntuales.html;1Z5xIDTfy-T0wE0KFCXSiQZnryud2I89t;text/html
+7;Sección 7;03. Demostración.mp4;1mks0rf92kq62JVJjHUyJvrvsGO13SsFu;video/mp4
+7;Sección 7;03. Demostración.srt;1R8zvtexx7YiTn7VDgXE07PZslZmy_aoL;application/octet-stream
+7;Sección 7;04. Continuación de aplicación.mp4;1-h38_CjiUYqlkjboZLyve5bJ5qaxVmW4;video/mp4
+7;Sección 7;04. Continuación de aplicación.srt;1ZVCCiQGE3i7gueY_WRK7Qf7nYw6Ng8pr;application/octet-stream
+7;Sección 7;05. Giphy API - Servicio de Gifs.mp4;1b3DOYygi1vkYgJzwLm9aqB6CBzSX9vG0;video/mp4
+7;Sección 7;05. Giphy API - Servicio de Gifs.srt;1fjKEpa90eICTtVoCzG-dy_zXqIxf2MTk;application/octet-stream
+7;Sección 7;06. GifService - Interfaces.mp4;1zanzRz_BELrTBUKJ2alNrP9DoFXgfPU9;video/mp4
+7;Sección 7;06. GifService - Interfaces.srt;1tP9Xptd3VINn_J2WKfej7XV3ARnww85z;application/octet-stream
+7;Sección 7;07. Petición HTTP GET.mp4;19Gj836ciEPqSWvxr7SFKkDd3LCE4HXh8;video/mp4
+7;Sección 7;07. Petición HTTP GET.srt;17PIxZsHC5XdwsgZQEEwTCw-Psr4bkNn1;application/octet-stream
+7;Sección 7;08. Mostrar Gifs en pantalla.mp4;1lw3_N8McHJbjiwbgoyhogWkPZux9YTBi;video/mp4
+7;Sección 7;08. Mostrar Gifs en pantalla.srt;1sXhB4NAbQeX3VJfxU8v6Wr3Oc1sPI-I8;application/octet-stream
+7;Sección 7;09. Diseño de pantalla - Buscador de Gifs.mp4;1M9sG0KINP7ap411dtKY-9XkpOjyH9Hnp;video/mp4
+7;Sección 7;09. Diseño de pantalla - Buscador de Gifs.srt;1CN9oFk1Z9_Q768eaj6GohveCXtCcYTTW;application/octet-stream
+7;Sección 7;10. Mostrar resultados de búsqueda.mp4;1CeWLV4-n_2oElRWmNn3Ky1vnZXDcXvJl;video/mp4
+7;Sección 7;10. Mostrar resultados de búsqueda.srt;1n5IIP6mMupqX3YWHpKQrFIlxPELZGhoW;application/octet-stream
+7;Sección 7;11. Historial y Caché de búsqueda.mp4;13G3TkrdxiCJEJ-ULWahJEahbxTGa96qI;video/mp4
+7;Sección 7;11. Historial y Caché de búsqueda.srt;1ZwDVAqfjkXMzl03pkJ9CXc159F8LQchk;application/octet-stream
+7;Sección 7;12. Argumentos dinámicos por URL.mp4;1g-x6ASz_aKEJvndHiywrOL_IYCIjBc2B;video/mp4
+7;Sección 7;12. Argumentos dinámicos por URL.srt;1MJvM1aVtTIg9bDTRnXC4oruPLMQpgFNk;application/octet-stream
+7;Sección 7;13. Mostrar historial de búsqueda.mp4;1Y2i6xmGn3Q9IcYnL4tIh_6mHFzMn3Rbf;video/mp4
+7;Sección 7;13. Mostrar historial de búsqueda.srt;1XUgPb09Tsd8gBxQmFvA_8OPmzLWg1wQQ;application/octet-stream
+7;Sección 7;14. LocalStorage - Mantener el historial.mp4;1w83nlClEiseX28Rr6W3LAyVu9OMyTj7k;video/mp4
+7;Sección 7;14. LocalStorage - Mantener el historial.srt;1ffG7EMoCJDIEZPSYwGQAdmMHrA9ZMrVg;application/octet-stream
+7;Sección 7;15. Código fuente.html;1lGpRAvfZvUXPT_QoXQ5J554IjHCZbxyI;text/html
+8;Sección 8;01. Introducción.mp4;1JVlW_2HY7ZahN2TBiTo4JyWOReJo7KXN;video/mp4
+8;Sección 8;01. Introducción.srt;1l8QA_moMokn0it93Am5Q46AX_bLOXFJ8;application/octet-stream
+8;Sección 8;02. Temas puntuales.html;1RIvziTWKm6Fh4IYrEld_0JixlcJa0ZYd;text/html
+8;Sección 8;03. Demostración.mp4;1UxBLeu8abqtODOtCjzZ1aDkREG3JiMO_;video/mp4
+8;Sección 8;03. Demostración.srt;1api9K7neIFBIs_CoL7L7zuIiTBHfPBqY;application/octet-stream
+8;Sección 8;04. Continuación de aplicación.mp4;1jigT3JV2OOZdy-k1yRL1WZvPnkceKBlS;video/mp4
+8;Sección 8;04. Continuación de aplicación.srt;1NThINrro-o7f3d-76Big1ZEV51oOiBRG;application/octet-stream
+8;Sección 8;05. Diseño Masonry.mp4;1qKL_UUyVSnpQR9NitqDe03Sh__24je2y;video/mp4
+8;Sección 8;05. Diseño Masonry.srt;12Bt92IQ7OYRi8Yfo67mlUbTnQg7X41Y0;application/octet-stream
+8;Sección 8;06. viewChild - Tomar referencias del template.mp4;1zQ9HgLulYmaWbDDS45eAAdBYyDuB_5q0;video/mp4
+8;Sección 8;06. viewChild - Tomar referencias del template.srt;1NdUdR-N4JYf0zWRgBSQVZ-b0jHyAKs5F;application/octet-stream
+8;Sección 8;07. Determinar fin de scroll.mp4;1ws9q0YN-tJy355cZlOXK7QY_qD8be8PQ;video/mp4
+8;Sección 8;07. Determinar fin de scroll.srt;1x-dOPES7ala6Cbo5OMtCxyLDomLXA3yW;application/octet-stream
+8;Sección 8;08. Cargar siguiente página de Gifs.mp4;1YTN9BliaML4eh-thTA0JBCiQ3hPk2n11;video/mp4
+8;Sección 8;08. Cargar siguiente página de Gifs.srt;1MDDOk3rBa2naULRo7RRSrfvkrMCzLKnl;application/octet-stream
+8;Sección 8;09. Preservar posición del scroll.mp4;19capExinTzvx9GDlo7VFy2TW0Nt6KI5Z;video/mp4
+8;Sección 8;09. Preservar posición del scroll.srt;1hSf83-B1h4AkQmDIEGOJJOKLh8NHsi_S;application/octet-stream
+8;Sección 8;10. Depuración de aplicación.mp4;1qfdB_4Rl2TitzuvqxghMoH4naT9L7V32;video/mp4
+8;Sección 8;10. Depuración de aplicación.srt;1oHjxt-P9WWtmboVaWiNtzissUtlLvZ-R;application/octet-stream
+8;Sección 8;11. Código fuente.html;12OgNxxPn9GaE8c2h1cJsCGBjI2EuVhww;text/html
+9;Sección 9;01. Introducción.mp4;1_y1tGB6NI2zhrhh4iWQf6VbSEaXBJnZR;video/mp4
+9;Sección 9;01. Introducción.srt;1-sHe8lkpljL5SbYLN4ySI22MJp2GxJgT;application/octet-stream
+9;Sección 9;02. Temas puntuales.html;1O72_aZI6cilwd3A-LE4KjalaFFMBPQiT;text/html
+9;Sección 9;03. Demostración.mp4;10XYP1-rBVEP9zXnXiHZ6pMQRg8b_PYf6;video/mp4
+9;Sección 9;03. Demostración.srt;1pZXIye_A0i_jM9xer1nlSqVOZjRtGYE6;application/octet-stream
+9;Sección 9;04. Inicio de proyecto - CountryApp.mp4;1nmLHhkpejM2TD4fxNDZvcY30aVGb0tyQ;video/mp4
+9;Sección 9;04. Inicio de proyecto - CountryApp.srt;1f-Tp4poI-Zn270II863RKvrq7gd5xy8u;application/octet-stream
+9;Sección 9;05. Rutas y estructura de carpetas.mp4;1VHACC3ThVyvPid_Me0x_ECXsIxqqlneu;video/mp4
+9;Sección 9;05. Rutas y estructura de carpetas.srt;1zSM_XLtl1GSz9wkbZus3NeK5iTEgA6oZ;application/octet-stream
+9;Sección 9;06. Layout Components.mp4;1EIVtJq7SuwFRXtIU9vVJ_xmEZzngSnOd;video/mp4
+9;Sección 9;06. Layout Components.srt;1nDgMW6TUwI0Zx5rj2TyA3ltuiBlPxZbV;application/octet-stream
+9;Sección 9;07. DaisyUI - Componentes.mp4;1CyUJcela4rm-M-QacnqJfJkag5-B7Nxf;video/mp4
+9;Sección 9;07. DaisyUI - Componentes.srt;1ioUddHgLWZ9nCHoDyVlSW7ZmbCVSvQOa;application/octet-stream
+9;Sección 9;08. Menú superior e íconos.mp4;1CnwI4wMSb--XhLOu7dZBWa8WxWhQZEvy;video/mp4
+9;Sección 9;08. Menú superior e íconos.srt;1l4aKEtwg8HPuTFP2LYXse-zhyU9QO3rD;application/octet-stream
+9;Sección 9;09. Inputs y Tablas.mp4;1yAlfXUJL_7ZJ1QVVpmJ8cA2WCkkKWotf;video/mp4
+9;Sección 9;09. Inputs y Tablas.srt;1IBpufM4NX3VoGHfYWHurEJniuR4FR-SI;application/octet-stream
+9;Sección 9;10. Solución a la tarea.mp4;1JxCUaQdOcL2H2AyjXN_hvX9Q1YOKVEsS;video/mp4
+9;Sección 9;10. Solución a la tarea.srt;1cPaXaNiK2FlPymzhFtDG43QhEsjpJfop;application/octet-stream
+9;Sección 9;11. Guía de estilos - Resumen.mp4;1htOZznIJqawYVkZ9DNMTqadzI-ZvFPHe;video/mp4
+9;Sección 9;11. Guía de estilos - Resumen.srt;1E6tY1_n6uO9JzWOoqaohCG31HoUeTTIG;application/octet-stream
+9;Sección 9;12. Código fuente.html;1O-iZm6FFqLmNLCLWqDz1b5kcAS0UVBEy;text/html
+10;Sección 10;01. Introducción.mp4;1mJPsOZIZht4jBEPIzbDXXuw-FJROvenQ;video/mp4
+10;Sección 10;01. Introducción.srt;1fPoqIsWUwST8YiGImNugZeDg8kpnekel;application/octet-stream
+10;Sección 10;02. Temas puntuales.html;1wj7kJ22eHhNmfJHuziwcyR6WDzNmWve6;text/html
+10;Sección 10;03. Demostración.mp4;1Ml13Qd9WqOzkor6rgRgdmyvZohmBa2-v;video/mp4
+10;Sección 10;03. Demostración.srt;1Z65EtlD-W17hLDKI5xbV99IihbhdyKmp;application/octet-stream
+10;Sección 10;04. Continuación de aplicación.mp4;1vKkwJYR_4dLB6r3-rn5C8SsMehZsOI9R;video/mp4
+10;Sección 10;04. Continuación de aplicación.srt;12HSHrDzu3UZkjelmiTMYyFKXstyIYMM6;application/octet-stream
+10;Sección 10;05. CountryService - Interfaces.mp4;15dZOdcWsE-FLQ_evvew312ipr51hWTee;video/mp4
+10;Sección 10;05. CountryService - Interfaces.srt;1Gp0Nxun4p_eIe1axevx0Tarw8ar8t-uD;application/octet-stream
+10;Sección 10;06. Country Interface y Mapeo de datos.mp4;11zFRV0z9N1xYNR9zcjc05ZZHI5b3afkj;video/mp4
+10;Sección 10;06. Country Interface y Mapeo de datos.srt;14gkRd0gQR6uF84FP7jZOuZZvnUcN6mxx;application/octet-stream
+10;Sección 10;07. Solución de la tarea - CountryMapper.mp4;1e4TVe7ykgkEYr26vat1H4nfQcGlN7jzs;video/mp4
+10;Sección 10;07. Solución de la tarea - CountryMapper.srt;1WilRzNjgmwHuifPO7Qmh-oeCymnR7SJx;application/octet-stream
+10;Sección 10;08. Nombre del país en español.mp4;1s21jrEeve_HbT7P4ZNiF1BwKT5rjs6Se;video/mp4
+10;Sección 10;08. Nombre del país en español.srt;1FdClZV8PrMtn4_a3vIEkx6h51wDmj4qX;application/octet-stream
+10;Sección 10;09. Decimal Pipe.mp4;1niz54XdrgyY5jBtPtM4AdHOhIST0GXA1;video/mp4
+10;Sección 10;09. Decimal Pipe.srt;1BUZwrALP7TUxz5r-4h5Khs2XUtezc8JC;application/octet-stream
+10;Sección 10;10. Manejo de excepciones.mp4;1bmIAkIsj6lo4eDBDsfXPOmEMOeu4mQ1z;video/mp4
+10;Sección 10;10. Manejo de excepciones.srt;1JgfABcsYCkgIk5vJiUFlSBJTMPtfNjmj;application/octet-stream
+10;Sección 10;11. Reactividad con Resources.mp4;1hCzgbDvluy6fuTxe_ZPyT2XYNATNR4As;video/mp4
+10;Sección 10;11. Reactividad con Resources.srt;1huRHml6KCevp5CObji9Om9TDEMjcAYfR;application/octet-stream
+10;Sección 10;12. Tarea - Buscar países.mp4;1cMLtjN9CSqK4xxF7X0b1cJzF1czhfFzu;video/mp4
+10;Sección 10;12. Tarea - Buscar países.srt;1558sOAEpCCqAnIud98jd_Up2u18cUi_q;application/octet-stream
+10;Sección 10;13. RxResource.mp4;1uRtHNe3vMQeMLXMbFJWJp9KA_OY799MN;video/mp4
+10;Sección 10;13. RxResource.srt;1vaqNCBwNBVPAmhrFou1FikcUgVJG2MzT;application/octet-stream
+10;Sección 10;14. Mostrar diferentes estados al usuario.mp4;1gKkxgfGKbXq-oB7LPqsGC5sWk6c7L74d;video/mp4
+10;Sección 10;14. Mostrar diferentes estados al usuario.srt;1yrELPkjLbAcTAUmENxWMwdKmdDXbfk6u;application/octet-stream
+10;Sección 10;15. Información de un país.mp4;1wXhCltGmKvutPw2JX2uR9u9hAaWkQG-S;video/mp4
+10;Sección 10;15. Información de un país.srt;1JvyNVqjzHx0ULlCe3nRfjheiH7UA8Jr6;application/octet-stream
+10;Sección 10;16. Detalles del país.mp4;14TCiDfmg8Zq0KuQpZiOWmNeKaz251YXz;video/mp4
+10;Sección 10;16. Detalles del país.srt;1JqI1Ct4dM7pXuQviXa-mV6faCWEFxXwH;application/octet-stream
+10;Sección 10;17. Resolución de la tarea.mp4;1ssoVeQ0DJ530iE8dk9UfprnJEPoQY3_s;video/mp4
+10;Sección 10;17. Resolución de la tarea.srt;1gPR8w6USzM_kb7zccxEelkFA3dQrJDty;application/octet-stream
+10;Sección 10;18. Código fuente.html;1Xre95nI69lnFEVzj2NHEOp2UxG9RiMn6;text/html
+11;Sección 11;01. Introducción.mp4;14pWTa6HKB76v3OAwk2va9RcOU6p2eHb6;video/mp4
+11;Sección 11;01. Introducción.srt;14QgXfTXKYu3T_69BIca6HnYwRFcXY5VP;application/octet-stream
+11;Sección 11;02. Temas puntuales.html;1loLPXLrHYY2SgiOQNfRWmP34ygnk4ew0;text/html
+11;Sección 11;03. Demostración.mp4;1calgVUwHMcX3dvHa4A5ao1HnzAjK7QEb;video/mp4
+11;Sección 11;03. Demostración.srt;1R2RbvgZLdm8IaXjbqR3iY31jVVdmLJdQ;application/octet-stream
+11;Sección 11;04. Continuación.mp4;1-lq_pDCSvLgZ4Z8rlFlI8k5MQqVnUM7C;video/mp4
+11;Sección 11;04. Continuación.srt;1q1MygGmSBdTj56_njCUqgZUhnTV0MCFG;application/octet-stream
+11;Sección 11;05. Debounce - Búsquedas automáticas.mp4;1shL7qDKFUO9vpF26bBMq6fEAyoy2Xh53;video/mp4
+11;Sección 11;05. Debounce - Búsquedas automáticas.srt;1ppBMBaD_PpDhzn3PFjyBVoAgAcXsHD-D;application/octet-stream
+11;Sección 11;06. Caché de resultados.mp4;1eyMOcXu2agGmJeCkVPG0eNt0cqB1kByD;video/mp4
+11;Sección 11;06. Caché de resultados.srt;1X4CWgrjIqZtct4SQJWRdKfYuVXxClmVr;application/octet-stream
+11;Sección 11;06.1 Gist - Mapas vs Sets.html;10tbh42QzpRS8nnI1Emso0oMBKzAWYsqw;text/html
+11;Sección 11;07. Tarea - Caché de países.mp4;11gQUbxS0K9uJH8yX6-_wM13nJ1jbspFj;video/mp4
+11;Sección 11;07. Tarea - Caché de países.srt;1RAm2vNZ4e5KA-5wvnVZKwOKA_-duWcSh;application/octet-stream
+11;Sección 11;08. Tarea - Países por region.mp4;1auECtQv6nIjiobwQaWmBe-Ni4Zk8R0LG;video/mp4
+11;Sección 11;08. Tarea - Países por region.srt;1vuceq92KdaZW7rVXugdMyl6yvWIUF9ZF;application/octet-stream
+11;Sección 11;08.1 Gist - Listado de regiones.html;1IBkpbDKmbsU_S3G3XAHohpoL48AgHyH6;text/html
+11;Sección 11;09. Resolución de la tarea.mp4;1V5q-u4kqq3Yk_0AlOf3SDsmlcUuefIH7;video/mp4
+11;Sección 11;09. Resolución de la tarea.srt;1r-gdT_iqVu4NZahhI9zh-h8ZCY5WO_xB;application/octet-stream
+11;Sección 11;10. Preservar resultados - ActivatedRoute.mp4;1K1IaYd6mnko-RLlTUbCsDqVcC9bImjnS;video/mp4
+11;Sección 11;10. Preservar resultados - ActivatedRoute.srt;1RE2xUshKp3SZ8Keadiq8tJY_BwmckUAT;application/octet-stream
+11;Sección 11;11. Cambiar queryParams vía código.mp4;1pOqSckyOiJO7C_XD5NY_qMiphpVU5wWa;video/mp4
+11;Sección 11;11. Cambiar queryParams vía código.srt;1VDnk6NoLmqzGS850HDHPBHra_YAZWhne;application/octet-stream
+11;Sección 11;12. Validar parámetros de query.mp4;1QllhxdbsRIqp92uCE-ldvLBEHf1cIvMW;video/mp4
+11;Sección 11;12. Validar parámetros de query.srt;10bSrc7FYIFhF_CCiPhPwW6wFLsC_ED8O;application/octet-stream
+11;Sección 11;13. Código fuente.html;1Q-xqmMW9-EGd26OvV_xSwEHtg1TV-3Pr;text/html
+12;Sección 12;01. Introducción.mp4;1zIiIQomORHEW6TdqfWjtIitaXgJ7oKPj;video/mp4
+12;Sección 12;01. Introducción.srt;1qoCP-vLsALqkXLI9ilcUGDaaHQnKVvf_;application/octet-stream
+12;Sección 12;02. Temas puntuales.html;19KKUW2iBFkslrOp3nFKF0295-J2KxUN2;text/html
+12;Sección 12;03. Demostración.mp4;1aLbtZqipP_I5ioXIMqLd25zPh6qsF9cZ;video/mp4
+12;Sección 12;03. Demostración.srt;1YMOhoFt6TMY-VUdbSb6CBkujuXPP92Av;application/octet-stream
+12;Sección 12;04. Inicio de proyecto.mp4;1yO7HPxR6qr5MSQHCOVfXmnbuCHlVtFVw;video/mp4
+12;Sección 12;04. Inicio de proyecto.srt;1L_mCUL-sFmH3yvblShZi2IF-JIfKt_09;application/octet-stream
+12;Sección 12;05. Lectura de rutas dinámicamente.mp4;18eLK6vwEGZ-VDChSHrMxNjiNnVc3VumF;video/mp4
+12;Sección 12;05. Lectura de rutas dinámicamente.srt;1lDf2yBqoBIbltVrQpkTHgaWXuTDLkM84;application/octet-stream
+12;Sección 12;06. UpperCase, LowerCase y TitleCase Pipes.mp4;1xkVhvEaUxTpHbxCAr26FtVLdFqUjFNyb;video/mp4
+12;Sección 12;06. UpperCase, LowerCase y TitleCase Pipes.srt;1iFzgdXkTgXQXW_b6AGSqn6yeHDLc-MLR;application/octet-stream
+12;Sección 12;07. Decimal, Percent y Currency Pipes.mp4;1eV8Kie8cs0ltWiROFc7w-5-_JyeHJ7M0;video/mp4
+12;Sección 12;07. Decimal, Percent y Currency Pipes.srt;1-pXIh-Ci1IloU758cH0ZF_o1AQ_Pbp3J;application/octet-stream
+12;Sección 12;08. Date Pipe.mp4;1TJED4HNr02KpJ09V28pfGb3zu3YvijRz;video/mp4
+12;Sección 12;08. Date Pipe.srt;1yDqSNTA0j3rYksNxdpFZtefYD_1NTkAA;application/octet-stream
+12;Sección 12;09. Cambiar de idiomas.mp4;11r0b5l6mZPNwWR4yYI0Bv6G5P9KoeJFH;video/mp4
+12;Sección 12;09. Cambiar de idiomas.srt;1Mz0a31cSBywNR1PRScu1_w9ui-x1-x3V;application/octet-stream
+12;Sección 12;10. Cambiar locale dinámicamente.mp4;1oK4W4lkYEpv-tLN-aDZuFA0Qy32FGBXS;video/mp4
+12;Sección 12;10. Cambiar locale dinámicamente.srt;13DWHDROrDPJTQ5SJ1sVjjpR1Zh1g3wba;application/octet-stream
+12;Sección 12;11. Content Projection.mp4;1B3CMHVIPNcpIky4rFIgHz6z9ZutTSwIQ;video/mp4
+12;Sección 12;11. Content Projection.srt;1uErvKUDfKVm7sTUBhV9rBZEE7l3LFs0S;application/octet-stream
+12;Sección 12;12. I18nSelectPipe.mp4;1Wvpa4P1hO1kgs6WCZqGKfVvfbqcp5Gcv;video/mp4
+12;Sección 12;12. I18nSelectPipe.srt;1TZof18GQcZ3xaj1oE1KJCFhOCsWl6PiS;application/octet-stream
+12;Sección 12;13. I18nPluralPipe.mp4;1HXNycE7bqQAyB9QnVcOeqjzj-UmoRiCY;video/mp4
+12;Sección 12;13. I18nPluralPipe.srt;1HfrVlknFhzfuv1ICVYytl0AYx6_oP7LE;application/octet-stream
+12;Sección 12;14. SlicePipe.mp4;1v06SqMzLFB4VO3WRdVjGnYpjWPpnqvAB;video/mp4
+12;Sección 12;14. SlicePipe.srt;1weZTvb_iyLubIeMN84qC_ZMfrMXcL06F;application/octet-stream
+12;Sección 12;15. JsonPipe.mp4;12X3okUfotbpxELdEdniwjG3eHCtOIQTb;video/mp4
+12;Sección 12;15. JsonPipe.srt;1iifDizf5A_B60VJiywSQ6GsUxL_6Ykwo;application/octet-stream
+12;Sección 12;16. KeyValuePipe.mp4;1B9z3umvLLTfQEA1DnkMxtlIX2wCFvqD6;video/mp4
+12;Sección 12;16. KeyValuePipe.srt;1gBD_j_D8jgEhzYowTB1sH7WWlh6rfg5m;application/octet-stream
+12;Sección 12;17. AsyncPipe.mp4;1LkvFYm48ObtaxFO18CvLuaJkKjDG2kvW;video/mp4
+12;Sección 12;17. AsyncPipe.srt;1iEzJMltakpADSB-sd2723JAOkVIFUY9k;application/octet-stream
+12;Sección 12;18. AsyncPipe con Observables.mp4;18t8SZvchYZlBqiihlZDFEaFBMpI5tZ_b;video/mp4
+12;Sección 12;18. AsyncPipe con Observables.srt;1KHJoPyCRkJv6cEDdaAhPNMJGueevxVZx;application/octet-stream
+12;Sección 12;19. Código fuente.html;1a2GTDhlfIBRRTRnF2GA736ZeTQ9bgAUF;text/html
+13;Sección 13;01. Introducción.mp4;1-QFCCZA-VfLwt7gRYYSctbIEpvC522JV;video/mp4
+13;Sección 13;01. Introducción.srt;1BuT5IQ-bkOF8mrfCUSQWLD6cJ7ULOJhP;application/octet-stream
+13;Sección 13;02. Temas puntuales.html;12OTohmWd6RGDXUf-7-SI2ZvIhiSvIL4U;text/html
+13;Sección 13;03. Demostración.mp4;1wBHFmKqvKVEH4EbadF4Hic7E0kWkuGuZ;video/mp4
+13;Sección 13;03. Demostración.srt;1cgPa_v0n5rRHMN7KiwekxYNZTWMudjLc;application/octet-stream
+13;Sección 13;04. Continuación.mp4;12lmXaqSTLiUd3vRfFlzJJJu_0QkOgCRu;video/mp4
+13;Sección 13;04. Continuación.srt;1cyRbzPCzJCSfUmbDCAA-Tb3Sh1xA3OMv;application/octet-stream
+13;Sección 13;05. Pipe personalizado - ToggleCase.mp4;1fsXogq2Qz_Zlsy_0nV8VzMVUNMOBs0mP;video/mp4
+13;Sección 13;05. Pipe personalizado - ToggleCase.srt;1GLeINh_KtlrEjnpHea8t6JIv8tID0uKQ;application/octet-stream
+13;Sección 13;06. Preparación de proyecto.mp4;1PaP2f9NxSUcOJr9j_qL_FLcJNgpd3vvO;video/mp4
+13;Sección 13;06. Preparación de proyecto.srt;1J2VWJOz_wkq-B9cSKsHjsG1EZWO6xLCo;application/octet-stream
+13;Sección 13;06.1 Gist - Interface y Data.html;17_h21XRXvviBwHynOPdv25Klj7Dp3EEg;text/html
+13;Sección 13;07. Pipe Personalizado - CanFlyPipe y HeroColor.mp4;1F22H3mPP4ia96pm0GDCnjtNeI3FvyN0O;video/mp4
+13;Sección 13;07. Pipe Personalizado - CanFlyPipe y HeroColor.srt;1GDRhjUyUMRSv0ikE6y0jWMetJj-XTIm_;application/octet-stream
+13;Sección 13;08. Pipe personalizado - HeroTextColor.mp4;1OmAtjZxfEitUibyOisc_Y_tm3BqU7Us1;video/mp4
+13;Sección 13;08. Pipe personalizado - HeroTextColor.srt;1rTXI0C8VAXcZUKAP7XSoS-W2bWgkzd8n;application/octet-stream
+13;Sección 13;09. Pipe personalizado - HeroSortBy.mp4;1-atNgqqYeK8K28hrwEuqvIsE8HAugFkG;video/mp4
+13;Sección 13;09. Pipe personalizado - HeroSortBy.srt;1wy1YEGdN2ZHexo7N2SkgZbCCI7W10Xz1;application/octet-stream
+13;Sección 13;10. Pipe personalizado - HeroFilterPipe.mp4;1Y2ZPDp8gRimzMJ_CSon07cdYA0MSK3w-;video/mp4
+13;Sección 13;10. Pipe personalizado - HeroFilterPipe.srt;1IuqN9oqHXnk1m8Xg26R9KJsNP4xpp4Zp;application/octet-stream
+13;Sección 13;11. Código fuente.html;1Jpbl17AzQONugYm1STGusMN0aXSfYeGn;text/html
+14;Sección 14;01. Introducción.mp4;14iUQG88YEVHApo49bOGo6aWRo4Esdo4M;video/mp4
+14;Sección 14;01. Introducción.srt;151F5AmkWzUig4F8D_N38Natlwwp6Fvdv;application/octet-stream
+14;Sección 14;02. Temas puntuales.html;1SLTWYt67Y8q8i9h7drIefp-LLQtV-S1x;text/html
+14;Sección 14;03. Demostración.mp4;1GQXeB6r71mPmByzdA3YgFRspQybBjRur;video/mp4
+14;Sección 14;03. Demostración.srt;16Aha-Q-bKar-QnLcPaHg7eNHkZCokS1A;application/octet-stream
+14;Sección 14;04. Inicio de aplicación - FormulariosApp.mp4;1CySKoHCn0NLRnw5JPeV_9hWig4DrEQCX;video/mp4
+14;Sección 14;04. Inicio de aplicación - FormulariosApp.srt;1t8m3jCkrvr6m86juEeF3s0ypAHOVXNgC;application/octet-stream
+14;Sección 14;04.1 Gist - HTML de las páginas a utilizar.html;1bzowZD71KYQyZpki4wL0cG2zTPlPW0no;text/html
+14;Sección 14;05. Rutas padre y template HTML.mp4;1hfyuTWhWJs0lYvO-nGVfPedhUmLH6083;video/mp4
+14;Sección 14;05. Rutas padre y template HTML.srt;1PU-qk0rOw6_bGYtJgkE10yq6Px8Fu-zJ;application/octet-stream
+14;Sección 14;06. ReactiveForms - FormGroup y FormControl.mp4;1TxpVqF49YY3EiqWiBEUMcXOnKxweuXWc;video/mp4
+14;Sección 14;06. ReactiveForms - FormGroup y FormControl.srt;1lXOQnqKsmNdbKnNFHjQnB4ivyQAFGW45;application/octet-stream
+14;Sección 14;07. Form Builder.mp4;1eSNLdcXTVfg94EfqT6TlmeilLM6gbkpX;video/mp4
+14;Sección 14;07. Form Builder.srt;1XP1gWFse3dqYyMBa-S2Xy8ZZxE30bzho;application/octet-stream
+14;Sección 14;08. Validaciones de campos incluidos.mp4;1GfX9D2LWu_ysTucfgU8RKqwua1z4jn29;video/mp4
+14;Sección 14;08. Validaciones de campos incluidos.srt;1cF7rhjxSO9tqMtTifQoeDsb41Rh8EuJ-;application/octet-stream
+14;Sección 14;09. Mostrar errores en pantalla.mp4;1Sl8GXnAE8cEqfb2OJ5AMRUOiI-ap1zvl;video/mp4
+14;Sección 14;09. Mostrar errores en pantalla.srt;1evTMkbwdFv41u3P5m0itXLGe3rQSOBNK;application/octet-stream
+14;Sección 14;10. Mejorar re-utilización y experiencia de usuario.mp4;1YK0Fqwjk8K6I8Z2OWMYCH3ncAvwu6YRQ;video/mp4
+14;Sección 14;10. Mejorar re-utilización y experiencia de usuario.srt;1IpT7q03pBJz2FyM2en-wIUdrtXHhZ4DX;application/octet-stream
+14;Sección 14;11. Reutilización de lógica entre formularios.mp4;1oPomyXU4nenSPgyABXPxot7Zdht2hb5-;video/mp4
+14;Sección 14;11. Reutilización de lógica entre formularios.srt;1lh8gBxKqiHESZJ56imGVGeSVrn5PNBgj;application/octet-stream
+14;Sección 14;12. Formularios dinámicos con arreglos.mp4;1-tNNOFuEY2nX6-8vIKZDHeIKcDxfXdOl;video/mp4
+14;Sección 14;12. Formularios dinámicos con arreglos.srt;1d0fQfLMEbZjoBllsQpDkGrULDGOkHOOD;application/octet-stream
+14;Sección 14;13. Mostrar errores en pantalla.mp4;11E5MC8vWCsm9GRRP-Ii3PgsJShwWFxa-;video/mp4
+14;Sección 14;13. Mostrar errores en pantalla.srt;1IISB_LPFlj6fXNCzOSGnolYc9y0okmzS;application/octet-stream
+14;Sección 14;14. Agregar y eliminar controles de formularios.mp4;1xi_OCJ93XRHiSBhRRE7BK0BVvzB4W8hl;video/mp4
+14;Sección 14;14. Agregar y eliminar controles de formularios.srt;15OnTBPxS-Ef0fWu4qc8wATxRA2HhSdRR;application/octet-stream
+14;Sección 14;15. Múltiples eventos desde el mismo campo.mp4;1c9A62nZVao8pGp68ytmmXZidHzFOzCfr;video/mp4
+14;Sección 14;15. Múltiples eventos desde el mismo campo.srt;1xB8SXhyUk6OV6GL-WiSpPBladYO7fWm0;application/octet-stream
+14;Sección 14;16. Código fuente.html;1QLXqZ_vPPrktbgUpFSkg9jwJZS3qlqfx;text/html
+15;Sección 15;01. Introducción.mp4;16BOe4KgEVLz6RUeB_nD7Sot_uIJQEAdB;video/mp4
+15;Sección 15;01. Introducción.srt;1qFObcVQIXW5dvCwJtvI5sqwM_s8Z7UhM;application/octet-stream
+15;Sección 15;02. Temas puntuales.html;10_edgTo0jpQnl-KdTvabOq4Mv-pJkbo1;text/html
+15;Sección 15;03. Demostración.mp4;1nwgeFWM5WzEQpBsxbvWGutOLX4KtvBmE;video/mp4
+15;Sección 15;03. Demostración.srt;12DO8JlJ0v4YyVfmnVFhqYJb-RAf8afxE;application/octet-stream
+15;Sección 15;04. Continuación de aplicación.mp4;17Rml07SCRk5XmkualbBw4XV49KgPlstw;video/mp4
+15;Sección 15;04. Continuación de aplicación.srt;1-VrwGWKVDUchWcPrLyenmSmtzSYTaevQ;application/octet-stream
+15;Sección 15;05. Switches, Checks y Radio buttons.mp4;1PY4wyREPNXqR4es0BYUS6FTiLcRBXY5f;video/mp4
+15;Sección 15;05. Switches, Checks y Radio buttons.srt;1lrXuqaamzUKb6aG0Wy5lHJwqxW5Dw9c-;application/octet-stream
+15;Sección 15;06. Tarea - Formulario de registro básico.mp4;1RV_BpmnFsJ4lri0aQ9tHRrxdU39NU3eC;video/mp4
+15;Sección 15;06. Tarea - Formulario de registro básico.srt;1hX7p-S-vIQwxA8zk3JEwg6rE_fidl0Qs;application/octet-stream
+15;Sección 15;07. Validación contra expresiones regulares.mp4;112zdC58WBV1lp3qp8ZwT_W61SjJfk4nE;video/mp4
+15;Sección 15;07. Validación contra expresiones regulares.srt;1DS8hcsmBabGqSNDXKc4IN4SyDRH58wjI;application/octet-stream
+15;Sección 15;07.1 Gist - Validator Patterns.html;1ZKI2LL45afY69s44UofF5QZAgMqhdSNe;text/html
+15;Sección 15;08. Validación personalizada - Campos iguales.mp4;1jBF2g-1AEvU4lUQjEhFgjQcInlWcEhmK;video/mp4
+15;Sección 15;08. Validación personalizada - Campos iguales.srt;1bSvnZM5p5ZjrhrsYBUWqsOU_2OzKKafr;application/octet-stream
+15;Sección 15;09. Validaciones asíncronas.mp4;10o5Pe0yhT8RWHbkOoCvBhTJD8B0AMhzE;video/mp4
+15;Sección 15;09. Validaciones asíncronas.srt;10kzYUuZVTWUpavgxAmqVRmw6LaIuoqLO;application/octet-stream
+15;Sección 15;10. Validación personalizada - Síncrona.mp4;1_ewv6Ciy7LqwpWlCcAFwd-oH6r-lAHS7;video/mp4
+15;Sección 15;10. Validación personalizada - Síncrona.srt;1-pFHQU2O79OfMYmwBpWNTJ9vxiKbPmrF;application/octet-stream
+15;Sección 15;11. Preparación de ejercicio.mp4;1EOosvoQMwt9D4QbLp4MNwk0qMwpiBUcY;video/mp4
+15;Sección 15;11. Preparación de ejercicio.srt;1fUd7-w0I2liYZ7r6ojq1R_7Un7eRWSEb;application/octet-stream
+15;Sección 15;12. Primer selector controlado - Continentes.mp4;13VR3GHJ6axfSDnR6G_jOu-LRpgmyFj8T;video/mp4
+15;Sección 15;12. Primer selector controlado - Continentes.srt;1-GQuu519qwZEiNIN3CF8vlyZD_0H3vIg;application/octet-stream
+15;Sección 15;13. Suscribirse a los cambios del formulario.mp4;16X_Y1xAs_foha9LWWLFKWorQPAA5i04O;video/mp4
+15;Sección 15;13. Suscribirse a los cambios del formulario.srt;1PQqYJlzneGVyKME80dD-U0kvOfeuDTTu;application/octet-stream
+15;Sección 15;14. Llenar tercer selector.mp4;1WGd68Yg5sb3JbCmEy-zkxa82_uTrLeAK;video/mp4
+15;Sección 15;14. Llenar tercer selector.srt;1r4s306h0mR_e9qJcPCtZCAA3kGrlSWKN;application/octet-stream
+15;Sección 15;15. Terminar el tercer selector.mp4;1dLKP57xVXLTyIaZ9KrZH-aOzOubCO4o0;video/mp4
+15;Sección 15;15. Terminar el tercer selector.srt;13amBmYFWK5K2VpqksarVdI-C732xuOiB;application/octet-stream
+15;Sección 15;16. Código fuente.html;1LQmtbgRzVgZi9kQhwMaCBOuAzL-N5Ckw;text/html
+16;Sección 16;1. Introducción.mp4;1KCBSn09I3-amhe16hNv7EkIrUkWljCpf;video/mp4
+16;Sección 16;1. Introducción.srt;1X-SjnbSpp2TDkJK0xBQFoZtb6zy2u3dR;application/octet-stream
+16;Sección 16;2. Demostración.mp4;1y5D2NrjozpDLPHFTV_SzOq1ics5uzPBU;video/mp4
+16;Sección 16;2. Demostración.srt;19NPgZT_9ZBD-HWIBIXwzHka-mU2Mjl_K;application/octet-stream
+16;Sección 16;3. Temas puntuales.html;173rL6C-6RagOhl-W_OUqbGiXf4QrYBNV;text/html
+16;Sección 16;4. Inicio de proyecto - LifeCycle.mp4;1a452V6IE8vprfgrrWVANAWar24svr_G1;video/mp4
+16;Sección 16;4. Inicio de proyecto - LifeCycle.srt;1b1rsU39jom_Emwku2Qw-GThH8DE7TjWr;application/octet-stream
+16;Sección 16;5. Ciclo de vida de los componentes.mp4;1zhVkwlFzcH1lyX1mmqEdQq5KXzopVTo8;video/mp4
+16;Sección 16;5. Ciclo de vida de los componentes.srt;17aKmCWQZu7QOvQZ8Kwvy7tqZRDn53XSg;application/octet-stream
+16;Sección 16;6. Ciclo de vida - Segunda Parte.mp4;1rtE0nk5pEcnc6rcmQKn3xtxyDQGbS71b;video/mp4
+16;Sección 16;6. Ciclo de vida - Segunda Parte.srt;1VRUPk570oNarwjw6F1Q9flNa69tMty6H;application/octet-stream
+16;Sección 16;7. Zoneless Angular.mp4;14WsOjoe7QA14RWF8E07AIkCRa50uEigG;video/mp4
+16;Sección 16;7. Zoneless Angular.srt;1RiPiTCWZDeLlLjXyrHweNoEbouoOEM7D;application/octet-stream
+16;Sección 16;8. OnChanges.mp4;1nL6ZlkEex-jJuQKyJwuCXmhPtWOHYc0I;video/mp4
+16;Sección 16;8. OnChanges.srt;1j5JXKIsFg5Z5UQrcYVUtoZTRUOFVLLyB;application/octet-stream
+16;Sección 16;9. Código fuente.html;1N97gPv-rKjQ_KiwA5eO-Gtb6lz1cRztG;text/html
+17;Sección 17;01. Introducción.mp4;1SiU7uMJo-h-wlq8XSkU8wO0K2UsWCvka;video/mp4
+17;Sección 17;01. Introducción.srt;19wswbtnjHg8aWDsWKIHmV54avXgVjq82;application/octet-stream
+17;Sección 17;02. Demostración.mp4;1rgG2PJDFhIfvoPNLy9N_6tNDCI0rj4k3;video/mp4
+17;Sección 17;02. Demostración.srt;1hwqEDLo8b9cdchwxvvZOqaHExnP4eZUK;application/octet-stream
+17;Sección 17;03. Temas puntuales.html;19BEM2-EkA-2Iqn4qdVwH9NmAofssXa-V;text/html
+17;Sección 17;04. Inicio de aplicación - MapsApp.mp4;15YC3K4FTEXvl2Oj3qEehBByLe87qutZK;video/mp4
+17;Sección 17;04. Inicio de aplicación - MapsApp.srt;1dwvYS8HXLAnuOLSmcsH4vLYce4JlF-V7;application/octet-stream
+17;Sección 17;05. Título en el Navbar - Observable - Señal.mp4;1txyxaVDgjrvVVKGx5RHA_Kof0i7CTLiN;video/mp4
+17;Sección 17;05. Título en el Navbar - Observable - Señal.srt;1qv_cAgISAFE39sELo1MBBeuXcNWYDZc-;application/octet-stream
+17;Sección 17;06. Variables de entorno .env - MapboxKey.mp4;1HYth72J3n0vnptExE58ei50HsLF8_Gbm;video/mp4
+17;Sección 17;06. Variables de entorno .env - MapboxKey.srt;1MINjPqKb5_n9kL_rjjmkEGkaHU0jpxIp;application/octet-stream
+17;Sección 17;07. Crear environments mediante un script.mp4;1WDjYrM7eNDikan3RGwt9YldC8dr89yKB;video/mp4
+17;Sección 17;07. Crear environments mediante un script.srt;1FYtP6NcWLA09Nbxa3Ee92lVv9JjucqQ_;application/octet-stream
+17;Sección 17;08. Mapa a pantalla completa.mp4;1L8geNg_E2t6aobBvZbLSb_wYidUKzk98;video/mp4
+17;Sección 17;08. Mapa a pantalla completa.srt;112dAzAVCDB8CgjdZ2B-T-pGjQkQtnNor;application/octet-stream
+17;Sección 17;09. Controlar mapa - Zoom.mp4;1GD-hE2uXvzPbKg-FatCqu04osfRQQ7cC;video/mp4
+17;Sección 17;09. Controlar mapa - Zoom.srt;1F0lE7Wmuxt02WO5eERzf_GaK3eM2zLAr;application/octet-stream
+17;Sección 17;10. Controlar mapa - Obtener Posición central.mp4;1bq7gJe2X2xUQRQnI8C5Y_kDj1rHpZtPZ;video/mp4
+17;Sección 17;10. Controlar mapa - Obtener Posición central.srt;10xnp7vg25PeRO9bUNv6kPbAgPQ2mIZgt;application/octet-stream
+17;Sección 17;11. Controles propios de Mapbox.mp4;17NMMoMzn9tjMEUGW6wFSTmO9IhHGVpgV;video/mp4
+17;Sección 17;11. Controles propios de Mapbox.srt;1GWXsY8vncPsi2q7vCkuhEWhQeYhjoXsP;application/octet-stream
+17;Sección 17;12. Marcadores en el mapa.mp4;17jxnw1IO2Sy39EKa8GOe8NO49XnmzH9n;video/mp4
+17;Sección 17;12. Marcadores en el mapa.srt;1-VFF770BSH3YC3ceIApsiCgw3w4UVugq;application/octet-stream
+17;Sección 17;13. Marcadores dinámicos.mp4;1WAOj7R00s0hQ3WQiG3vcKH8jiHIfKsux;video/mp4
+17;Sección 17;13. Marcadores dinámicos.srt;1xRrMPIuGi32EP125-6fJrcwAgJv7HZx3;application/octet-stream
+17;Sección 17;13.1 Gist Generador de colores.html;1pnTEzWcPHUr9UDX7FGkBOukPaI3hNcFr;text/html
+17;Sección 17;14. Mostrar listado de Marcadores.mp4;1yhZVxr1kZKAxchH9oOwi-PRPhAhEG_3F;video/mp4
+17;Sección 17;14. Mostrar listado de Marcadores.srt;1VI0jbaf049BTyh-nqyukA2gsHg2P-CuY;application/octet-stream
+17;Sección 17;15. Eliminar marcadores.mp4;1gcVSpSwLw_9nJl-Q8ZG6PmipBmgfPAUe;video/mp4
+17;Sección 17;15. Eliminar marcadores.srt;1Pn13l5cDUW_VIgtbqDMmEFiVwtpVZZ0I;application/octet-stream
+17;Sección 17;16. Varios mapas en pantalla.mp4;1sI0J5Cm24NBwpsfLoW7MCs1gLR0kNd47;video/mp4
+17;Sección 17;16. Varios mapas en pantalla.srt;1WjbkgbtpPT05vWQ3QrPkxKeGDlHKOXeU;application/octet-stream
+17;Sección 17;16.2 Material de clase - Gist.html;19qkhc-2ZNq_D54T-BSMistpk4hL61qhT;text/html
+17;Sección 17;17. Solución de la tarea - MiniMap.mp4;1_3lJ_BMOCA5slcC__tzRJiWCsnJMyYw3;video/mp4
+17;Sección 17;17. Solución de la tarea - MiniMap.srt;1lAV7OukuckKPTuJMkGsXlY6LZdT2bkEh;application/octet-stream
+17;Sección 17;18. Tailwind - Responsive design.mp4;1z5SIIGAFXKuUE_GJ21v4TDBV4uwsiHps;video/mp4
+17;Sección 17;18. Tailwind - Responsive design.srt;1L1gExIsOHVkwOXVMOcmWLzUIGi-r74OY;application/octet-stream
+17;Sección 17;19. Construir y desplegar.mp4;1VwIZTKIetquIc-6rlERE_snqBtRc732Q;video/mp4
+17;Sección 17;19. Construir y desplegar.srt;1NNHn6M19LA4kI91ygoDOBPsDkUvRSgsE;application/octet-stream
+17;Sección 17;20. Código fuente.html;1w0dCk5SZWvXFBAuwho6xfD-y69rMf3rP;text/html
+18;Sección 18;01. Introducción.mp4;1mMm_Kh-TQrQrVe-iV3hItPIRqWhn_dT1;video/mp4
+18;Sección 18;01. Introducción.srt;1WcC7gT5z89TiWG3dT9edL7Uz0alnbxPM;application/octet-stream
+18;Sección 18;02. Demostración.mp4;1TmQ9M5G5_rskt5etfbXfAe9PN32z7RKY;video/mp4
+18;Sección 18;02. Demostración.srt;1Vy4d9XAo233U6s1jDxHlMfr3ETXyv79v;application/octet-stream
+18;Sección 18;03. Temas puntuales.html;1LRH2ytB-wDygxPiF7GYENYlSWvXEqK9c;text/html
+18;Sección 18;04. Inicio de proyecto - TesloShop.mp4;1hdsysYrDf3s2Folbb2qAUV-onEu811KA;video/mp4
+18;Sección 18;04. Inicio de proyecto - TesloShop.srt;1zeWiVJeSAdiQ5vOYbrdlrKB1mad21xQU;application/octet-stream
+18;Sección 18;05. Páginas y rutas.mp4;1X_hm561UrMg-_U9vZe3ZQTfwFgNWf1xR;video/mp4
+18;Sección 18;05. Páginas y rutas.srt;1V8kk3yGSgSL7XxP2bAk9dxR8wkTrpand;application/octet-stream
+18;Sección 18;06. Fuentes personalizadas - Navbar.mp4;1ch7mi94pkDkryUYWNFOuWjaQjz4heKPL;video/mp4
+18;Sección 18;06. Fuentes personalizadas - Navbar.srt;1Rhwr5hLtr2_w53yUtI_2XS-0tiJhupXw;application/octet-stream
+18;Sección 18;07. Tarjetas de producto y FadeIn animation.mp4;1CCexSReO6j_6gRC_BmHN8JOuHhy82tsY;video/mp4
+18;Sección 18;07. Tarjetas de producto y FadeIn animation.srt;1vx84NnDfS4npj3uRhVyIP-QOXkbEyqRm;application/octet-stream
+18;Sección 18;08. TypeScript - Path Alias.mp4;1iobhDNILSSwVycIpJxfvhk30MyHPhlh4;video/mp4
+18;Sección 18;08. TypeScript - Path Alias.srt;1b3GiDo8xP8VkUC_SGTpTbSugJds_fjSZ;application/octet-stream
+18;Sección 18;09. Levantar backend - TesloShop.mp4;1r669dRNI_tdnv9s65Xn07PSrvDbNvd2H;video/mp4
+18;Sección 18;09. Levantar backend - TesloShop.srt;1eCinNeXn0M-66nnUW_pKI_0q19DaOCrI;application/octet-stream
+18;Sección 18;09.2 TesloShop - Backend - Git.html;1PcPIejL7XSfSuHqVmo2XUZrBfilojcwA;text/html
+18;Sección 18;10. Traer listado de productos.mp4;1jABZa7HQH9IEm3_6hv3l9csevcOXCAYY;video/mp4
+18;Sección 18;10. Traer listado de productos.srt;1J9OfwjoAjMpULWz0E-9Ir3dPc01Qk_p9;application/octet-stream
+18;Sección 18;11. Variables de entorno y parametrización.mp4;1r_BzTHRy6mYYN0FYhLCoC-xHDWvlih50;video/mp4
+18;Sección 18;11. Variables de entorno y parametrización.srt;1k5GVk_YEPljiB_Vf4s25_qYh3dxPMDDx;application/octet-stream
+18;Sección 18;12. Mostrar productos en pantalla.mp4;1Bcn1_deduROp1eQSz9vBrsOAW01IgDQU;video/mp4
+18;Sección 18;12. Mostrar productos en pantalla.srt;1wyaodOcX0Pm-dR_8fQY8T4lTr9ZsFoBJ;application/octet-stream
+18;Sección 18;13. Solución a la tarea - Mostrar Productos.mp4;1pHZYjodeLlB6Zh8ThHgX3hBYBjzM1Ovt;video/mp4
+18;Sección 18;13. Solución a la tarea - Mostrar Productos.srt;1DpXDaf4JlPyO-9P1nOSwaPbQCzyCs9pM;application/octet-stream
+18;Sección 18;14. ProductImage Pipe - Pipe Personalizado.mp4;1oNuP06iX0EpB5KTVuAv8SwmzwJqpu-Sy;video/mp4
+18;Sección 18;14. ProductImage Pipe - Pipe Personalizado.srt;1lrRSz4BNnshHHcMjiWiOGY5CDobKNYrr;application/octet-stream
+18;Sección 18;14.1 no-image.jpg;1IHM-aCfCcrPNNH4ZC1lvVlfsLNOXu9VM;image/jpeg
+18;Sección 18;15. Pantalla de producto.mp4;1SHi6VFlbDtRVyAsNC2ruNDcYeE8teDKd;video/mp4
+18;Sección 18;15. Pantalla de producto.srt;1M-MEUGc_g_bnXRZv6gymPRGWHx0CTg46;application/octet-stream
+18;Sección 18;16. Carousel de imágenes.mp4;18e7SVJ4qrMamIj7Zrs2t1EeoXqE_7mhe;video/mp4
+18;Sección 18;16. Carousel de imágenes.srt;1tJfL5a1liXoe_AClEFxZQIO0hvttyWd_;application/octet-stream
+18;Sección 18;17. Página de productos por género.mp4;1sISJ6mk0Z0OGfu5hYP9hiowRbmBoBDWy;video/mp4
+18;Sección 18;17. Página de productos por género.srt;14oAVLFhhmHBUFpfRobNsqL84BIT-_ro9;application/octet-stream
+18;Sección 18;18. Código fuente.html;1l7VK8j5aFJbGfkge3wo-Vj9T5TCpQJux;text/html
+19;Sección 19;01. Introducción.mp4;1zqGwcBdCJ2xUcdyM3kse1JmAQB02QvCg;video/mp4
+19;Sección 19;01. Introducción.srt;121POd8h-nDLtVEqcjjcTqvXfjMVkhNTw;application/octet-stream
+19;Sección 19;02. Demostración.mp4;1O5rvUch8G-Z7mNMadGDcbBCmD_4WWI3L;video/mp4
+19;Sección 19;02. Demostración.srt;1pZzFWa-3TqR8KpZuE5DAubUOv4lFmp0j;application/octet-stream
+19;Sección 19;03. Temas puntuales.html;1WuGhzN48TMp150bX2iG7ZqxultAs8Y_w;text/html
+19;Sección 19;04. Continuación.mp4;12dJl99aPdiZgYIjVoreC8f7irPAmbrvO;video/mp4
+19;Sección 19;04. Continuación.srt;1cyCu_B0wgRlPY729LG89P9imDkqrcUka;application/octet-stream
+19;Sección 19;05. Paginación local.mp4;18AW7Nz2084oCjIGlajB3SryquRDk9KsQ;video/mp4
+19;Sección 19;05. Paginación local.srt;1TgEaOaev2Yrb5tuFlHa3G5zRTXkPzXpi;application/octet-stream
+19;Sección 19;06. Paginación local - Funcionalidad.mp4;1G-QEFzu_3bJALC4ZXf4l7Ov6MdtiSGrC;video/mp4
+19;Sección 19;06. Paginación local - Funcionalidad.srt;1OXoDDuj3EbrhXHvG1uYDCN_1A_LkbS5u;application/octet-stream
+19;Sección 19;07. Paginación con RxResource.mp4;1pvnb0GIvurXASvTncRaqUdeJTML8d-2l;video/mp4
+19;Sección 19;07. Paginación con RxResource.srt;1lBp6zJABlcYgQuS4XV4sd-AV0cx15YMg;application/octet-stream
+19;Sección 19;08. Servicio de paginación.mp4;1_P1-LCbDQNkQBEYhGDSddBKnjgQPYcR1;video/mp4
+19;Sección 19;08. Servicio de paginación.srt;1HdyExJnYzqRtGLyv5WRxFe2Yc0DXqqPx;application/octet-stream
+19;Sección 19;09. Caché de productos.mp4;1YEXUzX_DumPzmr2QXQQSUcSTVeiYKC5n;video/mp4
+19;Sección 19;09. Caché de productos.srt;1YrOki9d7UjSACK6ZMazr2iPIJwBfaB7j;application/octet-stream
+19;Sección 19;10. Caché de producto.mp4;1pHUGIB49Rlx5as1Lg6QLT87qieX8lr3n;video/mp4
+19;Sección 19;10. Caché de producto.srt;1dMzGPXvw1OpgXglJ40rvXGeNNrw70TlO;application/octet-stream
+19;Sección 19;11. Código fuente.html;1xE_AqI3AawiKcc6imJy0nTFsGtytr2Gb;text/html
+20;Sección 20;01. Introducción.mp4;1CTaX2xC0fGPfkXqnT5kXFV_aZmaSAFCN;video/mp4
+20;Sección 20;01. Introducción.srt;1XKq7x_a66M8uEUPa93XYURLIRD0jP1iC;application/octet-stream
+20;Sección 20;02. Demostración.mp4;1iV_391ELXmSm1atqoTx1q6AES4EqWNeU;video/mp4
+20;Sección 20;02. Demostración.srt;1ZgkolOQL-YH8WiGliPfwJfS5o9Px84T0;application/octet-stream
+20;Sección 20;03. Temas puntuales.html;1yJ-Tg_pc3jUy3ezp1LvnlS_i-IDGIG8a;text/html
+20;Sección 20;04. Continuación.mp4;19qIj54619YiI8ZBNs6t2TRuyMp0bN858;video/mp4
+20;Sección 20;04. Continuación.srt;1vCh93m91s1jV1ePOzh2TlxxVpHPf2gks;application/octet-stream
+20;Sección 20;05. Rutas y páginas de autenticación.mp4;1qezV0taAzO4-7fsv-JoBqeD8CemzUgpk;video/mp4
+20;Sección 20;05. Rutas y páginas de autenticación.srt;1kP556pbWCL-t2jqoI1U5ULnQsxRyUXx9;application/octet-stream
+20;Sección 20;06. Formulario reactivo de autenticación.mp4;1CuIofjMLMyQXkdaaDTrUGUFh74g2WiEg;video/mp4
+20;Sección 20;06. Formulario reactivo de autenticación.srt;15aYLMRLKwfIisUGKvU0kYLlyntsf78Kg;application/octet-stream
+20;Sección 20;07. AuthService - Controlar autenticación.mp4;1APOSXsHUn7sQLlQd1bpwf4O4VA8-_99i;video/mp4
+20;Sección 20;07. AuthService - Controlar autenticación.srt;1SYQ9Lc6U6hOgb0Xgopougbont0JaJf7q;application/octet-stream
+20;Sección 20;08. AuthService - Parte 2.mp4;12L6ijTEYS9iQ9c3NfbIMRQNa4VA6EdMU;video/mp4
+20;Sección 20;08. AuthService - Parte 2.srt;1YcrCxvfazgYQm9IrhbgudHeSQomfbgEl;application/octet-stream
+20;Sección 20;09. Manejo de excepciones.mp4;1BvQGwwkzYGYBDOz4GPBPw_aIxhD6B1Jc;video/mp4
+20;Sección 20;09. Manejo de excepciones.srt;18ucll2T2YLrrUs18ncPSCtDBX7m98G44;application/octet-stream
+20;Sección 20;10. Revisar autenticación previa.mp4;14BnLV-H3KQE25ePoz4qWs9GrhwYJDPwT;video/mp4
+20;Sección 20;10. Revisar autenticación previa.srt;1c37HkwK8ZJ_ug4GTpFBtuwdPUSQMThAb;application/octet-stream
+20;Sección 20;11. Refactorización y principio DRY.mp4;1lcBWdEllvJi052MX_NIxnUmZUUNNbPpe;video/mp4
+20;Sección 20;11. Refactorización y principio DRY.srt;1y1oyucCuXtfPUtI0V8bDRByZ-BkwysdZ;application/octet-stream
+20;Sección 20;12. Mostrar usuario autenticado y cerrar sesión.mp4;1hVe3hmTDaqxeFIMoaVw0HFAfBarbVIre;video/mp4
+20;Sección 20;12. Mostrar usuario autenticado y cerrar sesión.srt;1UEtCVDuj8N7KtdqP_g8mAWGjO4rD0pSU;application/octet-stream
+20;Sección 20;13. Interceptores en Angular.mp4;1JcUPb4zTvzVLdBPfCUXvTQFgQXeoRlLz;video/mp4
+20;Sección 20;13. Interceptores en Angular.srt;1zRW5UgjeLWcAryFgM4UbIBz_30RqQ0PV;application/octet-stream
+20;Sección 20;14. Auth Interceptor.mp4;1HL3iYhllE7CCo_eQoSWje0c0Yf5WlAgB;video/mp4
+20;Sección 20;14. Auth Interceptor.srt;1bK_5E6yWGGIvnsQORhvOlNjdcyJqrnWm;application/octet-stream
+20;Sección 20;15. Guards - notAuthenticatedGuard.mp4;1jUM6TPWD0v7IT8gc9zdsImcYERtcnIlr;video/mp4
+20;Sección 20;15. Guards - notAuthenticatedGuard.srt;1HEhjQh49t9f6cEOU3NwcXmmd8iFDdCjs;application/octet-stream
+20;Sección 20;15.1 Angular.dev - Guards.html;1ruADO-GqrHoYEfTWNnrsbf0IfsMZ0BEu;text/html
+20;Sección 20;16. Tarea - Pantalla de Registro.mp4;1UsSogoy9jp-ugXGH6blGu1ur3ZvlqVvN;video/mp4
+20;Sección 20;16. Tarea - Pantalla de Registro.srt;1aBvdxGXO2NdU-KYVg2vktFndieMmlf5T;application/octet-stream
+20;Sección 20;17. Código fuente.html;1rO7tetHMJ410QnNfgidqKbQprgLar0Ze;text/html
+21;Sección 21;01. Introducción.mp4;1x0BF4SjYZ4XtioIv7iXWfrercvBvz-Gy;video/mp4
+21;Sección 21;01. Introducción.srt;11latTKEnrNdZdbQbV8AoIS8qRlo-4NRD;application/octet-stream
+21;Sección 21;02. Demostración.mp4;1IoIEDEheVXdEWnG7BqVkH5I33O1SqjmY;video/mp4
+21;Sección 21;02. Demostración.srt;16u4W4xqFrlkbUgBLZlIJ8xi3GYEOwPTt;application/octet-stream
+21;Sección 21;03. Temas puntuales.html;1NPVIg2b3xkM5G2ufukkzaUTJAXsmUqC4;text/html
+21;Sección 21;04. Continuación.mp4;1rSuvsqwvvaTHKcT2woAJDtrzMjLGmlKT;video/mp4
+21;Sección 21;04. Continuación.srt;1Of2ifHLTVd1R8jmaP2TsRD2ri-_eqVjq;application/octet-stream
+21;Sección 21;04.1 Tailwindcss Components - Dashboard.html;1uoWABe9Gxz0PWc70ldHsPUa-Vi3rTvvZ;text/html
+21;Sección 21;05. Diseño del panel administrativo.mp4;12_i0RBix0Ov2GRHxGRKE5qxeGloaTy6b;video/mp4
+21;Sección 21;05. Diseño del panel administrativo.srt;1v2P_LqbrxVrO6LAEofLO60W5baPkiwWt;application/octet-stream
+21;Sección 21;06. Autorización - IsAdminGuard.mp4;17w9M_tMBaEGHly4hzGX28u7BJuu8dU06;video/mp4
+21;Sección 21;06. Autorización - IsAdminGuard.srt;1z6HLNE2tlPC22rBdhPcSF_ArteJbnms0;application/octet-stream
+21;Sección 21;07. Listado de productos.mp4;1up8DsthUSq_5EYDkTFt7pEsg5aoBoepX;video/mp4
+21;Sección 21;07. Listado de productos.srt;1XqD3xvOObK1yfMV-OHvxxIFEbFIEXjR4;application/octet-stream
+21;Sección 21;08. Mostrar productos paginados.mp4;1VmQjzPWKK4DblC4K4vBl_IxNiZUNoTK8;video/mp4
+21;Sección 21;08. Mostrar productos paginados.srt;1LwCKFyxcrJLTB2x1eSdj099px2qD9VGv;application/octet-stream
+21;Sección 21;09. Página de producto por ID.mp4;1hDQN3BCXqHZs18v_dhl3eFSxeoZj0NhG;video/mp4
+21;Sección 21;09. Página de producto por ID.srt;10OoXtP0GgkbDOAdCTkn_HQMJocborB2M;application/octet-stream
+21;Sección 21;10. Estructura del formulario de producto.mp4;1ssvhzn99CafO9wkJYM1GQEkPcvbQT3dG;video/mp4
+21;Sección 21;10. Estructura del formulario de producto.srt;1kRPq9uDCvyClnNngLTdc9FQBxQSjFHiI;application/octet-stream
+21;Sección 21;10.1 Estructura del formulario - Gist.html;1R2XTtpjShKDDyE_7mG4EqQZ8-Qf9s_an;text/html
+21;Sección 21;11. Formulario de producto.mp4;1OY4dZvO0oQnG6yO5TNXbOdyIX7tR63wO;video/mp4
+21;Sección 21;11. Formulario de producto.srt;1CewwSdtPGg8DVRLXaf_BfcZb-82-leR_;application/octet-stream
+21;Sección 21;11.1 Gist - FormUtils.html;1emJIsnDL0nFO3fi_Sdh5Rq7sKjmniO5f;text/html
+21;Sección 21;12. Botones de selección.mp4;1hfyi3HLuckksOpkacadYBHh3d1CD1k1q;video/mp4
+21;Sección 21;12. Botones de selección.srt;1NM0xbG11RqUF8M1ZEPuKiFAdijcNY43H;application/octet-stream
+21;Sección 21;13. Mostrar errores del formulario.mp4;1ASQ761Gu8eBk7FPQvvZUlF1t-4dB0Pqr;video/mp4
+21;Sección 21;13. Mostrar errores del formulario.srt;1dD5cDpxkCGNVFUxy_PHjKEpDVqnqpv5M;application/octet-stream
+21;Sección 21;14. Preparar la data para actualizar.mp4;1bzjkWYC5k4t1Q-ZXG1wSsGtrfGOLZxyN;video/mp4
+21;Sección 21;14. Preparar la data para actualizar.srt;1528r_R_Z3R8uLTHptwh5G5E5ODmkLXsu;application/octet-stream
+21;Sección 21;15. Actualizar producto.mp4;1RO2jzRDwPYJClagaY0YQtr3zmSf3Y0_0;video/mp4
+21;Sección 21;15. Actualizar producto.srt;1pVYW8BDkMfa10WHl6ZJrp-UNKcaKLeAq;application/octet-stream
+21;Sección 21;16. Actualizar caché.mp4;1BzEXTac_5PrqrgNGt7BNuvHzDGujyWNY;video/mp4
+21;Sección 21;16. Actualizar caché.srt;1bpBOTtkFUYr9wNaoreGNjUjYHGNmRa_R;application/octet-stream
+21;Sección 21;17. Crear producto.mp4;1-7VhRINUJfqQrU8xgBhFyYkczls7HsGj;video/mp4
+21;Sección 21;17. Crear producto.srt;1CMZaHP3o_2vnIE6EAWae__cPj6KSa_HS;application/octet-stream
+21;Sección 21;18. Mejorar experiencia de usuario.mp4;1yD_vUe2PB1M5Q7f9bzXJ4JuJFFVbUEpU;video/mp4
+21;Sección 21;18. Mejorar experiencia de usuario.srt;1fBWUkyAJsrhnv-Ix-LhtejMtTP152h9E;application/octet-stream
+21;Sección 21;19. Código fuente.html;1JzWlKpxilVt7yPtkKz4YTqCbj-yhdGrm;text/html
+22;Sección 22;01. Introducción.mp4;1hRwc7dOVANIC23Dgpf6c0FipBPuh3heh;video/mp4
+22;Sección 22;01. Introducción.srt;1w2zU84FYb3no9ZiTCYyIfKRi22DmiKJW;application/octet-stream
+22;Sección 22;02. Demostración.mp4;1fl68A9sJjI8oBd7ACTpHhcxxDNX7tNjS;video/mp4
+22;Sección 22;02. Demostración.srt;1cW4YC_uWIsV1RIao5LZ0rGQ8xMcNEdSS;application/octet-stream
+22;Sección 22;03. Temas puntuales.html;1ZsLTT_knmgMHqinNO-l92UTjOkKuwfCs;text/html
+22;Sección 22;04. Continuación.mp4;1vihwbfs-vWPNpvYUhLAj4zFxd34ELATg;video/mp4
+22;Sección 22;04. Continuación.srt;137VnRSWdR33TodHUIfGqj3T1dhudrQ7g;application/octet-stream
+22;Sección 22;05. Seleccionar imágenes y mostrarlas.mp4;1qoWMSN14Z5b6iZF4PGIkFsp_VGoRwwvL;video/mp4
+22;Sección 22;05. Seleccionar imágenes y mostrarlas.srt;1-BX2S_E8Jm3XclZ34WQrDeWY6NdPFDNt;application/octet-stream
+22;Sección 22;05.1 imagenes.zip;1GUaBLsXtqRIjNS60XrLTNbLDaX_ZdBiZ;application/zip
+22;Sección 22;06. Solución de la tarea - Imágenes temporales.mp4;1Ym9487wifU6iLRmIlSrVSI2zmsqDMJlj;video/mp4
+22;Sección 22;06. Solución de la tarea - Imágenes temporales.srt;1y0ma9CVyZ_OIIYnKD9O7kVZJFqmWugli;application/octet-stream
+22;Sección 22;07. Swiper - Dot fix.mp4;1yFHGzHzN_VBitXZpDChj-u4JN_yCngbK;video/mp4
+22;Sección 22;07. Swiper - Dot fix.srt;1q4MMGgUmG9LM26uCCvMSPCinqJxhWHpI;application/octet-stream
+22;Sección 22;08. Subir imágenes - Servicio.mp4;1W8hQG7szfBbKLKALsg49uVVEXoTD27vE;video/mp4
+22;Sección 22;08. Subir imágenes - Servicio.srt;1dFJoU5SayBI1Hhgx4E1CiLM0neRwWoZO;application/octet-stream
+22;Sección 22;09. Actualizar imágenes del producto.mp4;1w6d9CTK9Tg_Z4Wpx0tpefS1YRVUaJrMO;video/mp4
+22;Sección 22;09. Actualizar imágenes del producto.srt;1Rv5M99J1iW3210a0LER8MLgwBv-RV8sy;application/octet-stream
+22;Sección 22;10. Plan de despliegue.mp4;1lCcBruGy9VMZ9Tyvzdwy8OJ-B8YJNULK;video/mp4
+22;Sección 22;10. Plan de despliegue.srt;1hc6CMw-zKPIzq6uLxer7WGM60RRGGUpW;application/octet-stream
+22;Sección 22;11. Aprovisionar Base de datos.mp4;1DofjHdT_SZTmlWqCrzDrks4OwnsxKfpE;video/mp4
+22;Sección 22;11. Aprovisionar Base de datos.srt;15QWRjF19UbuFb4AVUW_mhRFOp-wsNw5Y;application/octet-stream
+22;Sección 22;12. Desplegar Backend - GitHub - Render.mp4;1liIGxDP8jCumCqpFunBLH44FIgP-8sXB;video/mp4
+22;Sección 22;12. Desplegar Backend - GitHub - Render.srt;1lBGIX7SPqVaBQeL1eW33N59cHP3N88Sw;application/octet-stream
+22;Sección 22;13. Preparar aplicación de Angular.mp4;1ins85pIAMgg_mIZoxYs2OonO_oWeaNRE;video/mp4
+22;Sección 22;13. Preparar aplicación de Angular.srt;18YiDs1WeLYnm8YjACFXj-qeeS1qgHPT8;application/octet-stream
+22;Sección 22;14. Desplegar aplicación de Angular.mp4;1HnoEEFl73nWiW9flLpKCkbn5YgESIGd7;video/mp4
+22;Sección 22;14. Desplegar aplicación de Angular.srt;1VTuWfT5sUHW28-PundFYqptsKthJkR8k;application/octet-stream
+23;Sección 23;01. Introducción a la sección.srt;1aCuNfUe6gr6Ua947hL8XjMQtE6c7Ommd;application/octet-stream
+23;Sección 23;02. Temas puntuales de la sección.html;19U0V4G7pjzj3KaxCFpS2gZ_nro9rltIr;text/html
+23;Sección 23;03. Demostración de la sección.mp4;1BiGbnbh1uItAWiRPys5F52xwpdd60Ihj;video/mp4
+23;Sección 23;03. Demostración de la sección.srt;1F75pZGxdx__SEY5bZti-5D_mcrmJrPQJ;application/octet-stream
+23;Sección 23;04. Nota útil.html;1z0MrFWwLuqIhZ1Q1icFI5oqqI59hCHSG;text/html
+23;Sección 23;05. Inicio de proyecto - MyDashboard.srt;105VVQuM7QYfkd0wr1uQrsewbT5pfHPWl;application/octet-stream
+23;Sección 23;06. Cambios en la estructura del proyecto.srt;1t2ri0p-UP8zHjMHnqIuQv02-5RASHuy0;application/octet-stream
+23;Sección 23;07. Tailwind en Angular.srt;1xflvqp_YQlX0S2y9NYn0feLH0vxijUjc;application/octet-stream
+23;Sección 23;08. Creación de archivos y directorios.srt;1RRTMHYdwS4l5lxT3nXKdgO6arkhCNJyL;application/octet-stream
+23;Sección 23;09. Configuración de rutas.srt;1zLEdISfzxe95oL9mQ6soLS6txzcUj258;application/octet-stream
+23;Sección 23;09.1 app.routes - Gist ( no tengan escribir).html;1_lJmRa08yh0irvorIvTS6_1PwMaBv360;text/html
+23;Sección 23;10. Configuración del dashboard - Tailwind.srt;1qrKfVarhCu6xaUE1gcBZpMuFJbE5zM3E;application/octet-stream
+23;Sección 23;10.1 Tailwindcomponents.com - dashboard-navigation.html;1AVGfYfwo9sYiD503t_Ygdr02LiGI2jhi;text/html
+23;Sección 23;11. @for - @if - Nueva sintaxis.srt;1tCthDg1pjreSEgS61aCFmxCPl-fyOyZe;application/octet-stream
+23;Sección 23;12. Configurar alias de importaciones en TypeScript.srt;1gGvhnjqIhiMo0MkN-NpaPUNfk0Nat5de;application/octet-stream
+23;Sección 23;13. Control Flow - @If.mp4;1syHp_i4HvMioQl2NB2BfeaT7NOR8S29l;video/mp4
+23;Sección 23;13. Control Flow - @If.srt;1PVqOSk8RO63SK65rirunzufZLUFuyiUU;application/octet-stream
+23;Sección 23;14. Control Flow - @Switch.srt;1yBgaF6ztQlusmR_PY9YZgMJLkottwcO6;application/octet-stream
+23;Sección 23;15. Control Flow - @For.srt;1u19L9vsKe6hqwUHKuXt3uvyrwHbxWo2i;application/octet-stream
+23;Sección 23;16. Required @Input.srt;17Vw34MyIWZ4jcRAkoS6o7GRNMyNkcD6F;application/octet-stream
+23;Sección 23;17. ChangeDetection - OnPush.srt;1-LvF1CbJqbt_PXO3LSJjzpL_YP2rxFqK;application/octet-stream
+23;Sección 23;18. Defer Blocks.srt;1QH9_-SZQJnWZjM6KEztTGt9nYsPzDjOS;application/octet-stream
+23;Sección 23;19. Defer Triggers.srt;1W8VBPh4O0MipnrIZRNG95VAPnZbnrpII;application/octet-stream
+23;Sección 23;20. Defer Triggers - Interacciones.mp4;1JJHq5mGheXOOtJLobM17HbBnw8WrqbT8;video/mp4
+23;Sección 23;20. Defer Triggers - Interacciones.srt;1tjRIGk1fa1QdlpqxdyPkfUcQj-aNcwX-;application/octet-stream
+23;Sección 23;21. Defer Triggers - Interacciones - Parte 2.srt;1Cv9clv876CH698cae7-fqINK79fas9LO;application/octet-stream
+23;Sección 23;22. ViewTransitions API.srt;1o0mmByVdAfQZIjA723_UJrBjKkYu_i41;application/octet-stream
+23;Sección 23;23. Hero Animation - View Transitions.srt;1_gLcNgekqYvwLbh7t3viK9zT7Pd9syyb;application/octet-stream
+23;Sección 23;24. Servicios con señales.srt;1xmnw7MHU2GqzEMY1BaTGs6xQK3WQaalL;application/octet-stream
+23;Sección 23;25. Peticiones HTTP - importProvidersFrom.srt;12wjhhph8fveHRgth_7_mzHZ-amy1nMp5;application/octet-stream
+23;Sección 23;26. De observable a Señal - toSignal.srt;1Cua1Z5qMYBzGsEMJns971dqc5B3Pp_ss;application/octet-stream
+23;Sección 23;27. Tarea - Computed Signals.srt;1umT1zPSgqI-mnXPYAGaWFFGHfCZXORkl;application/octet-stream
+23;Sección 23;28. Código fuente de la sección.html;1Q3Lv10hm43ZTlUReagUCRxSGo5zZifQj;text/html
+24;Sección 24;1. Más información sobre nuestros otros cursos.html;1jNmIvczEDeVXEj5X64yacqeq6B1eQwe7;text/html
+24;Sección 24;2. Despedida.mp4;1iAXu-2xhePxXuBBv05aBuIOJ6PM362-m;video/mp4
+24;Sección 24;2. Despedida.srt;1p89pXTLDxrrKb70CMNYxaHvcLzkUDVTU;application/octet-stream

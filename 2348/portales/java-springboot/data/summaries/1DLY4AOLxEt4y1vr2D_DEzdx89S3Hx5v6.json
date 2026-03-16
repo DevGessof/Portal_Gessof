@@ -1,0 +1,61 @@
+{
+  "titulo": "Probar Comunicación entre Customer y Product",
+  "resumen": "Validación práctica de la comunicación entre microservicios. Se prueban los flujos completos: crear productos en Product, crear customer con productIds válidos, consultar customer con productos completos, y verificar que validaciones funcionan correctamente. Demostración end-to-end con Swagger.",
+  "puntosClave": [
+    "Paso 1: Iniciar ambos microservicios (Product:8082, Customer:8081)",
+    "Paso 2: Crear productos en Product usando Swagger (puerto 8082)",
+    "Paso 3: Anotar IDs de productos creados (ej: 1, 2, 3)",
+    "Paso 4: Crear customer con productIds válidos en Customer (puerto 8081)",
+    "Paso 5: Verificar validación funciona intentando ID inexistente",
+    "Paso 6: Consultar GET /customer/{id} para ver datos enriquecidos",
+    "Validar que respuesta incluye objetos Product completos (name, price)",
+    "Probar que crear customer con ID inválido retorna error",
+    "Verificar que comunicación HTTP entre servicios funciona",
+    "Swagger muestra respuesta con customer + products anidados",
+    "Demostración de agregación exitosa de datos",
+    "Flujo E2E completo validado"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Flujo End-to-End",
+      "descripcion": "Prueba completa desde creación de productos hasta consulta de customer con productos"
+    },
+    {
+      "nombre": "Validación de Integridad Referencial",
+      "descripcion": "Verificar que IDs referenciados existen en el servicio correspondiente"
+    },
+    {
+      "nombre": "Datos Enriquecidos",
+      "descripcion": "Respuesta que combina datos locales con datos obtenidos de otros servicios"
+    },
+    {
+      "nombre": "Prueba de Integración",
+      "descripcion": "Validar que múltiples componentes funcionan correctamente juntos"
+    },
+    {
+      "nombre": "Manejo de Errores",
+      "descripcion": "Verificar que sistema responde adecuadamente ante datos inválidos"
+    },
+    {
+      "nombre": "Swagger Testing",
+      "descripcion": "Usar interfaz Swagger para probar APIs de ambos microservicios"
+    },
+    {
+      "nombre": "Response Anidado",
+      "descripcion": "JSON con objetos dentro de objetos (customer contiene array de products)"
+    },
+    {
+      "nombre": "Validación Funcional",
+      "descripcion": "Confirmar que sistema cumple requisitos de negocio esperados"
+    },
+    {
+      "nombre": "Comunicación Síncrona",
+      "descripcion": "Customer espera respuesta de Product antes de continuar"
+    },
+    {
+      "nombre": "Microservicios Independientes",
+      "descripcion": "Cada servicio puede probarse por separado pero trabajan juntos"
+    }
+  ],
+  "codigoEjemplo": "// Flujo de prueba E2E\n\n// 1. Crear productos en Product (puerto 8082)\nPOST http://localhost:8082/product\n{\n  \"name\": \"Cuenta de Ahorros\",\n  \"price\": 0.0\n}\n// Respuesta: {\"id\": 1, \"name\": \"Cuenta de Ahorros\", \"price\": 0.0}\n\nPOST http://localhost:8082/product\n{\n  \"name\": \"Tarjeta de Crédito\",\n  \"price\": 50.0\n}\n// Respuesta: {\"id\": 2, \"name\": \"Tarjeta de Crédito\", \"price\": 50.0}\n\n// 2. Crear customer con productos válidos (puerto 8081)\nPOST http://localhost:8081/customer\n{\n  \"name\": \"María González\",\n  \"phoneNumber\": \"555-5678\",\n  \"productIds\": [1, 2]\n}\n// Respuesta: {\"id\": 1, ...}\n\n// 3. Consultar customer con productos completos\nGET http://localhost:8081/customer/1\n// Respuesta:\n{\n  \"id\": 1,\n  \"name\": \"María González\",\n  \"phoneNumber\": \"555-5678\",\n  \"products\": [\n    {\"id\": 1, \"name\": \"Cuenta de Ahorros\", \"price\": 0.0},\n    {\"id\": 2, \"name\": \"Tarjeta de Crédito\", \"price\": 50.0}\n  ]\n}\n\n// 4. Probar validación con ID inválido\nPOST http://localhost:8081/customer\n{\n  \"name\": \"Test\",\n  \"phoneNumber\": \"555-0000\",\n  \"productIds\": [999] // Producto no existe\n}\n// Respuesta: Error 500 con mensaje \"Producto no encontrado: 999\""
+}

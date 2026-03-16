@@ -1,0 +1,61 @@
+{
+  "titulo": "Configuración de WebClient como Cliente REST Reactivo",
+  "resumen": "Configuración e implementación de WebClient en el microservicio Customer para consumir API de Product. Se crea clase de configuración @Configuration con @Bean para WebClient, se inyecta en CustomerService, y se prepara para hacer peticiones HTTP reactivas al servicio Product.",
+  "puntosClave": [
+    "Agregar dependencia spring-boot-starter-webflux al pom.xml",
+    "Crear clase WebClientConfig en paquete config",
+    "@Configuration marca clase como fuente de configuración de Spring",
+    "@Bean define método que retorna instancia de WebClient",
+    "WebClient.builder() para construir instancia personalizada",
+    "baseUrl(\"http://localhost:8082\") define URL base de Product",
+    "build() finaliza construcción del WebClient",
+    "Inyectar WebClient en CustomerService con @Autowired",
+    "WebClient se puede reutilizar en múltiples métodos",
+    "Configuración centralizada facilita cambios (ej: cambiar URL)",
+    "En producción: URL base vendría de configuración externa",
+    "Preparado para consumir endpoints de Product"
+  ],
+  "conceptos": [
+    {
+      "nombre": "@Configuration",
+      "descripcion": "Anotación que marca clase como fuente de definiciones de beans de Spring"
+    },
+    {
+      "nombre": "@Bean",
+      "descripcion": "Anotación en método que indica que retorna un objeto administrado por Spring"
+    },
+    {
+      "nombre": "WebClient.builder()",
+      "descripcion": "Builder pattern para configurar y crear instancia de WebClient"
+    },
+    {
+      "nombre": "baseUrl",
+      "descripcion": "URL base del servicio que se va a consumir (http://localhost:8082)"
+    },
+    {
+      "nombre": "Configuración Centralizada",
+      "descripcion": "Definir beans en clase @Configuration para reutilizar en toda la aplicación"
+    },
+    {
+      "nombre": "Inyección de Bean",
+      "descripcion": "Spring inyecta automáticamente el WebClient configurado donde se necesite"
+    },
+    {
+      "nombre": "Spring WebFlux",
+      "descripcion": "Framework reactivo que provee WebClient para peticiones HTTP no bloqueantes"
+    },
+    {
+      "nombre": "Builder Pattern",
+      "descripcion": "Patrón de diseño para construir objetos complejos paso a paso"
+    },
+    {
+      "nombre": "Service Discovery",
+      "descripcion": "En producción, URL vendría de Registry en vez de hardcodear localhost"
+    },
+    {
+      "nombre": "Configuración por Entorno",
+      "descripcion": "URLs diferentes para desarrollo, testing y producción"
+    }
+  ],
+  "codigoEjemplo": "<!-- Agregar dependencia WebFlux en pom.xml -->\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-webflux</artifactId>\n</dependency>\n\n// WebClientConfig.java\npackage com.paymentchange.customer.config;\n\nimport org.springframework.context.annotation.Bean;\nimport org.springframework.context.annotation.Configuration;\nimport org.springframework.web.reactive.function.client.WebClient;\n\n@Configuration\npublic class WebClientConfig {\n    \n    @Bean\n    public WebClient webClient() {\n        return WebClient.builder()\n            .baseUrl(\"http://localhost:8082\")\n            .build();\n    }\n}\n\n// Inyectar en CustomerService\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private CustomerRepository customerRepository;\n    \n    @Autowired\n    private WebClient webClient; // Inyectado automáticamente\n    \n    // Listo para usar webClient en métodos del servicio\n}"
+}

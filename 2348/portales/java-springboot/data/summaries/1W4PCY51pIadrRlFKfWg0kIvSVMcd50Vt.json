@@ -1,0 +1,64 @@
+{
+  "titulo": "En Qué Consiste un Proxy Inverso y sus Principales Funcionalidades",
+  "resumen": "Explicación detallada de concepto de proxy inverso y diferencia con proxy tradicional. Se detallan funcionalidades clave: load balancing, caching, SSL termination, request routing, y security. Base conceptual para entender API Gateway.",
+  "puntosClave": [
+    "Proxy tradicional (forward proxy): cliente → proxy → internet",
+    "Proxy inverso (reverse proxy): internet → proxy → servidores backend",
+    "Cliente no sabe que hay múltiples servidores detrás",
+    "Funcionalidades principales:",
+    "1. Load Balancing: distribuir carga entre instancias",
+    "2. Caching: almacenar respuestas para reducir latencia",
+    "3. SSL Termination: descifrar HTTPS en proxy, HTTP interno",
+    "4. Compression: comprimir respuestas (gzip)",
+    "5. Request Routing: enrutar según URL, headers, método",
+    "6. Security: WAF, rate limiting, IP filtering",
+    "7. Request/Response Transformation: modificar headers, body",
+    "8. Health Checking: verificar salud de backends",
+    "Ejemplos: Nginx, HAProxy, Envoy, Traefik",
+    "API Gateway es proxy inverso especializado para APIs",
+    "Diferencia: Gateway tiene funcionalidades específicas de APIs (auth, throttling, API versioning)"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Reverse Proxy",
+      "descripcion": "Servidor intermediario que distribuye requests de clientes a servidores backend"
+    },
+    {
+      "nombre": "Forward Proxy",
+      "descripcion": "Proxy que actúa en nombre del cliente para acceder a recursos externos"
+    },
+    {
+      "nombre": "Load Balancing",
+      "descripcion": "Distribuir tráfico entre múltiples instancias de servicio"
+    },
+    {
+      "nombre": "Caching",
+      "descripcion": "Almacenar respuestas para evitar llamadas repetidas a backend"
+    },
+    {
+      "nombre": "SSL Termination",
+      "descripcion": "Descifrar SSL/TLS en proxy, comunicación interna sin cifrar"
+    },
+    {
+      "nombre": "Compression",
+      "descripcion": "Comprimir respuestas HTTP para reducir ancho de banda"
+    },
+    {
+      "nombre": "WAF (Web Application Firewall)",
+      "descripcion": "Firewall que filtra tráfico HTTP malicioso"
+    },
+    {
+      "nombre": "Health Checking",
+      "descripcion": "Verificar periódicamente que backends están respondiendo"
+    },
+    {
+      "nombre": "Request Transformation",
+      "descripcion": "Modificar request antes de enviar a backend"
+    },
+    {
+      "nombre": "Response Transformation",
+      "descripcion": "Modificar response antes de retornar a cliente"
+    }
+  ],
+  "codigoEjemplo": null
+}

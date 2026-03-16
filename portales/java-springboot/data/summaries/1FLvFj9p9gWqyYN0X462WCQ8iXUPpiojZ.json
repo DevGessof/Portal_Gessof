@@ -1,0 +1,62 @@
+{
+  "titulo": "Codificar Versionado de API en Recursos de Microservicio",
+  "resumen": "Implementación práctica de versionado de API usando prefijo /v1 en URLs. Se modifica @RequestMapping en controllers para incluir versión, permitiendo evolución futura de API sin romper clientes. Se explican estrategias de versionado (URI, header, query param) y por qué URI versioning es más común.",
+  "puntosClave": [
+    "Versionado en URI: /api/v1/customers, /api/v2/customers",
+    "Modificar @RequestMapping(\"/customer\") a @RequestMapping(\"/api/v1/customer\")",
+    "Aplicar en CustomerRestController, ProductRestController, TransactionRestController",
+    "Permite evolucionar API manteniendo versión anterior funcionando",
+    "Clientes antiguos siguen usando /v1, nuevos usan /v2",
+    "Estrategias de versionado:",
+    "  - URI Versioning: /v1/customers (más común y visible)",
+    "  - Header Versioning: Accept: application/vnd.company.v1+json",
+    "  - Query Param: /customers?version=1",
+    "URI versioning recomendado por claridad y facilidad de uso",
+    "Actualizar WebClient baseUrl: http://product-service/api/v1",
+    "Documentar versión en Swagger/OpenAPI",
+    "Planificar deprecación de versiones antiguas"
+  ],
+  "conceptos": [
+    {
+      "nombre": "API Versioning",
+      "descripcion": "Estrategia para mantener múltiples versiones de API simultáneamente"
+    },
+    {
+      "nombre": "URI Versioning",
+      "descripcion": "Incluir versión en la URL (/v1, /v2) - método más común"
+    },
+    {
+      "nombre": "Header Versioning",
+      "descripcion": "Especificar versión en header Accept o custom header"
+    },
+    {
+      "nombre": "Query Parameter Versioning",
+      "descripcion": "Versión como parámetro de consulta (?version=1)"
+    },
+    {
+      "nombre": "Breaking Change",
+      "descripcion": "Cambio que requiere nueva versión porque rompe compatibilidad"
+    },
+    {
+      "nombre": "Backward Compatibility",
+      "descripcion": "Mantener versión anterior funcionando mientras se introduce nueva"
+    },
+    {
+      "nombre": "API Evolution",
+      "descripcion": "Proceso de mejorar API sin interrumpir consumidores existentes"
+    },
+    {
+      "nombre": "Deprecation Strategy",
+      "descripcion": "Plan para anunciar y eventualmente eliminar versiones antiguas"
+    },
+    {
+      "nombre": "Semantic Versioning",
+      "descripcion": "Numeración v1, v2, v3 para cambios mayores (breaking changes)"
+    },
+    {
+      "nombre": "API Gateway Routing",
+      "descripcion": "Enrutar peticiones a versión correcta según URL/header"
+    }
+  ],
+  "codigoEjemplo": "// CustomerRestController - Antes (sin versión)\n@RestController\n@RequestMapping(\"/customer\")  // ❌ Sin versionado\npublic class CustomerRestController {\n    // ...\n}\n\n// CustomerRestController - Después (con versión)\n@RestController\n@RequestMapping(\"/api/v1/customer\")  // ✅ Con versionado\npublic class CustomerRestController {\n    \n    @GetMapping\n    public List<Customer> findAll() {\n        return customerService.findAll();\n    }\n    \n    @GetMapping(\"/{id}\")\n    public Customer findById(@PathVariable Long id) {\n        return customerService.findById(id);\n    }\n}\n\n// ProductRestController\n@RestController\n@RequestMapping(\"/api/v1/product\")\npublic class ProductRestController {\n    // ...\n}\n\n// WebClientConfig - Actualizar URLs\n@Configuration\npublic class WebClientConfig {\n    \n    @Bean\n    @LoadBalanced\n    public WebClient.Builder webClientBuilder() {\n        return WebClient.builder();\n    }\n    \n    @Bean\n    public WebClient productWebClient(WebClient.Builder builder) {\n        return builder\n            .baseUrl(\"http://product-service/api/v1\")  // ✅ Con versión\n            .build();\n    }\n}\n\n// URLs finales:\n// http://localhost:8081/api/v1/customer\n// http://localhost:8082/api/v1/product\n// http://localhost:8083/api/v1/transaction\n\n// Evolución futura (ejemplo):\n// v2 con cambio de estructura\n@RestController\n@RequestMapping(\"/api/v2/customer\")\npublic class CustomerV2RestController {\n    // Nueva estructura de respuesta\n    // Clientes antiguos siguen usando /v1\n}"
+}

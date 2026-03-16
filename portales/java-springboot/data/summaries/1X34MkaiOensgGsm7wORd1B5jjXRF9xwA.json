@@ -1,0 +1,66 @@
+{
+  "titulo": "Keycloak: Arquitectura y Flujo de Acceso para Seguridad de APIs",
+  "resumen": "Introducción a Keycloak como servidor de autenticación y autorización. Se explica arquitectura completa del flujo OAuth2/OpenID Connect, cómo cliente obtiene token de Keycloak, cómo API Gateway valida token, y cómo se extraen roles para autorización. Base conceptual para implementar seguridad enterprise.",
+  "puntosClave": [
+    "Keycloak: servidor open-source de Identity and Access Management (IAM)",
+    "Implementa OAuth2, OpenID Connect, SAML",
+    "Arquitectura de flujo de acceso:",
+    "1. Cliente solicita token a Keycloak (username + password)",
+    "2. Keycloak valida credenciales contra usuarios configurados",
+    "3. Keycloak retorna JWT (JSON Web Token) con claims y roles",
+    "4. Cliente envía request a API Gateway con token en Authorization header",
+    "5. Gateway valida token con clave pública de Keycloak",
+    "6. Gateway extrae roles del token JWT",
+    "7. Gateway verifica que usuario tiene rol requerido para endpoint",
+    "8. Si autorizado, Gateway enruta a microservicio",
+    "Ventajas Keycloak:",
+    "  - Single Sign-On (SSO) entre aplicaciones",
+    "  - Gestión centralizada de usuarios y roles",
+    "  - Tokens JWT auto-contenidos (stateless)",
+    "  - Soporte para federación de identidades (Google, Facebook)",
+    "  - Admin UI completa para configuración"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Keycloak",
+      "descripcion": "Servidor IAM open-source para autenticación y autorización"
+    },
+    {
+      "nombre": "Identity and Access Management (IAM)",
+      "descripcion": "Sistema para gestionar identidades digitales y control de acceso"
+    },
+    {
+      "nombre": "OAuth2",
+      "descripcion": "Protocolo de autorización para delegar acceso a recursos"
+    },
+    {
+      "nombre": "OpenID Connect (OIDC)",
+      "descripcion": "Capa de autenticación sobre OAuth2 que añade identidad de usuario"
+    },
+    {
+      "nombre": "JWT (JSON Web Token)",
+      "descripcion": "Token autónomo que contiene claims firmados digitalmente"
+    },
+    {
+      "nombre": "Claims",
+      "descripcion": "Información contenida en JWT (sub, roles, exp, iat)"
+    },
+    {
+      "nombre": "Access Token",
+      "descripcion": "Token que permite acceder a recursos protegidos"
+    },
+    {
+      "nombre": "Refresh Token",
+      "descripcion": "Token de larga duración para obtener nuevos access tokens"
+    },
+    {
+      "nombre": "Public Key",
+      "descripcion": "Clave pública de Keycloak para validar firma de JWT"
+    },
+    {
+      "nombre": "Token Validation",
+      "descripcion": "Verificar firma, expiración y emisor del JWT"
+    }
+  ],
+  "codigoEjemplo": null
+}

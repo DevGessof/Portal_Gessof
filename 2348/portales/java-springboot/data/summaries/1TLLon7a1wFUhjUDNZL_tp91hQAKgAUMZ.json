@@ -1,0 +1,66 @@
+{
+  "titulo": "Video de Apoyo: Instalar Docker Desktop en Windows 10/11",
+  "resumen": "Guía práctica de instalación de Docker Desktop en Windows. Se cubren requisitos del sistema (WSL2, Hyper-V), proceso de instalación, configuración inicial, y verificación de funcionamiento. Se explican diferencias entre Docker Desktop y Docker Engine en Linux.",
+  "puntosClave": [
+    "Docker Desktop: aplicación GUI para Windows/Mac",
+    "Requisitos Windows:",
+    "  - Windows 10/11 Pro, Enterprise o Education",
+    "  - WSL 2 (Windows Subsystem for Linux) habilitado",
+    "  - Virtualización habilitada en BIOS",
+    "Descargar de https://www.docker.com/products/docker-desktop",
+    "Instalación: siguiente → siguiente → reiniciar",
+    "Habilitar WSL 2 backend (recomendado sobre Hyper-V)",
+    "Verificar instalación: docker --version",
+    "Probar: docker run hello-world",
+    "Docker Desktop incluye:",
+    "  - Docker Engine",
+    "  - Docker CLI",
+    "  - Docker Compose",
+    "  - Kubernetes (opcional)",
+    "Configurar recursos (CPU, memoria) en Settings",
+    "Alternativa Linux: solo instalar docker-ce y docker-compose"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Docker Desktop",
+      "descripcion": "Aplicación todo-en-uno para ejecutar Docker en Windows/Mac"
+    },
+    {
+      "nombre": "WSL 2 (Windows Subsystem for Linux)",
+      "descripcion": "Capa de compatibilidad para ejecutar Linux en Windows"
+    },
+    {
+      "nombre": "Hyper-V",
+      "descripcion": "Tecnología de virtualización de Microsoft (alternativa a WSL2)"
+    },
+    {
+      "nombre": "Docker Engine",
+      "descripcion": "Motor central que ejecuta contenedores"
+    },
+    {
+      "nombre": "Docker CLI",
+      "descripcion": "Interfaz de línea de comandos para interactuar con Docker"
+    },
+    {
+      "nombre": "Docker Compose",
+      "descripcion": "Herramienta para definir y ejecutar aplicaciones multi-contenedor"
+    },
+    {
+      "nombre": "hello-world Image",
+      "descripcion": "Imagen de prueba simple para verificar instalación Docker"
+    },
+    {
+      "nombre": "Resource Allocation",
+      "descripcion": "Asignar CPU, memoria y disco a Docker Desktop"
+    },
+    {
+      "nombre": "docker-ce",
+      "descripcion": "Community Edition de Docker Engine para Linux"
+    },
+    {
+      "nombre": "Virtualization",
+      "descripcion": "Tecnología que permite ejecutar múltiples OS en mismo hardware"
+    }
+  ],
+  "codigoEjemplo": "# Verificar instalación Docker\ndocker --version\n# Output: Docker version 24.0.6, build ed223bc\n\ndocker-compose --version\n# Output: Docker Compose version v2.21.0\n\n# Probar Docker con hello-world\ndocker run hello-world\n# Output:\n# Hello from Docker!\n# This message shows that your installation appears to be working correctly.\n\n# Ver imágenes descargadas\ndocker images\n# REPOSITORY    TAG       IMAGE ID       CREATED        SIZE\n# hello-world   latest    9c7a54a9a43c   3 months ago   13.3kB\n\n# Ver contenedores en ejecución\ndocker ps\n\n# Ver todos los contenedores (incluidos detenidos)\ndocker ps -a\n\n# Configuración recomendada Docker Desktop:\n# Settings → Resources:\n#   CPUs: 4\n#   Memory: 8 GB\n#   Swap: 2 GB\n#   Disk image size: 60 GB"
+}

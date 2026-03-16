@@ -1,0 +1,132 @@
+VIDEO 1: INTRODUCCIÓN AL CURSO
+Este es el video de bienvenida al curso de Apigee en español. El instructor, Eduardo Celedonio, tiene aproximadamente seis años de experiencia ayudando a empresas (especialmente bancos y telecomunicaciones) a resolver problemas usando APIs y Apigee.
+¿Para quién es este curso?
+Este curso está diseñado para desarrolladores de software que ya tienen experiencia programando y quieren especializarse en Apigee. No es para principiantes en programación. Si nunca has programado, primero necesitas aprender los fundamentos de programación antes de tomar este curso.
+¿Qué necesitas para el curso?
+
+Un navegador web (Chrome, Firefox, etc.)
+Postman (herramienta para probar APIs)
+Un editor de código, preferiblemente Visual Studio Code
+Una tarjeta de crédito o débito (solo para validar tu cuenta de Google Cloud, no te cobrarán)
+Muchas ganas de aprender
+
+El instructor está certificado por Google Cloud como desarrollador y arquitecto, lo que garantiza que el contenido viene de alguien con experiencia real trabajando con Apigee en la industria.
+Qué deberías haber entendido al finalizar esta lección:
+
+Este curso es para desarrolladores con experiencia previa, no para principiantes absolutos
+Apigee es una herramienta profesional para gestionar APIs de manera avanzada
+Necesitas algunas herramientas básicas instaladas antes de comenzar
+La tarjeta de crédito es solo para validación, no te cobrarán automáticamente
+
+
+VIDEO 2: CREACIÓN DE CUENTA DE GMAIL
+Este video te guía paso a paso para crear una cuenta de Gmail, que es el primer requisito para poder usar Google Cloud Platform y, posteriormente, Apigee.
+Pasos básicos:
+El proceso es bastante directo: entras a gmail.com, haces clic en "Crear una cuenta" y seleccionas "para uso personal". Luego ingresas tu nombre, apellido, fecha de nacimiento y género. Debes elegir una dirección de correo única y crear una contraseña segura (que incluya letras, números y símbolos).
+¿Por qué es importante?
+Una contraseña fuerte protege tanto tu cuenta de Gmail como todos los proyectos que crearás en la nube. Opcionalmente puedes agregar un correo alternativo o número de teléfono para recuperar tu cuenta si olvidas la contraseña, aunque este paso puede omitirse.
+Al finalizar, aceptas los términos y condiciones y listo: tienes una cuenta de Gmail activa. Esta cuenta es tu puerta de entrada a todo el ecosistema de Google Cloud.
+Qué deberías haber entendido al finalizar esta lección:
+
+Gmail es el punto de partida necesario para acceder a Google Cloud
+Debes crear una contraseña segura para proteger tu cuenta
+Esta cuenta te permitirá acceder a todos los servicios de Google Cloud Platform
+
+
+VIDEO 3: CREACIÓN DE CUENTA EN GOOGLE CLOUD PLATFORM
+Google Cloud Platform (GCP) es la plataforma en la nube de Google donde funciona Apigee. Para usar Apigee, primero debes activar una cuenta de prueba en GCP.
+El proceso de activación:
+Primero buscas "Cloud Console" en Google y accedes a la consola. Allí seleccionas "Comenzar gratis" para activar tu cuenta de prueba. GCP te pide algunos datos básicos: confirmas tu correo de Gmail, seleccionas tu país y aceptas los términos.
+¿Por qué piden tarjeta de crédito?
+Aquí viene la parte que genera dudas: GCP solicita un método de pago (tarjeta de crédito o débito). NO te preocupes, esto es solo una medida de seguridad para evitar fraudes o abusos en las cuentas de prueba. A la fecha del video, Google Cloud no realiza ningún cargo automático.
+Configuración final:
+Después de ingresar tus datos de pago, completas algunos campos sobre tu organización (puedes seleccionar "compañía pequeña"), indicas que estás usando GCP para "aprender o explorar", y seleccionas tu rol (por ejemplo, "Ingeniero/Desarrollador").
+Una vez completado todo, tu cuenta de prueba de Google Cloud está lista para usarse y podrás comenzar a trabajar con Apigee.
+Qué deberías haber entendido al finalizar esta lección:
+
+GCP es la plataforma en la nube donde vive Apigee
+La tarjeta de crédito es solo para validación de seguridad, no te cobran automáticamente
+Una vez activada, tienes acceso completo a los servicios de Google Cloud en modo de prueba
+
+
+VIDEO 4: ARQUITECTURA DE APIGEE X
+Este video explica cómo funciona Apigee "por dentro" a nivel técnico. Aunque suena complicado, entender la arquitectura te ayudará a comprender por qué se configuran las cosas de cierta manera.
+Las dos formas de configurar Apigee:
+Apigee te ofrece dos opciones principales de arquitectura:
+
+Con VPC Peering habilitado: Esta opción conecta dos redes (la tuya y la de Apigee) de forma directa. Es como construir un puente privado entre dos edificios. El "VPC Network Peering" permite que ambas redes intercambien datos sin pasar por Internet, lo cual es más seguro y rápido.
+Con Private Service Connect (VPC Peering deshabilitado): Esta opción usa una tecnología diferente para conectar las redes, pero el concepto es similar: crear una conexión privada y segura.
+
+El flujo básico de una llamada a un API:
+Imagina que alguien desde Internet quiere usar tu API. El proceso es así:
+
+Una aplicación cliente hace una llamada a tu API de Apigee
+La solicitud llega primero a un "balanceador de cargas" (un componente que distribuye el tráfico)
+El balanceador envía la solicitud a unas máquinas virtuales que actúan como "puente"
+Estas máquinas se comunican con la red de Apigee
+Apigee procesa la solicitud y la envía al servicio backend (tu sistema real)
+La respuesta regresa por el mismo camino hasta el cliente
+
+¿Por qué es importante entender esto?
+Porque en el siguiente video vas a aprovisionar (configurar) tu organización de Apigee, y entender esta arquitectura te ayudará a comprender qué está pasando en cada paso de la configuración.
+Qué deberías haber entendido al finalizar esta lección:
+
+Apigee necesita conectar dos redes: la tuya y la de Google
+Hay componentes como balanceadores de carga y máquinas virtuales que hacen posible esta conexión
+El objetivo es que las llamadas a tus APIs fluyan de manera segura y eficiente
+Esta arquitectura puede parecer compleja, pero todo se configura casi automáticamente
+
+
+VIDEO 5: APROVISIONANDO TU ORGANIZACIÓN APIGEE X
+"Aprovisionar" significa configurar y preparar todo lo necesario para que Apigee funcione. Este es el video más práctico e importante de la sección.
+Paso 1: Crear un proyecto en Google Cloud
+Primero creas un proyecto llamado "API Curso" (o el nombre que prefieras). Los proyectos en GCP son como contenedores donde organizas tus recursos.
+Paso 2: Habilitar las APIs necesarias
+La mayoría de servicios en Google Cloud funcionan a través de APIs. Para que Apigee trabaje correctamente, debes habilitar tres APIs:
+
+Apigee API
+Compute Engine API
+Services Networking API
+
+Paso 3: Configurar la red
+Aquí las cosas se vuelven más técnicas. Apigee necesita un rango de direcciones IP para funcionar (algo llamado "notación CIDR /22"). Para este tutorial se usa la VPC "default" (una red que viene por defecto), pero en producción deberías crear una VPC personalizada.
+También se configura un "VPC peering" que conecta tu red con la de Apigee de forma segura.
+Paso 4: Seleccionar las regiones
+Debes elegir dónde se alojarán tus datos. Se recomienda usar la misma región para los datos analíticos y el runtime (el motor de ejecución) para optimizar costos y rendimiento.
+Paso 5: Aprovisionar
+Das clic en "Aprovisionar" y... esperas. Este proceso puede tardar hasta 45 minutos. Es un buen momento para un café o descanso.
+Paso 6: Configurar el Access Routing
+Defines cómo los usuarios accederán a tus APIs:
+
+External: Acceso desde Internet (cualquier persona)
+Internal: Acceso restringido solo desde dentro de tu red
+
+Para el tutorial se elige "External" y se usa un dominio wildcard (un dominio temporal que Google proporciona). En producción usarías tu propio dominio.
+Verificación final:
+Apigee crea un proxy de prueba que puedes llamar usando una URL específica. Debes guardar esta URL porque la usarás durante todo el curso.
+Qué deberías haber entendido al finalizar esta lección:
+
+Aprovisionar Apigee implica varios pasos de configuración técnica
+El proceso es mayormente automático, pero toma tiempo (unos 45 minutos)
+Al final obtienes una URL para probar que todo funciona correctamente
+Ahora tienes una organización de Apigee lista para trabajar
+
+
+VIDEO 6: ELIMINAR APIGEE X DE PRUEBA
+IMPORTANTE: Este video debes verlo AL FINAL del curso, no ahora. Está incluido aquí para que sepas cómo eliminar todo cuando termines de aprender, evitando cargos innecesarios en tu cuenta.
+¿Por qué eliminar?
+Aunque estás usando una cuenta de prueba, si dejas Apigee funcionando por mucho tiempo podrías generar gastos. Este video te enseña cómo limpiar todo correctamente.
+El proceso de eliminación:
+
+Deshabilitar la facturación: Vas al menú "Billing" en GCP, seleccionas tu proyecto "curso-api" y deshabilitas el billing (facturación).
+Eliminar el proyecto: Luego vas a "Cloud Overview", seleccionas tu proyecto y lo eliminas. Te pedirá confirmar el ID del proyecto para asegurarte de que realmente quieres borrarlo.
+Verificación: Una vez eliminado, el proyecto desaparece de tu lista. Si intentas acceder a Apigee, verás que ya no existe tu organización.
+
+¿Cuándo hacer esto?
+Solo cuando hayas completado todo el curso y ya no necesites practicar. Mientras estés aprendiendo, mantén tu organización activa.
+Qué deberías haber entendido al finalizar esta lección:
+
+Este paso es para el FINAL del curso, no para ahora
+Eliminar el proyecto evita cargos innecesarios
+El proceso tiene dos pasos: deshabilitar billing y luego eliminar el proyecto
+Una vez eliminado, deberás crear todo de nuevo si quieres volver a practicar

@@ -1,0 +1,61 @@
+{
+  "titulo": "Manejo Estándar de Excepciones con Programación Orientada a Aspectos",
+  "resumen": "Introducción al manejo centralizado de excepciones usando @ControllerAdvice y programación orientada a aspectos (AOP). Se explica por qué manejar excepciones de forma distribuida (try-catch en cada método) es ineficiente, y cómo @ControllerAdvice permite interceptar todas las excepciones en un solo lugar con código reutilizable.",
+  "puntosClave": [
+    "Problema: try-catch en cada método del controller es repetitivo",
+    "Solución: @ControllerAdvice intercepta excepciones globalmente",
+    "Programación Orientada a Aspectos (AOP): separar concerns transversales",
+    "Concerns transversales: logging, seguridad, manejo de excepciones",
+    "@ControllerAdvice: componente Spring que actúa como proxy",
+    "Intercepta excepciones antes de llegar al cliente",
+    "Permite transformar excepciones en respuestas HTTP consistentes",
+    "@ExceptionHandler: método que maneja tipo específico de excepción",
+    "Un handler centralizado para cada tipo: @ExceptionHandler(NotFoundException.class)",
+    "Retornar ResponseEntity con código HTTP apropiado",
+    "Evita código duplicado en controllers",
+    "Facilita cambios: modificar respuesta de error en un solo lugar"
+  ],
+  "conceptos": [
+    {
+      "nombre": "@ControllerAdvice",
+      "descripcion": "Anotación Spring que permite manejar excepciones globalmente para todos los controllers"
+    },
+    {
+      "nombre": "AOP (Aspect-Oriented Programming)",
+      "descripcion": "Paradigma que separa concerns transversales del código de negocio"
+    },
+    {
+      "nombre": "@ExceptionHandler",
+      "descripcion": "Anotación en método que maneja tipo específico de excepción"
+    },
+    {
+      "nombre": "Cross-Cutting Concerns",
+      "descripcion": "Funcionalidades que afectan múltiples capas (logging, seguridad, excepciones)"
+    },
+    {
+      "nombre": "Global Exception Handler",
+      "descripcion": "Componente centralizado que maneja todas las excepciones de la aplicación"
+    },
+    {
+      "nombre": "Exception Interception",
+      "descripcion": "Interceptar excepciones antes de que lleguen al cliente"
+    },
+    {
+      "nombre": "Proxy Pattern",
+      "descripcion": "@ControllerAdvice actúa como proxy interceptando llamadas"
+    },
+    {
+      "nombre": "Código Reutilizable",
+      "descripcion": "Un handler sirve para todas las ocurrencias del mismo tipo de excepción"
+    },
+    {
+      "nombre": "Centralización de Lógica",
+      "descripcion": "Manejar excepciones en un solo lugar en vez de distribuido"
+    },
+    {
+      "nombre": "Respuestas Consistentes",
+      "descripcion": "Mismo formato de error para todas las APIs del microservicio"
+    }
+  ],
+  "codigoEjemplo": null
+}

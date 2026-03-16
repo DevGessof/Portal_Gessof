@@ -1,0 +1,75 @@
+{
+  "titulo": "Configuración de Autenticación Básica con Usuario y Contraseña",
+  "resumen": "Implementación de Spring Security con autenticación básica (Basic Auth). Se crea SecurityConfig con SecurityFilterChain, se configura usuario en memoria, y se protegen endpoints. Se explica flujo de autenticación y cómo enviar credenciales en header Authorization con formato Base64.",
+  "puntosClave": [
+    "Agregar dependencia: spring-boot-starter-security",
+    "Crear clase SecurityConfig con @Configuration y @EnableWebSecurity",
+    "Definir @Bean SecurityFilterChain para configurar seguridad",
+    "Configurar autenticación básica: http.httpBasic()",
+    "Crear usuario en memoria con UserDetailsService:",
+    "  - username: admin",
+    "  - password: {noop}password (noop = sin encriptar)",
+    "  - roles: USER, ADMIN",
+    "Proteger endpoints: .authorizeHttpRequests()",
+    "Permitir públicos: .requestMatchers(\"/actuator/health\").permitAll()",
+    "Requerir autenticación: .anyRequest().authenticated()",
+    "Header Authorization: Basic base64(username:password)",
+    "Ejemplo: Authorization: Basic YWRtaW46cGFzc3dvcmQ=",
+    "Probar con Postman/curl agregando header Authorization"
+  ],
+  "conceptos": [
+    {
+      "nombre": "spring-boot-starter-security",
+      "descripcion": "Starter que incluye Spring Security y autoconfiguraciones"
+    },
+    {
+      "nombre": "@EnableWebSecurity",
+      "descripcion": "Anotación que habilita configuración personalizada de Spring Security"
+    },
+    {
+      "nombre": "SecurityFilterChain",
+      "descripcion": "Bean que define cadena de filtros de seguridad"
+    },
+    {
+      "nombre": "httpBasic()",
+      "descripcion": "Configuración para autenticación HTTP Basic"
+    },
+    {
+      "nombre": "UserDetailsService",
+      "descripcion": "Interfaz para cargar datos de usuario (desde BD, memoria, LDAP)"
+    },
+    {
+      "nombre": "InMemoryUserDetailsManager",
+      "descripcion": "Implementación de UserDetailsService que almacena usuarios en memoria"
+    },
+    {
+      "nombre": "PasswordEncoder",
+      "descripcion": "Interfaz para codificar/verificar contraseñas"
+    },
+    {
+      "nombre": "{noop}",
+      "descripcion": "Prefijo que indica contraseña sin codificar (solo desarrollo)"
+    },
+    {
+      "nombre": "authorizeHttpRequests()",
+      "descripcion": "Configuración de reglas de autorización por URL"
+    },
+    {
+      "nombre": "requestMatchers()",
+      "descripcion": "Define patrones de URL a los que aplicar regla"
+    },
+    {
+      "nombre": "permitAll()",
+      "descripcion": "Permite acceso sin autenticación"
+    },
+    {
+      "nombre": "authenticated()",
+      "descripcion": "Requiere que usuario esté autenticado"
+    },
+    {
+      "nombre": "Base64 Encoding",
+      "descripcion": "Codificación de username:password para header Authorization"
+    }
+  ],
+  "codigoEjemplo": "<!-- pom.xml - Agregar Spring Security -->\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-security</artifactId>\n</dependency>\n\n// SecurityConfig.java\npackage com.paymentchange.customer.config;\n\nimport org.springframework.context.annotation.Bean;\nimport org.springframework.context.annotation.Configuration;\nimport org.springframework.security.config.annotation.web.builders.HttpSecurity;\nimport org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;\nimport org.springframework.security.core.userdetails.User;\nimport org.springframework.security.core.userdetails.UserDetails;\nimport org.springframework.security.core.userdetails.UserDetailsService;\nimport org.springframework.security.provisioning.InMemoryUserDetailsManager;\nimport org.springframework.security.web.SecurityFilterChain;\n\n@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n    \n    @Bean\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) \n            throws Exception {\n        http\n            // Configurar autenticación básica\n            .httpBasic()\n            .and()\n            // Configurar autorización\n            .authorizeHttpRequests(auth -> auth\n                // Permitir endpoints públicos\n                .requestMatchers(\"/actuator/health\").permitAll()\n                .requestMatchers(\"/swagger-ui/**\").permitAll()\n                .requestMatchers(\"/v3/api-docs/**\").permitAll()\n                // Todos los demás requieren autenticación\n                .anyRequest().authenticated()\n            );\n        \n        return http.build();\n    }\n    \n    @Bean\n    public UserDetailsService userDetailsService() {\n        // Usuario en memoria para desarrollo\n        UserDetails user = User.builder()\n            .username(\"admin\")\n            .password(\"{noop}password\")  // {noop} = sin codificar\n            .roles(\"USER\", \"ADMIN\")\n            .build();\n        \n        return new InMemoryUserDetailsManager(user);\n    }\n}\n\n# Probar con curl\ncurl -X GET http://localhost:8081/api/v1/customer \\\n  -H \"Authorization: Basic YWRtaW46cGFzc3dvcmQ=\"\n\n# Generar Base64 de \"admin:password\"\necho -n \"admin:password\" | base64\n# Output: YWRtaW46cGFzc3dvcmQ=\n\n# Probar sin autenticación (debe fallar con 401)\ncurl -X GET http://localhost:8081/api/v1/customer\n# Response: 401 Unauthorized"
+}

@@ -1,0 +1,51 @@
+{
+  "titulo": "Spring Boot vs Spring Framework: Diferencias Fundamentales",
+  "resumen": "Explicación de las diferencias entre Spring Framework y Spring Boot. Spring Framework es el marco base que ayuda con tareas repetitivas, pero requiere configuración manual XML. Spring Boot es una evolución que elimina esta complejidad mediante 'starters' y servidor embebido Tomcat, permitiendo al desarrollador enfocarse en la lógica de negocio.",
+  "puntosClave": [
+    "Spring Framework: marco de trabajo para rapidez y productividad",
+    "Spring Boot: evolución de Spring Framework, más fácil de usar",
+    "Spring Framework requería configuración XML manual y tediosa",
+    "Spring Boot usa 'starters' que son ficheros POM con configuraciones predefinidas",
+    "Trae servidor Tomcat embebido por defecto (también Jetty o Undertow)",
+    "Elimina configuración manual de beans, inyección de dependencias y descriptores",
+    "Permite iniciar proyectos en 2-3 pasos con un asistente",
+    "Facilita el empaquetado y despliegue (JAR auto-contenido)",
+    "Compatible con Docker y DevOps",
+    "En entrevistas: mencionar starters y Tomcat embebido como diferencias clave"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Spring Framework",
+      "descripcion": "Marco de trabajo Java con plantillas pre-construidas para tareas repetitivas como acceso a BD y seguridad"
+    },
+    {
+      "nombre": "Spring Boot",
+      "descripcion": "Evolución de Spring que simplifica la configuración mediante starters y autoconfiguración"
+    },
+    {
+      "nombre": "Starters",
+      "descripcion": "Ficheros POM XML que definen dependencias y configuraciones necesarias para funcionalidades específicas"
+    },
+    {
+      "nombre": "Tomcat Embebido",
+      "descripcion": "Servidor de aplicaciones incluido por defecto en Spring Boot que no requiere instalación externa"
+    },
+    {
+      "nombre": "Maven",
+      "descripcion": "Herramienta de gestión de proyectos Java usada principalmente con Spring Boot"
+    },
+    {
+      "nombre": "POM XML",
+      "descripcion": "Project Object Model, archivo que define las dependencias y configuración del proyecto Maven"
+    },
+    {
+      "nombre": "JAR",
+      "descripcion": "Java Archive, formato de empaquetado que contiene todo lo necesario para ejecutar la aplicación"
+    },
+    {
+      "nombre": "Inyección de Dependencias",
+      "descripcion": "Patrón de diseño que Spring maneja automáticamente para gestionar componentes"
+    }
+  ],
+  "codigoEjemplo": "// Ejemplo de Starter en pom.xml\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-web</artifactId>\n</dependency>\n\n// Esto incluye automáticamente:\n// - Tomcat embebido\n// - Spring MVC\n// - Jackson para JSON\n// - Validación"
+}

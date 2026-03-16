@@ -1,0 +1,69 @@
+{
+  "titulo": "Codificación: Crear Microservicio API Gateway e Incluirlo en Arquitectura",
+  "resumen": "Creación de microservicio API Gateway con Spring Cloud Gateway. Se genera proyecto, se agregan dependencias, se crea estructura de módulo, y se integra en multi-módulo Maven. Gateway listo para configuración de rutas.",
+  "puntosClave": [
+    "Crear módulo api-gateway en infrastructure-services",
+    "Dependencias necesarias:",
+    "  - spring-cloud-starter-gateway",
+    "  - spring-boot-starter-actuator",
+    "  - spring-cloud-starter-netflix-eureka-client",
+    "Crear clase ApiGatewayApplication con @SpringBootApplication",
+    "NO incluir spring-boot-starter-web (Gateway usa WebFlux)",
+    "Configurar puerto en application.yml: server.port=8080",
+    "Nombre de aplicación: spring.application.name=api-gateway",
+    "Agregar módulo a pom.xml padre en <modules>",
+    "Estructura de directorios:",
+    "  api-gateway/",
+    "    src/main/java/com/paymentchange/apigateway/",
+    "      ApiGatewayApplication.java",
+    "      config/",
+    "      filter/",
+    "    src/main/resources/",
+    "      application.yml",
+    "Validar compilación: mvn clean compile",
+    "Gateway inicialmente no tiene rutas configuradas"
+  ],
+  "conceptos": [
+    {
+      "nombre": "spring-cloud-starter-gateway",
+      "descripcion": "Starter que incluye Spring Cloud Gateway y WebFlux"
+    },
+    {
+      "nombre": "WebFlux vs WebMVC",
+      "descripcion": "WebFlux es reactivo/non-blocking, WebMVC es tradicional/blocking"
+    },
+    {
+      "nombre": "Reactive Programming",
+      "descripcion": "Paradigma basado en streams asíncronos de datos"
+    },
+    {
+      "nombre": "Non-Blocking I/O",
+      "descripcion": "Operaciones I/O no bloquean thread, mejora throughput"
+    },
+    {
+      "nombre": "Gateway Module",
+      "descripcion": "Módulo Maven separado para API Gateway"
+    },
+    {
+      "nombre": "Infrastructure Services",
+      "descripcion": "Grupo de servicios de infraestructura (Eureka, Config, Gateway)"
+    },
+    {
+      "nombre": "application.yml",
+      "descripcion": "Archivo de configuración en formato YAML"
+    },
+    {
+      "nombre": "Spring Cloud",
+      "descripcion": "Conjunto de proyectos para patrones comunes de microservicios"
+    },
+    {
+      "nombre": "Multi-Module Maven",
+      "descripcion": "Proyecto Maven con múltiples módulos relacionados"
+    },
+    {
+      "nombre": "Gateway Initialization",
+      "descripcion": "Gateway inicia sin rutas, se configuran después"
+    }
+  ],
+  "codigoEjemplo": "<!-- pom.xml - API Gateway Module -->\n<project>\n    <parent>\n        <groupId>com.paymentchange</groupId>\n        <artifactId>infrastructure-services</artifactId>\n        <version>1.0.0</version>\n    </parent>\n    \n    <artifactId>api-gateway</artifactId>\n    <name>API Gateway</name>\n    \n    <dependencies>\n        <!-- Spring Cloud Gateway -->\n        <dependency>\n            <groupId>org.springframework.cloud</groupId>\n            <artifactId>spring-cloud-starter-gateway</artifactId>\n        </dependency>\n        \n        <!-- Eureka Client -->\n        <dependency>\n            <groupId>org.springframework.cloud</groupId>\n            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>\n        </dependency>\n        \n        <!-- Actuator -->\n        <dependency>\n            <groupId>org.springframework.boot</groupId>\n            <artifactId>spring-boot-starter-actuator</artifactId>\n        </dependency>\n        \n        <!-- Lombok -->\n        <dependency>\n            <groupId>org.projectlombok</groupId>\n            <artifactId>lombok</artifactId>\n            <scope>provided</scope>\n        </dependency>\n        \n        <!-- NO incluir spring-boot-starter-web -->\n        <!-- Gateway usa WebFlux, no WebMVC -->\n    </dependencies>\n</project>\n\n// ApiGatewayApplication.java\npackage com.paymentchange.apigateway;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\nimport org.springframework.cloud.client.discovery.EnableDiscoveryClient;\n\n@SpringBootApplication\n@EnableDiscoveryClient\npublic class ApiGatewayApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(ApiGatewayApplication.class, args);\n    }\n}\n\n# application.yml\nserver:\n  port: 8080\n\nspring:\n  application:\n    name: api-gateway\n  cloud:\n    gateway:\n      # Configuración de rutas (próxima clase)\n      routes: []\n\neureka:\n  client:\n    serviceUrl:\n      defaultZone: http://localhost:8761/eureka/\n    register-with-eureka: true\n    fetch-registry: true\n\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: '*'\n  endpoint:\n    health:\n      show-details: always"
+}

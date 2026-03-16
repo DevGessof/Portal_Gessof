@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portal educativo GESSOF Academy — Aprende Angular desde cero hasta experto. 24 secciones, 33.4 horas de video con resúmenes didácticos.">
+    <title>GESSOF Academy — Angular de Cero a Experto</title>
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Estilos (mismo orden que SpringBoot) -->
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/components.css">
+    <link rel="stylesheet" href="./css/dark-mode.css">
+</head>
+<body>
+
+    <!-- Fondo -->
+    <div class="bg-pattern"></div>
+
+    <!-- ── HEADER / NAVEGACION PRINCIPAL ───────────────────────────────── -->
+    <nav class="main-nav-tabs">
+        <div class="nav-container">
+            <!-- Logo - Solo icono -->
+            <div style="display:flex; align-items:center;">
+                <div style="width:36px; height:36px; background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                    <i class="fab fa-angular" style="color:white; font-size:1.2rem;"></i>
+                </div>
+            </div>
+
+            <!-- Tabs de navegación -->
+            <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+                <button class="main-nav-tab active" onclick="switchMainTab(event, 'section-inicio')">
+                    <i class="fas fa-home"></i> Inicio
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-herramientas')">
+                    <i class="fas fa-tools"></i> Herramientas
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-curso')">
+                    <i class="fas fa-play-circle"></i> Curso
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-evaluacion')">
+                    <i class="fas fa-clipboard-check"></i> Evaluación
+                </button>
+                <button class="main-nav-tab" onclick="switchMainTab(event, 'section-glosario')">
+                    <i class="fas fa-book"></i> Glosario
+                </button>
+            </div>
+
+            <!-- Controles de usuario -->
+            <div style="display:flex; align-items:center; gap:12px;">
+                <!-- Barra de progreso -->
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="width:100px; height:6px; background:var(--border); border-radius:10px; overflow:hidden;">
+                        <div id="progressFill" style="height:100%; background:linear-gradient(90deg, var(--primary), var(--accent-green)); width:0%; transition:width 0.5s ease; border-radius:10px;"></div>
+                    </div>
+                    <span id="progressText" style="font-size:0.78rem; font-weight:700; color:var(--text-muted);">0%</span>
+                </div>
+
+                <!-- Usuario -->
+                <button onclick="changeUser()" style="display:flex; align-items:center; gap:6px; background:var(--bg-main); border:1px solid var(--border); border-radius:var(--radius-lg); padding:6px 12px; cursor:pointer; font-family:inherit; font-size:0.85rem; color:var(--text-secondary); transition:all 0.2s;">
+                    <i class="fas fa-user-circle" style="color:var(--primary);"></i>
+                    <span id="userNameDisplay">Invitado</span>
+                </button>
+
+                <!-- Toggle de tema -->
+                <button onclick="toggleTheme()" style="width:36px; height:36px; background:var(--bg-main); border:1px solid var(--border); border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s;" title="Cambiar tema">
+                    <i class="fas fa-moon" style="color:var(--text-muted);"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── CONTENIDO PRINCIPAL ─────────────────────────────────────────── -->
+    <main class="main-content">
+
+        <!-- ════════════════════════════════════════════════
+             SECCIÓN: INICIO
+             ════════════════════════════════════════════════ -->
+        <section id="section-inicio" class="main-content-section active">
+
+            <!-- Hero Block -->
+            <div class="hero">
+                <div class="hero-badge"><i class="fab fa-angular"></i> Angular 19 · Standalone Components & Signals</div>
+                <h1>Aprende Angular desde Cero hasta Experto</h1>
+                <p>Domina el framework de Google con las últimas funcionalidades: Signals, Standalone Components, rxResource, Guards y consumo de microservicios REST.</p>
+
+                <!-- Espaciador -->
+                <div style="height: 1rem;"></div>
+
+                <div class="hero-stats">
+                    <div>
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Secciones del Curso</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">+33h</div>
+                        <div class="stat-label">Horas de Video</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">Angular 19</div>
+                        <div class="stat-label">Framework</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Preguntas de Evaluación</div>
+                    </div>
+                </div>
+
+                <!-- Efecto decorativo Angular -->
+                <div style="position:absolute; right:-30px; top:-30px; font-size:12rem; opacity:0.04; user-select:none; pointer-events:none;">
+                    <i class="fab fa-angular"></i>
+                </div>
+            </div>
+
+            <!-- Contenido detallado de PROJECT_RULES.md (L81-148) -->
+            <div class="inicio-rules-content" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:2rem; margin-top:2rem;">
+                
+                <div class="rules-card" style="background:var(--bg-card); padding:2rem; border-radius:var(--radius-xl); border:1px solid var(--border);">
+                    <h3 style="color:var(--primary); font-size:1.25rem; font-weight:800; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.75rem;">
+                        <i class="fas fa-graduation-cap"></i> Lo que aprenderás
+                    </h3>
+                    <ul style="list-style:none; padding:0; display:grid; gap:0.75rem; color:var(--text-secondary);">
+                        <li><i class="fas fa-check-circle" style="color:var(--accent-green); margin-right:8px;"></i> Angular profundamente</li>
+                        <li><i class="fas fa-check-circle" style="color:var(--accent-green); margin-right:8px;"></i> TypeScript</li>
+                        <li><i class="fas fa-check-circle" style="color:var(--accent-green); margin-right:8px;"></i> ESCMAScript</li>
+                        <li><i class="fas fa-check-circle" style="color:var(--accent-green); margin-right:8px;"></i> Muchos temas más</li>
+                    </ul>
+                    <p style="margin-top:1.5rem; font-size:0.9rem; color:var(--text-muted);">
+                        Al finalizar el curso, estarás listo para enfrentar cualquier desafío web con Angular.
+                    </p>
+                </div>
+
+                <div class="rules-card" style="background:var(--bg-card); padding:2rem; border-radius:var(--radius-xl); border:1px solid var(--border);">
+                    <h3 style="color:var(--primary); font-size:1.25rem; font-weight:800; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.75rem;">
+                        <i class="fas fa-cubes"></i> Temas Destacados
+                    </h3>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; font-size:0.88rem; color:var(--text-secondary);">
+                        <div>
+                            <ul style="list-style:none; padding:0; display:grid; gap:0.5rem;">
+                                <li>• Hola Mundo en Angular</li>
+                                <li>• NgModules vs Standalone</li>
+                                <li>• Re-utilización de componentes</li>
+                                <li>• Writable Signals</li>
+                                <li>• Computed Signals</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul style="list-style:none; padding:0; display:grid; gap:0.5rem;">
+                                <li>• Efectos y RxJS</li>
+                                <li>• Resource Signals</li>
+                                <li>• rxResource</li>
+                                <li>• Triggers</li>
+                                <li>• Optimización de componentes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rules-card" style="background:var(--bg-card); padding:2rem; border-radius:var(--radius-xl); border:1px solid var(--border); border-left: 4px solid var(--primary);">
+                    <h3 style="color:var(--primary); font-size:1.25rem; font-weight:800; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.75rem;">
+                        <i class="fas fa-list-ul"></i> Requisitos de Ingreso
+                    </h3>
+                    <div style="display:grid; gap:1.25rem;">
+                        <ul style="list-style:none; padding:0; display:grid; gap:0.75rem; color:var(--text-secondary); font-size:0.9rem;">
+                            <li><i class="fas fa-arrow-right" style="color:var(--primary); margin-right:8px;"></i> Saber <strong>JavaScript básico</strong></li>
+                            <li><i class="fas fa-arrow-right" style="color:var(--primary); margin-right:8px;"></i> NO es necesario saber <strong>TypeScript</strong> pero ayudaría</li>
+                            <li><i class="fas fa-arrow-right" style="color:var(--primary); margin-right:8px;"></i> NO es necesario conocimiento de <strong>Angular</strong> previo</li>
+                        </ul>
+                        <div style="background:var(--bg-main); padding:1rem; border-radius:var(--radius-lg); font-size:0.85rem; border:1px solid var(--border);">
+                            <p style="margin:0; color:var(--text-primary); font-weight:600; margin-bottom:0.5rem;">
+                                <i class="fas fa-exclamation-triangle" style="color:#f59e0b;"></i> ¿Sin bases de JavaScript?
+                            </p>
+                            <p style="margin:0; color:var(--text-muted); line-height:1.4;">
+                                Recomendamos completar este curso antes de iniciar Angular:
+                            </p>
+                            <a href="https://www.aprendejavascript.dev/" target="_blank" style="display:inline-flex; align-items:center; gap:0.4rem; margin-top:0.75rem; color:var(--primary); text-decoration:none; font-weight:700;">
+                                <i class="fas fa-external-link-alt"></i> aprendejavascript.dev <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rules-card" style="grid-column: 1 / -1; background:linear-gradient(rgba(221,0,49,0.05), transparent); padding:2rem; border-radius:var(--radius-xl); border:1px solid var(--border);">
+                    <p style="font-style:italic; color:var(--text-secondary); line-height:1.6; text-align:center;">
+                        "Este es un curso robusto de Angular, donde no solamente se aprenderá eso, también se aprenderán otros temas importantes dentro del ecosistema de la vanguardia de aplicaciones Angular."
+                    </p>
+                </div>
+            </div>
+
+            <!-- Mapa de Progreso de Secciones (Mantenido) -->
+            <div style="background:var(--bg-card); border-radius:var(--radius-xl); padding:2rem; border:1px solid var(--border); box-shadow:var(--shadow-md); margin-top:2.5rem;">
+                <h2 style="font-size:1.4rem; font-weight:800; margin-bottom:0.5rem;">Estructura del Curso</h2>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.5rem;">24 secciones agrupadas por temas principales</p>
+                <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:0.75rem;">
+                    <div style="padding:0.875rem; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:var(--radius-md);">
+                        <div style="font-size:0.7rem; font-weight:700; color:#ef4444; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.25rem;">Imprescindible</div>
+                        <div style="font-size:0.85rem; color:var(--text-primary); font-weight:600;">S3-S7 · Fundamentos</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Signals, componentes, HTTP</div>
+                    </div>
+                    <div style="padding:0.875rem; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:var(--radius-md);">
+                        <div style="font-size:0.7rem; font-weight:700; color:#ef4444; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.25rem;">Imprescindible</div>
+                        <div style="font-size:0.85rem; color:var(--text-primary); font-weight:600;">S10-S11 · Integración</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted);">APIs REST, Routing avanzado</div>
+                    </div>
+                    <div style="padding:0.875rem; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:var(--radius-md);">
+                        <div style="font-size:0.7rem; font-weight:700; color:#ef4444; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.25rem;">Imprescindible</div>
+                        <div style="font-size:0.85rem; color:var(--text-primary); font-weight:600;">S18-S23 · Auth & E-commerce</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted);">JWT, Guards, Formularios, CRUD</div>
+                    </div>
+                    <div style="padding:0.875rem; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.2); border-radius:var(--radius-md);">
+                        <div style="font-size:0.7rem; font-weight:700; color:#f59e0b; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.25rem;">Muy Recomendado</div>
+                        <div style="font-size:0.85rem; color:var(--text-primary); font-weight:600;">S9, S12-S16 · Complementos</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Caché, Formularios, Pipes</div>
+                    </div>
+                    <div style="padding:0.875rem; background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.2); border-radius:var(--radius-md);">
+                        <div style="font-size:0.7rem; font-weight:700; color:#3b82f6; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.25rem;">Útil</div>
+                        <div style="font-size:0.85rem; color:var(--text-primary); font-weight:600;">S13, S17 · Extras</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted);">CSS dinámico, Directivas</div>
+                    </div>
+                    <div style="padding:0.875rem; background:rgba(107,114,128,0.08); border:1px solid rgba(107,114,128,0.2); border-radius:var(--radius-md);">
+                        <div style="font-size:0.7rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.25rem;">Opcional</div>
+                        <div style="font-size:0.85rem; color:var(--text-primary); font-weight:600;">S1, S2, S8, S24</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Intro, config, extras</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════════════════════════════════════════
+             SECCIÓN: HERRAMIENTAS
+             ════════════════════════════════════════════════ -->
+        <section id="section-herramientas" class="main-content-section">
+            <div class="hero">
+                <div class="hero-badge"><i class="fas fa-tools"></i> Herramientas del Ecosistema Angular</div>
+                <h1>Herramientas y Tecnologías</h1>
+                <p>Todo el stack tecnológico utilizado en el curso, con acceso directo a la documentación oficial.</p>
+            </div>
+
+            <div class="grid-modules">
+                <div class="module">
+                    <div class="module-icon" style="background:linear-gradient(135deg,#dd0031,#b30026);"><i class="fab fa-angular"></i></div>
+                    <h3 style="font-weight:700; margin-bottom:0.5rem;">Angular 19</h3>
+                    <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:1rem;">Framework principal. Standalone Components, Signals, Routing y más.</p>
+                    <a href="https://angular.dev" target="_blank" style="color:var(--primary); font-size:0.875rem; font-weight:600; text-decoration:none;">Documentación oficial →</a>
+                </div>
+                <div class="module">
+                    <div class="module-icon" style="background:linear-gradient(135deg,#3178c6,#235a97);"><i class="fab fa-js"></i></div>
+                    <h3 style="font-weight:700; margin-bottom:0.5rem;">TypeScript 5</h3>
+                    <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:1rem;">Tipado estático, interfaces, decoradores y funciones genéricas.</p>
+                    <a href="https://www.typescriptlang.org/docs/" target="_blank" style="color:var(--primary); font-size:0.875rem; font-weight:600; text-decoration:none;">Documentación →</a>
+                </div>
+                <div class="module">
+                    <div class="module-icon" style="background:linear-gradient(135deg,#b7178c,#9b0d76);"><i class="fas fa-infinity"></i></div>
+                    <h3 style="font-weight:700; margin-bottom:0.5rem;">RxJS 7</h3>
+                    <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:1rem;">Programación reactiva: Observables, operadores `tap`, `map`, `forkJoin`.</p>
+                    <a href="https://rxjs.dev" target="_blank" style="color:var(--primary); font-size:0.875rem; font-weight:600; text-decoration:none;">Documentación →</a>
+                </div>
+                <div class="module">
+                    <div class="module-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);"><i class="fas fa-plug"></i></div>
+                    <h3 style="font-weight:700; margin-bottom:0.5rem;">Angular CLI</h3>
+                    <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:1rem;">Herramienta de línea de comandos para crear, generar y construir proyectos.</p>
+                    <a href="https://angular.dev/tools/cli" target="_blank" style="color:var(--primary); font-size:0.875rem; font-weight:600; text-decoration:none;">Guía del CLI →</a>
+                </div>
+                <div class="module">
+                    <div class="module-icon" style="background:linear-gradient(135deg,#6366f1,#4f46e5);"><i class="fas fa-server"></i></div>
+                    <h3 style="font-weight:700; margin-bottom:0.5rem;">Node.js & npm</h3>
+                    <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:1rem;">Entorno de ejecución y gestor de paquetes requerido por Angular CLI.</p>
+                    <a href="https://nodejs.org/docs" target="_blank" style="color:var(--primary); font-size:0.875rem; font-weight:600; text-decoration:none;">Descargar Node.js →</a>
+                </div>
+                <div class="module">
+                    <div class="module-icon" style="background:linear-gradient(135deg,#10b981,#059669);"><i class="fas fa-code"></i></div>
+                    <h3 style="font-weight:700; margin-bottom:0.5rem;">VS Code</h3>
+                    <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:1rem;">Editor recomendado con las extensiones Angular Language Service y ESLint.</p>
+                    <a href="https://code.visualstudio.com" target="_blank" style="color:var(--primary); font-size:0.875rem; font-weight:600; text-decoration:none;">Descargar VS Code →</a>
+                </div>
+                <div class="module">
+                    <div class="module-icon" style="background:linear-gradient(135deg,#e44d31,#c0392b);"><i class="fab fa-git-alt"></i></div>
+                    <h3 style="font-weight:700; margin-bottom:0.5rem;">Git & GitHub</h3>
+                    <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:1rem;">Control de versiones para gestionar los proyectos del curso.</p>
+                    <a href="https://git-scm.com/doc" target="_blank" style="color:var(--primary); font-size:0.875rem; font-weight:600; text-decoration:none;">Documentación Git →</a>
+                </div>
+                <div class="module">
+                    <div class="module-icon" style="background:linear-gradient(135deg,#ff6c37,#e85d04);"><i class="fas fa-exchange-alt"></i></div>
+                    <h3 style="font-weight:700; margin-bottom:0.5rem;">Postman</h3>
+                    <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:1rem;">Cliente HTTP para probar y documentar las APIs REST consumidas en el curso.</p>
+                    <a href="https://www.postman.com" target="_blank" style="color:var(--primary); font-size:0.875rem; font-weight:600; text-decoration:none;">Descargar Postman →</a>
+                </div>
+                <div class="module">
+                    <div class="module-icon" style="background:linear-gradient(135deg,#34A853,#188038);"><i class="fab fa-google-drive"></i></div>
+                    <h3 style="font-weight:700; margin-bottom:0.5rem;">Google Drive</h3>
+                    <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:1rem;">Plataforma de almacenamiento donde se alojan todos los videos del curso.</p>
+                    <a href="https://drive.google.com" target="_blank" style="color:var(--primary); font-size:0.875rem; font-weight:600; text-decoration:none;">Abrir Drive →</a>
+                </div>
+            </div>
+
+            <!-- Comandos Angular CLI útiles -->
+            <div style="background:var(--bg-card); border-radius:var(--radius-xl); padding:2rem; margin-top:2rem; border:1px solid var(--border); box-shadow:var(--shadow-md);">
+                <h2 style="font-size:1.3rem; font-weight:800; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.75rem;">
+                    <i class="fas fa-terminal" style="color:var(--primary);"></i> Comandos Angular CLI Esenciales
+                </h2>
+                <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1rem;">
+                    <div style="background:var(--bg-main); border-radius:var(--radius-md); padding:1rem; font-family:'JetBrains Mono',monospace; font-size:0.85rem;">
+                        <div style="color:var(--text-muted); margin-bottom:0.25rem; font-family:'Outfit',sans-serif; font-size:0.78rem; font-weight:700;">Nuevo proyecto</div>
+                        <code style="color:var(--primary);">ng new mi-proyecto</code>
+                    </div>
+                    <div style="background:var(--bg-main); border-radius:var(--radius-md); padding:1rem; font-family:'JetBrains Mono',monospace; font-size:0.85rem;">
+                        <div style="color:var(--text-muted); margin-bottom:0.25rem; font-family:'Outfit',sans-serif; font-size:0.78rem; font-weight:700;">Servidor de desarrollo</div>
+                        <code style="color:var(--primary);">ng serve --open</code>
+                    </div>
+                    <div style="background:var(--bg-main); border-radius:var(--radius-md); padding:1rem; font-family:'JetBrains Mono',monospace; font-size:0.85rem;">
+                        <div style="color:var(--text-muted); margin-bottom:0.25rem; font-family:'Outfit',sans-serif; font-size:0.78rem; font-weight:700;">Generar componente</div>
+                        <code style="color:var(--primary);">ng g c nombre --standalone</code>
+                    </div>
+                    <div style="background:var(--bg-main); border-radius:var(--radius-md); padding:1rem; font-family:'JetBrains Mono',monospace; font-size:0.85rem;">
+                        <div style="color:var(--text-muted); margin-bottom:0.25rem; font-family:'Outfit',sans-serif; font-size:0.78rem; font-weight:700;">Generar servicio</div>
+                        <code style="color:var(--primary);">ng g s nombre</code>
+                    </div>
+                    <div style="background:var(--bg-main); border-radius:var(--radius-md); padding:1rem; font-family:'JetBrains Mono',monospace; font-size:0.85rem;">
+                        <div style="color:var(--text-muted); margin-bottom:0.25rem; font-family:'Outfit',sans-serif; font-size:0.78rem; font-weight:700;">Build producción</div>
+                        <code style="color:var(--primary);">ng build --configuration=production</code>
+                    </div>
+                    <div style="background:var(--bg-main); border-radius:var(--radius-md); padding:1rem; font-family:'JetBrains Mono',monospace; font-size:0.85rem;">
+                        <div style="color:var(--text-muted); margin-bottom:0.25rem; font-family:'Outfit',sans-serif; font-size:0.78rem; font-weight:700;">Ejecutar tests</div>
+                        <code style="color:var(--primary);">ng test</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════════════════════════════════════════
+             SECCIÓN: CURSO
+             ════════════════════════════════════════════════ -->
+        <section id="section-curso" class="main-content-section">
+            <div class="hero">
+                <div class="hero-badge"><i class="fas fa-play-circle"></i> Angular de Cero a Experto</div>
+                <h1>Contenido del Curso</h1>
+                <p>24 secciones organizadas por nivel de prioridad. Haz clic en cualquier clase para ver el video y su resumen didáctico.</p>
+            </div>
+            <!-- El contenido del curso se genera dinámicamente por ui-builder.js -->
+            <div id="section-clases"></div>
+        </section>
+
+        <!-- ════════════════════════════════════════════════
+             SECCIÓN: EVALUACIÓN
+             ════════════════════════════════════════════════ -->
+        <section id="section-evaluacion" class="main-content-section">
+            <div class="hero" style="padding: 2.5rem; margin-bottom: 2rem;">
+                <h2 style="font-size:1.8rem; font-weight:800; margin-bottom:0.5rem;"><i class="fas fa-clipboard-check"></i> Evaluación de Conocimientos</h2>
+                <p style="color:var(--text-secondary); font-size:1rem; margin:0;">Mide tu dominio de Angular 19 y los patrones de microservicios.</p>
+            </div>
+
+            <!-- Pestañas de Evaluación -->
+            <div class="eval-tabs">
+                <button class="eval-tab active" onclick="switchEvalTab(event, 'eval-teorica')">
+                    <i class="fas fa-brain"></i> Evaluación Teórica
+                </button>
+                <button class="eval-tab" onclick="switchEvalTab(event, 'eval-practica')">
+                    <i class="fas fa-laptop-code"></i> Evaluación Práctica
+                </button>
+            </div>
+
+            <!-- Contenido: Teórica -->
+            <div id="eval-teorica" class="eval-tab-content active">
+                <div id="evaluationContainer">
+                    <!-- Cargado dinámicamente por evaluation.js -->
+                </div>
+            </div>
+
+            <!-- Contenido: Práctica -->
+            <div id="eval-practica" class="eval-tab-content" style="display:none;">
+                <div style="background:var(--bg-card); border-radius:var(--radius-xl); padding:4rem 2rem; text-align:center; border:1px solid var(--border);">
+                    <div style="font-size:4rem; color:var(--accent-orange); margin-bottom:1.5rem;">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3 style="font-size:1.5rem; font-weight:800; color:var(--text-primary); margin-bottom:1rem;">Evaluación Práctica en Construcción</h3>
+                    <p style="color:var(--text-secondary); max-width:500px; margin:0 auto;">Estamos preparando un entorno interactivo para que puedas demostrar tus habilidades resolviendo desafíos reales de Angular.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════════════════════════════════════════
+             SECCIÓN: GLOSARIO
+             ════════════════════════════════════════════════ -->
+        <section id="section-glosario" class="main-content-section">
+            <div class="hero">
+                <div class="hero-badge"><i class="fas fa-book"></i> Terminología de Angular</div>
+                <h1>Glosario de Angular</h1>
+                <p>Todos los términos, conceptos y patrones importantes del framework. Búsqueda en tiempo real.</p>
+            </div>
+
+            <!-- Buscador -->
+            <div style="position:relative; max-width:600px; margin-bottom:2rem;">
+                <i class="fas fa-search" style="position:absolute; left:1rem; top:50%; transform:translateY(-50%); color:var(--text-muted);"></i>
+                <input type="text" id="glossarySearch" class="search-input" placeholder="Buscar término (ej: signal, interceptor, guard)...">
+            </div>
+
+            <!-- Contenedor del glosario (generado dinámicamente) -->
+            <div id="glossaryContainer">
+                <div style="text-align:center; padding:4rem 2rem; color:var(--text-muted);">
+                    <i class="fab fa-angular" style="font-size:4rem; margin-bottom:1rem; opacity:0.2; color:var(--primary);"></i>
+                    <p>El glosario se carga automáticamente al inicializar el portal.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ── FOOTER ───────────────────────────────────────────────────────── -->
+    <footer class="footer">
+        <div style="margin-bottom:1rem;">
+            <i class="fab fa-angular" style="font-size:2rem; color:var(--primary); opacity:0.7;"></i>
+        </div>
+        <p style="font-weight:700; color:var(--text-primary); margin-bottom:0.25rem;">GESSOF Academy</p>
+        <p>Portal Educativo · Angular de Cero a Experto · 24 secciones · +33 horas de video</p>
+        <p style="margin-top:0.5rem; font-size:0.8rem;">Material audiovisual alojado en Google Drive. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- ── MODAL DE VIDEO ───────────────────────────────────────────────── -->
+    <div id="courseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"><i class="fab fa-angular" style="color:var(--primary);"></i> Video del Curso</h2>
+                <span class="close" onclick="closeVideo()" title="Cerrar">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- Reproductor de video -->
+                <div style="position:relative; aspect-ratio:16/9; background:#000; border-radius:var(--radius-md); overflow:hidden; margin-bottom:1.5rem;">
+                    <iframe id="videoFrame" src="" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        style="width:100%; height:100%;"></iframe>
+                </div>
+                <!-- Resumen del video -->
+                <div id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── SCRIPTS (mismo orden que SpringBoot) ─────────────────────────── -->
+    <script src="./js/config.js?v=2"></script>
+    <script src="./js/data-loader.js?v=2"></script>
+    <script src="./js/progress.js?v=2"></script>
+    <script src="./js/player.js?v=2"></script>
+    <script src="./js/ui-builder.js?v=2"></script>
+    <script src="./js/evaluation-data.js?v=2"></script>
+    <script src="./js/evaluation.js?v=2"></script>
+    <script src="./js/app.js?v=2"></script>
+
+</body>
+</html>

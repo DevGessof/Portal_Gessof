@@ -1,0 +1,64 @@
+{
+  "titulo": "Compilar Imágenes Docker desde Dockerfile",
+  "resumen": "Proceso de construcción de imágenes Docker usando comando docker build. Se compila JAR de microservicio con Maven, se ejecuta docker build, se etiquetan imágenes apropiadamente, y se verifican con docker images. Se explica sistema de tags y versionado de imágenes.",
+  "puntosClave": [
+    "Prerequisito: compilar JAR con Maven primero",
+    "mvn clean package -DskipTests para generar JAR",
+    "docker build: comando para construir imagen desde Dockerfile",
+    "Sintaxis: docker build -t nombre:tag directorio",
+    "Ejemplo: docker build -t customer-service:1.0.0 .",
+    "El punto (.) indica contexto de build (directorio actual)",
+    "Docker envía contexto completo al daemon",
+    "Proceso build: ejecuta cada instrucción, crea capa por instrucción",
+    "Tags: etiquetar imágenes para versionado",
+    "  - customer-service:1.0.0 (versión específica)",
+    "  - customer-service:latest (última versión)",
+    "docker images para listar imágenes locales",
+    "docker tag para crear alias de imagen",
+    "docker rmi para eliminar imagen",
+    "Build cache acelera builds subsecuentes"
+  ],
+  "conceptos": [
+    {
+      "nombre": "docker build",
+      "descripcion": "Comando para construir imagen Docker desde Dockerfile"
+    },
+    {
+      "nombre": "Build Context",
+      "descripcion": "Directorio con archivos que Docker puede acceder durante build"
+    },
+    {
+      "nombre": "Image Tag",
+      "descripcion": "Etiqueta para versionar imágenes (nombre:versión)"
+    },
+    {
+      "nombre": "latest Tag",
+      "descripcion": "Tag convencional para última versión de imagen"
+    },
+    {
+      "nombre": "Image Layer",
+      "descripcion": "Cada instrucción Dockerfile crea una capa inmutable"
+    },
+    {
+      "nombre": "Build Cache",
+      "descripcion": "Docker reutiliza capas no modificadas para builds rápidos"
+    },
+    {
+      "nombre": "docker images",
+      "descripcion": "Comando para listar imágenes Docker locales"
+    },
+    {
+      "nombre": "docker tag",
+      "descripcion": "Crear alias/tag adicional para imagen existente"
+    },
+    {
+      "nombre": "docker rmi",
+      "descripcion": "Eliminar imagen del sistema local"
+    },
+    {
+      "nombre": "Image ID",
+      "descripcion": "Hash único SHA256 que identifica imagen"
+    }
+  ],
+  "codigoEjemplo": "# 1. Compilar JAR del microservicio\ncd business-domain/customer\nmvn clean package -DskipTests\n# Output: target/customer-service-1.0.0.jar\n\n# 2. Construir imagen Docker\ndocker build -t customer-service:1.0.0 .\n\n# Output del build:\n# [1/5] FROM openjdk:17-jdk-slim\n# [2/5] WORKDIR /app\n# [3/5] COPY target/customer-service-1.0.0.jar app.jar\n# [4/5] EXPOSE 8081\n# [5/5] ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n# Successfully built abc123def456\n# Successfully tagged customer-service:1.0.0\n\n# 3. Crear tag 'latest'\ndocker tag customer-service:1.0.0 customer-service:latest\n\n# 4. Listar imágenes\ndocker images\n# REPOSITORY          TAG       IMAGE ID       CREATED         SIZE\n# customer-service    1.0.0     abc123def456   2 minutes ago   450MB\n# customer-service    latest    abc123def456   2 minutes ago   450MB\n# openjdk             17-slim   xyz789abc012   2 weeks ago     420MB\n\n# 5. Construir con no-cache (forzar rebuild completo)\ndocker build --no-cache -t customer-service:1.0.0 .\n\n# 6. Ver historial de capas de imagen\ndocker history customer-service:1.0.0\n\n# 7. Inspeccionar imagen\ndocker inspect customer-service:1.0.0\n\n# 8. Eliminar imagen\ndocker rmi customer-service:1.0.0\n\n# 9. Construir múltiples servicios\ncd business-domain/product\nmvn clean package -DskipTests\ndocker build -t product-service:1.0.0 .\n\ncd ../transaction\nmvn clean package -DskipTests\ndocker build -t transaction-service:1.0.0 ."
+}

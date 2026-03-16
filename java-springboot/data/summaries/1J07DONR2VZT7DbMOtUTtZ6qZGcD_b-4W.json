@@ -1,0 +1,62 @@
+{
+  "titulo": "Spring Security: Seguridad en Frontend y Backend",
+  "resumen": "Introducción a la importancia de la seguridad en arquitecturas de microservicios. Se explica por qué la seguridad no es opcional, tipos de ataques comunes (SQL injection, XSS, CSRF), y cómo Spring Security provee protección integral. Se establece diferencia entre autenticación (quién eres) y autorización (qué puedes hacer).",
+  "puntosClave": [
+    "Seguridad es crítica en aplicaciones modernas",
+    "APIs sin seguridad = datos expuestos a cualquiera",
+    "Ataques comunes: SQL injection, XSS, CSRF, DDoS, Man-in-the-Middle",
+    "Spring Security: framework de seguridad para aplicaciones Spring",
+    "Dos conceptos clave:",
+    "  - Autenticación: verificar identidad (usuario/contraseña, token)",
+    "  - Autorización: verificar permisos (roles, authorities)",
+    "Spring Security protege endpoints automáticamente",
+    "Configurable mediante SecurityFilterChain",
+    "Soporte para: Basic Auth, OAuth2, JWT, LDAP, Custom",
+    "Protección contra CSRF (Cross-Site Request Forgery)",
+    "CORS (Cross-Origin Resource Sharing) para frontends",
+    "Headers de seguridad automáticos (X-Frame-Options, X-XSS-Protection)"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Spring Security",
+      "descripcion": "Framework de autenticación y control de acceso para aplicaciones Spring"
+    },
+    {
+      "nombre": "Autenticación",
+      "descripcion": "Proceso de verificar la identidad del usuario (quién eres)"
+    },
+    {
+      "nombre": "Autorización",
+      "descripcion": "Proceso de verificar permisos del usuario (qué puedes hacer)"
+    },
+    {
+      "nombre": "SQL Injection",
+      "descripcion": "Ataque que inyecta código SQL malicioso en queries"
+    },
+    {
+      "nombre": "XSS (Cross-Site Scripting)",
+      "descripcion": "Ataque que inyecta scripts maliciosos en páginas web"
+    },
+    {
+      "nombre": "CSRF (Cross-Site Request Forgery)",
+      "descripcion": "Ataque que fuerza a usuario autenticado a ejecutar acciones no deseadas"
+    },
+    {
+      "nombre": "SecurityFilterChain",
+      "descripcion": "Cadena de filtros que procesan peticiones para aplicar seguridad"
+    },
+    {
+      "nombre": "Basic Authentication",
+      "descripcion": "Autenticación simple con usuario y contraseña en header Authorization"
+    },
+    {
+      "nombre": "JWT (JSON Web Token)",
+      "descripcion": "Token autónomo que contiene claims para autenticación stateless"
+    },
+    {
+      "nombre": "Security Headers",
+      "descripcion": "Headers HTTP que mejoran seguridad (X-Frame-Options, CSP, HSTS)"
+    }
+  ],
+  "codigoEjemplo": null
+}

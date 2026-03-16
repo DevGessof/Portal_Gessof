@@ -1,0 +1,64 @@
+{
+  "titulo": "Descargar y Ejecutar App Angular para Comprender Consumo de API",
+  "resumen": "Ejecución de aplicación Angular de ejemplo que consume APIs de microservicios. Se configura proxy para evitar problemas CORS en desarrollo, se prueban operaciones CRUD desde UI, y se valida integración completa frontend-backend. Demostración de flujo E2E.",
+  "puntosClave": [
+    "Descargar proyecto Angular de ejemplo del curso",
+    "npm install para instalar dependencias",
+    "Configurar proxy.conf.json para desarrollo:",
+    "  - Redirige /api a http://localhost:8081",
+    "  - Evita problemas CORS en desarrollo",
+    "ng serve --proxy-config proxy.conf.json",
+    "Aplicación corre en http://localhost:4200",
+    "Probar operaciones desde UI:",
+    "  - Listar customers (GET /api/v1/customer)",
+    "  - Crear customer (POST /api/v1/customer)",
+    "  - Editar customer (PUT /api/v1/customer/{id})",
+    "  - Eliminar customer (DELETE /api/v1/customer/{id})",
+    "DevTools → Network para ver peticiones HTTP",
+    "Validar que headers de autenticación se envían correctamente",
+    "Verificar respuestas JSON y manejo de errores en UI"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Angular CLI",
+      "descripcion": "Herramienta de línea de comandos para proyectos Angular"
+    },
+    {
+      "nombre": "ng serve",
+      "descripcion": "Comando que inicia servidor de desarrollo Angular"
+    },
+    {
+      "nombre": "proxy.conf.json",
+      "descripcion": "Archivo de configuración para proxy en desarrollo Angular"
+    },
+    {
+      "nombre": "Development Proxy",
+      "descripcion": "Proxy que redirige peticiones /api al backend para evitar CORS"
+    },
+    {
+      "nombre": "npm install",
+      "descripcion": "Comando para instalar dependencias Node.js del proyecto"
+    },
+    {
+      "nombre": "Browser DevTools",
+      "descripcion": "Herramientas de desarrollador del navegador (Network, Console)"
+    },
+    {
+      "nombre": "CRUD UI",
+      "descripcion": "Interfaz para operaciones Create, Read, Update, Delete"
+    },
+    {
+      "nombre": "HTTP Interceptor",
+      "descripcion": "Servicio Angular que intercepta requests para agregar headers"
+    },
+    {
+      "nombre": "Error Handling UI",
+      "descripcion": "Mostrar mensajes de error user-friendly en interfaz"
+    },
+    {
+      "nombre": "E2E Flow",
+      "descripcion": "Flujo completo de frontend a backend a base de datos"
+    }
+  ],
+  "codigoEjemplo": "// proxy.conf.json - Configuración proxy desarrollo\n{\n  \"/api\": {\n    \"target\": \"http://localhost:8081\",\n    \"secure\": false,\n    \"changeOrigin\": true,\n    \"logLevel\": \"debug\"\n  }\n}\n\n# package.json - Scripts npm\n{\n  \"scripts\": {\n    \"start\": \"ng serve --proxy-config proxy.conf.json\",\n    \"build\": \"ng build --prod\"\n  }\n}\n\n# Ejecutar aplicación\nnpm install\nnpm start\n\n# Aplicación disponible en:\n# http://localhost:4200\n\n// auth.interceptor.ts - Interceptor para agregar Authorization\nimport { Injectable } from '@angular/core';\nimport { HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';\n\n@Injectable()\nexport class AuthInterceptor implements HttpInterceptor {\n  intercept(req: HttpRequest<any>, next: HttpHandler) {\n    const credentials = btoa('admin:admin123');\n    const authReq = req.clone({\n      headers: req.headers.set(\n        'Authorization', \n        `Basic ${credentials}`\n      )\n    });\n    return next.handle(authReq);\n  }\n}\n\n// customer-list.component.ts - Componente de ejemplo\nexport class CustomerListComponent implements OnInit {\n  customers: CustomerResponse[] = [];\n  loading = false;\n  error: string | null = null;\n  \n  constructor(\n    private customerService: CustomerService,\n    private snackBar: MatSnackBar\n  ) {}\n  \n  ngOnInit() {\n    this.loadCustomers();\n  }\n  \n  loadCustomers() {\n    this.loading = true;\n    this.customerService.findAll().subscribe(\n      data => {\n        this.customers = data;\n        this.loading = false;\n      },\n      error => {\n        this.error = 'Error loading customers';\n        this.loading = false;\n        this.snackBar.open('Error loading customers', 'Close');\n      }\n    );\n  }\n  \n  deleteCustomer(id: number) {\n    if (confirm('Are you sure?')) {\n      this.customerService.delete(id).subscribe(\n        () => {\n          this.loadCustomers();\n          this.snackBar.open('Customer deleted', 'Close');\n        },\n        error => {\n          this.snackBar.open('Error deleting customer', 'Close');\n        }\n      );\n    }\n  }\n}"
+}

@@ -1,0 +1,61 @@
+{
+  "titulo": "Revisión Final, Refactorización y Prueba Funcional del Microservicio Customer",
+  "resumen": "Validación completa del microservicio Customer actualizado con relación a productos. Se prueba crear customers con lista de productIds, se verifica persistencia en H2, y se valida que la tabla intermedia se genera correctamente. Incluye uso de consola H2 para inspeccionar datos y estructura de tablas.",
+  "puntosClave": [
+    "Reiniciar microservicio Customer para aplicar cambios de entidad",
+    "Probar crear Customer con lista de productIds en Swagger",
+    "Verificar que se crea tabla customer_products automáticamente",
+    "Activar consola H2: spring.h2.console.enabled=true",
+    "Acceder a consola: http://localhost:8081/h2-console",
+    "URL JDBC: jdbc:h2:mem:testdb (base de datos en memoria)",
+    "Inspeccionar tablas: customer y customer_products",
+    "Validar que productIds se guardan correctamente en tabla intermedia",
+    "Probar actualizar customer agregando/eliminando productos",
+    "Verificar integridad de datos con consultas SQL directas",
+    "Importante: datos en memoria se pierden al reiniciar",
+    "Preparación para implementar comunicación con Product"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Consola H2",
+      "descripcion": "Interfaz web que permite ejecutar consultas SQL directamente en la base de datos H2"
+    },
+    {
+      "nombre": "spring.h2.console.enabled",
+      "descripcion": "Propiedad que activa/desactiva el acceso a la consola web de H2"
+    },
+    {
+      "nombre": "jdbc:h2:mem:testdb",
+      "descripcion": "URL de conexión a base de datos H2 en memoria (nombre por defecto: testdb)"
+    },
+    {
+      "nombre": "Base de Datos en Memoria",
+      "descripcion": "BD temporal que existe solo mientras la aplicación está ejecutándose"
+    },
+    {
+      "nombre": "Tabla Intermedia",
+      "descripcion": "customer_products generada automáticamente por @ElementCollection"
+    },
+    {
+      "nombre": "Validación de Persistencia",
+      "descripcion": "Verificar que datos se guardan correctamente en todas las tablas relacionadas"
+    },
+    {
+      "nombre": "Consultas SQL Directas",
+      "descripcion": "Ejecutar SELECT, INSERT, UPDATE en consola H2 para inspeccionar datos"
+    },
+    {
+      "nombre": "Integridad de Datos",
+      "descripcion": "Asegurar que relaciones y referencias se mantienen correctamente"
+    },
+    {
+      "nombre": "Reinicio de Aplicación",
+      "descripcion": "Necesario para aplicar cambios en entidades JPA (nuevos campos, anotaciones)"
+    },
+    {
+      "nombre": "Prueba Funcional",
+      "descripcion": "Validación manual del comportamiento esperado usando Swagger y consola H2"
+    }
+  ],
+  "codigoEjemplo": "# application.properties - Activar consola H2\nserver.port=8081\nspring.application.name=customer-service\nspring.h2.console.enabled=true\nspring.h2.console.path=/h2-console\n\n# Datos de conexión en consola H2:\n# JDBC URL: jdbc:h2:mem:testdb\n# User Name: sa\n# Password: (vacío)\n\n-- SQL para inspeccionar datos en consola H2\nSELECT * FROM customer;\nSELECT * FROM customer_products;\n\n-- Ver relación completa\nSELECT c.id, c.name, cp.product_id \nFROM customer c \nLEFT JOIN customer_products cp ON c.id = cp.customer_id;\n\n// JSON para crear customer con productos en Swagger\n{\n  \"name\": \"Juan Pérez\",\n  \"phoneNumber\": \"555-1234\",\n  \"productIds\": [1, 2, 3]\n}"
+}

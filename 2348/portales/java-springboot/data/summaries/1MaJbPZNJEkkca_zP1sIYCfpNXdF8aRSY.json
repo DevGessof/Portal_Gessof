@@ -1,0 +1,72 @@
+{
+  "titulo": "Construir y Ejecutar Contenedores Docker con Comandos Básicos",
+  "resumen": "Ejecución de contenedores Docker desde imágenes construidas. Se usan comandos docker run, docker ps, docker logs, docker stop para gestionar ciclo de vida de contenedores. Se mapean puertos, se configuran variables de entorno, y se prueban microservicios contenedorizados.",
+  "puntosClave": [
+    "docker run: crear y ejecutar contenedor desde imagen",
+    "Mapeo de puertos: -p host:contenedor",
+    "  - docker run -p 8081:8081 customer-service:1.0.0",
+    "Modo detached: -d para ejecutar en background",
+    "Nombrar contenedor: --name customer-container",
+    "Variables de entorno: -e SPRING_PROFILES_ACTIVE=prod",
+    "docker ps: listar contenedores en ejecución",
+    "docker ps -a: listar todos (incluidos detenidos)",
+    "docker logs: ver logs de contenedor",
+    "  - docker logs -f customer-container (follow)",
+    "docker stop: detener contenedor gracefully",
+    "docker start: iniciar contenedor detenido",
+    "docker rm: eliminar contenedor",
+    "docker exec: ejecutar comando en contenedor corriendo",
+    "Probar: curl http://localhost:8081/api/v1/customer"
+  ],
+  "conceptos": [
+    {
+      "nombre": "docker run",
+      "descripcion": "Crear y ejecutar nuevo contenedor desde imagen"
+    },
+    {
+      "nombre": "Port Mapping",
+      "descripcion": "Mapear puerto de host a puerto de contenedor (-p)"
+    },
+    {
+      "nombre": "Detached Mode",
+      "descripcion": "Ejecutar contenedor en background (-d)"
+    },
+    {
+      "nombre": "Container Name",
+      "descripcion": "Nombre amigable para contenedor (--name)"
+    },
+    {
+      "nombre": "Environment Variables",
+      "descripcion": "Variables pasadas a contenedor (-e)"
+    },
+    {
+      "nombre": "docker ps",
+      "descripcion": "Listar contenedores en ejecución"
+    },
+    {
+      "nombre": "docker logs",
+      "descripcion": "Ver output de logs de contenedor"
+    },
+    {
+      "nombre": "docker stop",
+      "descripcion": "Detener contenedor enviando SIGTERM"
+    },
+    {
+      "nombre": "docker start",
+      "descripcion": "Iniciar contenedor existente previamente detenido"
+    },
+    {
+      "nombre": "docker rm",
+      "descripcion": "Eliminar contenedor detenido"
+    },
+    {
+      "nombre": "docker exec",
+      "descripcion": "Ejecutar comando dentro de contenedor corriendo"
+    },
+    {
+      "nombre": "Container Lifecycle",
+      "descripcion": "Estados: created → running → stopped → removed"
+    }
+  ],
+  "codigoEjemplo": "# 1. Ejecutar Customer Service\ndocker run -d \\\n  --name customer-container \\\n  -p 8081:8081 \\\n  -e SPRING_PROFILES_ACTIVE=dev \\\n  customer-service:1.0.0\n\n# Output: abc123def456... (container ID)\n\n# 2. Ver contenedores corriendo\ndocker ps\n# CONTAINER ID   IMAGE                    STATUS         PORTS                    NAMES\n# abc123def456   customer-service:1.0.0   Up 30 seconds  0.0.0.0:8081->8081/tcp   customer-container\n\n# 3. Ver logs del contenedor\ndocker logs customer-container\n# Output: Spring Boot startup logs...\n\n# Seguir logs en tiempo real\ndocker logs -f customer-container\n\n# 4. Probar servicio\ncurl http://localhost:8081/actuator/health\n# {\"status\":\"UP\"}\n\ncurl -u admin:admin123 http://localhost:8081/api/v1/customer\n# [{...}, {...}]\n\n# 5. Ejecutar comando dentro del contenedor\ndocker exec customer-container ls -la /app\n\n# Shell interactivo\ndocker exec -it customer-container /bin/sh\n# Dentro del contenedor:\n# ls /app\n# ps aux\n# exit\n\n# 6. Ver stats de recursos\ndocker stats customer-container\n# CPU %   MEM USAGE / LIMIT   MEM %   NET I/O\n# 0.50%   350MiB / 8GiB       4.37%   1.2kB / 850B\n\n# 7. Detener contenedor\ndocker stop customer-container\n\n# 8. Reiniciar contenedor\ndocker start customer-container\n\n# 9. Eliminar contenedor (debe estar detenido)\ndocker rm customer-container\n\n# O forzar eliminación de contenedor corriendo\ndocker rm -f customer-container\n\n# 10. Ejecutar múltiples servicios\ndocker run -d --name product-container \\\n  -p 8082:8082 \\\n  product-service:1.0.0\n\ndocker run -d --name transaction-container \\\n  -p 8083:8083 \\\n  transaction-service:1.0.0\n\n# 11. Ver todos los contenedores (incluidos detenidos)\ndocker ps -a"
+}

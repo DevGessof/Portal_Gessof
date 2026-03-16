@@ -1,0 +1,61 @@
+{
+  "titulo": "Starters de Spring Boot y Estructura Estándar de Proyecto",
+  "resumen": "Explicación detallada de los starters de Spring Boot necesarios para cada tipo de microservicio. Se define la estructura estándar de paquetes (entities, repositories, controller, services, DTOs) que se usará consistentemente en todos los microservicios del proyecto. Incluye mejores prácticas de organización de código.",
+  "puntosClave": [
+    "Starters principales: Web, Data JPA, DevTools, H2, Lombok, Validation",
+    "Spring Web: para crear APIs REST con Tomcat embebido",
+    "Spring Data JPA: para persistencia con bases de datos relacionales",
+    "Validation: para validar datos de entrada en APIs",
+    "DevTools: reinicio automático durante desarrollo",
+    "Estructura estándar de paquetes para todos los microservicios:",
+    "- entities: clases que mapean tablas de BD",
+    "- repositories: interfaces JPA para acceso a datos",
+    "- controller: REST controllers que exponen APIs",
+    "- services: lógica de negocio (separada del controller)",
+    "- DTOs (Data Transfer Objects): objetos para transferir datos entre capas",
+    "Consistencia: misma estructura en Customer, Product y Transaction"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Spring Boot Starters",
+      "descripcion": "Dependencias pre-configuradas que agrupan librerías relacionadas para funcionalidades específicas"
+    },
+    {
+      "nombre": "spring-boot-starter-web",
+      "descripcion": "Incluye Spring MVC, Tomcat embebido, Jackson para JSON y validación"
+    },
+    {
+      "nombre": "spring-boot-starter-data-jpa",
+      "descripcion": "Incluye Hibernate, JPA, Spring Data para persistencia con bases de datos"
+    },
+    {
+      "nombre": "spring-boot-starter-validation",
+      "descripcion": "Librería para validar datos de entrada usando anotaciones (@NotNull, @Size, etc.)"
+    },
+    {
+      "nombre": "Entities (Entidades)",
+      "descripcion": "Clases Java que representan tablas de base de datos con anotaciones JPA"
+    },
+    {
+      "nombre": "Repositories",
+      "descripcion": "Interfaces que extienden JpaRepository para operaciones CRUD sin código manual"
+    },
+    {
+      "nombre": "Controllers",
+      "descripcion": "Clases @RestController que exponen endpoints HTTP y gestionan peticiones"
+    },
+    {
+      "nombre": "Services",
+      "descripcion": "Capa intermedia con lógica de negocio, separa controller de repository"
+    },
+    {
+      "nombre": "DTOs (Data Transfer Objects)",
+      "descripcion": "Objetos que transportan datos entre capas, evitan exponer entidades directamente"
+    },
+    {
+      "nombre": "Separación de Capas",
+      "descripcion": "Patrón arquitectónico que divide responsabilidades: Controller → Service → Repository"
+    }
+  ],
+  "codigoEjemplo": "<!-- Starters necesarios en pom.xml -->\n<dependencies>\n    <!-- API REST -->\n    <dependency>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-web</artifactId>\n    </dependency>\n    \n    <!-- Persistencia JPA -->\n    <dependency>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-data-jpa</artifactId>\n    </dependency>\n    \n    <!-- Validación -->\n    <dependency>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-validation</artifactId>\n    </dependency>\n    \n    <!-- BD en memoria -->\n    <dependency>\n        <groupId>com.h2database</groupId>\n        <artifactId>h2</artifactId>\n        <scope>runtime</scope>\n    </dependency>\n    \n    <!-- Lombok -->\n    <dependency>\n        <groupId>org.projectlombok</groupId>\n        <artifactId>lombok</artifactId>\n        <scope>provided</scope>\n    </dependency>\n    \n    <!-- DevTools -->\n    <dependency>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-devtools</artifactId>\n        <scope>runtime</scope>\n    </dependency>\n</dependencies>"
+}

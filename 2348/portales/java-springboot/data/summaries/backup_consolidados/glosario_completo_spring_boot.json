@@ -1,0 +1,1167 @@
+{
+  "titulo": "Glosario Completo - Microservicios con Spring Boot",
+  "descripcion": "Diccionario exhaustivo de términos, anotaciones, clases y funciones de Spring Boot y tecnologías relacionadas cubiertas en las 14 secciones del curso",
+  "version": "1.0.0",
+  "fecha": "2025-01-02",
+  
+  "anotaciones_spring_core": {
+    "@SpringBootApplication": {
+      "descripcion": "Meta-anotación que combina @Configuration, @EnableAutoConfiguration y @ComponentScan",
+      "uso": "Clase principal de aplicación Spring Boot",
+      "ejemplo": "@SpringBootApplication\npublic class CustomerServiceApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(CustomerServiceApplication.class, args);\n    }\n}",
+      "seccion": "1, 2"
+    },
+    "@Configuration": {
+      "descripcion": "Indica que clase contiene definiciones de beans (@Bean methods)",
+      "uso": "Clases de configuración",
+      "ejemplo": "@Configuration\npublic class AppConfig {\n    @Bean\n    public WebClient webClient() {\n        return WebClient.builder().build();\n    }\n}",
+      "seccion": "4, 12"
+    },
+    "@Bean": {
+      "descripcion": "Indica que método produce bean gestionado por Spring container",
+      "uso": "Métodos dentro de @Configuration para crear beans",
+      "ejemplo": "@Bean\npublic RestTemplate restTemplate() {\n    return new RestTemplate();\n}",
+      "seccion": "4"
+    },
+    "@Component": {
+      "descripcion": "Indica que clase es componente Spring (bean auto-detectado)",
+      "uso": "Clases genéricas de componentes",
+      "ejemplo": "@Component\npublic class EmailService {\n    // ...\n}",
+      "seccion": "2"
+    },
+    "@Service": {
+      "descripcion": "Especialización de @Component para capa de servicio (lógica de negocio)",
+      "uso": "Clases de servicio",
+      "ejemplo": "@Service\npublic class CustomerService {\n    // Business logic\n}",
+      "seccion": "2"
+    },
+    "@Repository": {
+      "descripcion": "Especialización de @Component para capa de persistencia (traducción de excepciones)",
+      "uso": "Interfaces/clases de acceso a datos",
+      "ejemplo": "@Repository\npublic interface CustomerRepository extends JpaRepository<Customer, Long> {\n}",
+      "seccion": "2"
+    },
+    "@Controller": {
+      "descripcion": "Especialización de @Component para controladores MVC web",
+      "uso": "Controladores que retornan vistas",
+      "ejemplo": "@Controller\npublic class HomeController {\n    @GetMapping(\"/\")\n    public String home() {\n        return \"index\";\n    }\n}",
+      "seccion": "2"
+    },
+    "@RestController": {
+      "descripcion": "Combina @Controller y @ResponseBody, para APIs REST que retornan JSON/XML",
+      "uso": "Controladores REST",
+      "ejemplo": "@RestController\n@RequestMapping(\"/api/v1/customer\")\npublic class CustomerRestController {\n    // REST endpoints\n}",
+      "seccion": "2"
+    },
+    "@Autowired": {
+      "descripcion": "Inyección automática de dependencias por tipo",
+      "uso": "Inyectar beans en campos, constructores o setters",
+      "ejemplo": "@Autowired\nprivate CustomerService customerService;",
+      "seccion": "2",
+      "nota": "Preferir inyección por constructor sin @Autowired explícito"
+    },
+    "@Qualifier": {
+      "descripcion": "Desambigua cuando hay múltiples beans del mismo tipo",
+      "uso": "Junto con @Autowired para especificar bean",
+      "ejemplo": "@Autowired\n@Qualifier(\"primaryDataSource\")\nprivate DataSource dataSource;",
+      "seccion": "4"
+    },
+    "@Primary": {
+      "descripcion": "Indica bean preferido cuando hay múltiples candidatos",
+      "uso": "En método @Bean o clase @Component",
+      "ejemplo": "@Bean\n@Primary\npublic DataSource primaryDataSource() {\n    // ...\n}",
+      "seccion": "4"
+    },
+    "@Value": {
+      "descripcion": "Inyecta valores desde application.properties/yml",
+      "uso": "Campos para valores de configuración",
+      "ejemplo": "@Value(\"${app.name}\")\nprivate String appName;",
+      "seccion": "2, 5"
+    },
+    "@ConfigurationProperties": {
+      "descripcion": "Vincula propiedades externas a objeto POJO",
+      "uso": "Clases de configuración con múltiples propiedades relacionadas",
+      "ejemplo": "@ConfigurationProperties(prefix = \"keycloak\")\npublic class KeycloakProperties {\n    private String authServerUrl;\n    private String realm;\n    // getters/setters\n}",
+      "seccion": "12"
+    },
+    "@PropertySource": {
+      "descripcion": "Especifica archivo de propiedades adicional",
+      "uso": "En clases @Configuration",
+      "ejemplo": "@PropertySource(\"classpath:custom.properties\")\n@Configuration\npublic class AppConfig {\n}",
+      "seccion": "5"
+    },
+    "@Profile": {
+      "descripcion": "Activa bean/configuración solo en perfiles específicos",
+      "uso": "Configuraciones específicas de entorno (dev, prod, test)",
+      "ejemplo": "@Configuration\n@Profile(\"production\")\npublic class ProdConfig {\n}",
+      "seccion": "5"
+    },
+    "@Conditional": {
+      "descripcion": "Registra bean solo si condición se cumple",
+      "uso": "Configuración condicional avanzada",
+      "ejemplo": "@Bean\n@ConditionalOnProperty(name = \"feature.enabled\", havingValue = \"true\")\npublic FeatureService featureService() {\n    return new FeatureService();\n}",
+      "seccion": "5"
+    }
+  },
+  
+  "anotaciones_web_rest": {
+    "@RequestMapping": {
+      "descripcion": "Mapea requests HTTP a métodos handler",
+      "uso": "Clase o método de controlador",
+      "ejemplo": "@RequestMapping(\"/api/v1/customer\")\npublic class CustomerRestController {\n}",
+      "seccion": "2, 7"
+    },
+    "@GetMapping": {
+      "descripcion": "Atajo para @RequestMapping(method = RequestMethod.GET)",
+      "uso": "Métodos que manejan GET requests",
+      "ejemplo": "@GetMapping\npublic List<CustomerDTO> findAll() {\n    return customerService.findAll();\n}",
+      "seccion": "2"
+    },
+    "@PostMapping": {
+      "descripcion": "Atajo para @RequestMapping(method = RequestMethod.POST)",
+      "uso": "Métodos que manejan POST requests (crear recursos)",
+      "ejemplo": "@PostMapping\npublic ResponseEntity<Customer> create(@RequestBody CustomerDTO dto) {\n    // ...\n}",
+      "seccion": "2"
+    },
+    "@PutMapping": {
+      "descripcion": "Atajo para @RequestMapping(method = RequestMethod.PUT)",
+      "uso": "Métodos que manejan PUT requests (actualizar recursos)",
+      "ejemplo": "@PutMapping(\"/{id}\")\npublic Customer update(@PathVariable Long id, @RequestBody CustomerDTO dto) {\n    // ...\n}",
+      "seccion": "2"
+    },
+    "@PatchMapping": {
+      "descripcion": "Atajo para @RequestMapping(method = RequestMethod.PATCH)",
+      "uso": "Métodos que manejan PATCH requests (actualización parcial)",
+      "ejemplo": "@PatchMapping(\"/{id}\")\npublic Customer partialUpdate(@PathVariable Long id, @RequestBody Map<String, Object> updates) {\n    // ...\n}",
+      "seccion": "7"
+    },
+    "@DeleteMapping": {
+      "descripcion": "Atajo para @RequestMapping(method = RequestMethod.DELETE)",
+      "uso": "Métodos que manejan DELETE requests",
+      "ejemplo": "@DeleteMapping(\"/{id}\")\npublic ResponseEntity<Void> delete(@PathVariable Long id) {\n    customerService.delete(id);\n    return ResponseEntity.noContent().build();\n}",
+      "seccion": "2"
+    },
+    "@RequestBody": {
+      "descripcion": "Vincula cuerpo del HTTP request a parámetro del método",
+      "uso": "Parámetros de métodos POST/PUT para recibir JSON/XML",
+      "ejemplo": "@PostMapping\npublic Customer create(@RequestBody CustomerDTO dto) {\n    // dto contiene JSON deserializado\n}",
+      "seccion": "2"
+    },
+    "@PathVariable": {
+      "descripcion": "Extrae valor de variable de path URI",
+      "uso": "Parámetros de métodos para valores en URL",
+      "ejemplo": "@GetMapping(\"/{id}\")\npublic Customer findById(@PathVariable Long id) {\n    return customerService.findById(id);\n}",
+      "seccion": "2"
+    },
+    "@RequestParam": {
+      "descripcion": "Extrae parámetro de query string",
+      "uso": "Parámetros opcionales o de filtrado",
+      "ejemplo": "@GetMapping\npublic List<Customer> search(\n    @RequestParam(required = false) String name,\n    @RequestParam(defaultValue = \"0\") int page\n) {\n    // ...\n}",
+      "seccion": "7"
+    },
+    "@RequestHeader": {
+      "descripcion": "Extrae valor de header HTTP",
+      "uso": "Acceder a headers del request",
+      "ejemplo": "@GetMapping\npublic String process(@RequestHeader(\"Authorization\") String authHeader) {\n    // authHeader contiene valor del header Authorization\n}",
+      "seccion": "9, 12"
+    },
+    "@ResponseBody": {
+      "descripcion": "Indica que retorno del método debe escribirse directamente a HTTP response body",
+      "uso": "Métodos que retornan datos (JSON/XML), no vistas",
+      "ejemplo": "@GetMapping\n@ResponseBody\npublic Customer getCustomer() {\n    return customer;\n}",
+      "seccion": "2",
+      "nota": "@RestController ya incluye @ResponseBody"
+    },
+    "@ResponseStatus": {
+      "descripcion": "Especifica código de estado HTTP para respuesta",
+      "uso": "Métodos o clases de excepción",
+      "ejemplo": "@PostMapping\n@ResponseStatus(HttpStatus.CREATED)\npublic Customer create(@RequestBody CustomerDTO dto) {\n    // ...\n}",
+      "seccion": "7"
+    },
+    "@CrossOrigin": {
+      "descripcion": "Habilita CORS (Cross-Origin Resource Sharing)",
+      "uso": "Clase de controlador o métodos individuales",
+      "ejemplo": "@CrossOrigin(origins = \"http://localhost:4200\")\n@RestController\npublic class CustomerRestController {\n}",
+      "seccion": "9"
+    }
+  },
+  
+  "anotaciones_validacion": {
+    "@Valid": {
+      "descripcion": "Activa validación de Bean Validation en parámetro",
+      "uso": "Parámetros @RequestBody para validar",
+      "ejemplo": "@PostMapping\npublic Customer create(@Valid @RequestBody CustomerDTO dto) {\n    // dto es validado antes de entrar al método\n}",
+      "seccion": "7"
+    },
+    "@Validated": {
+      "descripcion": "Variante de @Valid con soporte para grupos de validación",
+      "uso": "Nivel de clase o parámetro",
+      "ejemplo": "@Validated\n@Service\npublic class CustomerService {\n}",
+      "seccion": "7"
+    },
+    "@NotNull": {
+      "descripcion": "Valida que campo no sea null",
+      "uso": "Campos de DTOs/Entities",
+      "ejemplo": "public class CustomerDTO {\n    @NotNull(message = \"Name is required\")\n    private String name;\n}",
+      "seccion": "7"
+    },
+    "@NotEmpty": {
+      "descripcion": "Valida que String/Collection no sea null ni vacío",
+      "uso": "Campos String, List, Set, etc.",
+      "ejemplo": "@NotEmpty(message = \"Email cannot be empty\")\nprivate String email;",
+      "seccion": "7"
+    },
+    "@NotBlank": {
+      "descripcion": "Valida que String no sea null, vacío ni solo espacios",
+      "uso": "Campos String",
+      "ejemplo": "@NotBlank(message = \"Name must not be blank\")\nprivate String name;",
+      "seccion": "7"
+    },
+    "@Size": {
+      "descripcion": "Valida tamaño de String/Collection",
+      "uso": "Campos con restricción de longitud",
+      "ejemplo": "@Size(min = 3, max = 50, message = \"Name must be between 3 and 50 characters\")\nprivate String name;",
+      "seccion": "7"
+    },
+    "@Min": {
+      "descripcion": "Valida valor mínimo numérico",
+      "uso": "Campos numéricos",
+      "ejemplo": "@Min(value = 0, message = \"Amount must be positive\")\nprivate BigDecimal amount;",
+      "seccion": "7"
+    },
+    "@Max": {
+      "descripcion": "Valida valor máximo numérico",
+      "uso": "Campos numéricos",
+      "ejemplo": "@Max(value = 100, message = \"Percentage cannot exceed 100\")\nprivate Integer percentage;",
+      "seccion": "7"
+    },
+    "@Email": {
+      "descripcion": "Valida formato de email",
+      "uso": "Campos de email",
+      "ejemplo": "@Email(message = \"Invalid email format\")\nprivate String email;",
+      "seccion": "7"
+    },
+    "@Pattern": {
+      "descripcion": "Valida contra expresión regular",
+      "uso": "Campos con formato específico",
+      "ejemplo": "@Pattern(regexp = \"^\\\\+?[1-9]\\\\d{1,14}$\", message = \"Invalid phone number\")\nprivate String phoneNumber;",
+      "seccion": "7"
+    }
+  },
+  
+  "anotaciones_jpa": {
+    "@Entity": {
+      "descripcion": "Marca clase como entidad JPA (mapeada a tabla DB)",
+      "uso": "Clases de dominio que se persisten",
+      "ejemplo": "@Entity\n@Table(name = \"customers\")\npublic class Customer {\n}",
+      "seccion": "2"
+    },
+    "@Table": {
+      "descripcion": "Especifica nombre y schema de tabla DB",
+      "uso": "Junto con @Entity",
+      "ejemplo": "@Table(name = \"customers\", schema = \"public\")",
+      "seccion": "2"
+    },
+    "@Id": {
+      "descripcion": "Marca campo como clave primaria",
+      "uso": "Campo ID de entidad",
+      "ejemplo": "@Id\n@GeneratedValue(strategy = GenerationType.IDENTITY)\nprivate Long id;",
+      "seccion": "2"
+    },
+    "@GeneratedValue": {
+      "descripcion": "Especifica estrategia de generación de valor de PK",
+      "uso": "Junto con @Id",
+      "ejemplo": "@GeneratedValue(strategy = GenerationType.IDENTITY)",
+      "seccion": "2",
+      "estrategias": ["IDENTITY", "SEQUENCE", "TABLE", "AUTO"]
+    },
+    "@Column": {
+      "descripcion": "Especifica mapeo de campo a columna DB",
+      "uso": "Campos de entidad con configuración específica",
+      "ejemplo": "@Column(name = \"customer_name\", nullable = false, length = 100, unique = true)\nprivate String name;",
+      "seccion": "2"
+    },
+    "@Transient": {
+      "descripcion": "Indica que campo no debe persistirse en DB",
+      "uso": "Campos calculados o temporales",
+      "ejemplo": "@Transient\nprivate String fullName;",
+      "seccion": "2"
+    },
+    "@Temporal": {
+      "descripcion": "Especifica tipo temporal para Date/Calendar",
+      "uso": "Campos de fecha/hora",
+      "ejemplo": "@Temporal(TemporalType.TIMESTAMP)\nprivate Date createdAt;",
+      "seccion": "2",
+      "nota": "Con Java 8+, usar LocalDate/LocalDateTime directamente"
+    },
+    "@OneToMany": {
+      "descripcion": "Relación uno-a-muchos",
+      "uso": "Colecciones de entidades relacionadas",
+      "ejemplo": "@OneToMany(mappedBy = \"customer\", cascade = CascadeType.ALL)\nprivate List<Order> orders;",
+      "seccion": "2"
+    },
+    "@ManyToOne": {
+      "descripcion": "Relación muchos-a-uno",
+      "uso": "Referencia a entidad padre",
+      "ejemplo": "@ManyToOne\n@JoinColumn(name = \"customer_id\")\nprivate Customer customer;",
+      "seccion": "2"
+    },
+    "@ManyToMany": {
+      "descripcion": "Relación muchos-a-muchos",
+      "uso": "Relaciones bidireccionales múltiples",
+      "ejemplo": "@ManyToMany\n@JoinTable(name = \"product_categories\")\nprivate Set<Category> categories;",
+      "seccion": "2"
+    },
+    "@JoinColumn": {
+      "descripcion": "Especifica columna de FK en relación",
+      "uso": "Con @ManyToOne, @OneToOne",
+      "ejemplo": "@JoinColumn(name = \"customer_id\", nullable = false)",
+      "seccion": "2"
+    },
+    "@Enumerated": {
+      "descripcion": "Mapea enum a DB",
+      "uso": "Campos enum",
+      "ejemplo": "@Enumerated(EnumType.STRING)\nprivate TransactionStatus status;",
+      "seccion": "2",
+      "tipos": ["STRING (recomendado)", "ORDINAL"]
+    },
+    "@CreationTimestamp": {
+      "descripcion": "Auto-asigna timestamp en creación (Hibernate)",
+      "uso": "Campos de auditoría",
+      "ejemplo": "@CreationTimestamp\nprivate LocalDateTime createdAt;",
+      "seccion": "2"
+    },
+    "@UpdateTimestamp": {
+      "descripcion": "Auto-actualiza timestamp en modificación (Hibernate)",
+      "uso": "Campos de auditoría",
+      "ejemplo": "@UpdateTimestamp\nprivate LocalDateTime updatedAt;",
+      "seccion": "2"
+    }
+  },
+  
+  "anotaciones_transacciones": {
+    "@Transactional": {
+      "descripcion": "Indica que método/clase debe ejecutarse en transacción",
+      "uso": "Métodos de servicio que modifican datos",
+      "ejemplo": "@Transactional\npublic Customer updateCustomer(Long id, CustomerDTO dto) {\n    // Operación transaccional\n}",
+      "seccion": "2",
+      "atributos": ["propagation", "isolation", "timeout", "readOnly", "rollbackFor"]
+    },
+    "@EnableTransactionManagement": {
+      "descripcion": "Habilita gestión de transacciones basada en anotaciones",
+      "uso": "Clase de configuración",
+      "ejemplo": "@Configuration\n@EnableTransactionManagement\npublic class DatabaseConfig {\n}",
+      "seccion": "2"
+    }
+  },
+  
+  "anotaciones_spring_cloud": {
+    "@EnableEurekaServer": {
+      "descripcion": "Habilita Eureka Server (Service Registry)",
+      "uso": "Clase principal de Eureka Server",
+      "ejemplo": "@SpringBootApplication\n@EnableEurekaServer\npublic class EurekaServerApplication {\n}",
+      "seccion": "5"
+    },
+    "@EnableDiscoveryClient": {
+      "descripcion": "Habilita registro como cliente en Discovery Server (Eureka, Consul, etc.)",
+      "uso": "Microservicios que se registran en Eureka",
+      "ejemplo": "@SpringBootApplication\n@EnableDiscoveryClient\npublic class CustomerServiceApplication {\n}",
+      "seccion": "5"
+    },
+    "@EnableConfigServer": {
+      "descripcion": "Habilita Config Server",
+      "uso": "Clase principal de Config Server",
+      "ejemplo": "@SpringBootApplication\n@EnableConfigServer\npublic class ConfigServerApplication {\n}",
+      "seccion": "5"
+    },
+    "@RefreshScope": {
+      "descripcion": "Permite recargar configuración sin reiniciar aplicación",
+      "uso": "Beans que usan @Value con propiedades dinámicas",
+      "ejemplo": "@RestController\n@RefreshScope\npublic class ConfigController {\n    @Value(\"${message}\")\n    private String message;\n}",
+      "seccion": "5"
+    },
+    "@LoadBalanced": {
+      "descripcion": "Habilita client-side load balancing para RestTemplate/WebClient",
+      "uso": "Método @Bean que crea RestTemplate/WebClient.Builder",
+      "ejemplo": "@Bean\n@LoadBalanced\npublic WebClient.Builder loadBalancedWebClientBuilder() {\n    return WebClient.builder();\n}",
+      "seccion": "4, 5"
+    },
+    "@EnableAdminServer": {
+      "descripcion": "Habilita Spring Boot Admin Server",
+      "uso": "Clase principal de Admin Server",
+      "ejemplo": "@SpringBootApplication\n@EnableAdminServer\npublic class AdminServerApplication {\n}",
+      "seccion": "6"
+    }
+  },
+  
+  "anotaciones_seguridad": {
+    "@EnableWebSecurity": {
+      "descripcion": "Habilita configuración de seguridad web",
+      "uso": "Clase de configuración de seguridad",
+      "ejemplo": "@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n}",
+      "seccion": "9, 12"
+    },
+    "@EnableGlobalMethodSecurity": {
+      "descripcion": "Habilita seguridad a nivel de método",
+      "uso": "Clase de configuración",
+      "ejemplo": "@EnableGlobalMethodSecurity(prePostEnabled = true)\npublic class SecurityConfig {\n}",
+      "seccion": "9"
+    },
+    "@PreAuthorize": {
+      "descripcion": "Autorización antes de ejecutar método",
+      "uso": "Métodos que requieren roles/permisos específicos",
+      "ejemplo": "@PreAuthorize(\"hasRole('ADMIN')\")\npublic void deleteCustomer(Long id) {\n}",
+      "seccion": "9"
+    },
+    "@PostAuthorize": {
+      "descripcion": "Autorización después de ejecutar método",
+      "uso": "Filtrado basado en resultado",
+      "ejemplo": "@PostAuthorize(\"returnObject.owner == authentication.name\")\npublic Customer getCustomer(Long id) {\n}",
+      "seccion": "9"
+    },
+    "@Secured": {
+      "descripcion": "Especifica roles requeridos para ejecutar método",
+      "uso": "Métodos con control de acceso",
+      "ejemplo": "@Secured({\"ROLE_ADMIN\", \"ROLE_MANAGER\"})\npublic void processPayment() {\n}",
+      "seccion": "9"
+    },
+    "@RolesAllowed": {
+      "descripcion": "Especifica roles permitidos (JSR-250)",
+      "uso": "Similar a @Secured",
+      "ejemplo": "@RolesAllowed(\"ADMIN\")\npublic void deleteAll() {\n}",
+      "seccion": "9"
+    }
+  },
+  
+  "anotaciones_manejo_excepciones": {
+    "@ControllerAdvice": {
+      "descripcion": "Manejo global de excepciones para todos los controladores",
+      "uso": "Clase que centraliza manejo de excepciones",
+      "ejemplo": "@ControllerAdvice\npublic class GlobalExceptionHandler {\n}",
+      "seccion": "7"
+    },
+    "@RestControllerAdvice": {
+      "descripcion": "Combina @ControllerAdvice y @ResponseBody para APIs REST",
+      "uso": "Manejo global de excepciones en REST APIs",
+      "ejemplo": "@RestControllerAdvice\npublic class RestExceptionHandler {\n}",
+      "seccion": "7"
+    },
+    "@ExceptionHandler": {
+      "descripcion": "Maneja excepciones específicas",
+      "uso": "Métodos en @ControllerAdvice",
+      "ejemplo": "@ExceptionHandler(CustomerNotFoundException.class)\npublic ResponseEntity<ErrorResponse> handleNotFound(CustomerNotFoundException ex) {\n    // ...\n}",
+      "seccion": "7"
+    }
+  },
+  
+  "anotaciones_testing": {
+    "@SpringBootTest": {
+      "descripcion": "Carga ApplicationContext completo para tests de integración",
+      "uso": "Clases de test de integración",
+      "ejemplo": "@SpringBootTest\nclass CustomerServiceIntegrationTest {\n}",
+      "seccion": "Mencionado en curso"
+    },
+    "@WebMvcTest": {
+      "descripcion": "Test slice para capa web (solo controladores)",
+      "uso": "Tests unitarios de controladores",
+      "ejemplo": "@WebMvcTest(CustomerRestController.class)\nclass CustomerControllerTest {\n}",
+      "seccion": "Mencionado en curso"
+    },
+    "@DataJpaTest": {
+      "descripcion": "Test slice para capa de persistencia JPA",
+      "uso": "Tests de repositorios",
+      "ejemplo": "@DataJpaTest\nclass CustomerRepositoryTest {\n}",
+      "seccion": "Mencionado en curso"
+    },
+    "@MockBean": {
+      "descripcion": "Crea mock de bean en ApplicationContext de test",
+      "uso": "Mockear dependencias en tests",
+      "ejemplo": "@MockBean\nprivate CustomerService customerService;",
+      "seccion": "Mencionado en curso"
+    },
+    "@Test": {
+      "descripcion": "Marca método como test (JUnit 5)",
+      "uso": "Métodos de test",
+      "ejemplo": "@Test\nvoid shouldCreateCustomer() {\n    // test logic\n}",
+      "seccion": "Mencionado en curso"
+    }
+  },
+  
+  "anotaciones_lombok": {
+    "@Data": {
+      "descripcion": "Genera getters, setters, equals, hashCode, toString",
+      "uso": "DTOs y entidades simples",
+      "ejemplo": "@Data\npublic class CustomerDTO {\n    private Long id;\n    private String name;\n}",
+      "seccion": "2, 8, 13"
+    },
+    "@Getter": {
+      "descripcion": "Genera métodos getter para todos los campos",
+      "uso": "Cuando solo necesitas getters",
+      "ejemplo": "@Getter\npublic class Customer {\n    private String name;\n}",
+      "seccion": "8"
+    },
+    "@Setter": {
+      "descripcion": "Genera métodos setter para todos los campos",
+      "uso": "Cuando solo necesitas setters",
+      "ejemplo": "@Setter\npublic class CustomerDTO {\n    private String email;\n}",
+      "seccion": "8"
+    },
+    "@NoArgsConstructor": {
+      "descripcion": "Genera constructor sin argumentos",
+      "uso": "Requerido por JPA",
+      "ejemplo": "@NoArgsConstructor\npublic class Customer {\n}",
+      "seccion": "2, 8"
+    },
+    "@AllArgsConstructor": {
+      "descripcion": "Genera constructor con todos los campos",
+      "uso": "Construcción completa de objetos",
+      "ejemplo": "@AllArgsConstructor\npublic class CustomerDTO {\n}",
+      "seccion": "8"
+    },
+    "@RequiredArgsConstructor": {
+      "descripcion": "Genera constructor con campos final y @NonNull",
+      "uso": "Inyección de dependencias por constructor",
+      "ejemplo": "@RequiredArgsConstructor\npublic class CustomerService {\n    private final CustomerRepository repository;\n}",
+      "seccion": "2, 8"
+    },
+    "@Builder": {
+      "descripcion": "Implementa patrón Builder",
+      "uso": "Construcción fluida de objetos",
+      "ejemplo": "Customer customer = Customer.builder()\n    .name(\"John\")\n    .email(\"john@example.com\")\n    .build();",
+      "seccion": "8"
+    },
+    "@Slf4j": {
+      "descripcion": "Genera logger SLF4J",
+      "uso": "Clases que necesitan logging",
+      "ejemplo": "@Slf4j\npublic class CustomerService {\n    public void process() {\n        log.info(\"Processing...\");\n    }\n}",
+      "seccion": "2, 8"
+    },
+    "@ToString": {
+      "descripcion": "Genera método toString",
+      "uso": "Logging y debugging",
+      "ejemplo": "@ToString\npublic class Customer {\n    private String name;\n}",
+      "seccion": "8"
+    },
+    "@EqualsAndHashCode": {
+      "descripcion": "Genera equals y hashCode",
+      "uso": "Comparación de objetos",
+      "ejemplo": "@EqualsAndHashCode(of = {\"id\"})\npublic class Customer {\n}",
+      "seccion": "8"
+    }
+  },
+  
+  "anotaciones_mapstruct": {
+    "@Mapper": {
+      "descripcion": "Marca interfaz como mapper de MapStruct",
+      "uso": "Interfaces de mapeo DTO ↔ Entity",
+      "ejemplo": "@Mapper(componentModel = \"spring\")\npublic interface CustomerMapper {\n    CustomerDTO toDTO(Customer entity);\n    Customer toEntity(CustomerDTO dto);\n}",
+      "seccion": "8"
+    },
+    "@Mapping": {
+      "descripcion": "Configura mapeo específico de campo",
+      "uso": "Cuando nombres de campos difieren",
+      "ejemplo": "@Mapping(source = \"customerName\", target = \"name\")\nCustomerDTO toDTO(Customer entity);",
+      "seccion": "8"
+    },
+    "@Mappings": {
+      "descripcion": "Agrupa múltiples @Mapping",
+      "uso": "Múltiples mapeos personalizados",
+      "ejemplo": "@Mappings({\n    @Mapping(source = \"id\", target = \"customerId\"),\n    @Mapping(source = \"name\", target = \"customerName\")\n})",
+      "seccion": "8"
+    }
+  },
+  
+  "anotaciones_swagger": {
+    "@Tag": {
+      "descripcion": "Agrupa endpoints en Swagger UI",
+      "uso": "Clase de controlador",
+      "ejemplo": "@Tag(name = \"Customer\", description = \"Customer management APIs\")\n@RestController\npublic class CustomerRestController {\n}",
+      "seccion": "8"
+    },
+    "@Operation": {
+      "descripcion": "Documenta operación específica",
+      "uso": "Métodos de controlador",
+      "ejemplo": "@Operation(summary = \"Get customer by ID\", description = \"Returns a single customer\")\n@GetMapping(\"/{id}\")\npublic Customer findById(@PathVariable Long id) {\n}",
+      "seccion": "8"
+    },
+    "@ApiResponse": {
+      "descripcion": "Documenta respuesta posible",
+      "uso": "Métodos de controlador",
+      "ejemplo": "@ApiResponse(responseCode = \"404\", description = \"Customer not found\")\n@GetMapping(\"/{id}\")\npublic Customer findById(@PathVariable Long id) {\n}",
+      "seccion": "8"
+    },
+    "@Parameter": {
+      "descripcion": "Documenta parámetro de método",
+      "uso": "Parámetros de endpoint",
+      "ejemplo": "@GetMapping(\"/{id}\")\npublic Customer findById(\n    @Parameter(description = \"Customer ID\") @PathVariable Long id\n) {\n}",
+      "seccion": "8"
+    },
+    "@Schema": {
+      "descripcion": "Documenta modelo/propiedad en schema",
+      "uso": "Clases DTO y campos",
+      "ejemplo": "@Schema(description = \"Customer data transfer object\")\npublic class CustomerDTO {\n    @Schema(description = \"Customer unique identifier\", example = \"1\")\n    private Long id;\n}",
+      "seccion": "8"
+    }
+  },
+  
+  "clases_spring_core": {
+    "SpringApplication": {
+      "descripcion": "Clase principal para arrancar aplicación Spring Boot",
+      "metodos_principales": [
+        "run(Class, args) - Arranca aplicación",
+        "setDefaultProperties(Properties) - Establece propiedades por defecto",
+        "setBannerMode(BannerMode) - Configura banner de inicio"
+      ],
+      "ejemplo": "public static void main(String[] args) {\n    SpringApplication.run(Application.class, args);\n}",
+      "seccion": "1, 2"
+    },
+    "ApplicationContext": {
+      "descripcion": "Contenedor central de Spring para beans",
+      "metodos_principales": [
+        "getBean(Class) - Obtiene bean por tipo",
+        "getBean(String) - Obtiene bean por nombre",
+        "getBeanDefinitionNames() - Lista nombres de todos los beans"
+      ],
+      "seccion": "2"
+    },
+    "Environment": {
+      "descripcion": "Interfaz para acceder a propiedades y perfiles",
+      "metodos_principales": [
+        "getProperty(String) - Obtiene propiedad",
+        "getActiveProfiles() - Obtiene perfiles activos",
+        "acceptsProfiles(Profiles) - Verifica perfil activo"
+      ],
+      "seccion": "5"
+    }
+  },
+  
+  "clases_web": {
+    "ResponseEntity": {
+      "descripcion": "Wrapper para respuesta HTTP con control de status, headers y body",
+      "metodos_principales": [
+        "ok(T body) - 200 OK con body",
+        "created(URI) - 201 Created",
+        "noContent() - 204 No Content",
+        "notFound() - 404 Not Found",
+        "badRequest() - 400 Bad Request",
+        "status(HttpStatus) - Status personalizado"
+      ],
+      "ejemplo": "return ResponseEntity.status(HttpStatus.CREATED).body(customer);",
+      "seccion": "2, 7"
+    },
+    "HttpStatus": {
+      "descripcion": "Enum con códigos de estado HTTP",
+      "valores_comunes": [
+        "OK (200)",
+        "CREATED (201)",
+        "NO_CONTENT (204)",
+        "BAD_REQUEST (400)",
+        "UNAUTHORIZED (401)",
+        "FORBIDDEN (403)",
+        "NOT_FOUND (404)",
+        "INTERNAL_SERVER_ERROR (500)"
+      ],
+      "seccion": "7"
+    },
+    "WebClient": {
+      "descripcion": "Cliente HTTP reactivo no-bloqueante",
+      "metodos_principales": [
+        "builder() - Crea builder",
+        "get() - GET request",
+        "post() - POST request",
+        "put() - PUT request",
+        "delete() - DELETE request",
+        "retrieve() - Ejecuta request y recupera respuesta",
+        "bodyToMono(Class) - Deserializa a tipo",
+        "block() - Bloquea hasta obtener resultado"
+      ],
+      "ejemplo": "Customer customer = webClient.get()\n    .uri(\"/customer/{id}\", id)\n    .retrieve()\n    .bodyToMono(Customer.class)\n    .block();",
+      "seccion": "4, 9, 12"
+    },
+    "RestTemplate": {
+      "descripcion": "Cliente HTTP síncrono (legacy, usar WebClient)",
+      "metodos_principales": [
+        "getForObject(url, Class)",
+        "postForObject(url, request, Class)",
+        "exchange(url, method, entity, Class)"
+      ],
+      "seccion": "4",
+      "nota": "Deprecated en favor de WebClient"
+    }
+  },
+  
+  "clases_jpa": {
+    "JpaRepository": {
+      "descripcion": "Interfaz base para repositorios JPA",
+      "metodos_heredados": [
+        "save(S entity) - Guarda entidad",
+        "findById(ID) - Busca por ID",
+        "findAll() - Obtiene todas las entidades",
+        "deleteById(ID) - Elimina por ID",
+        "count() - Cuenta entidades",
+        "existsById(ID) - Verifica existencia"
+      ],
+      "ejemplo": "public interface CustomerRepository extends JpaRepository<Customer, Long> {\n    List<Customer> findByName(String name);\n}",
+      "seccion": "2"
+    },
+    "CrudRepository": {
+      "descripcion": "Interfaz base con operaciones CRUD",
+      "metodos_principales": [
+        "save(S)",
+        "findById(ID)",
+        "findAll()",
+        "delete(T)",
+        "count()"
+      ],
+      "seccion": "2"
+    },
+    "PagingAndSortingRepository": {
+      "descripcion": "Repositorio con paginación y ordenamiento",
+      "metodos_principales": [
+        "findAll(Pageable)",
+        "findAll(Sort)"
+      ],
+      "seccion": "2"
+    },
+    "Page": {
+      "descripcion": "Representa página de resultados",
+      "metodos_principales": [
+        "getContent() - Lista de elementos",
+        "getTotalElements() - Total de elementos",
+        "getTotalPages() - Total de páginas",
+        "getNumber() - Número de página actual",
+        "hasNext() - Hay siguiente página"
+      ],
+      "seccion": "2"
+    },
+    "Pageable": {
+      "descripcion": "Información de paginación",
+      "metodos_principales": [
+        "PageRequest.of(page, size) - Crea Pageable",
+        "PageRequest.of(page, size, sort) - Con ordenamiento"
+      ],
+      "ejemplo": "Pageable pageable = PageRequest.of(0, 10, Sort.by(\"name\"));",
+      "seccion": "2"
+    }
+  },
+  
+  "clases_seguridad": {
+    "SecurityFilterChain": {
+      "descripcion": "Configuración de cadena de filtros de seguridad",
+      "uso": "Bean en clase de configuración de seguridad",
+      "ejemplo": "@Bean\npublic SecurityFilterChain filterChain(HttpSecurity http) {\n    return http\n        .authorizeHttpRequests(auth -> auth\n            .requestMatchers(\"/api/**\").authenticated()\n        )\n        .build();\n}",
+      "seccion": "9, 12"
+    },
+    "HttpSecurity": {
+      "descripcion": "Builder para configurar seguridad HTTP",
+      "metodos_principales": [
+        "authorizeHttpRequests() - Configurar autorización",
+        "formLogin() - Login con formulario",
+        "httpBasic() - Autenticación Basic",
+        "csrf() - Configurar CSRF",
+        "cors() - Configurar CORS",
+        "sessionManagement() - Configurar sesiones"
+      ],
+      "seccion": "9, 12"
+    },
+    "UserDetailsService": {
+      "descripcion": "Servicio para cargar datos de usuario",
+      "metodos": [
+        "loadUserByUsername(String) - Carga UserDetails"
+      ],
+      "seccion": "9"
+    },
+    "PasswordEncoder": {
+      "descripcion": "Interfaz para codificar passwords",
+      "implementaciones": [
+        "BCryptPasswordEncoder - BCrypt (recomendado)",
+        "NoOpPasswordEncoder - Sin codificación (solo testing)"
+      ],
+      "ejemplo": "@Bean\npublic PasswordEncoder passwordEncoder() {\n    return new BCryptPasswordEncoder();\n}",
+      "seccion": "9"
+    },
+    "JwtDecoder": {
+      "descripcion": "Decodifica y valida JWT",
+      "metodos_principales": [
+        "decode(String) - Decodifica JWT",
+        "NimbusJwtDecoder.withJwkSetUri() - Crea decoder con JWK"
+      ],
+      "seccion": "12"
+    },
+    "Jwt": {
+      "descripcion": "Representa JWT decodificado",
+      "metodos_principales": [
+        "getClaim(String) - Obtiene claim",
+        "getSubject() - Obtiene subject",
+        "getExpiresAt() - Obtiene expiración",
+        "getIssuedAt() - Obtiene fecha emisión"
+      ],
+      "seccion": "12"
+    }
+  },
+  
+  "clases_gateway": {
+    "RouteLocator": {
+      "descripcion": "Define rutas de API Gateway",
+      "uso": "Bean para configuración programática de rutas",
+      "ejemplo": "@Bean\npublic RouteLocator routes(RouteLocatorBuilder builder) {\n    return builder.routes()\n        .route(\"customer\", r -> r\n            .path(\"/api/v1/customer/**\")\n            .uri(\"lb://CUSTOMER-SERVICE\")\n        )\n        .build();\n}",
+      "seccion": "11"
+    },
+    "GatewayFilter": {
+      "descripcion": "Filtro que se aplica a request/response",
+      "uso": "Modificar request antes o response después de routing",
+      "seccion": "11"
+    },
+    "GlobalFilter": {
+      "descripcion": "Filtro global aplicado a todas las rutas",
+      "metodos": [
+        "filter(ServerWebExchange, GatewayFilterChain)"
+      ],
+      "ejemplo": "@Component\npublic class LoggingFilter implements GlobalFilter {\n    @Override\n    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {\n        log.info(\"Request: {}\", exchange.getRequest().getPath());\n        return chain.filter(exchange);\n    }\n}",
+      "seccion": "11"
+    },
+    "ServerWebExchange": {
+      "descripcion": "Contexto de request/response en WebFlux",
+      "metodos_principales": [
+        "getRequest() - Obtiene ServerHttpRequest",
+        "getResponse() - Obtiene ServerHttpResponse",
+        "getAttributes() - Obtiene atributos de contexto"
+      ],
+      "seccion": "11"
+    },
+    "GatewayFilterChain": {
+      "descripcion": "Cadena de filtros de Gateway",
+      "metodos": [
+        "filter(ServerWebExchange) - Continúa cadena"
+      ],
+      "seccion": "11"
+    }
+  },
+  
+  "clases_reactive": {
+    "Mono": {
+      "descripcion": "Publisher reactivo de 0 o 1 elemento",
+      "metodos_principales": [
+        "just(T) - Crea Mono con valor",
+        "empty() - Mono vacío",
+        "error(Throwable) - Mono con error",
+        "block() - Bloquea y obtiene valor",
+        "map(Function) - Transforma valor",
+        "flatMap(Function) - Transforma a otro Mono",
+        "subscribe() - Se suscribe al flujo"
+      ],
+      "ejemplo": "Mono<Customer> customerMono = Mono.just(customer);",
+      "seccion": "4, 11"
+    },
+    "Flux": {
+      "descripcion": "Publisher reactivo de 0 a N elementos",
+      "metodos_principales": [
+        "just(T...) - Crea Flux con valores",
+        "fromIterable(Iterable) - Desde colección",
+        "map(Function)",
+        "flatMap(Function)",
+        "filter(Predicate)",
+        "collectList() - Convierte a Mono<List>"
+      ],
+      "ejemplo": "Flux<Customer> customersFlux = Flux.fromIterable(customers);",
+      "seccion": "4, 11"
+    }
+  },
+  
+  "clases_actuator": {
+    "HealthIndicator": {
+      "descripcion": "Indica salud de componente",
+      "metodos": [
+        "health() - Retorna Health status"
+      ],
+      "ejemplo": "@Component\npublic class CustomHealthIndicator implements HealthIndicator {\n    @Override\n    public Health health() {\n        return Health.up().build();\n    }\n}",
+      "seccion": "6"
+    },
+    "Health": {
+      "descripcion": "Representa estado de salud",
+      "metodos": [
+        "up() - Estado UP",
+        "down() - Estado DOWN",
+        "withDetail(key, value) - Agrega detalle"
+      ],
+      "seccion": "6"
+    }
+  },
+  
+  "interfaces_funcionales": {
+    "Function<T, R>": {
+      "descripcion": "Función que toma T y retorna R",
+      "metodo": "R apply(T t)",
+      "uso": "map(), flatMap()",
+      "ejemplo": "Function<Customer, CustomerDTO> mapper = customer -> toDTO(customer);",
+      "seccion": "4, 8"
+    },
+    "Predicate<T>": {
+      "descripcion": "Predicado que evalúa condición sobre T",
+      "metodo": "boolean test(T t)",
+      "uso": "filter()",
+      "ejemplo": "Predicate<Customer> isActive = customer -> customer.isActive();",
+      "seccion": "4"
+    },
+    "Consumer<T>": {
+      "descripcion": "Consumidor que acepta T sin retornar",
+      "metodo": "void accept(T t)",
+      "uso": "forEach(), peek()",
+      "ejemplo": "Consumer<Customer> logger = customer -> log.info(customer.getName());",
+      "seccion": "4"
+    },
+    "Supplier<T>": {
+      "descripcion": "Proveedor que retorna T sin argumentos.",
+      "metodo": "T get()",
+      "uso": "Lazy initialization, factory methods",
+      "ejemplo": "Supplier<Customer> factory = () -> new Customer();",
+      "seccion": "4"
+    }
+  },
+  
+  "conceptos_arquitectonicos": {
+    "Microservicio": {
+      "definicion": "Servicio pequeño, autónomo que hace una cosa bien",
+      "caracteristicas": [
+        "Deployable independientemente",
+        "Organizado alrededor de capacidades de negocio",
+        "Base de datos propia (Database per Service)",
+        "Comunicación vía APIs (REST, messaging)",
+        "Descentralización de datos y gobernanza"
+      ],
+      "seccion": "1"
+    },
+    "Service Discovery": {
+      "definicion": "Mecanismo para localizar servicios dinámicamente",
+      "implementacion": "Eureka Server",
+      "patron": "Client-Side Discovery",
+      "seccion": "5"
+    },
+    "API Gateway": {
+      "definicion": "Punto de entrada único para todas las peticiones de clientes",
+      "responsabilidades": [
+        "Routing",
+        "Autenticación/Autorización",
+        "Rate Limiting",
+        "Load Balancing",
+        "Request/Response Transformation"
+      ],
+      "implementacion": "Spring Cloud Gateway",
+      "seccion": "11"
+    },
+    "Circuit Breaker": {
+      "definicion": "Patrón para prevenir cascading failures",
+      "estados": ["CLOSED", "OPEN", "HALF_OPEN"],
+      "implementacion": "Resilience4j (mencionado)",
+      "seccion": "Mencionado en curso"
+    },
+    "Load Balancing": {
+      "definicion": "Distribución de carga entre múltiples instancias",
+      "tipos": [
+        "Client-Side (Spring Cloud LoadBalancer)",
+        "Server-Side (Nginx, HAProxy)"
+      ],
+      "seccion": "5, 11"
+    },
+    "Centralized Configuration": {
+      "definicion": "Gestión centralizada de configuración",
+      "implementacion": "Spring Cloud Config Server",
+      "ventajas": [
+        "Configuración versionada",
+        "Actualización sin redeploy (@RefreshScope)",
+        "Configuración por entorno"
+      ],
+      "seccion": "5"
+    },
+    "OAuth2": {
+      "definicion": "Framework de autorización para delegar acceso",
+      "grant_types": [
+        "Authorization Code",
+        "Client Credentials",
+        "Password Grant",
+        "Refresh Token"
+      ],
+      "componentes": [
+        "Resource Owner",
+        "Client",
+        "Authorization Server",
+        "Resource Server"
+      ],
+      "implementacion": "Keycloak",
+      "seccion": "12"
+    },
+    "JWT (JSON Web Token)": {
+      "definicion": "Token auto-contenido con claims firmados",
+      "estructura": [
+        "Header (algoritmo, tipo)",
+        "Payload (claims: sub, exp, iat, roles)",
+        "Signature (firma digital)"
+      ],
+      "formato": "header.payload.signature (Base64)",
+      "seccion": "12"
+    },
+    "DTO (Data Transfer Object)": {
+      "definicion": "Objeto que transporta datos entre capas",
+      "proposito": [
+        "Desacoplar API de modelo de dominio",
+        "Controlar qué datos se exponen",
+        "Versioning de API",
+        "Validación específica de API"
+      ],
+      "seccion": "8"
+    },
+    "CORS (Cross-Origin Resource Sharing)": {
+      "definicion": "Mecanismo para permitir requests desde diferentes orígenes",
+      "headers": [
+        "Access-Control-Allow-Origin",
+        "Access-Control-Allow-Methods",
+        "Access-Control-Allow-Headers"
+      ],
+      "seccion": "9"
+    }
+  },
+  
+  "comandos_maven": {
+    "mvn clean": "Limpia target/ (artifacts compilados)",
+    "mvn compile": "Compila código fuente",
+    "mvn test": "Ejecuta tests unitarios",
+    "mvn package": "Genera JAR/WAR",
+    "mvn install": "Instala artefacto en repositorio local",
+    "mvn clean install": "Limpia, compila, testea e instala",
+    "mvn spring-boot:run": "Ejecuta aplicación Spring Boot",
+    "mvn dependency:tree": "Muestra árbol de dependencias",
+    "mvn versions:display-dependency-updates": "Muestra actualizaciones disponibles",
+    "mvn clean install -DskipTests": "Instala sin ejecutar tests",
+    "mvn clean package -Pproduction": "Package con perfil production"
+  },
+  
+  "comandos_docker": {
+    "docker build -t nombre:tag .": "Construye imagen",
+    "docker run -p 8080:8080 imagen": "Ejecuta contenedor",
+    "docker ps": "Lista contenedores corriendo",
+    "docker ps -a": "Lista todos los contenedores",
+    "docker images": "Lista imágenes",
+    "docker logs contenedor": "Ver logs de contenedor",
+    "docker exec -it contenedor /bin/sh": "Shell interactivo en contenedor",
+    "docker stop contenedor": "Detener contenedor",
+    "docker rm contenedor": "Eliminar contenedor",
+    "docker rmi imagen": "Eliminar imagen",
+    "docker-compose up -d": "Iniciar servicios en background",
+    "docker-compose down": "Detener y eliminar servicios",
+    "docker-compose logs -f servicio": "Seguir logs de servicio",
+    "docker-compose ps": "Estado de servicios",
+    "docker-compose restart servicio": "Reiniciar servicio",
+    "docker-compose up -d --scale servicio=3": "Escalar a 3 instancias"
+  },
+  
+  "propiedades_importantes": {
+    "server.port": "Puerto del servidor (default 8080)",
+    "spring.application.name": "Nombre de la aplicación (usado por Eureka)",
+    "spring.datasource.url": "URL de base de datos JDBC",
+    "spring.datasource.username": "Usuario de base de datos",
+    "spring.datasource.password": "Password de base de datos",
+    "spring.jpa.hibernate.ddl-auto": "Estrategia DDL (create, update, validate, none)",
+    "spring.jpa.show-sql": "Mostrar SQL en logs (true/false)",
+    "eureka.client.serviceUrl.defaultZone": "URL de Eureka Server",
+    "eureka.instance.prefer-ip-address": "Registrar con IP en vez de hostname",
+    "spring.cloud.config.uri": "URL de Config Server",
+    "management.endpoints.web.exposure.include": "Endpoints Actuator a exponer",
+    "spring.security.user.name": "Usuario por defecto de Spring Security",
+    "spring.security.user.password": "Password por defecto",
+    "logging.level.root": "Nivel de logging root (INFO, DEBUG, ERROR)",
+    "spring.profiles.active": "Perfil activo (dev, prod, test)"
+  },
+  
+  "patrones_diseño": {
+    "Repository Pattern": {
+      "descripcion": "Abstrae acceso a datos",
+      "implementacion": "JpaRepository interfaces",
+      "seccion": "2"
+    },
+    "Service Layer Pattern": {
+      "descripcion": "Encapsula lógica de negocio",
+      "implementacion": "Clases @Service",
+      "seccion": "2"
+    },
+    "DTO Pattern": {
+      "descripcion": "Objetos para transferir datos entre capas",
+      "implementacion": "Clases DTO + MapStruct",
+      "seccion": "8"
+    },
+    "Builder Pattern": {
+      "descripcion": "Construcción fluida de objetos",
+      "implementacion": "Lombok @Builder",
+      "seccion": "8"
+    },
+    "Factory Pattern": {
+      "descripcion": "Creación de objetos sin especificar clase exacta",
+      "implementacion": "GatewayFilterFactory",
+      "seccion": "11"
+    },
+    "Adapter Pattern": {
+      "descripcion": "Adapta interfaz a otra interfaz esperada",
+      "implementacion": "KeycloakAdapter",
+      "seccion": "12"
+    },
+    "Singleton Pattern": {
+      "descripcion": "Una sola instancia de clase",
+      "implementacion": "Spring beans (scope singleton por defecto)",
+      "seccion": "2"
+    },
+    "Proxy Pattern": {
+      "descripcion": "Intermediario que controla acceso",
+      "implementacion": "API Gateway, Spring AOP",
+      "seccion": "11"
+    }
+  },
+  
+  "mejores_practicas": {
+    "REST API Design": [
+      "Usar nombres plurales para recursos (/customers, no /customer)",
+      "Versionar APIs (/api/v1/customers)",
+      "Usar códigos HTTP semánticos (200 OK, 201 Created, 404 Not Found)",
+      "Retornar DTOs, no entidades",
+      "Documentar con Swagger/OpenAPI",
+      "Implementar paginación para listas grandes",
+      "Usar HATEOAS para navegabilidad (opcional)"
+    ],
+    "Seguridad": [
+      "HTTPS en producción",
+      "No loggear passwords/tokens",
+      "Usar BCrypt para passwords",
+      "Tokens JWT con expiración corta",
+      "Refresh tokens para renovar",
+      "Validar input en todos los endpoints",
+      "Implementar rate limiting",
+      "CORS configurado apropiadamente"
+    ],
+    "Microservicios": [
+      "Database per Service",
+      "API Gateway como punto de entrada único",
+      "Service Discovery para registro dinámico",
+      "Configuración centralizada",
+      "Health checks en todos los servicios",
+      "Logging estructurado",
+      "Comunicación asíncrona cuando sea posible",
+      "Idempotencia en operaciones críticas"
+    ],
+    "Docker": [
+      "Multi-stage builds para optimizar tamaño",
+      "Imágenes ligeras (alpine, slim)",
+      ".dockerignore para excluir archivos innecesarios",
+      "No ejecutar como root",
+      "Healthchecks en contenedores",
+      "Volúmenes para datos persistentes",
+      "Variables de entorno para configuración"
+    ],
+    "Spring Boot": [
+      "Inyección de dependencias por constructor",
+      "Preferir @RestController sobre @Controller + @ResponseBody",
+      "Usar @Transactional en service layer",
+      "Externalizar configuración",
+      "Usar profiles para diferentes entornos",
+      "Implementar manejo global de excepciones",
+      "Activar métricas con Actuator"
+    ]
+  }
+}

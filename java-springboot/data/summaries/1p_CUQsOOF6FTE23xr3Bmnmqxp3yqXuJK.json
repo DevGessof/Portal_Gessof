@@ -1,0 +1,73 @@
+{
+  "titulo": "Upgrade de Java: Escoger la Versión Correcta del JDK",
+  "resumen": "Guía para elegir versión de Java apropiada para proyecto. Se explican diferencias entre versiones LTS (Long Term Support) y non-LTS, compatibilidad con Spring Boot, y consideración de features nuevas. Se establecen criterios para tomar decisión informada sobre qué versión usar.",
+  "puntosClave": [
+    "Versiones LTS (Long Term Support) recomendadas para producción:",
+    "  - Java 8 (LTS hasta 2030 con licencia comercial)",
+    "  - Java 11 (LTS hasta 2026)",
+    "  - Java 17 (LTS hasta 2029) ← Recomendada actualmente",
+    "  - Java 21 (LTS hasta 2031) ← Más reciente",
+    "Versiones non-LTS: soporte solo 6 meses (evitar en producción)",
+    "Spring Boot 3.x requiere mínimo Java 17",
+    "Spring Boot 2.7.x soporta Java 8, 11, 17",
+    "Consideraciones para elegir versión:",
+    "  1. Compatibilidad con Spring Boot",
+    "  2. Soporte a largo plazo (LTS)",
+    "  3. Features nuevas de lenguaje necesarias",
+    "  4. Librerías third-party compatibles",
+    "  5. Entorno de producción disponible",
+    "Java 17 features útiles:",
+    "  - Records (clases de datos inmutables)",
+    "  - Pattern matching for instanceof",
+    "  - Sealed classes",
+    "  - Text blocks",
+    "Java 21 features adicionales:",
+    "  - Virtual threads (Project Loom)",
+    "  - Pattern matching for switch",
+    "  - String templates",
+    "Recomendación: Java 17 para balance entre estabilidad y features"
+  ],
+  "conceptos": [
+    {
+      "nombre": "LTS (Long Term Support)",
+      "descripcion": "Versiones con soporte extendido (8+ años) para producción"
+    },
+    {
+      "nombre": "Non-LTS Release",
+      "descripcion": "Versiones con soporte corto (6 meses), solo para exploración"
+    },
+    {
+      "nombre": "JDK (Java Development Kit)",
+      "descripcion": "Kit de desarrollo Java que incluye compilador, JRE, herramientas"
+    },
+    {
+      "nombre": "OpenJDK",
+      "descripcion": "Implementación open-source de Java"
+    },
+    {
+      "nombre": "Oracle JDK",
+      "descripcion": "Distribución comercial de Oracle (requiere licencia para producción)"
+    },
+    {
+      "nombre": "Adoptium (Eclipse Temurin)",
+      "descripcion": "Distribución gratuita de OpenJDK recomendada"
+    },
+    {
+      "nombre": "Records",
+      "descripcion": "Clases de datos inmutables introducidas en Java 14/16"
+    },
+    {
+      "nombre": "Pattern Matching",
+      "descripcion": "Simplificación de instanceof y switch (Java 16+)"
+    },
+    {
+      "nombre": "Sealed Classes",
+      "descripcion": "Clases que restringen qué puede extenderlas (Java 17)"
+    },
+    {
+      "nombre": "Virtual Threads",
+      "descripcion": "Threads ligeros de Project Loom (Java 21)"
+    }
+  ],
+  "codigoEjemplo": "# Verificar versión actual de Java\njava -version\n# Output: openjdk version \"17.0.9\" 2023-10-17\n\n# Verificar versiones disponibles (con sdkman)\nsdk list java\n# Output:\n# 21.0.1-tem    (Temurin 21 LTS)\n# 17.0.9-tem    (Temurin 17 LTS)\n# 11.0.21-tem   (Temurin 11 LTS)\n\n# Instalar Java 17 con sdkman\nsdk install java 17.0.9-tem\n\n# Cambiar versión por defecto\nsdk default java 17.0.9-tem\n\n# Usar versión específica en terminal actual\nsdk use java 17.0.9-tem\n\n# Features de Java 17\n\n// Records (clases de datos inmutables)\npublic record CustomerDTO(Long id, String name, String email) {}\n\n// Antes (Java 8-16):\npublic class CustomerDTO {\n    private final Long id;\n    private final String name;\n    private final String email;\n    \n    public CustomerDTO(Long id, String name, String email) {\n        this.id = id;\n        this.name = name;\n        this.email = email;\n    }\n    \n    // getters, equals, hashCode, toString...\n}\n\n// Pattern matching for instanceof\npublic String process(Object obj) {\n    if (obj instanceof String s) {\n        return s.toUpperCase();  // 's' ya es String\n    }\n    return \"\";\n}\n\n// Antes:\npublic String process(Object obj) {\n    if (obj instanceof String) {\n        String s = (String) obj;  // Cast manual\n        return s.toUpperCase();\n    }\n    return \"\";\n}\n\n// Text blocks (multiline strings)\nString json = \"\"\"\n    {\n        \"name\": \"Customer\",\n        \"email\": \"customer@example.com\"\n    }\n    \"\"\";\n\n// Sealed classes\npublic sealed class Shape \n    permits Circle, Rectangle, Triangle {\n    // Solo Circle, Rectangle, Triangle pueden extender\n}\n\n# Tabla de compatibilidad\n\n| Spring Boot | Java Mínima | Java Máxima |\n|-------------|-------------|-------------|\n| 2.7.x       | 8           | 21          |\n| 3.0.x       | 17          | 21          |\n| 3.1.x       | 17          | 21          |\n| 3.2.x       | 17          | 21          |\n\n# Decisión recomendada:\n# - Proyecto nuevo: Java 17 o 21\n# - Proyecto existente en Java 8/11: actualizar a Java 17\n# - Spring Boot 3.x: mínimo Java 17"
+}

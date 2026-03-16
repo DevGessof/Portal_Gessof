@@ -1,0 +1,163 @@
+================================================================================
+                    CURSO DE APIGEE - SECCIÓN 6
+                LOGGING Y MONITOREO CON CLOUD LOGGING
+              RESÚMENES DIDÁCTICOS DE CADA VIDEO DEL CURSO
+================================================================================
+
+Instructor: Eduardo Celedonio
+Elaborado por: Claude (Asistente AI)
+Fecha: 2 de enero de 2026
+
+================================================================================
+
+
+VIDEO 1: SERVICE ACCOUNT PARA CLOUD LOGGING
+================================================================================
+
+Para enviar logs desde Apigee hacia Cloud Logging (el sistema de registro de Google Cloud), primero necesitas crear una cuenta de servicio con los permisos adecuados.
+
+**¿Qué es una Service Account?**
+
+Una Service Account es como un usuario especial que usa tu aplicación (no una persona real) para interactuar con servicios de Google Cloud. En este caso, Apigee necesita una cuenta con permiso para escribir en Cloud Logging.
+
+**Creando el rol personalizado**
+
+Primero vas a IAM (Identity and Access Management) en Google Cloud y creas un rol nuevo llamado "Apigee-Logging-Role". Este rol necesita un permiso específico que te indica la documentación de Apigee: el permiso para escribir logs. Lo seleccionas de la lista de permisos disponibles y creas el rol.
+
+**Creando la Service Account**
+
+Luego vas a Service Accounts y creas una nueva cuenta llamada "sa-apigee-logger". Durante la creación, le asignas el rol personalizado que acabas de crear. No necesitas llenar los campos opcionales - con el nombre y el rol es suficiente.
+
+**Copiando el email de la cuenta**
+
+Una vez creada, necesitas copiar el email completo de la Service Account porque lo usarás cuando despliegues el Shared Flow de logging. Este email tiene un formato como "sa-apigee-logger@tu-proyecto.iam.gserviceaccount.com".
+
+**Lo que debes entender**
+
+Las Service Accounts son identidades que usan las aplicaciones para acceder a servicios de Google Cloud de forma segura. En este caso, le estás dando a Apigee permiso para enviar información de logs a Cloud Logging sin exponer credenciales de usuario. Este paso es necesario antes de poder enviar logs.
+
+
+================================================================================
+
+
+VIDEO 2: SHARED FLOW PARA LOGS USANDO CLOUD LOGGING
+================================================================================
+
+Ahora se crea un Shared Flow que todos tus proxies podrán usar para enviar logs automáticamente a Cloud Logging.
+
+**Creando el Shared Flow**
+
+Vas a Proxy Development → Shared Flows → Create y lo nombras "sf-logger". Luego agregas una política llamada "Message Logging" que es la que permite enviar información a Cloud Logging. Esta política tiene una configuración especial con la etiqueta "CloudLogging".
+
+**Configurando la política de logging**
+
+La configuración incluye el "LogName" que sigue un formato específico: "projects/[nombre-de-tu-organización]/logs/apigee-logs-ops". El nombre de tu organización en Apigee coincide con el nombre de tu proyecto en Google Cloud. Luego defines qué información quieres enviar: timestamp, nombre del proxy, ID de la petición, IP del cliente, URL, método HTTP, código de respuesta, etc.
+
+**Variables de Apigee**
+
+La política usa variables que Apigee popula automáticamente durante cada petición. Por ejemplo, "apiproxy.name" contiene el nombre del proxy, "client.ip" tiene la IP del cliente, "request.verb" es el método HTTP (GET, POST, etc.). Puedes consultar todas las variables disponibles en la documentación de Apigee en la sección de Flow Variables.
+
+**El problema del despliegue**
+
+Cuando intentas desplegar este Shared Flow, te dará un error. Esto es porque la política Message Logging requiere que especifiques una Service Account con permisos para escribir en Cloud Logging. Aquí es donde usas el email de la Service Account que creaste en el video anterior.
+
+**Desplegando con la Service Account**
+
+En el formulario de despliegue aparece un campo para la Service Account. Pegas ahí el email completo de "sa-apigee-logger" y ahora sí el despliegue funciona correctamente. El Shared Flow queda desplegado en el ambiente de desarrollo.
+
+**Lo que debes entender**
+
+Message Logging es la política que envía información a Cloud Logging. Puedes personalizar qué datos enviar usando las variables de Apigee. La Service Account es obligatoria porque Apigee necesita autenticarse para escribir en Cloud Logging. El Shared Flow está listo, pero por sí solo no hace nada - necesitas activarlo con Flow Hooks.
+
+
+================================================================================
+
+
+VIDEO 3: FLOW HOOKS
+================================================================================
+
+Los Flow Hooks son un mecanismo poderoso que permite ejecutar Shared Flows automáticamente en todos tus proxies sin tener que modificarlos uno por uno.
+
+**¿Qué es un Flow Hook?**
+
+Imagina que tienes 50 proxies y quieres que todos envíen logs. Normalmente tendrías que editar los 50 proxies agregando la política Flow Callout en cada uno. Los Flow Hooks te permiten configurar una sola vez a nivel de ambiente que cierto Shared Flow se ejecute automáticamente para todos los proxies.
+
+**Los cuatro tipos de Flow Hooks**
+
+Vas a Admin → Environments → Dev → Flow Hooks y encuentras cuatro opciones. Pre-Proxy Flow Hook se ejecuta antes de que entre cualquier lógica del proxy - útil para seguridad. Pre-Target Flow Hook se ejecuta justo antes de llamar al backend. Post-Target Flow Hook se ejecuta después de recibir respuesta del backend. Post-Proxy Flow Hook se ejecuta al final, después de toda la lógica del proxy.
+
+**Configurando el Flow Hook para logging**
+
+Como queremos registrar información completa de la petición (incluyendo la respuesta), seleccionamos Post-Proxy Flow Hook. Ahí eliges el Shared Flow "sf-logger" de la lista desplegable y guardas. Con solo este cambio, TODOS los proxies del ambiente de desarrollo ejecutarán automáticamente el Shared Flow de logging.
+
+**Probando que funciona**
+
+Haces una petición a cualquier proxy (por ejemplo seven-days-jobs) y en Debug puedes ver que después de toda la ejecución normal, aparece el Flow Hook llamando al Shared Flow sf-logger. Incluso si la petición falla (por ejemplo, token expirado), el log se envía igual capturando el error.
+
+**Viendo los logs en Cloud Logging**
+
+Vas a la consola de Google Cloud, buscas "Cloud Logging" y ahí puedes filtrar por el nombre que le pusiste a tus logs: "apigee-logs-ops". Aparecen todos los logs de tus proxies con toda la información que configuraste: nombre del proxy, método HTTP, status code, IP del cliente, timestamp, etc. Puedes ver tanto peticiones exitosas como errores.
+
+**Ventajas de usar Flow Hooks**
+
+No tienes que modificar ningún proxy individualmente. Todos automáticamente envían logs. Si quieres cambiar qué información se registra, solo editas el Shared Flow y afecta a todos. Es especialmente útil para funcionalidades obligatorias como logging, seguridad o monitoreo.
+
+**Lo que debes entender**
+
+Los Flow Hooks ejecutan Shared Flows automáticamente para todos los proxies de un ambiente. Son perfectos para funcionalidades transversales como logging. Post-Proxy es ideal para logs porque captura información completa de la petición y respuesta. Cloud Logging te da visibilidad centralizada de todo lo que pasa en tus APIs.
+
+
+================================================================================
+
+
+VIDEO 4: FIN DEL CURSO
+================================================================================
+
+Este es el mensaje final del instructor felicitándote por completar el curso.
+
+**El logro de terminar**
+
+El instructor te felicita por llegar hasta el final del curso. Menciona que terminar un curso de Udemy requiere mucha disciplina - muchas personas compran cursos pero no los completan. Si llegaste aquí, demuestra tu compromiso con aprender.
+
+**Un curso vivo**
+
+Este no es un curso estático que se quedará sin actualizar. El instructor lo considera su producto digital y estará continuamente mejorándolo. Estará atento a los comentarios de los estudiantes para hacer mejoras y agregar contenido que sea útil.
+
+**Nuevas secciones por venir**
+
+Se seguirán agregando nuevas secciones al curso. No te quedarás sin contenido - habrá actualizaciones continuas con temas nuevos para que sigas aprendiendo más sobre Apigee.
+
+**Lo que has logrado**
+
+Has aprendido desde los conceptos básicos de Apigee hasta temas avanzados como OAuth 2.0, Shared Flows, y logging profesional. Tienes las bases para trabajar con Apigee en entornos reales. El curso te dio conocimientos prácticos que puedes aplicar inmediatamente.
+
+
+================================================================================
+
+
+RESUMEN FINAL DE LA SECCIÓN 6
+================================================================================
+
+En esta última sección aprendiste sobre logging y monitoreo profesional:
+
+✅ **Service Accounts**: Identidades para aplicaciones que acceden a servicios de Google Cloud de forma segura.
+
+✅ **Cloud Logging**: Sistema centralizado de Google Cloud para ver y analizar logs de todas tus aplicaciones.
+
+✅ **Message Logging Policy**: Política de Apigee que envía información personalizada a Cloud Logging.
+
+✅ **Flow Hooks**: Mecanismo para ejecutar Shared Flows automáticamente en todos los proxies de un ambiente sin modificarlos individualmente.
+
+✅ **Logging completo**: Configuraste un sistema que registra automáticamente todas las peticiones a tus APIs con información como: nombre del proxy, método HTTP, IP del cliente, códigos de respuesta, timestamps, etc.
+
+**Aplicación práctica**:
+
+Este setup de logging es fundamental en producción. Te permite monitorear el comportamiento de tus APIs, detectar errores, analizar patrones de uso, y tener trazabilidad completa de todas las transacciones. Es el tipo de configuración que encontrarás en implementaciones empresariales de Apigee.
+
+**¡Felicidades por completar el curso!**
+
+Ahora tienes conocimientos sólidos sobre Apigee X, desde conceptos básicos hasta configuraciones avanzadas de seguridad y monitoreo.
+
+================================================================================
+FIN DEL DOCUMENTO Y DEL CURSO
+================================================================================

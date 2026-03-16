@@ -1,0 +1,741 @@
+================================================================================
+                    CURSO DE APIGEE X - GLOSARIO COMPLETO
+                   CONCEPTOS, FUNCIONES Y MEJORES PRÁCTICAS
+================================================================================
+
+Elaborado por: Claude (Asistente AI)
+Basado en: Análisis completo del curso de Eduardo Celedonio
+Fecha: 2 de enero de 2026
+
+================================================================================
+
+
+📚 CONCEPTOS FUNDAMENTALES DE APIGEE
+================================================================================
+
+APIGEE X
+  Definición: Plataforma de gestión de APIs (API Management) de Google Cloud
+  Propósito: Actuar como intermediario entre clientes y backends, agregando 
+            seguridad, transformación, caché, monitoreo y control de tráfico
+  Uso: Proteger, escalar y monetizar tus APIs sin modificar el código backend
+  Ejemplo: En vez de exponer directamente tu backend en mi-servidor.com, 
+           expones un proxy en api.miempresa.com que agrega OAuth y límites
+
+API PROXY
+  Definición: Intermediario entre el cliente y el backend que agrega funcionalidad
+  Componentes: ProxyEndpoint (lado del cliente) y TargetEndpoint (lado del backend)
+  Propósito: Transformar datos, aplicar seguridad, cachear, sin tocar el backend
+  Uso: Crear una capa de abstracción para tus servicios
+  Ejemplo: Cliente llama /v1/users → Proxy valida token → Llama backend → 
+           Transforma XML a JSON → Retorna al cliente
+
+ORGANIZACIÓN (ORGANIZATION)
+  Definición: Contenedor principal donde viven todos tus recursos de Apigee
+  Relación: Una organización de Apigee = Un proyecto de Google Cloud
+  Contiene: Proxies, Productos, Developers, Apps, Ambientes, KVMs, etc.
+  Límites: Las organizaciones trial tienen restricciones (2 ambientes máximo)
+  Ejemplo: Tu empresa "Acme Corp" tiene una organización "acme-corp-123"
+
+AMBIENTE (ENVIRONMENT)
+  Definición: Espacio aislado para desplegar proxies (dev, test, prod)
+  Propósito: Separar desarrollo de producción con configuraciones distintas
+  Configuración: Cada ambiente tiene sus propios KVMs, Target Servers, variables
+  Uso: Desplegar versión beta en "dev" y versión estable en "prod"
+  Ejemplo: Proxy versión 2.0 en ambiente "dev", versión 1.0 en ambiente "prod"
+
+ENVIRONMENT GROUP
+  Definición: Grupo de ambientes con un hostname compartido
+  Propósito: Asignar dominios personalizados a tus APIs
+  Configuración: Asocias un hostname (api.tuempresa.com) a uno o más ambientes
+  Uso: Tener URLs profesionales en vez de las autogeneradas por Apigee
+  Ejemplo: "apis-produccion" apunta a api.empresa.com y usa ambiente "prod"
+
+
+================================================================================
+
+
+🔄 FLUJOS DE EJECUCIÓN (FLOWS)
+================================================================================
+
+PROXY ENDPOINT
+  Definición: Lado del cliente en el flujo del proxy
+  Fases: PreFlow Request → Conditional Flows → PostFlow Request
+  Propósito: Ejecutar lógica antes/después de procesar la petición del cliente
+  Uso típico: Validar API Keys, transformar requests, aplicar CORS
+  Ejemplo: PreFlow Request ejecuta Verify API Key antes de cualquier otra cosa
+
+TARGET ENDPOINT
+  Definición: Lado del backend en el flujo del proxy
+  Fases: PreFlow Request → PostFlow Request → Backend → PreFlow Response → PostFlow Response
+  Propósito: Preparar llamada al backend y procesar su respuesta
+  Uso típico: Inyectar headers, transformar respuestas del backend
+  Ejemplo: PostFlow Response convierte XML del backend a JSON para el cliente
+
+PREFLOW
+  Definición: Flujo que SIEMPRE se ejecuta, antes de flujos condicionales
+  Cuándo: Antes de cualquier lógica específica del proxy
+  Uso típico: Seguridad, validaciones, logging
+  Ubicación: ProxyEndpoint PreFlow o TargetEndpoint PreFlow
+  Ejemplo: PreFlow Request ejecuta políticas de seguridad para todas las peticiones
+
+POSTFLOW
+  Definición: Flujo que SIEMPRE se ejecuta, después de flujos condicionales
+  Cuándo: Después de toda la lógica específica del proxy
+  Uso típico: Transformaciones finales, logging, limpieza
+  Ubicación: ProxyEndpoint PostFlow o TargetEndpoint PostFlow
+  Ejemplo: PostFlow Response agrega headers CORS a todas las respuestas
+
+CONDITIONAL FLOW
+  Definición: Flujo que solo se ejecuta si se cumple una condición
+  Condición: Basada en path, método HTTP, headers, query params, etc.
+  Propósito: Ejecutar lógica solo para ciertos endpoints o casos
+  Uso: Diferentes flujos para GET /users vs POST /users
+  Ejemplo: Flow "GetUsers" solo se ejecuta si path="/users" Y método=GET
+
+
+================================================================================
+
+
+📋 POLÍTICAS (POLICIES) - CATEGORÍAS PRINCIPALES
+================================================================================
+
+POLÍTICAS DE SEGURIDAD
+------------------------
+
+Verify API Key
+  Propósito: Validar que el cliente tenga un API Key válido
+  Cuándo usar: Autenticación básica con API Keys
+  Dónde: PreFlow Request (lo más temprano posible)
+  Variables: verifyapikey.*.client_id, developer.email, app.name
+  Ejemplo: Rechaza peticiones sin header X-API-Key válido con error 401
+
+OAuth V2.0
+  Propósito: Generar o verificar Access Tokens OAuth 2.0
+  Operaciones: GenerateAccessToken, VerifyAccessToken
+  Cuándo usar: Autenticación moderna con tokens temporales
+  Flujo soportado: Client Credentials (máquina a máquina)
+  Ejemplo: Genera token con 30 min de expiración para apps autenticadas
+
+Basic Authentication
+  Propósito: Codificar/decodificar credenciales en Base64
+  Operaciones: Encode (crear), Decode (extraer)
+  Cuándo usar: Integración con APIs legacy que usan Basic Auth
+  Advertencia: No es seguro por sí solo, usar solo con HTTPS
+  Ejemplo: Encode toma usuario/password y genera "Authorization: Basic abc123"
+
+JSON Threat Protection
+  Propósito: Validar estructura y tamaño de JSONs para prevenir ataques
+  Validaciones: Tamaño de arrays, profundidad, longitud de strings, etc.
+  Cuándo usar: En todas las APIs que reciben JSON de clientes externos
+  Dónde: PreFlow Request, antes de procesar el JSON
+  Ejemplo: Rechaza JSON con arrays de 1 millón de elementos
+
+Spike Arrest
+  Propósito: Suavizar picos de tráfico distribuyendo peticiones uniformemente
+  Configuración: Rate (ej: 5pm = 5 por minuto), Identifier (por cliente/global)
+  Diferencia con Quota: Spike Arrest controla velocidad, Quota controla total
+  Cuándo usar: Proteger backend de ráfagas súbitas
+  Ejemplo: Con 60pm, permite 1 request/segundo, no 60 en el primer segundo
+
+POLÍTICAS DE TRANSFORMACIÓN
+---------------------------
+
+Assign Message
+  Propósito: Crear, modificar o eliminar headers, body, query params
+  Operaciones: Set, Add, Remove, Copy
+  Cuándo usar: Preparar requests, agregar headers, modificar responses
+  Uso común: Inyectar headers de autenticación, quitar datos sensibles
+  Ejemplo: Agregar header "X-API-Version: 2.0" a todas las respuestas
+
+Extract Variables
+  Propósito: Extraer datos de request/response y guardarlos en variables
+  Fuentes: Headers, query params, JSON (JSONPath), XML (XPath), URI
+  Cuándo usar: Capturar información para usar en otras políticas
+  Uso común: Extraer user_id del token para logs
+  Ejemplo: Extrae "email" del JSON request y lo guarda en variable "user.email"
+
+JSON to XML
+  Propósito: Convertir formato JSON a XML
+  Cuándo usar: Cliente envía JSON pero backend solo acepta XML
+  Configuración: Source (dónde leer JSON), OutputVariable (dónde escribir XML)
+  Dónde: Request flow, antes de llamar al backend
+  Ejemplo: {"name":"Juan"} se convierte en <root><name>Juan</name></root>
+
+XML to JSON
+  Propósito: Convertir formato XML a JSON
+  Cuándo usar: Backend responde XML pero cliente necesita JSON
+  Configuración: Source (response), destino (response para sobrescribir)
+  Dónde: Response flow, después de recibir respuesta del backend
+  Ejemplo: <user><name>Ana</name></user> → {"user":{"name":"Ana"}}
+
+JavaScript
+  Propósito: Ejecutar código JavaScript personalizado
+  Cuándo usar: Transformaciones complejas que no se pueden con otras políticas
+  Capacidades: Manipular JSON, llamar APIs, lógica condicional compleja
+  Variables: Acceso a context.getVariable() y context.setVariable()
+  Ejemplo: Transformar array de 50 campos a solo 5 campos relevantes
+
+POLÍTICAS DE CONTROL DE TRÁFICO
+-------------------------------
+
+Quota
+  Propósito: Limitar número total de llamadas en un período
+  Configuración: Allow (límite), Interval (tiempo), TimeUnit (hour/day/month)
+  Identifier: Aplicar por API Key (cada cliente tiene su límite)
+  Cuándo usar: Controlar uso, prevenir abuso, monetización
+  Ejemplo: Producto "Free" permite 1000 llamadas/día, "Pro" permite 100,000/día
+
+Response Cache
+  Propósito: Almacenar respuestas para servirlas sin llamar al backend
+  Configuración: CacheKey (identificador único), ExpirySettings (tiempo)
+  Beneficios: Reduce latencia 95%+, ahorra recursos del backend
+  Cuándo usar: Datos que no cambian frecuentemente (catálogos, tasas, noticias)
+  Ejemplo: Cachea respuesta de API del clima por 30 minutos
+
+POLÍTICAS DE INTEGRACIÓN
+------------------------
+
+Service Callout
+  Propósito: Llamar a otro servicio/API desde dentro del proxy
+  Cuándo usar: Consultar base de datos externa, validar con otro servicio
+  Configuración: URL, método HTTP, headers, timeout
+  Modo: Síncrono (espera respuesta) o asíncrono
+  Ejemplo: Antes de procesar pedido, llama API de inventario para verificar stock
+
+Key Value Map Operations
+  Propósito: Leer/escribir valores en KVMs
+  Operaciones: GET (leer), PUT (escribir), DELETE (borrar)
+  Cuándo usar: Acceder a configuraciones dinámicas o credenciales
+  Variables: Guarda valores leídos en variables de flujo
+  Ejemplo: Lee "backend_url" del KVM y la usa para construir el target
+
+Raise Fault
+  Propósito: Generar error personalizado y detener ejecución
+  Cuándo usar: Validaciones custom, errores de negocio
+  Configuración: Status code, mensaje de error, headers
+  Flujo: Detiene ejecución inmediatamente
+  Ejemplo: Si saldo < monto, genera error 400 "Saldo insuficiente"
+
+POLÍTICAS DE LOGGING
+--------------------
+
+Message Logging
+  Propósito: Enviar logs personalizados a sistemas externos
+  Destinos: Cloud Logging, Syslog, archivos
+  Configuración: LogName, Message (qué información enviar), ResourceType
+  Cuándo usar: Auditoría, debugging, monitoreo empresarial
+  Ejemplo: Envía timestamp, proxy name, status code, IP a Cloud Logging
+
+
+================================================================================
+
+
+🏗️ COMPONENTES DE INFRAESTRUCTURA
+================================================================================
+
+KEY VALUE MAP (KVM)
+  Definición: Almacén clave-valor para configuraciones dinámicas
+  Niveles: Organización, Ambiente, Proxy
+  Encriptación: Puede ser encriptado para datos sensibles (passwords, keys)
+  Propósito: Configuraciones que cambian sin redesplegar el proxy
+  Uso común: URLs de backends, API keys externos, feature flags
+  Ejemplo: Guardar "rapidapi_key: abc123" encriptado en KVM de ambiente
+
+TARGET SERVER
+  Definición: Configuración reutilizable que define hacia dónde apunta el proxy
+  Propósito: Centralizar configuración de backends
+  Por ambiente: Diferentes Target Servers en dev vs prod
+  Load balancing: Múltiples servidores para alta disponibilidad
+  Ejemplo: "backend-users" apunta a dev-api.com en dev, prod-api.com en prod
+
+SHARED FLOW
+  Definición: Flujo reutilizable que se puede llamar desde múltiples proxies
+  Propósito: Centralizar lógica común (seguridad, logging, transformación)
+  Invocación: Mediante política Flow Callout
+  Ventajas: Cambias una vez, afecta a todos los proxies que lo usan
+  Ejemplo: Shared Flow "sf-security-oauth" valida tokens OAuth para todos
+
+FLOW HOOK
+  Definición: Mecanismo para ejecutar Shared Flows automáticamente
+  Tipos: Pre-Proxy, Pre-Target, Post-Target, Post-Proxy
+  Nivel: Configurado por ambiente
+  Propósito: Funcionalidad obligatoria para TODOS los proxies
+  Uso común: Logging automático, seguridad global
+  Ejemplo: Post-Proxy Flow Hook ejecuta "sf-logger" en todas las peticiones
+
+PROPERTY SET
+  Definición: Archivo de propiedades clave-valor dentro del proxy
+  Formato: Archivo .properties con pares key=value
+  Acceso: Mediante sintaxis propertyset.NombreArchivo.clave
+  Advertencia: Son texto plano, no almacenar credenciales sensibles
+  Uso: Configuraciones simples, valores por defecto
+  Ejemplo: User.properties con username=test, password=demo
+
+
+================================================================================
+
+
+👥 GESTIÓN DE DESARROLLADORES
+================================================================================
+
+DEVELOPER
+  Definición: Persona o empresa que consumirá tus APIs
+  Información: Nombre, email, username, atributos personalizados
+  Relación: Un Developer puede tener múltiples Apps
+  Propósito: Identificar y gestionar quiénes usan tus APIs
+  Ejemplo: Empresa "TechCorp" registrada con email tech@corp.com
+
+API PRODUCT
+  Definición: Paquete de APIs con límites y permisos específicos
+  Incluye: Qué proxies, qué paths, qué métodos HTTP
+  Niveles: Free, Basic, Premium, Enterprise (diferentes límites)
+  Monetización: Cada producto puede tener precio diferente
+  Propósito: Agrupar APIs y controlar acceso granular
+  Ejemplo: Producto "Suite-Completa" incluye APIs de usuarios, pagos, y notificaciones
+
+APP (APPLICATION)
+  Definición: Aplicación específica que un Developer crea
+  Credenciales: API Key (público) y App Secret (privado)
+  Asociación: Una App se asocia con uno o más API Products
+  Generación: Apigee genera credenciales automáticamente al crear App
+  Propósito: Vincular Developer con Product y generar credenciales
+  Ejemplo: App "MobileApp-iOS" del Developer "TechCorp" usa producto "Premium"
+
+API KEY
+  Definición: Identificador único y público de una App
+  Formato: String largo alfanumérico
+  Seguridad: Puede ser visible, pero debe mantenerse privado si es posible
+  Validación: Mediante política Verify API Key
+  Uso: Cliente envía en header X-API-Key o query param apikey
+  Ejemplo: "Xy9aBc3DeFg4HiJk5LmNoPqR6"
+
+APP SECRET
+  Definición: Contraseña secreta de la App
+  Seguridad: DEBE mantenerse confidencial
+  Uso: OAuth 2.0 Client Credentials (como password)
+  Rotación: Puede generarse nuevo secret si se compromete
+  Ejemplo: Usado en Basic Auth para obtener access token
+
+
+================================================================================
+
+
+🔐 SEGURIDAD Y AUTENTICACIÓN
+================================================================================
+
+OAUTH 2.0 - CLIENT CREDENTIALS FLOW
+  Definición: Protocolo de autorización para comunicación máquina-a-máquina
+  Participantes: Cliente (App), Authorization Server (Apigee), Resource Server (Proxy)
+  Flujo: Cliente envía ID+Secret → Apigee valida → Genera Access Token
+  Sin usuario: No hay usuario humano, solo apps comunicándose
+  Uso: Microservicios, cron jobs, integraciones B2B
+  Ejemplo: Servicio de facturación obtiene token para llamar servicio de inventario
+
+ACCESS TOKEN
+  Definición: Token temporal (JWT) que autoriza acceso a APIs
+  Formato: JWT con header.payload.signature
+  Expiración: Típicamente 30-60 minutos
+  Contenido: client_id, timestamps, permisos
+  Uso: Se envía en header "Authorization: Bearer [token]"
+  Ejemplo: Token válido por 30 min que da acceso a API de usuarios
+
+CLIENT ID
+  Definición: Identificador público de la App en OAuth
+  Origen: Es el mismo API Key de la App
+  Uso: Username en Basic Auth para obtener token
+  Visibilidad: Puede ser conocido, pero mejor mantenerlo privado
+  Ejemplo: Mismo valor que el API Key de la App
+
+CLIENT SECRET
+  Definición: Contraseña secreta de la App en OAuth
+  Origen: Es el App Secret
+  Uso: Password en Basic Auth para obtener token
+  Seguridad: NUNCA compartir, NUNCA commitear en código
+  Ejemplo: Usado junto con Client ID para autenticar y obtener token
+
+
+================================================================================
+
+
+📊 MONITOREO Y ANÁLISIS
+================================================================================
+
+DEBUG
+  Definición: Herramienta para diagnosticar y probar proxies
+  Duración: Sesiones de ~10 minutos
+  Visualización: Muestra cada política ejecutada y variables pobladas
+  Descarga: Puedes exportar sesiones para compartir con equipo
+  Uso: Identificar errores, verificar flujo, validar configuraciones
+  Ejemplo: Ver por qué un request falla en Verify API Key
+
+ANALYTICS
+  Definición: Dashboards automáticos con métricas de tus APIs
+  Métricas: Tráfico, latencia, errores, uso por proxy, por developer
+  Tiempo real: Datos con pocos minutos de delay
+  Exportación: Puedes crear reportes personalizados
+  Uso: Monitorear salud de APIs, identificar cuellos de botella
+  Ejemplo: Ver que API de usuarios tiene 500ms de latencia promedio
+
+CLOUD LOGGING
+  Definición: Sistema centralizado de Google Cloud para logs
+  Integración: Mediante política Message Logging
+  Filtros: Buscar logs por proxy, timestamp, nivel (info/error/alert)
+  Retención: Configurable (días, semanas, meses)
+  Uso: Auditoría, debugging, cumplimiento normativo
+  Ejemplo: Ver todos los errores 500 de las últimas 24 horas
+
+VARIABLES DE FLUJO
+  Definición: Datos que Apigee popula automáticamente durante ejecución
+  Acceso: Mediante sintaxis {variable.nombre} en políticas
+  Tipos: Sistema (client.ip, request.verb), Custom (las que creas)
+  Scope: Disponibles durante toda la ejecución del proxy
+  Uso: Logging, lógica condicional, transformaciones
+  Ejemplo: apiproxy.name, developer.email, oauth.access_token
+
+
+================================================================================
+
+
+⚙️ CONFIGURACIONES AVANZADAS
+================================================================================
+
+CORS (Cross-Origin Resource Sharing)
+  Definición: Mecanismo para permitir peticiones desde navegadores web
+  Headers: Access-Control-Allow-Origin, Access-Control-Allow-Methods
+  Cuándo: APIs consumidas desde aplicaciones web frontend
+  Configuración: Política Assign Message o activar al crear proxy
+  Ejemplo: Permitir que app en app.miempresa.com llame api.miempresa.com
+
+BASE PATH
+  Definición: Ruta base del proxy que expones a clientes
+  Formato: Debe empezar con / (ej: /v1, /api/users)
+  Único: No puede haber dos proxies con mismo base path en mismo ambiente
+  Versionado: Buena práctica usar /v1, /v2 para versionar APIs
+  Ejemplo: Proxy "users-v1" con base path "/v1/users"
+
+REVISIÓN (REVISION)
+  Definición: Versión numerada del proxy
+  Numeración: Incremental (1, 2, 3, 4...)
+  Despliegue: Solo una revisión activa por ambiente
+  Rollback: Puedes redesplegar revisión anterior si hay problemas
+  Uso: Control de versiones sin Git
+  Ejemplo: Revisión 5 en prod, revisión 6 en desarrollo
+
+DEPLOYMENT
+  Definición: Acción de activar una revisión del proxy en un ambiente
+  Estados: Deployed (activo), Undeployed (inactivo)
+  Múltiple: Misma revisión puede estar en varios ambientes
+  Tiempo: Tarda 30-60 segundos en propagarse
+  Ejemplo: Desplegar revisión 3 en ambiente "prod"
+
+
+================================================================================
+
+
+🎯 MEJORES PRÁCTICAS - DESARROLLO
+================================================================================
+
+1. NOMENCLATURA
+  ✅ Proxies: nombre-recurso-version (ej: users-api-v1)
+  ✅ Políticas: TIPO-Accion (ej: AM-Set-Headers, SA-Protect-Backend)
+  ✅ Flows: Verbo + Recurso (ej: GetUsers, CreateOrder)
+  ✅ KVMs: kvm-proposito (ej: kvm-credentials, kvm-config)
+  ✅ Shared Flows: sf-proposito (ej: sf-security, sf-logging)
+
+2. VERSIONADO
+  ✅ Usar /v1, /v2 en base paths para versionar APIs
+  ✅ Mantener versión anterior funcionando al lanzar nueva
+  ✅ Deprecar versiones antiguas gradualmente, nunca súbitamente
+  ✅ Documentar cambios entre versiones
+
+3. SEGURIDAD
+  ✅ NUNCA hardcodear credenciales en políticas
+  ✅ Usar KVMs encriptados para API keys y passwords
+  ✅ Aplicar Verify API Key o OAuth en TODOS los proxies
+  ✅ Colocar políticas de seguridad en PreFlow Request
+  ✅ Usar HTTPS siempre (nunca HTTP en producción)
+  ✅ Implementar Spike Arrest para prevenir ataques DoS
+  ✅ Usar JSON Threat Protection en APIs públicas
+
+4. PERFORMANCE
+  ✅ Implementar Response Cache para datos que no cambian frecuentemente
+  ✅ Configurar timeouts apropiados en Service Callout
+  ✅ Minimizar número de políticas en el flujo
+  ✅ Usar Target Servers en lugar de URLs hardcodeadas
+  ✅ Monitorear latencia en Analytics regularmente
+
+5. MANTENIBILIDAD
+  ✅ Usar Shared Flows para lógica común (evitar duplicación)
+  ✅ Documentar propósito de cada política
+  ✅ Exportar proxies como backup (archivos ZIP)
+  ✅ Mantener configuraciones en KVMs, no en código
+  ✅ Usar Property Sets solo para valores no sensibles
+
+6. TESTING
+  ✅ Probar exhaustivamente en Debug antes de desplegar
+  ✅ Validar todos los casos de error (401, 403, 429, 500)
+  ✅ Probar con diferentes payloads (válidos e inválidos)
+  ✅ Verificar que variables se poblan correctamente
+  ✅ Testear en ambiente dev antes de prod
+
+
+================================================================================
+
+
+🎯 MEJORES PRÁCTICAS - OPERACIONES
+================================================================================
+
+1. AMBIENTES
+  ✅ Mínimo tener: dev (desarrollo) y prod (producción)
+  ✅ Ideal: dev, test, staging, prod
+  ✅ Configuraciones diferentes por ambiente (URLs, KVMs)
+  ✅ Probar en dev → Validar en test → Desplegar en prod
+
+2. LOGGING
+  ✅ Implementar logging centralizado con Cloud Logging
+  ✅ Incluir: timestamp, proxy name, status code, client IP, user ID
+  ✅ Usar Flow Hooks para logging automático en todos los proxies
+  ✅ Definir niveles: info (operación normal), alert (problemas), error (fallos)
+  ✅ No loguear información sensible (passwords, tokens completos)
+
+3. MONITOREO
+  ✅ Revisar Analytics diariamente
+  ✅ Configurar alertas para errores 5xx
+  ✅ Monitorear latencia y establecer SLAs
+  ✅ Trackear uso por Developer para detectar abusos
+  ✅ Analizar patrones de tráfico para capacity planning
+
+4. GESTIÓN DE CREDENCIALES
+  ✅ Rotar API Keys periódicamente
+  ✅ Revocar inmediatamente credenciales comprometidas
+  ✅ Usar Access Tokens con expiración corta (30-60 min)
+  ✅ Nunca compartir App Secrets por email o Slack
+  ✅ Usar KVMs encriptados para almacenar secrets
+
+5. ALTA DISPONIBILIDAD
+  ✅ Configurar múltiples Target Servers para load balancing
+  ✅ Implementar health checks en backends
+  ✅ Usar caché para seguir funcionando si backend cae
+  ✅ Configurar timeouts y retry policies apropiados
+  ✅ Tener plan de rollback (poder volver a revisión anterior)
+
+6. DOCUMENTACIÓN
+  ✅ Documentar propósito de cada proxy
+  ✅ Mantener README con instrucciones de deployment
+  ✅ Documentar API Products y sus límites
+  ✅ Crear guías de integración para Developers
+  ✅ Mantener catálogo actualizado de Shared Flows disponibles
+
+
+================================================================================
+
+
+🚀 FLUJOS DE TRABAJO COMUNES
+================================================================================
+
+CREAR UN PROXY NUEVO
+  1. Ir a API Proxies → Create
+  2. Seleccionar tipo (Reverse Proxy típicamente)
+  3. Definir nombre y base path (/v1/recurso)
+  4. Configurar target URL (backend)
+  5. Habilitar CORS si es necesario
+  6. Click Create
+  7. Agregar políticas de seguridad en PreFlow Request
+  8. Configurar flujos condicionales según endpoints
+  9. Agregar transformaciones si es necesario
+  10. Guardar y desplegar a ambiente dev
+  11. Probar en Debug exhaustivamente
+  12. Si funciona bien, desplegar a prod
+
+PROTEGER UN PROXY CON OAUTH
+  1. Crear proxy OAuth (Authorization Server):
+     - Tipo: No Target
+     - Base path: /oauth/v1
+     - Agregar política OAuth V2.0 (GenerateAccessToken)
+     - Flow condicional: POST /token
+  2. Crear Shared Flow de verificación:
+     - Agregar política OAuth V2.0 (VerifyAccessToken)
+     - Desplegar el Shared Flow
+  3. En proxy a proteger:
+     - Agregar Flow Callout al Shared Flow
+     - Colocar en PreFlow Request
+  4. Configurar API Product con ambos proxies
+  5. Probar: Obtener token → Usar token en petición
+
+IMPLEMENTAR CACHÉ
+  1. Identificar qué datos cachear (poco cambiantes)
+  2. Agregar política Response Cache al proxy
+  3. Configurar CacheKey único
+  4. Definir ExpirySettings (tiempo en segundos)
+  5. Colocar en ProxyEndpoint PreFlow Response
+  6. Colocar también en TargetEndpoint PostFlow Response
+  7. Probar: Primera llamada lenta → Siguientes rápidas
+  8. Verificar en Debug: responsecache.cachehit = true
+
+CONFIGURAR LOGGING CENTRALIZADO
+  1. Crear Service Account en GCP con permisos de logging
+  2. Crear Shared Flow "sf-logger":
+     - Agregar política Message Logging
+     - Configurar Cloud Logging como destino
+     - Definir qué información enviar (variables de flujo)
+  3. Desplegar Shared Flow con la Service Account
+  4. Configurar Flow Hook (Post-Proxy)
+  5. Seleccionar "sf-logger"
+  6. Guardar
+  7. Todas las peticiones envían logs automáticamente
+  8. Ver logs en Cloud Logging de GCP
+
+CREAR ESTRUCTURA DE DEVELOPERS/PRODUCTS/APPS
+  1. Crear Developer:
+     - Publish → Developers → Create
+     - Llenar nombre, email, username
+  2. Crear API Product:
+     - Publish → Products → Create
+     - Agregar proxies y operations
+     - Definir límites y cuotas
+  3. Crear App:
+     - Publish → Apps → Create
+     - Seleccionar Developer
+     - Asociar con Product(s)
+     - Copiar API Key y Secret generados
+  4. Entregar credenciales al Developer
+  5. Developer usa credenciales para autenticarse
+
+
+================================================================================
+
+
+❌ ERRORES COMUNES Y SOLUCIONES
+================================================================================
+
+ERROR 401: Invalid API Key
+  Causa: API Key no existe, está revocada, o no tiene acceso al proxy
+  Solución: 
+    - Verificar que estás usando el API Key correcto
+    - Verificar que la App esté asociada al API Product correcto
+    - Verificar que el Product incluya el proxy que estás llamando
+    - Revisar que el header X-API-Key esté presente
+
+ERROR 401: Access Token expired
+  Causa: El token OAuth venció (pasaron más de 30 minutos)
+  Solución: Generar un nuevo token llamando a POST /oauth/v1/token
+
+ERROR 429: Spike arrest violation
+  Causa: Excediste el límite de peticiones por tiempo (Spike Arrest)
+  Solución: Esperar unos segundos y reintentar, o reducir frecuencia
+
+ERROR 429: Quota exceeded
+  Causa: Alcanzaste el límite total de llamadas (Quota)
+  Solución: Esperar hasta que el período se renueve (hora/día/mes)
+
+ERROR 500: ResponseCache.InvalidMessagePattern
+  Causa: Estás intentando cachear algo que no es una respuesta HTTP válida
+  Solución: Verificar que la política esté en el lugar correcto del flujo
+
+ERROR: Deployment failed - Service Account required
+  Causa: Shared Flow con Message Logging necesita Service Account
+  Solución: Especificar el email de la Service Account al desplegar
+
+ERROR: Base path conflict
+  Causa: Ya existe otro proxy con el mismo base path en el ambiente
+  Solución: Usar base path diferente o undeployar el proxy existente
+
+Variables no pobladas en Debug
+  Causa: La política que debía poblarlas no se ejecutó o tiene error
+  Solución: 
+    - Verificar orden de políticas en el flow
+    - Verificar condiciones de flujos condicionales
+    - Revisar logs de errores en Debug
+
+
+================================================================================
+
+
+📖 RECURSOS ADICIONALES
+================================================================================
+
+DOCUMENTACIÓN OFICIAL
+  - Apigee Docs: https://cloud.google.com/apigee/docs
+  - API Reference: https://cloud.google.com/apigee/docs/reference
+  - Policy Reference: Detalle de todas las políticas disponibles
+  - Flow Variables: Lista completa de variables del sistema
+
+HERRAMIENTAS ÚTILES
+  - Postman: Para probar APIs y generar colecciones
+  - gcloud CLI: Para interactuar con Apigee API desde terminal
+  - Cloud Console: Interfaz web de Google Cloud
+  - Debug UI: Herramienta integrada en Apigee para diagnóstico
+
+CONCEPTOS RELACIONADOS
+  - REST APIs: Fundamentos de APIs RESTful
+  - OAuth 2.0: Especificación oficial del protocolo
+  - JWT: JSON Web Tokens para authorization
+  - JSON/XML: Formatos de intercambio de datos
+  - HTTP Status Codes: Significado de códigos 200, 401, 500, etc.
+
+
+================================================================================
+
+
+📝 CHECKLIST DE PROYECTO COMPLETO
+================================================================================
+
+SETUP INICIAL
+  ☐ Crear cuenta Google Cloud Platform
+  ☐ Aprovisionar organización Apigee X
+  ☐ Configurar ambientes (dev, prod)
+  ☐ Configurar Environment Groups con dominios
+  ☐ Crear Service Account para logging
+
+DESARROLLO DE PROXY
+  ☐ Crear proxy con nombre descriptivo y versionado
+  ☐ Configurar Target Server (no hardcodear URLs)
+  ☐ Implementar seguridad (Verify API Key o OAuth)
+  ☐ Agregar JSON Threat Protection si recibe JSON
+  ☐ Agregar Spike Arrest para proteger backend
+  ☐ Implementar transformaciones necesarias
+  ☐ Configurar Response Cache si aplica
+  ☐ Agregar manejo de errores (Raise Fault)
+  ☐ Probar exhaustivamente en Debug
+  ☐ Exportar proxy como backup (ZIP)
+
+GESTIÓN DE ACCESO
+  ☐ Crear API Products con límites claros
+  ☐ Documentar qué incluye cada Product
+  ☐ Crear Developers (internos o externos)
+  ☐ Crear Apps y asociar con Products
+  ☐ Configurar Quotas apropiadas por Product
+  ☐ Documentar proceso para nuevos Developers
+
+MONITOREO Y LOGGING
+  ☐ Crear Shared Flow de logging
+  ☐ Configurar Flow Hook para logging automático
+  ☐ Verificar que logs lleguen a Cloud Logging
+  ☐ Configurar filtros y alertas en Cloud Logging
+  ☐ Revisar Analytics regularmente
+  ☐ Documentar qué métricas monitorear
+
+SEGURIDAD AVANZADA
+  ☐ Implementar OAuth 2.0 (si aplica)
+  ☐ Crear Shared Flow de seguridad reutilizable
+  ☐ Rotar credenciales periódicamente
+  ☐ Auditar accesos y uso
+  ☐ Mantener KVMs encriptados para secrets
+
+DOCUMENTACIÓN
+  ☐ Documentar arquitectura del proxy
+  ☐ Crear guía de integración para consumers
+  ☐ Documentar variables de entorno por ambiente
+  ☐ Mantener catálogo de Shared Flows
+  ☐ Documentar proceso de deployment
+
+
+================================================================================
+FIN DEL GLOSARIO
+================================================================================
+
+Este glosario cubre todos los conceptos, funciones y mejores prácticas del
+curso de Apigee X. Úsalo como referencia rápida durante el desarrollo y
+operación de tus API proxies.
+
+¡Éxito en tu proyecto con Apigee! 🚀

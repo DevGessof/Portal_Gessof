@@ -1,0 +1,65 @@
+{
+  "titulo": "Crear Base de Datos PostgreSQL para Persistir Información",
+  "resumen": "Integración de PostgreSQL como contenedor Docker para persistencia de datos. Se agrega servicio postgres a docker-compose, se configuran credenciales, se crean volúmenes para persistencia, y se configuran microservicios para conectar a PostgreSQL en lugar de H2. Datos persisten entre reinicios.",
+  "puntosClave": [
+    "Agregar servicio postgres en docker-compose.yml",
+    "Imagen oficial: postgres:15-alpine (ligera)",
+    "Variables de entorno:",
+    "  - POSTGRES_USER: usuario de BD",
+    "  - POSTGRES_PASSWORD: contraseña",
+    "  - POSTGRES_DB: nombre de base de datos inicial",
+    "Puerto: 5432 (mapear a host si es necesario)",
+    "Volumen: persistir datos en host",
+    "  - postgres-data:/var/lib/postgresql/data",
+    "Actualizar application-docker.properties en microservicios:",
+    "  - spring.datasource.url=jdbc:postgresql://postgres:5432/customerdb",
+    "  - spring.datasource.username=postgres",
+    "  - spring.datasource.password=postgres",
+    "  - spring.jpa.hibernate.ddl-auto=update (crear tablas auto)",
+    "depends_on: asegurar que postgres inicia antes que microservicios",
+    "Healthcheck: verificar que postgres está listo antes de conectar"
+  ],
+  "conceptos": [
+    {
+      "nombre": "PostgreSQL",
+      "descripcion": "Sistema de gestión de bases de datos relacional open-source"
+    },
+    {
+      "nombre": "Docker Volume",
+      "descripcion": "Mecanismo para persistir datos fuera del ciclo de vida del contenedor"
+    },
+    {
+      "nombre": "Named Volume",
+      "descripcion": "Volumen gestionado por Docker con nombre específico"
+    },
+    {
+      "nombre": "Data Persistence",
+      "descripcion": "Mantener datos aunque contenedor se elimine"
+    },
+    {
+      "nombre": "Database Connection String",
+      "descripcion": "URL JDBC para conectar a base de datos"
+    },
+    {
+      "nombre": "Healthcheck",
+      "descripcion": "Comando para verificar que servicio está listo"
+    },
+    {
+      "nombre": "postgres:alpine",
+      "descripcion": "Imagen ligera de PostgreSQL basada en Alpine Linux"
+    },
+    {
+      "nombre": "POSTGRES_DB",
+      "descripcion": "Variable de entorno para crear BD inicial al iniciar contenedor"
+    },
+    {
+      "nombre": "spring.jpa.hibernate.ddl-auto",
+      "descripcion": "Estrategia de generación de esquema (create, update, validate)"
+    },
+    {
+      "nombre": "Service Hostname",
+      "descripcion": "Nombre de servicio usado como hostname DNS en red Docker"
+    }
+  ],
+  "codigoEjemplo": "# docker-compose.yml - Agregar PostgreSQL\nversion: '3.8'\n\nservices:\n  # Base de datos PostgreSQL\n  postgres:\n    image: postgres:15-alpine\n    container_name: postgres-db\n    ports:\n      - \"5432:5432\"\n    environment:\n      POSTGRES_USER: postgres\n      POSTGRES_PASSWORD: postgres\n      POSTGRES_DB: paymentchange_db\n      PGDATA: /var/lib/postgresql/data/pgdata\n    volumes:\n      - postgres-data:/var/lib/postgresql/data\n    networks:\n      - microservices-network\n    healthcheck:\n      test: [\"CMD-SHELL\", \"pg_isready -U postgres\"]\n      interval: 10s\n      timeout: 5s\n      retries: 5\n  \n  # Customer Service\n  customer-service:\n    image: customer-service:1.0.0\n    container_name: customer-service\n    ports:\n      - \"8081:8081\"\n    networks:\n      - microservices-network\n    environment:\n      - SPRING_PROFILES_ACTIVE=docker\n      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/paymentchange_db\n      - SPRING_DATASOURCE_USERNAME=postgres\n      - SPRING_DATASOURCE_PASSWORD=postgres\n      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/\n    depends_on:\n      postgres:\n        condition: service_healthy\n      eureka-server:\n        condition: service_started\n\nvolumes:\n  postgres-data:\n    driver: local\n\nnetworks:\n  microservices-network:\n    driver: bridge\n\n# application-docker.properties (Customer Service)\nspring.application.name=customer-service\nserver.port=8081\n\n# PostgreSQL Configuration\nspring.datasource.url=jdbc:postgresql://postgres:5432/paymentchange_db\nspring.datasource.username=postgres\nspring.datasource.password=postgres\nspring.datasource.driver-class-name=org.postgresql.Driver\n\n# JPA/Hibernate\nspring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect\nspring.jpa.hibernate.ddl-auto=update\nspring.jpa.show-sql=true\nspring.jpa.properties.hibernate.format_sql=true\n\n# Desactivar H2 console\nspring.h2.console.enabled=false\n\n# pom.xml - Agregar driver PostgreSQL\n<dependency>\n    <groupId>org.postgresql</groupId>\n    <artifactId>postgresql</artifactId>\n    <scope>runtime</scope>\n</dependency>\n\n# Iniciar sistema completo\ndocker-compose up -d\n\n# Verificar que postgres está listo\ndocker-compose logs postgres\n# Output: database system is ready to accept connections\n\n# Conectar a postgres directamente\ndocker exec -it postgres-db psql -U postgres -d paymentchange_db\n# psql (15.x)\n# \\dt  - listar tablas\n# SELECT * FROM customer;\n# \\q   - salir\n\n# Datos persisten entre reinicios\ndocker-compose down\ndocker-compose up -d\n# Datos siguen en postgres-data volume"
+}

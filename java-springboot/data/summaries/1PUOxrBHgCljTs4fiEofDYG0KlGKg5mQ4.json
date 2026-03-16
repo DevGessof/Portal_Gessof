@@ -1,0 +1,47 @@
+{
+  "titulo": "Qué son Microservicios y Evolución de Estilos de Arquitectura",
+  "resumen": "Explicación detallada del concepto de microservicios como enfoque moderno de desarrollo. Se analiza la evolución de arquitecturas desde monolíticas, pasando por SOA (orientada a servicios), hasta llegar a microservicios. Los microservicios permiten construir aplicaciones en piezas pequeñas e independientes que resuelven tareas específicas del negocio.",
+  "puntosClave": [
+    "Microservicios: aplicaciones diseñadas en piezas pequeñas, manejables e independientes",
+    "Cada microservicio resuelve una tarea concreta del negocio",
+    "El tamaño NO es una métrica relevante en microservicios",
+    "Evolución: Monolíticas → SOA → Microservicios",
+    "Arquitecturas monolíticas: una única aplicación con una base de datos",
+    "SOA: servicios conectados mediante un bus central (ESB)",
+    "Microservicios: eliminan la centralización y permiten evolución independiente",
+    "Cada equipo puede usar tecnologías y lenguajes diferentes",
+    "Se comunican entre sí mediante APIs",
+    "Ventajas: tecnologías open source, menor costo, ciclos de vida independientes"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Arquitectura Monolítica",
+      "descripcion": "Estilo tradicional donde toda la aplicación es una única pieza desplegada en un servidor, con una sola base de datos"
+    },
+    {
+      "nombre": "SOA (Service-Oriented Architecture)",
+      "descripcion": "Arquitectura orientada a servicios que usa un bus central (ESB) para conectar diferentes servicios"
+    },
+    {
+      "nombre": "Microservicios",
+      "descripcion": "Arquitectura donde cada funcionalidad es una aplicación independiente con su propio ciclo de vida"
+    },
+    {
+      "nombre": "ESB (Enterprise Service Bus)",
+      "descripcion": "Bus central utilizado en SOA para la comunicación entre servicios"
+    },
+    {
+      "nombre": "API",
+      "descripcion": "Interfaz que permite la comunicación entre diferentes microservicios"
+    },
+    {
+      "nombre": "Ciclo de Vida Independiente",
+      "descripcion": "Cada microservicio puede desarrollarse, desplegarse y evolucionar sin afectar a otros"
+    },
+    {
+      "nombre": "DDD (Domain-Driven Design)",
+      "descripcion": "Diseño guiado por dominios del negocio, usado para modelar microservicios"
+    }
+  ],
+  "codigoEjemplo": null
+}

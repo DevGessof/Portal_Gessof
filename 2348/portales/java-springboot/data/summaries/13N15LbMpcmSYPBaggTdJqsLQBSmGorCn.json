@@ -1,0 +1,61 @@
+{
+  "titulo": "Crear Módulos en Repositorio con Proyectos Tipo POM",
+  "resumen": "Creación de la estructura multi-módulo Maven con proyectos tipo POM que actúan como contenedores. Se crean los módulos padre business-domain e infraestructure-domain con packaging 'pom'. Se explica la diferencia entre proyectos tipo JAR (ejecutables) y tipo POM (contenedores/organizadores).",
+  "puntosClave": [
+    "Crear proyecto padre global para toda la solución de microservicios",
+    "Tipo de packaging: POM (no JAR, porque no se ejecuta)",
+    "Proyectos POM son contenedores/agregadores de otros proyectos",
+    "Crear dos módulos principales dentro del proyecto padre:",
+    "1. business-domain (packaging: pom)",
+    "2. infraestructure-domain (packaging: pom)",
+    "Eliminar carpeta src/ de proyectos tipo POM (no necesaria)",
+    "Los microservicios reales irán dentro de estos módulos como sub-módulos",
+    "Ventaja: configuración centralizada en POM padre",
+    "Facilita gestión de dependencias compartidas",
+    "Estructura jerárquica: Padre → Módulos → Microservicios",
+    "El POM padre define versiones y dependencias comunes"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Proyecto Tipo POM",
+      "descripcion": "Proyecto Maven con packaging 'pom' que sirve como contenedor/agregador de otros módulos"
+    },
+    {
+      "nombre": "Proyecto Tipo JAR",
+      "descripcion": "Proyecto Maven con packaging 'jar' que genera un ejecutable (microservicio real)"
+    },
+    {
+      "nombre": "Packaging",
+      "descripcion": "Tipo de artefacto que genera Maven (jar, war, pom) definido en pom.xml"
+    },
+    {
+      "nombre": "Módulo Maven",
+      "descripcion": "Sub-proyecto dentro de un proyecto multi-módulo que puede contener otros módulos"
+    },
+    {
+      "nombre": "Agregador",
+      "descripcion": "Proyecto POM que lista módulos hijos en la sección <modules>"
+    },
+    {
+      "nombre": "POM Padre",
+      "descripcion": "Proyecto raíz que define configuración heredada por todos los módulos hijos"
+    },
+    {
+      "nombre": "Herencia Maven",
+      "descripcion": "Mecanismo donde módulos hijos heredan configuración del <parent>"
+    },
+    {
+      "nombre": "business-domain",
+      "descripcion": "Módulo POM que agrupa microservicios de negocio (Customer, Product, Transaction)"
+    },
+    {
+      "nombre": "infraestructure-domain",
+      "descripcion": "Módulo POM que agrupa componentes de infraestructura (Config, Registry, Gateway)"
+    },
+    {
+      "nombre": "Carpeta src/",
+      "descripcion": "Carpeta con código fuente, innecesaria en proyectos tipo POM (solo en JAR)"
+    }
+  ],
+  "codigoEjemplo": "<!-- pom.xml del proyecto padre (raíz) -->\n<project>\n    <modelVersion>4.0.0</modelVersion>\n    <groupId>com.paymentchange</groupId>\n    <artifactId>payment-microservices</artifactId>\n    <version>1.0.0</version>\n    <packaging>pom</packaging>\n    \n    <modules>\n        <module>business-domain</module>\n        <module>infraestructure-domain</module>\n    </modules>\n</project>\n\n<!-- pom.xml de business-domain -->\n<project>\n    <parent>\n        <groupId>com.paymentchange</groupId>\n        <artifactId>payment-microservices</artifactId>\n        <version>1.0.0</version>\n    </parent>\n    \n    <artifactId>business-domain</artifactId>\n    <packaging>pom</packaging>\n    \n    <modules>\n        <module>customer</module>\n        <module>product</module>\n        <module>transaction</module>\n    </modules>\n</project>"
+}

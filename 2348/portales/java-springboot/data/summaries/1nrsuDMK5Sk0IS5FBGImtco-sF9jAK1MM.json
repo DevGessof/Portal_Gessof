@@ -1,0 +1,51 @@
+{
+  "titulo": "Instalación de NetBeans IDE y Configuración de Plugins para Spring Boot",
+  "resumen": "Tutorial paso a paso para instalar NetBeans 20 en Windows, configurar plugins esenciales para Spring Boot, y crear el primer microservicio. Incluye verificación de JDK, instalación del plugin Spring Boot, activación de características del IDE y validación de Maven. Se demuestra cómo crear y compilar un proyecto básico.",
+  "puntosClave": [
+    "Prerequisito: tener JDK instalado y configurado (verificar con 'java -version')",
+    "Descargar NetBeans 20 (última versión) del sitio oficial de Apache",
+    "Durante instalación debe reconocer el JDK instalado",
+    "Instalar plugin Spring Boot 3.1 para crear microservicios",
+    "Activar todos los plugins excepto PHP, C++ y HTML5",
+    "El IDE trae Maven bundle integrado (no requiere instalación aparte)",
+    "Crear proyecto: File → New → Spring Starter Project",
+    "Permitir acceso al repositorio central de Maven en firewall",
+    "Validar instalación insertando dependencia Lombok desde IDE",
+    "Verificar versión de JDK y Maven en Tools → Options → Java → Maven"
+  ],
+  "conceptos": [
+    {
+      "nombre": "NetBeans",
+      "descripcion": "IDE de código abierto para desarrollo Java con buen balance entre sencillez y productividad"
+    },
+    {
+      "nombre": "Plugin Spring Boot",
+      "descripcion": "Extensión que permite crear y gestionar proyectos Spring Boot desde el IDE"
+    },
+    {
+      "nombre": "Maven Bundle",
+      "descripcion": "Versión de Maven incluida en el IDE que no requiere instalación separada"
+    },
+    {
+      "nombre": "Workspace",
+      "descripcion": "Directorio donde el IDE guarda proyectos y configuraciones"
+    },
+    {
+      "nombre": "Repositorio Central Maven",
+      "descripcion": "Servidor público donde Maven descarga las dependencias (librerías)"
+    },
+    {
+      "nombre": "POM.xml",
+      "descripcion": "Archivo de configuración Maven con dependencias, plugins y propiedades del proyecto"
+    },
+    {
+      "nombre": "Lombok",
+      "descripcion": "Librería que genera automáticamente código repetitivo como getters/setters"
+    },
+    {
+      "nombre": "Spring Starter Project",
+      "descripcion": "Asistente para crear proyectos Spring Boot con configuración inicial"
+    }
+  ],
+  "codigoEjemplo": "<!-- Ejemplo de dependencia Lombok en pom.xml -->\n<dependency>\n    <groupId>org.projectlombok</groupId>\n    <artifactId>lombok</artifactId>\n    <scope>provided</scope>\n</dependency>\n\n<!-- El scope 'provided' indica que solo se usa en compilación -->"
+}

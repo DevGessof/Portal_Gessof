@@ -1,0 +1,359 @@
+{
+  "seccion": "Sección 13 - Actualización de Java y Gestión de Versiones",
+  "descripcion": "Guía completa para actualizar versión de Java en proyectos Spring Boot. Se explica cómo elegir versión JDK correcta, actualizar configuración en Maven multi-módulo, resolver problemas de compatibilidad con dependencias (especialmente Lombok), y validar que todo funciona correctamente. Proceso necesario para aprovechar nuevas features de Java y mantener aplicación actualizada.",
+  "clases": [
+    {
+      "numero": 1,
+      "archivo": "1__Upgrade_Java__escoger_versión_correcta_JDK.srt",
+      "titulo": "Upgrade de Java: Escoger la Versión Correcta del JDK",
+      "resumen": "Guía para elegir versión de Java apropiada para proyecto. Se explican diferencias entre versiones LTS (Long Term Support) y non-LTS, compatibilidad con Spring Boot, y consideración de features nuevas. Se establecen criterios para tomar decisión informada sobre qué versión usar.",
+      "puntosClave": [
+        "Versiones LTS (Long Term Support) recomendadas para producción:",
+        "  - Java 8 (LTS hasta 2030 con licencia comercial)",
+        "  - Java 11 (LTS hasta 2026)",
+        "  - Java 17 (LTS hasta 2029) ← Recomendada actualmente",
+        "  - Java 21 (LTS hasta 2031) ← Más reciente",
+        "Versiones non-LTS: soporte solo 6 meses (evitar en producción)",
+        "Spring Boot 3.x requiere mínimo Java 17",
+        "Spring Boot 2.7.x soporta Java 8, 11, 17",
+        "Consideraciones para elegir versión:",
+        "  1. Compatibilidad con Spring Boot",
+        "  2. Soporte a largo plazo (LTS)",
+        "  3. Features nuevas de lenguaje necesarias",
+        "  4. Librerías third-party compatibles",
+        "  5. Entorno de producción disponible",
+        "Java 17 features útiles:",
+        "  - Records (clases de datos inmutables)",
+        "  - Pattern matching for instanceof",
+        "  - Sealed classes",
+        "  - Text blocks",
+        "Java 21 features adicionales:",
+        "  - Virtual threads (Project Loom)",
+        "  - Pattern matching for switch",
+        "  - String templates",
+        "Recomendación: Java 17 para balance entre estabilidad y features"
+      ],
+      "conceptos": [
+        {
+          "nombre": "LTS (Long Term Support)",
+          "descripcion": "Versiones con soporte extendido (8+ años) para producción"
+        },
+        {
+          "nombre": "Non-LTS Release",
+          "descripcion": "Versiones con soporte corto (6 meses), solo para exploración"
+        },
+        {
+          "nombre": "JDK (Java Development Kit)",
+          "descripcion": "Kit de desarrollo Java que incluye compilador, JRE, herramientas"
+        },
+        {
+          "nombre": "OpenJDK",
+          "descripcion": "Implementación open-source de Java"
+        },
+        {
+          "nombre": "Oracle JDK",
+          "descripcion": "Distribución comercial de Oracle (requiere licencia para producción)"
+        },
+        {
+          "nombre": "Adoptium (Eclipse Temurin)",
+          "descripcion": "Distribución gratuita de OpenJDK recomendada"
+        },
+        {
+          "nombre": "Records",
+          "descripcion": "Clases de datos inmutables introducidas en Java 14/16"
+        },
+        {
+          "nombre": "Pattern Matching",
+          "descripcion": "Simplificación de instanceof y switch (Java 16+)"
+        },
+        {
+          "nombre": "Sealed Classes",
+          "descripcion": "Clases que restringen qué puede extenderlas (Java 17)"
+        },
+        {
+          "nombre": "Virtual Threads",
+          "descripcion": "Threads ligeros de Project Loom (Java 21)"
+        }
+      ],
+      "codigoEjemplo": "# Verificar versión actual de Java\njava -version\n# Output: openjdk version \"17.0.9\" 2023-10-17\n\n# Verificar versiones disponibles (con sdkman)\nsdk list java\n# Output:\n# 21.0.1-tem    (Temurin 21 LTS)\n# 17.0.9-tem    (Temurin 17 LTS)\n# 11.0.21-tem   (Temurin 11 LTS)\n\n# Instalar Java 17 con sdkman\nsdk install java 17.0.9-tem\n\n# Cambiar versión por defecto\nsdk default java 17.0.9-tem\n\n# Usar versión específica en terminal actual\nsdk use java 17.0.9-tem\n\n# Features de Java 17\n\n// Records (clases de datos inmutables)\npublic record CustomerDTO(Long id, String name, String email) {}\n\n// Antes (Java 8-16):\npublic class CustomerDTO {\n    private final Long id;\n    private final String name;\n    private final String email;\n    \n    public CustomerDTO(Long id, String name, String email) {\n        this.id = id;\n        this.name = name;\n        this.email = email;\n    }\n    \n    // getters, equals, hashCode, toString...\n}\n\n// Pattern matching for instanceof\npublic String process(Object obj) {\n    if (obj instanceof String s) {\n        return s.toUpperCase();  // 's' ya es String\n    }\n    return \"\";\n}\n\n// Antes:\npublic String process(Object obj) {\n    if (obj instanceof String) {\n        String s = (String) obj;  // Cast manual\n        return s.toUpperCase();\n    }\n    return \"\";\n}\n\n// Text blocks (multiline strings)\nString json = \"\"\"\n    {\n        \"name\": \"Customer\",\n        \"email\": \"customer@example.com\"\n    }\n    \"\"\";\n\n// Sealed classes\npublic sealed class Shape \n    permits Circle, Rectangle, Triangle {\n    // Solo Circle, Rectangle, Triangle pueden extender\n}\n\n# Tabla de compatibilidad\n\n| Spring Boot | Java Mínima | Java Máxima |\n|-------------|-------------|-------------|\n| 2.7.x       | 8           | 21          |\n| 3.0.x       | 17          | 21          |\n| 3.1.x       | 17          | 21          |\n| 3.2.x       | 17          | 21          |\n\n# Decisión recomendada:\n# - Proyecto nuevo: Java 17 o 21\n# - Proyecto existente en Java 8/11: actualizar a Java 17\n# - Spring Boot 3.x: mínimo Java 17"
+    },
+    {
+      "numero": 2,
+      "archivo": "2__Actualizar_Java_correctamente_cada_proyecto_resolver.srt",
+      "titulo": "Actualizar Java Correctamente en Cada Proyecto y Resolver Conflictos",
+      "resumen": "Proceso paso a paso para actualizar versión de Java en proyecto Maven multi-módulo. Se modifican POMs (parent y módulos), se resuelven errores de compilación, se actualizan plugins Maven, y se valida build exitoso. Guía práctica para migration sin romper proyecto.",
+      "puntosClave": [
+        "Pasos para actualizar Java en proyecto Maven:",
+        "1. Actualizar POM padre con nuevas versiones:",
+        "   - <java.version>17</java.version>",
+        "   - <maven.compiler.source>17</maven.compiler.source>",
+        "   - <maven.compiler.target>17</maven.compiler.target>",
+        "2. Actualizar versión de Spring Boot si es necesario",
+        "3. Actualizar plugins Maven a versiones compatibles:",
+        "   - maven-compiler-plugin: 3.11.0+",
+        "   - maven-surefire-plugin: 3.0.0+",
+        "   - spring-boot-maven-plugin: versión de Spring Boot",
+        "4. Limpiar artifacts anteriores: mvn clean",
+        "5. Compilar proyecto: mvn compile",
+        "6. Resolver errores de compilación si los hay",
+        "7. Ejecutar tests: mvn test",
+        "8. Generar package: mvn package",
+        "Errores comunes y soluciones:",
+        "  - 'class file has wrong version': limpiar target/ y recompilar",
+        "  - 'package javax.annotation does not exist': agregar jakarta.annotation-api",
+        "  - Lombok no funciona: actualizar a versión 1.18.30+",
+        "  - Tests fallan: actualizar JUnit 5",
+        "Verificar IDE configurado con JDK 17:",
+        "  - IntelliJ: Project Structure → SDK",
+        "  - Eclipse: Java Build Path → JRE System Library"
+      ],
+      "conceptos": [
+        {
+          "nombre": "maven.compiler.source",
+          "descripcion": "Versión de Java del código fuente a compilar"
+        },
+        {
+          "nombre": "maven.compiler.target",
+          "descripcion": "Versión de Java de bytecode generado"
+        },
+        {
+          "nombre": "java.version",
+          "descripcion": "Propiedad Spring Boot que configura versión de Java"
+        },
+        {
+          "nombre": "maven-compiler-plugin",
+          "descripcion": "Plugin Maven que compila código Java"
+        },
+        {
+          "nombre": "maven-surefire-plugin",
+          "descripcion": "Plugin Maven que ejecuta tests unitarios"
+        },
+        {
+          "nombre": "Class File Version",
+          "descripcion": "Versión de bytecode Java en archivos .class"
+        },
+        {
+          "nombre": "javax vs jakarta",
+          "descripcion": "Cambio de namespace en Jakarta EE 9+ (javax.* → jakarta.*)"
+        },
+        {
+          "nombre": "Backward Compatibility",
+          "descripcion": "Compatibilidad con versiones anteriores"
+        },
+        {
+          "nombre": "Forward Compatibility",
+          "descripcion": "Compatibilidad con versiones futuras"
+        },
+        {
+          "nombre": "Clean Build",
+          "descripcion": "Eliminar artifacts compilados y recompilar desde cero"
+        }
+      ],
+      "codigoEjemplo": "<!-- pom.xml - Parent POM ANTES (Java 11) -->\n<properties>\n    <java.version>11</java.version>\n    <maven.compiler.source>11</maven.compiler.source>\n    <maven.compiler.target>11</maven.compiler.target>\n    <spring-boot.version>2.7.18</spring-boot.version>\n</properties>\n\n<!-- pom.xml - Parent POM DESPUÉS (Java 17) -->\n<properties>\n    <!-- Actualizar versión de Java -->\n    <java.version>17</java.version>\n    <maven.compiler.source>17</maven.compiler.source>\n    <maven.compiler.target>17</maven.compiler.target>\n    \n    <!-- Actualizar Spring Boot a 3.x (requiere Java 17+) -->\n    <spring-boot.version>3.2.0</spring-boot.version>\n    \n    <!-- Actualizar versiones de plugins -->\n    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>\n    <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>\n</properties>\n\n<build>\n    <pluginManagement>\n        <plugins>\n            <!-- Compiler Plugin -->\n            <plugin>\n                <groupId>org.apache.maven.plugins</groupId>\n                <artifactId>maven-compiler-plugin</artifactId>\n                <version>${maven-compiler-plugin.version}</version>\n                <configuration>\n                    <source>${java.version}</source>\n                    <target>${java.version}</target>\n                    <release>${java.version}</release>\n                </configuration>\n            </plugin>\n            \n            <!-- Surefire Plugin (Tests) -->\n            <plugin>\n                <groupId>org.apache.maven.plugins</groupId>\n                <artifactId>maven-surefire-plugin</artifactId>\n                <version>${maven-surefire-plugin.version}</version>\n            </plugin>\n            \n            <!-- Spring Boot Plugin -->\n            <plugin>\n                <groupId>org.springframework.boot</groupId>\n                <artifactId>spring-boot-maven-plugin</artifactId>\n                <version>${spring-boot.version}</version>\n            </plugin>\n        </plugins>\n    </pluginManagement>\n</build>\n\n<!-- Si usas Spring Boot 3.x, actualizar dependencias javax → jakarta -->\n<dependencies>\n    <!-- ANTES (Spring Boot 2.x con Java 11) -->\n    <!-- <dependency> -->\n    <!--     <groupId>javax.annotation</groupId> -->\n    <!--     <artifactId>javax.annotation-api</artifactId> -->\n    <!-- </dependency> -->\n    \n    <!-- DESPUÉS (Spring Boot 3.x con Java 17) -->\n    <dependency>\n        <groupId>jakarta.annotation</groupId>\n        <artifactId>jakarta.annotation-api</artifactId>\n    </dependency>\n</dependencies>\n\n# Proceso de actualización\n\n# 1. Verificar versión actual\njava -version\nmvn -version\n\n# 2. Instalar Java 17\nsdk install java 17.0.9-tem\nsdk use java 17.0.9-tem\n\n# 3. Actualizar POMs\n# Editar pom.xml padre con cambios arriba\n\n# 4. Limpiar artifacts anteriores\nmvn clean\n\n# 5. Compilar\nmvn compile\n\n# Posibles errores:\n\n# Error 1: Class file has wrong version\n# Solución: Limpiar completamente\nrm -rf target/\nrm -rf */target/\nmvn clean compile\n\n# Error 2: package javax.annotation does not exist\n# Solución: Actualizar a jakarta\n# Ver cambio en pom.xml arriba\n\n# Error 3: Lombok no reconoce records\n# Solución: Actualizar Lombok (ver clase 3)\n\n# 6. Ejecutar tests\nmvn test\n\n# 7. Generar package\nmvn package\n\n# 8. Verificar que JAR funciona\njava -jar business-domain/customer/target/customer-service-1.0.0.jar\n\n# Verificar versión en IDE\n\n# IntelliJ IDEA:\n# File → Project Structure → Project\n# Project SDK: 17\n# Project language level: 17\n\n# File → Project Structure → Modules\n# Para cada módulo: Language level: 17\n\n# Eclipse:\n# Project → Properties → Java Build Path\n# Libraries → JRE System Library → Edit → Workspace default JRE (java-17)\n\n# Validar build completo\nmvn clean install\n\n# Output esperado:\n# [INFO] BUILD SUCCESS\n# [INFO] Total time: 45.123 s"
+    },
+    {
+      "numero": 3,
+      "archivo": "3__Actualizar_lombok_si_subes_la_version_del_JDK.srt",
+      "titulo": "Actualizar Lombok si Subes la Versión del JDK",
+      "resumen": "Actualización de Lombok para compatibilidad con nuevas versiones de Java. Se explica por qué Lombok necesita actualización al cambiar Java, cómo actualizar versión en POMs, reinstalar plugin en IDE, y validar que anotaciones funcionan correctamente. Solución a problema común al actualizar Java.",
+      "puntosClave": [
+        "Lombok depende de internals de JDK para procesamiento de anotaciones",
+        "Cada versión de Java requiere versión compatible de Lombok:",
+        "  - Java 17: Lombok 1.18.22+ (recomendado 1.18.30+)",
+        "  - Java 21: Lombok 1.18.30+",
+        "Síntomas de Lombok incompatible:",
+        "  - Compilación falla con errors en @Data, @Getter, @Setter",
+        "  - IDE no reconoce métodos generados",
+        "  - NoSuchMethodError en runtime",
+        "Actualizar Lombok en POMs:",
+        "  1. Actualizar versión en dependencyManagement del parent",
+        "  2. No es necesario cambiar en módulos (heredan)",
+        "  3. Versión recomendada: 1.18.30",
+        "Actualizar plugin Lombok en IDE:",
+        "  - IntelliJ: Settings → Plugins → Lombok → Update",
+        "  - Eclipse: Help → Check for Updates",
+        "Limpiar y recompilar proyecto después de actualizar",
+        "Validar que anotaciones funcionan:",
+        "  - Getters/setters generados",
+        "  - Constructores (@AllArgsConstructor, @NoArgsConstructor)",
+        "  - @Builder funciona",
+        "  - @Slf4j genera logger"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Lombok",
+          "descripcion": "Librería que reduce boilerplate mediante anotaciones"
+        },
+        {
+          "nombre": "Annotation Processing",
+          "descripcion": "Procesamiento de anotaciones en compile-time"
+        },
+        {
+          "nombre": "AST (Abstract Syntax Tree)",
+          "descripcion": "Representación del código que Lombok modifica"
+        },
+        {
+          "nombre": "Lombok Plugin",
+          "descripcion": "Plugin IDE que permite reconocer código generado por Lombok"
+        },
+        {
+          "nombre": "Generated Code",
+          "descripcion": "Código generado automáticamente por Lombok (getters, setters, etc.)"
+        },
+        {
+          "nombre": "Delombok",
+          "descripcion": "Proceso de convertir código con Lombok a código Java puro"
+        },
+        {
+          "nombre": "@Data",
+          "descripcion": "Anotación que genera getters, setters, equals, hashCode, toString"
+        },
+        {
+          "nombre": "@Builder",
+          "descripcion": "Anotación que genera patrón Builder para clase"
+        },
+        {
+          "nombre": "@Slf4j",
+          "descripcion": "Anotación que genera logger SLF4J"
+        },
+        {
+          "nombre": "NoSuchMethodError",
+          "descripcion": "Error runtime cuando método generado no existe"
+        }
+      ],
+      "codigoEjemplo": "<!-- pom.xml - Parent POM ANTES -->\n<dependencyManagement>\n    <dependencies>\n        <dependency>\n            <groupId>org.projectlombok</groupId>\n            <artifactId>lombok</artifactId>\n            <version>1.18.20</version>  <!-- Versión antigua -->\n            <scope>provided</scope>\n        </dependency>\n    </dependencies>\n</dependencyManagement>\n\n<!-- pom.xml - Parent POM DESPUÉS -->\n<properties>\n    <java.version>17</java.version>\n    <lombok.version>1.18.30</lombok.version>  <!-- Versión actualizada -->\n</properties>\n\n<dependencyManagement>\n    <dependencies>\n        <dependency>\n            <groupId>org.projectlombok</groupId>\n            <artifactId>lombok</artifactId>\n            <version>${lombok.version}</version>\n            <scope>provided</scope>\n        </dependency>\n    </dependencies>\n</dependencyManagement>\n\n<!-- Módulos heredan versión automáticamente -->\n<!-- customer/pom.xml - NO cambiar nada -->\n<dependencies>\n    <dependency>\n        <groupId>org.projectlombok</groupId>\n        <artifactId>lombok</artifactId>\n        <!-- Versión viene del parent -->\n    </dependency>\n</dependencies>\n\n<!-- Si usas annotation processors (MapStruct + Lombok) -->\n<build>\n    <plugins>\n        <plugin>\n            <groupId>org.apache.maven.plugins</groupId>\n            <artifactId>maven-compiler-plugin</artifactId>\n            <version>3.11.0</version>\n            <configuration>\n                <source>${java.version}</source>\n                <target>${java.version}</target>\n                <annotationProcessorPaths>\n                    <!-- IMPORTANTE: Lombok ANTES de MapStruct -->\n                    <path>\n                        <groupId>org.projectlombok</groupId>\n                        <artifactId>lombok</artifactId>\n                        <version>${lombok.version}</version>\n                    </path>\n                    <path>\n                        <groupId>org.mapstruct</groupId>\n                        <artifactId>mapstruct-processor</artifactId>\n                        <version>${mapstruct.version}</version>\n                    </path>\n                </annotationProcessorPaths>\n            </configuration>\n        </plugin>\n    </plugins>\n</build>\n\n# Proceso de actualización de Lombok\n\n# 1. Actualizar versión en pom.xml (ver arriba)\n\n# 2. Limpiar proyecto\nmvn clean\n\n# 3. Actualizar plugin IDE\n\n# IntelliJ IDEA:\n# Settings → Plugins → Marketplace\n# Buscar \"Lombok\" → Update (si disponible)\n# Restart IDE\n\n# Eclipse:\n# Help → Eclipse Marketplace\n# Buscar \"Lombok\" → Update\n# Restart Eclipse\n\n# 4. Recompilar proyecto\nmvn compile\n\n# 5. Validar que funciona\n\n// Customer.java - Validar anotaciones Lombok\nimport lombok.AllArgsConstructor;\nimport lombok.Builder;\nimport lombok.Data;\nimport lombok.NoArgsConstructor;\n\n@Data\n@Builder\n@NoArgsConstructor\n@AllArgsConstructor\n@Entity\npublic class Customer {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    \n    private String name;\n    private String email;\n    private String phoneNumber;\n}\n\n// Test de validación\npublic class CustomerTest {\n    @Test\n    public void testLombokFunctionsWithJava17() {\n        // ✅ Builder debe funcionar\n        Customer customer = Customer.builder()\n            .name(\"Test\")\n            .email(\"test@example.com\")\n            .phoneNumber(\"+1234567890\")\n            .build();\n        \n        // ✅ Getters deben funcionar\n        assertEquals(\"Test\", customer.getName());\n        \n        // ✅ Setters deben funcionar\n        customer.setName(\"Updated\");\n        assertEquals(\"Updated\", customer.getName());\n        \n        // ✅ toString debe funcionar\n        String str = customer.toString();\n        assertTrue(str.contains(\"Test\"));\n        \n        // ✅ equals/hashCode deben funcionar\n        Customer customer2 = Customer.builder()\n            .name(\"Test\")\n            .email(\"test@example.com\")\n            .build();\n        \n        // No serán iguales porque ID es diferente\n        assertNotEquals(customer, customer2);\n    }\n}\n\n# Errores comunes y soluciones\n\n# Error 1: Lombok processor not found\n# Solución:\nmvn clean compile -U  # -U fuerza actualización de dependencias\n\n# Error 2: Cannot find symbol (para métodos generados)\n# Solución:\n# 1. Verificar plugin IDE instalado\n# 2. IntelliJ: File → Invalidate Caches → Invalidate and Restart\n# 3. Recompilar: mvn clean compile\n\n# Error 3: Lombok and MapStruct conflict\n# Solución: Asegurar orden correcto en annotationProcessorPaths\n# Lombok PRIMERO, luego MapStruct\n\n# Verificar versión de Lombok en uso\nmvn dependency:tree | grep lombok\n# Output: org.projectlombok:lombok:jar:1.18.30:provided\n\n# Tabla de compatibilidad Lombok\n\n| Java Version | Lombok Mínima | Lombok Recomendada |\n|--------------|---------------|--------------------|\n| 8            | 1.16.x        | 1.18.30            |\n| 11           | 1.18.10       | 1.18.30            |\n| 17           | 1.18.22       | 1.18.30            |\n| 21           | 1.18.30       | 1.18.32            |"
+    }
+  ],
+  "resumen_seccion": "Esta sección cubre el proceso completo de actualización de versión de Java en proyecto Spring Boot. Se explica cómo elegir versión JDK apropiada (LTS recomendadas), actualizar configuración Maven en POMs, resolver conflictos de compilación, y actualizar Lombok para compatibilidad. El resultado es proyecto actualizado aprovechando features modernas de Java manteniendo estabilidad.",
+  "tecnologias_cubiertas": [
+    "Java 17 (LTS)",
+    "Java 21 (LTS)",
+    "Maven Compiler Plugin",
+    "Lombok",
+    "Spring Boot 3.x",
+    "Jakarta EE 9+",
+    "OpenJDK / Adoptium",
+    "Records",
+    "Pattern Matching",
+    "Sealed Classes"
+  ],
+  "versiones_recomendadas": {
+    "java": "17 (LTS, balance entre estabilidad y features)",
+    "spring_boot": "3.2.x (requiere Java 17+)",
+    "lombok": "1.18.30+",
+    "maven_compiler_plugin": "3.11.0+",
+    "maven_surefire_plugin": "3.0.0+"
+  },
+  "proceso_actualizacion": [
+    "1. Elegir versión Java LTS (17 o 21)",
+    "2. Instalar JDK con sdkman o manual",
+    "3. Actualizar pom.xml parent:",
+    "   - java.version=17",
+    "   - maven.compiler.source=17",
+    "   - maven.compiler.target=17",
+    "4. Actualizar Spring Boot a 3.x si corresponde",
+    "5. Actualizar plugins Maven a versiones compatibles",
+    "6. Actualizar Lombok a 1.18.30+",
+    "7. Cambiar javax.* a jakarta.* (Spring Boot 3.x)",
+    "8. mvn clean para limpiar artifacts",
+    "9. mvn compile para validar compilación",
+    "10. Resolver errores de compatibilidad",
+    "11. mvn test para validar tests",
+    "12. mvn package para generar JAR",
+    "13. Actualizar plugins IDE (Lombok)",
+    "14. Validar aplicación funciona correctamente"
+  ],
+  "features_java_17": {
+    "records": "Clases de datos inmutables sin boilerplate",
+    "pattern_matching_instanceof": "Simplifica casting después de instanceof",
+    "sealed_classes": "Control sobre jerarquía de herencia",
+    "text_blocks": "Strings multilínea sin concatenación",
+    "switch_expressions": "Switch como expresión con yield",
+    "helpful_nullpointers": "NullPointerException más descriptivas"
+  },
+  "features_java_21": {
+    "virtual_threads": "Threads ligeros de Project Loom para alta concurrencia",
+    "pattern_matching_switch": "Pattern matching en switch statements",
+    "record_patterns": "Deconstrucción de records en pattern matching",
+    "string_templates": "Interpolación de strings más segura",
+    "sequenced_collections": "Nuevas interfaces para colecciones ordenadas"
+  },
+  "errores_comunes": {
+    "class_file_wrong_version": {
+      "error": "class file has wrong version 61.0, should be 55.0",
+      "causa": "Bytecode compilado con Java 17 ejecutándose en Java 11",
+      "solucion": "mvn clean compile con JDK 17, o actualizar JRE a 17"
+    },
+    "package_javax_not_exist": {
+      "error": "package javax.annotation does not exist",
+      "causa": "Spring Boot 3.x usa jakarta.* en lugar de javax.*",
+      "solucion": "Cambiar imports javax.* a jakarta.* o agregar jakarta.annotation-api"
+    },
+    "lombok_not_working": {
+      "error": "Cannot find symbol: method getName()",
+      "causa": "Lombok versión incompatible con Java 17",
+      "solucion": "Actualizar Lombok a 1.18.30+, limpiar y recompilar"
+    },
+    "annotation_processor_error": {
+      "error": "Annotation processor error",
+      "causa": "Orden incorrecto de processors o versión incompatible",
+      "solucion": "Lombok antes de MapStruct en annotationProcessorPaths"
+    }
+  },
+  "mejores_practicas": [
+    "Usar versiones LTS de Java en producción (17, 21)",
+    "Mantener Spring Boot actualizado a última versión estable",
+    "Actualizar Lombok al cambiar versión de Java",
+    "Ejecutar mvn clean antes de cambiar versiones",
+    "Validar build completo con mvn clean install",
+    "Actualizar plugins IDE después de cambios",
+    "Documentar versión de Java en README",
+    "Usar sdkman para gestionar múltiples versiones JDK",
+    "Configurar .mvn/jvm.config con opciones específicas",
+    "Validar en entorno similar a producción antes de deploy"
+  ],
+  "migracion_javax_jakarta": {
+    "contexto": "Jakarta EE 9+ cambió namespace de javax.* a jakarta.*",
+    "afecta_a": "Spring Boot 3.x requiere Java 17+ y usa Jakarta EE 9+",
+    "cambios_necesarios": [
+      "javax.annotation → jakarta.annotation",
+      "javax.persistence → jakarta.persistence",
+      "javax.servlet → jakarta.servlet",
+      "javax.validation → jakarta.validation",
+      "javax.transaction → jakarta.transaction"
+    ],
+    "dependencias_actualizar": [
+      "javax.annotation-api → jakarta.annotation-api",
+      "javax.validation:validation-api → jakarta.validation:jakarta.validation-api"
+    ]
+  },
+  "comandos_utiles": [
+    "java -version - Verificar versión actual de Java",
+    "mvn -version - Verificar Maven y Java que usa",
+    "sdk list java - Listar versiones Java disponibles (sdkman)",
+    "sdk install java 17.0.9-tem - Instalar Java 17",
+    "sdk use java 17.0.9-tem - Usar Java 17 en terminal actual",
+    "mvn clean - Limpiar artifacts compilados",
+    "mvn compile - Compilar código",
+    "mvn test - Ejecutar tests",
+    "mvn package - Generar JAR/WAR",
+    "mvn dependency:tree - Ver árbol de dependencias",
+    "mvn dependency:tree | grep lombok - Verificar versión Lombok",
+    "mvn clean install -U - Forzar actualización de dependencias"
+  ],
+  "configuracion_ide": {
+    "intellij": [
+      "File → Project Structure → Project → SDK: 17",
+      "File → Project Structure → Project → Language Level: 17",
+      "Settings → Build → Compiler → Java Compiler → Target: 17",
+      "Settings → Plugins → Marketplace → Lombok → Update",
+      "File → Invalidate Caches → Invalidate and Restart"
+    ],
+    "eclipse": [
+      "Project → Properties → Java Build Path → Libraries → JRE: 17",
+      "Project → Properties → Java Compiler → Compiler compliance: 17",
+      "Help → Eclipse Marketplace → Lombok → Update",
+      "Project → Clean → Clean all projects"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "titulo": "Instrumentar Microservicios como Clientes de Spring Boot Admin",
+  "resumen": "Configuración de microservicios business (Customer, Product, Transaction) como clientes de Admin Server. Se agrega dependencia admin-client, se configura URL del servidor Admin, y se habilitan endpoints Actuator necesarios. Los servicios ahora reportan automáticamente su estado, métricas y logs al Admin Server.",
+  "puntosClave": [
+    "Agregar starter: spring-boot-admin-starter-client",
+    "Aplicar a customer-service, product-service, transaction-service",
+    "Configurar URL del Admin Server: spring.boot.admin.client.url=http://localhost:9090",
+    "Habilitar endpoints Actuator: management.endpoints.web.exposure.include=*",
+    "O exponer específicos: health,info,metrics,env,loggers,threaddump",
+    "show-details: always para ver detalles internos de health",
+    "Al iniciar, microservicio se registra automáticamente en Admin Server",
+    "Admin Server consulta endpoints /actuator del cliente periódicamente",
+    "Verificar en dashboard: servicios aparecen en lista de Applications",
+    "Click en servicio muestra: Details, Metrics, Environment, Logs, JVM",
+    "Cada servicio reporta: estado, versión, build info, dependencies",
+    "Admin Server actualiza datos cada 10 segundos (configurable)"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Admin Client",
+      "descripcion": "Microservicio configurado para registrarse y reportar datos a Admin Server"
+    },
+    {
+      "nombre": "spring-boot-admin-starter-client",
+      "descripcion": "Starter que habilita funcionalidad de cliente Admin"
+    },
+    {
+      "nombre": "spring.boot.admin.client.url",
+      "descripcion": "URL del Admin Server donde el cliente se registrará"
+    },
+    {
+      "nombre": "Auto-Registration",
+      "descripcion": "Cliente se registra automáticamente al iniciar sin código adicional"
+    },
+    {
+      "nombre": "Polling Interval",
+      "descripcion": "Frecuencia con que Admin Server consulta estado de clientes (default: 10s)"
+    },
+    {
+      "nombre": "Instance Metadata",
+      "descripcion": "Información adicional que cliente envía (tags, versión, build-info)"
+    },
+    {
+      "nombre": "Details View",
+      "descripcion": "Vista detallada de un servicio: health, info, dependencies, properties"
+    },
+    {
+      "nombre": "Metrics View",
+      "descripcion": "Gráficos de memoria, CPU, HTTP requests, JVM stats"
+    },
+    {
+      "nombre": "Environment View",
+      "descripcion": "Visualización de propiedades, variables de entorno, configuración activa"
+    },
+    {
+      "nombre": "Logs View",
+      "descripcion": "Interfaz para ver y filtrar logs en tiempo real desde Admin UI"
+    }
+  ],
+  "codigoEjemplo": "<!-- Agregar en pom.xml de customer, product, transaction -->\n<dependency>\n    <groupId>de.codecentric</groupId>\n    <artifactId>spring-boot-admin-starter-client</artifactId>\n    <version>3.2.0</version>\n</dependency>\n\n<!-- Actuator ya debe estar agregado -->\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-actuator</artifactId>\n</dependency>\n\n# application.properties (customer-service)\nspring.application.name=customer-service\nserver.port=8081\n\n# Configuración Admin Client\nspring.boot.admin.client.url=http://localhost:9090\nspring.boot.admin.client.instance.name=${spring.application.name}\n\n# Habilitar endpoints Actuator\nmanagement.endpoints.web.exposure.include=*\nmanagement.endpoint.health.show-details=always\n\n# Información adicional para Admin\ninfo.app.name=Customer Service\ninfo.app.description=Microservicio de gestión de clientes\ninfo.app.version=1.0.0\ninfo.app.encoding=@project.build.sourceEncoding@\ninfo.app.java.version=@java.version@\n\n# Build info (opcional, requiere plugin Maven)\nspring.boot.admin.client.instance.metadata.tags.environment=development\nspring.boot.admin.client.instance.metadata.tags.version=1.0.0\n\n# Al iniciar, logs mostrarán:\n# Registering application customer-service at http://localhost:9090\n\n# En Admin UI (http://localhost:9090):\n# Applications → CUSTOMER-SERVICE (UP)\n# Click → Details, Metrics, Environment, Logs, JVM, Threads"
+}

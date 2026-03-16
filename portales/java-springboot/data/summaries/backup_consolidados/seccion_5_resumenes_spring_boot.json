@@ -1,0 +1,1080 @@
+{
+  "seccion": "Sección 5 - Spring Cloud: Infraestructura para Microservicios",
+  "descripcion": "Implementación de componentes de infraestructura usando Spring Cloud: gestión de configuración centralizada con Config Server, registro y descubrimiento de servicios con Eureka, monitoreo con Actuator, y balanceo de carga con LoadBalancer. Se introducen perfiles de configuración por entornos y externalización de propiedades en repositorio Git.",
+  "clases": [
+    {
+      "numero": 1,
+      "archivo": "1__microservicios_van_mas_allá_desarrollo__spring_cloud.srt",
+      "titulo": "Microservicios van más allá del Desarrollo: Introducción a Spring Cloud",
+      "resumen": "Introducción a los desafíos de infraestructura en arquitecturas de microservicios. Se explica que desarrollar microservicios es solo el inicio; también se necesitan componentes para gestión de configuración, descubrimiento de servicios, monitoreo, seguridad y trazabilidad. Spring Cloud provee soluciones para estos desafíos mediante componentes de infraestructura.",
+      "puntosClave": [
+        "Desarrollar microservicios es solo el 30-40% del trabajo total",
+        "Desafíos de infraestructura: configuración, descubrimiento, monitoreo, seguridad",
+        "Spring Cloud: conjunto de herramientas para infraestructura de microservicios",
+        "Componentes clave: Config Server, Registry (Eureka), Gateway, Admin Server",
+        "Config Server: centraliza configuración externa en repositorio Git",
+        "Eureka Server: registro y descubrimiento de servicios",
+        "API Gateway: punto de entrada único con seguridad y enrutamiento",
+        "Spring Boot Admin: monitoreo visual del estado de microservicios",
+        "Circuit Breaker: manejo de fallos en comunicación entre servicios",
+        "Distributed Tracing: seguimiento de peticiones a través de servicios",
+        "Spring Cloud facilita implementar patrones de microservicios",
+        "Próximas clases: implementar cada componente paso a paso"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Spring Cloud",
+          "descripcion": "Conjunto de proyectos que facilitan construir infraestructura para sistemas distribuidos y microservicios"
+        },
+        {
+          "nombre": "Componentes de Infraestructura",
+          "descripcion": "Servicios técnicos que dan soporte a microservicios de negocio (Config, Registry, Gateway)"
+        },
+        {
+          "nombre": "Config Server",
+          "descripcion": "Servidor que centraliza configuración externa de todos los microservicios desde Git"
+        },
+        {
+          "nombre": "Registry/Discovery (Eureka)",
+          "descripcion": "Servidor de registro donde microservicios se registran y descubren entre sí"
+        },
+        {
+          "nombre": "API Gateway",
+          "descripcion": "Punto de entrada único que maneja seguridad, enrutamiento y balanceo de carga"
+        },
+        {
+          "nombre": "Spring Boot Admin",
+          "descripcion": "Interfaz web para monitorear salud, métricas y logs de microservicios"
+        },
+        {
+          "nombre": "Circuit Breaker",
+          "descripcion": "Patrón que previene fallos en cascada cuando un servicio no responde"
+        },
+        {
+          "nombre": "Distributed Tracing",
+          "descripcion": "Seguimiento de peticiones que atraviesan múltiples microservicios (Sleuth, Zipkin)"
+        },
+        {
+          "nombre": "Configuración Centralizada",
+          "descripcion": "Gestionar propiedades de todos los servicios desde un único punto"
+        },
+        {
+          "nombre": "Service Discovery",
+          "descripcion": "Mecanismo para que servicios se encuentren dinámicamente sin hardcodear URLs"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "archivo": "2__Uso_perfiles_administrar_configuración_por_entornos.srt",
+      "titulo": "Uso de Perfiles para Administrar Configuración por Entornos",
+      "resumen": "Explicación del concepto de perfiles de Spring Boot para gestionar diferentes configuraciones según el entorno (desarrollo, testing, producción). Se introduce la nomenclatura de archivos application-{profile}.properties y cómo activar perfiles mediante spring.profiles.active. Fundamental para separar configuraciones sin recompilar código.",
+      "puntosClave": [
+        "Problema: mismas propiedades no sirven para todos los entornos",
+        "Desarrollo usa BD en memoria (H2), producción usa PostgreSQL/MySQL",
+        "Perfiles de Spring Boot: dev, test, prod, local",
+        "Nomenclatura: application-{profile}.properties o .yml",
+        "Archivo base: application.properties (configuración común)",
+        "Activar perfil: spring.profiles.active=dev",
+        "Puede activarse por variable de entorno o argumento JVM",
+        "Cada perfil tiene configuraciones específicas del entorno",
+        "Desarrollo: H2, logs detallados, Swagger activado",
+        "Producción: BD real, logs mínimos, Swagger desactivado",
+        "Permite desplegar mismo JAR en diferentes entornos",
+        "Cambiar entorno sin recompilar, solo cambiando perfil activo"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Perfil de Spring Boot",
+          "descripcion": "Configuración específica para un entorno determinado (dev, test, prod)"
+        },
+        {
+          "nombre": "application.properties",
+          "descripcion": "Archivo base con configuración común a todos los entornos"
+        },
+        {
+          "nombre": "application-{profile}.properties",
+          "descripcion": "Archivo específico de perfil que sobrescribe propiedades base"
+        },
+        {
+          "nombre": "spring.profiles.active",
+          "descripcion": "Propiedad que indica qué perfil activar al iniciar la aplicación"
+        },
+        {
+          "nombre": "Perfil dev",
+          "descripcion": "Configuración para desarrollo local con BD en memoria y logs detallados"
+        },
+        {
+          "nombre": "Perfil prod",
+          "descripcion": "Configuración para producción con BD real y seguridad reforzada"
+        },
+        {
+          "nombre": "Perfil test",
+          "descripcion": "Configuración para pruebas automatizadas con datos de test"
+        },
+        {
+          "nombre": "Separación de Entornos",
+          "descripcion": "Práctica de tener configuraciones diferentes según dónde se ejecuta"
+        },
+        {
+          "nombre": "Configuración por Entorno",
+          "descripcion": "Propiedades específicas de cada ambiente (URLs, credenciales, puertos)"
+        },
+        {
+          "nombre": "Variable de Entorno",
+          "descripcion": "Forma de activar perfil sin modificar código: SPRING_PROFILES_ACTIVE=prod"
+        }
+      ],
+      "codigoEjemplo": "# application.properties (configuración común)\nspring.application.name=customer-service\n\n# application-dev.properties (desarrollo)\nspring.profiles.active=dev\nserver.port=8081\nspring.datasource.url=jdbc:h2:mem:testdb\nspring.h2.console.enabled=true\nspringdoc.swagger-ui.enabled=true\nlogging.level.root=DEBUG\n\n# application-prod.properties (producción)\nspring.profiles.active=prod\nserver.port=8081\nspring.datasource.url=jdbc:postgresql://prod-server:5432/customer_db\nspring.datasource.username=${DB_USER}\nspring.datasource.password=${DB_PASSWORD}\nspringdoc.swagger-ui.enabled=false\nlogging.level.root=WARN\n\n# Activar perfil al ejecutar\njava -jar customer-service.jar --spring.profiles.active=prod\n\n# O mediante variable de entorno\nexport SPRING_PROFILES_ACTIVE=prod\njava -jar customer-service.jar"
+    },
+    {
+      "numero": 3,
+      "archivo": "3__Escribir_fichero_propiedades_perfil_local_desarrollo.srt",
+      "titulo": "Escribir Fichero de Propiedades para Perfil Local/Desarrollo",
+      "resumen": "Creación práctica del archivo application-dev.properties con configuración específica para entorno de desarrollo local. Se configuran propiedades de H2, consola, Swagger, logs y puerto. Se valida que el perfil se active correctamente y que las propiedades se apliquen al iniciar el microservicio.",
+      "puntosClave": [
+        "Crear archivo application-dev.properties en src/main/resources",
+        "Configurar H2: spring.datasource.url=jdbc:h2:mem:devdb",
+        "Activar consola H2: spring.h2.console.enabled=true",
+        "Habilitar Swagger: springdoc.swagger-ui.enabled=true",
+        "Logs detallados: logging.level.root=DEBUG",
+        "Puerto: server.port=8081",
+        "Nombre de aplicación: spring.application.name=customer-service",
+        "Activar perfil en application.properties: spring.profiles.active=dev",
+        "Al iniciar, Spring carga application.properties + application-dev.properties",
+        "Verificar en logs: \"The following profiles are active: dev\"",
+        "Propiedades de dev sobrescriben las del archivo base",
+        "Crear perfiles similares para Product (8082) y Transaction (8083)"
+      ],
+      "conceptos": [
+        {
+          "nombre": "application-dev.properties",
+          "descripcion": "Archivo con configuración específica del entorno de desarrollo"
+        },
+        {
+          "nombre": "src/main/resources",
+          "descripcion": "Carpeta donde se colocan archivos de configuración y recursos"
+        },
+        {
+          "nombre": "Sobrescritura de Propiedades",
+          "descripcion": "Propiedades en archivo de perfil reemplazan las del archivo base"
+        },
+        {
+          "nombre": "jdbc:h2:mem:devdb",
+          "descripcion": "URL de conexión a BD H2 en memoria para desarrollo"
+        },
+        {
+          "nombre": "logging.level.root",
+          "descripcion": "Nivel de detalle de logs (TRACE, DEBUG, INFO, WARN, ERROR)"
+        },
+        {
+          "nombre": "Activación de Perfil",
+          "descripcion": "Spring detecta spring.profiles.active y carga archivo correspondiente"
+        },
+        {
+          "nombre": "Orden de Carga",
+          "descripcion": "Spring carga: 1) application.properties, 2) application-{profile}.properties"
+        },
+        {
+          "nombre": "Verificación en Logs",
+          "descripcion": "Log de inicio muestra qué perfiles están activos"
+        },
+        {
+          "nombre": "Configuración de Desarrollo",
+          "descripcion": "Propiedades optimizadas para facilitar debugging y testing local"
+        },
+        {
+          "nombre": "Consistencia entre Servicios",
+          "descripcion": "Usar misma estructura de perfiles en todos los microservicios"
+        }
+      ],
+      "codigoEjemplo": "# application.properties (archivo base)\nspring.profiles.active=dev\n\n# application-dev.properties (desarrollo)\n# Configuración Base de Datos H2\nspring.datasource.url=jdbc:h2:mem:devdb\nspring.datasource.driverClassName=org.h2.Driver\nspring.datasource.username=sa\nspring.datasource.password=\n\n# Consola H2\nspring.h2.console.enabled=true\nspring.h2.console.path=/h2-console\n\n# JPA/Hibernate\nspring.jpa.database-platform=org.hibernate.dialect.H2Dialect\nspring.jpa.hibernate.ddl-auto=create-drop\nspring.jpa.show-sql=true\n\n# Swagger\nspringdoc.swagger-ui.enabled=true\n\n# Logs\nlogging.level.root=DEBUG\nlogging.level.com.paymentchange=TRACE\n\n# Servidor\nserver.port=8081\nspring.application.name=customer-service\n\n# Output en consola al iniciar:\n# The following profiles are active: dev"
+    },
+    {
+      "numero": 4,
+      "archivo": "4__Escribir_fichero_propiedades_yaml_perfil_producción.srt",
+      "titulo": "Escribir Fichero de Propiedades YAML para Perfil de Producción",
+      "resumen": "Creación del archivo application-prod.yml con configuración para entorno productivo usando formato YAML. Se configuran propiedades de base de datos PostgreSQL, se desactivan herramientas de desarrollo, y se optimizan logs. Se explican ventajas de YAML sobre properties y cómo Spring Boot soporta ambos formatos.",
+      "puntosClave": [
+        "Crear archivo application-prod.yml (formato YAML, no properties)",
+        "YAML: sintaxis jerárquica más legible que properties plano",
+        "Configurar PostgreSQL: spring.datasource.url, username, password",
+        "Usar variables de entorno para credenciales: ${DB_USER}, ${DB_PASSWORD}",
+        "Desactivar consola H2: spring.h2.console.enabled=false",
+        "Desactivar Swagger: springdoc.swagger-ui.enabled=false",
+        "Logs mínimos: logging.level.root=WARN o ERROR",
+        "Puerto producción: server.port=8081 (o del balanceador)",
+        "JPA: ddl-auto=validate (no create-drop en producción)",
+        "Spring Boot soporta .properties y .yml indistintamente",
+        "YAML permite anidar propiedades de forma clara",
+        "Buena práctica: dev usa .properties, prod usa .yml"
+      ],
+      "conceptos": [
+        {
+          "nombre": "YAML (Yet Another Markup Language)",
+          "descripcion": "Formato de configuración jerárquico más legible que properties plano"
+        },
+        {
+          "nombre": "application-prod.yml",
+          "descripcion": "Archivo de configuración de producción en formato YAML"
+        },
+        {
+          "nombre": "PostgreSQL",
+          "descripcion": "Base de datos relacional robusta usada comúnmente en producción"
+        },
+        {
+          "nombre": "Variables de Entorno",
+          "descripcion": "Valores externos inyectados en runtime: ${DB_USER}, ${DB_PASSWORD}"
+        },
+        {
+          "nombre": "spring.jpa.hibernate.ddl-auto",
+          "descripcion": "Estrategia de creación de esquema: create-drop (dev), validate (prod)"
+        },
+        {
+          "nombre": "Sintaxis YAML",
+          "descripcion": "Usa indentación y : para jerarquía en vez de puntos como properties"
+        },
+        {
+          "nombre": "Configuración de Producción",
+          "descripcion": "Optimizada para seguridad, rendimiento y estabilidad"
+        },
+        {
+          "nombre": "Logs en Producción",
+          "descripcion": "WARN o ERROR para reducir ruido y mejorar rendimiento"
+        },
+        {
+          "nombre": "Seguridad de Credenciales",
+          "descripcion": "No hardcodear passwords, usar variables de entorno o vault"
+        },
+        {
+          "nombre": "Validación de Esquema",
+          "descripcion": "ddl-auto=validate verifica que BD coincide con entidades sin modificarla"
+        }
+      ],
+      "codigoEjemplo": "# application-prod.yml (formato YAML)\nspring:\n  application:\n    name: customer-service\n  \n  datasource:\n    url: jdbc:postgresql://prod-server:5432/customer_db\n    username: ${DB_USER}\n    password: ${DB_PASSWORD}\n    driver-class-name: org.postgresql.Driver\n  \n  jpa:\n    database-platform: org.hibernate.dialect.PostgreSQLDialect\n    hibernate:\n      ddl-auto: validate  # No modificar esquema en producción\n    show-sql: false\n  \n  h2:\n    console:\n      enabled: false  # Desactivar en producción\n\nspringdoc:\n  swagger-ui:\n    enabled: false  # Sin Swagger en producción\n\nlogging:\n  level:\n    root: WARN\n    com.paymentchange: INFO\n\nserver:\n  port: 8081\n\n# Equivalente en .properties:\n# spring.datasource.url=jdbc:postgresql://prod-server:5432/customer_db\n# spring.datasource.username=${DB_USER}"
+    },
+    {
+      "numero": 5,
+      "archivo": "5__Spring_Cloud.srt",
+      "titulo": "Introducción a Spring Cloud y sus Componentes Principales",
+      "resumen": "Visión general de Spring Cloud como ecosistema de proyectos para construir infraestructura de microservicios. Se presentan los componentes principales que se implementarán: Config Server para configuración centralizada, Eureka para descubrimiento de servicios, Gateway para enrutamiento, y Admin para monitoreo. Se explica cómo estos componentes trabajan juntos.",
+      "puntosClave": [
+        "Spring Cloud: familia de proyectos para sistemas distribuidos",
+        "No es un único framework, sino conjunto de librerías complementarias",
+        "Componentes a implementar en el curso:",
+        "1. Spring Cloud Config: configuración externa en Git",
+        "2. Spring Cloud Netflix Eureka: registro y descubrimiento",
+        "3. Spring Cloud Gateway: API Gateway con enrutamiento",
+        "4. Spring Boot Admin: interfaz de monitoreo",
+        "Versiones: Spring Cloud usa nombres (Hoxton, 2020, 2021, 2022)",
+        "Compatibilidad: verificar versión compatible con Spring Boot 3.2",
+        "Módulo infraestructure-domain contendrá estos componentes",
+        "Cada componente es un microservicio Spring Boot",
+        "Se usan starters específicos: spring-cloud-starter-config, spring-cloud-starter-netflix-eureka-server",
+        "Configuración BOM (Bill of Materials) para gestionar versiones"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Spring Cloud",
+          "descripcion": "Ecosistema de proyectos que facilitan construir aplicaciones distribuidas resilientes"
+        },
+        {
+          "nombre": "Spring Cloud Config",
+          "descripcion": "Servidor y cliente para externalizar configuración en repositorio Git"
+        },
+        {
+          "nombre": "Spring Cloud Netflix",
+          "descripcion": "Integración de herramientas Netflix OSS (Eureka, Ribbon, Hystrix)"
+        },
+        {
+          "nombre": "Eureka Server",
+          "descripcion": "Servidor de registro donde microservicios se dan de alta y consultan otros servicios"
+        },
+        {
+          "nombre": "Spring Cloud Gateway",
+          "descripcion": "Puerta de enlace inteligente con enrutamiento dinámico y filtros"
+        },
+        {
+          "nombre": "Spring Boot Admin",
+          "descripcion": "Aplicación web para gestionar y monitorear aplicaciones Spring Boot"
+        },
+        {
+          "nombre": "BOM (Bill of Materials)",
+          "descripcion": "POM especial que define versiones compatibles de librerías Spring Cloud"
+        },
+        {
+          "nombre": "Release Train",
+          "descripcion": "Versiones de Spring Cloud con nombres (Hoxton, 2020.0.x, 2021.0.x)"
+        },
+        {
+          "nombre": "Compatibilidad de Versiones",
+          "descripcion": "Spring Cloud 2022.0.x compatible con Spring Boot 3.0+"
+        },
+        {
+          "nombre": "Starter Spring Cloud",
+          "descripcion": "Dependencias pre-configuradas para componentes Cloud (config, eureka, gateway)"
+        }
+      ],
+      "codigoEjemplo": "<!-- Configurar Spring Cloud BOM en pom.xml padre -->\n<dependencyManagement>\n    <dependencies>\n        <!-- Spring Cloud BOM -->\n        <dependency>\n            <groupId>org.springframework.cloud</groupId>\n            <artifactId>spring-cloud-dependencies</artifactId>\n            <version>2022.0.0</version>\n            <type>pom</type>\n            <scope>import</scope>\n        </dependency>\n    </dependencies>\n</dependencyManagement>\n\n<!-- Starters para componentes Cloud -->\n<dependencies>\n    <!-- Config Server -->\n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-config-server</artifactId>\n    </dependency>\n    \n    <!-- Eureka Server -->\n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>\n    </dependency>\n    \n    <!-- Gateway -->\n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-starter-gateway</artifactId>\n    </dependency>\n</dependencies>"
+    },
+    {
+      "numero": 6,
+      "archivo": "6__Crear_repositorio_git_datasource_servidor.srt",
+      "titulo": "Crear Repositorio Git como Fuente de Configuración para Config Server",
+      "resumen": "Creación de repositorio Git que almacenará archivos de configuración de todos los microservicios. Se explica la estructura de archivos por servicio y perfil, nomenclatura estándar, y cómo Config Server leerá estas configuraciones. Se crea repositorio local o en GitHub y se agregan archivos properties/yml.",
+      "puntosClave": [
+        "Config Server lee configuración desde repositorio Git",
+        "Ventaja: versionado, auditoría, rollback de configuraciones",
+        "Crear repositorio Git: local o remoto (GitHub, GitLab, Bitbucket)",
+        "Nomenclatura: {application-name}-{profile}.properties o .yml",
+        "Ejemplos: customer-service-dev.yml, product-service-prod.yml",
+        "Archivo application.yml: configuración compartida por todos",
+        "Estructura del repositorio:",
+        "  - application.yml (común)",
+        "  - customer-service-dev.yml",
+        "  - customer-service-prod.yml",
+        "  - product-service-dev.yml",
+        "  - transaction-service-prod.yml",
+        "Git permite trabajo colaborativo en configuraciones",
+        "Config Server clonará/actualizará automáticamente el repositorio",
+        "Cambios en Git se reflejan en microservicios sin recompilar"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Repositorio de Configuración",
+          "descripcion": "Repositorio Git que almacena archivos de propiedades de todos los microservicios"
+        },
+        {
+          "nombre": "Configuración Centralizada",
+          "descripcion": "Todas las propiedades de microservicios en un único lugar versionado"
+        },
+        {
+          "nombre": "Versionado de Configuración",
+          "descripcion": "Git permite trackear cambios, hacer rollback y auditar modificaciones"
+        },
+        {
+          "nombre": "Nomenclatura de Archivos",
+          "descripcion": "Patrón {service-name}-{profile}.yml para identificar configuraciones"
+        },
+        {
+          "nombre": "application.yml Global",
+          "descripcion": "Archivo con propiedades compartidas por todos los servicios"
+        },
+        {
+          "nombre": "Repositorio Local vs Remoto",
+          "descripcion": "Local: carpeta Git en servidor. Remoto: GitHub, GitLab, Bitbucket"
+        },
+        {
+          "nombre": "Config Server como Cliente Git",
+          "descripcion": "Config Server clona repositorio y sirve archivos a microservicios"
+        },
+        {
+          "nombre": "Separación de Configuración",
+          "descripcion": "Código (JAR) separado de configuración (Git), facilita despliegues"
+        },
+        {
+          "nombre": "Configuración como Código",
+          "descripcion": "Tratar archivos de configuración como código con control de versiones"
+        },
+        {
+          "nombre": "Trabajo Colaborativo",
+          "descripcion": "Múltiples personas pueden modificar configuraciones vía Git"
+        }
+      ],
+      "codigoEjemplo": "# Estructura del repositorio Git de configuración\nconfig-repo/\n├── application.yml              # Configuración global\n├── customer-service-dev.yml    # Customer en desarrollo\n├── customer-service-prod.yml   # Customer en producción\n├── product-service-dev.yml     # Product en desarrollo\n├── product-service-prod.yml    # Product en producción\n└── transaction-service-dev.yml # Transaction en desarrollo\n\n# application.yml (configuración compartida)\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: '*'\n\nlogging:\n  pattern:\n    console: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'\n\n# customer-service-dev.yml\nserver:\n  port: 8081\n\nspring:\n  datasource:\n    url: jdbc:h2:mem:customerdb\n  h2:\n    console:\n      enabled: true\n\nspringdoc:\n  swagger-ui:\n    enabled: true\n\n# customer-service-prod.yml\nserver:\n  port: 8081\n\nspring:\n  datasource:\n    url: jdbc:postgresql://prod-db:5432/customers\n    username: ${DB_USER}\n    password: ${DB_PASSWORD}\n\nspringdoc:\n  swagger-ui:\n    enabled: false\n\n# Comandos Git\ngit init\ngit add .\ngit commit -m \"Initial configuration\"\ngit remote add origin https://github.com/user/config-repo.git\ngit push -u origin main"
+    },
+    {
+      "numero": 7,
+      "archivo": "7__Configurar_spring_cloud_springconfig_cliente_todos.srt",
+      "titulo": "Configurar Spring Cloud Config Cliente en Todos los Microservicios",
+      "resumen": "Configuración de microservicios como clientes de Config Server para obtener propiedades desde Git. Se agrega dependencia spring-cloud-starter-config, se configura URL del Config Server, y se habilita importación de configuración externa. Los microservicios ahora obtienen propiedades de Git en lugar de archivos locales.",
+      "puntosClave": [
+        "Agregar starter: spring-cloud-starter-config a customer, product, transaction",
+        "Crear/actualizar application.properties con configuración de Config Client",
+        "spring.application.name: debe coincidir con nombre en Git (customer-service)",
+        "spring.config.import=optional:configserver:http://localhost:8888",
+        "optional: permite iniciar si Config Server no está disponible",
+        "URL del Config Server: http://localhost:8888 (puerto por defecto)",
+        "Al iniciar, microservicio consulta Config Server antes de cargar propiedades",
+        "Orden: 1) Config Server, 2) application.properties local",
+        "Propiedades de Config Server tienen mayor prioridad",
+        "spring.profiles.active=dev sigue funcionando normalmente",
+        "Beneficio: cambiar configuración en Git sin recompilar",
+        "Aplicar misma configuración en los 3 microservicios business"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Config Client",
+          "descripcion": "Microservicio que obtiene configuración desde Config Server en lugar de archivos locales"
+        },
+        {
+          "nombre": "spring-cloud-starter-config",
+          "descripcion": "Starter que habilita integración con Spring Cloud Config Server"
+        },
+        {
+          "nombre": "spring.config.import",
+          "descripcion": "Propiedad que indica de dónde importar configuración adicional"
+        },
+        {
+          "nombre": "optional:configserver:",
+          "descripcion": "Prefijo que permite iniciar aplicación aunque Config Server no esté disponible"
+        },
+        {
+          "nombre": "spring.application.name",
+          "descripcion": "Nombre de la aplicación que debe coincidir con archivos en Git"
+        },
+        {
+          "nombre": "Orden de Carga",
+          "descripcion": "Config Server → application.properties → application-{profile}.properties"
+        },
+        {
+          "nombre": "Prioridad de Propiedades",
+          "descripcion": "Config Server tiene mayor prioridad que archivos locales"
+        },
+        {
+          "nombre": "Bootstrap Context",
+          "descripcion": "Contexto temprano que carga configuración de Config Server antes de main context"
+        },
+        {
+          "nombre": "Configuración Dinámica",
+          "descripcion": "Modificar propiedades en Git sin recompilar ni redesplegar microservicios"
+        },
+        {
+          "nombre": "Fail-Fast vs Optional",
+          "descripcion": "Fail-fast falla si Config Server no responde, optional permite continuar"
+        }
+      ],
+      "codigoEjemplo": "<!-- Agregar en pom.xml de customer, product, transaction -->\n<dependency>\n    <groupId>org.springframework.cloud</groupId>\n    <artifactId>spring-cloud-starter-config</artifactId>\n</dependency>\n\n# application.properties (en cada microservicio)\n# Nombre debe coincidir con archivos en Git\nspring.application.name=customer-service\n\n# Importar configuración desde Config Server\nspring.config.import=optional:configserver:http://localhost:8888\n\n# Perfil activo\nspring.profiles.active=dev\n\n# El microservicio buscará en Config Server:\n# - application.yml (configuración global)\n# - customer-service.yml (específico del servicio)\n# - customer-service-dev.yml (específico del servicio y perfil)\n\n# Logs al iniciar mostrarán:\n# Fetching config from server at: http://localhost:8888\n# Located environment: name=customer-service, profiles=[dev]"
+    },
+    {
+      "numero": 8,
+      "archivo": "8__Importar_configuración_externa_desde_springCofig.srt",
+      "titulo": "Importar Configuración Externa desde Spring Cloud Config Server",
+      "resumen": "Creación y configuración del microservicio Config Server que expone configuraciones desde repositorio Git. Se habilita @EnableConfigServer, se configura puerto 8888, y se prueba acceso a propiedades vía endpoints REST. Los microservicios clientes obtienen configuración automáticamente al iniciar.",
+      "puntosClave": [
+        "Crear proyecto Config Server en módulo infraestructure-domain",
+        "Starter principal: spring-cloud-config-server",
+        "Clase principal: @SpringBootApplication + @EnableConfigServer",
+        "Configurar puerto: server.port=8888 (convención estándar)",
+        "spring.cloud.config.server.git.uri=file:///path/to/config-repo",
+        "Git URI puede ser: local (file://), GitHub (https://), GitLab",
+        "Config Server expone endpoints REST para consultar configuración",
+        "GET /{application}/{profile} retorna propiedades",
+        "Ejemplo: http://localhost:8888/customer-service/dev",
+        "Respuesta JSON con todas las propiedades del servicio y perfil",
+        "Microservicios clientes usan estos endpoints automáticamente",
+        "Config Server clona repositorio Git al iniciar"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Config Server",
+          "descripcion": "Microservicio que sirve configuración desde Git mediante endpoints REST"
+        },
+        {
+          "nombre": "@EnableConfigServer",
+          "descripcion": "Anotación que activa funcionalidad de servidor de configuración"
+        },
+        {
+          "nombre": "spring.cloud.config.server.git.uri",
+          "descripcion": "URL del repositorio Git con archivos de configuración"
+        },
+        {
+          "nombre": "Puerto 8888",
+          "descripcion": "Puerto convencional para Spring Cloud Config Server"
+        },
+        {
+          "nombre": "Endpoints REST de Config",
+          "descripcion": "URLs que exponen configuración: /{app}/{profile}, /{app}/{profile}/{label}"
+        },
+        {
+          "nombre": "Git URI Local",
+          "descripcion": "file:///path/to/repo para repositorio en sistema de archivos local"
+        },
+        {
+          "nombre": "Git URI Remoto",
+          "descripcion": "https://github.com/user/config-repo.git para repositorio remoto"
+        },
+        {
+          "nombre": "Clonación Automática",
+          "descripcion": "Config Server clona repositorio Git al iniciar y lo actualiza periódicamente"
+        },
+        {
+          "nombre": "Label Git",
+          "descripcion": "Rama de Git a usar (master, main, develop), por defecto: main"
+        },
+        {
+          "nombre": "Property Sources",
+          "descripcion": "Fuentes de propiedades que Config Server agrega en respuesta JSON"
+        }
+      ],
+      "codigoEjemplo": "<!-- pom.xml del Config Server -->\n<dependencies>\n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-config-server</artifactId>\n    </dependency>\n</dependencies>\n\n// ConfigServerApplication.java\npackage com.paymentchange.configserver;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\nimport org.springframework.cloud.config.server.EnableConfigServer;\n\n@SpringBootApplication\n@EnableConfigServer\npublic class ConfigServerApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(ConfigServerApplication.class, args);\n    }\n}\n\n# application.properties del Config Server\nserver.port=8888\nspring.application.name=config-server\n\n# Repositorio Git local\nspring.cloud.config.server.git.uri=file:///C:/config-repo\n\n# O repositorio Git remoto\nspring.cloud.config.server.git.uri=https://github.com/user/config-repo.git\nspring.cloud.config.server.git.default-label=main\n\n# Probar endpoints:\n# GET http://localhost:8888/customer-service/dev\n# Retorna JSON con propiedades de customer-service-dev.yml"
+    },
+    {
+      "numero": 9,
+      "archivo": "9__Indicar_ruta_repositorio_git_al_jar_springCofig.srt",
+      "titulo": "Indicar Ruta del Repositorio Git al Ejecutar Config Server",
+      "resumen": "Configuración flexible de la URI del repositorio Git mediante variables de entorno o argumentos de línea de comandos. Se explica cómo no hardcodear rutas en código y permitir cambio dinámico de repositorio según entorno. Incluye ejemplos de ejecución con diferentes configuraciones.",
+      "puntosClave": [
+        "No hardcodear ruta Git en application.properties",
+        "Usar variable de entorno: SPRING_CLOUD_CONFIG_SERVER_GIT_URI",
+        "O argumento de línea de comandos al ejecutar JAR",
+        "Sintaxis: --spring.cloud.config.server.git.uri=file:///path",
+        "Permitir configuración diferente por entorno (dev, test, prod)",
+        "Desarrollo: repositorio local file:///",
+        "Producción: repositorio remoto https://github.com/...",
+        "Variable de entorno tiene mayor prioridad que application.properties",
+        "Ejemplo ejecución: java -jar config-server.jar --spring.cloud.config.server.git.uri=...",
+        "En Docker/Kubernetes: pasar como variable de entorno",
+        "Permite usar mismo JAR con diferentes repositorios",
+        "Buena práctica de 12-factor apps: configuración externa"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Variable de Entorno",
+          "descripcion": "Configuración externa al código que se inyecta en runtime"
+        },
+        {
+          "nombre": "SPRING_CLOUD_CONFIG_SERVER_GIT_URI",
+          "descripcion": "Variable de entorno para configurar URI del repositorio Git"
+        },
+        {
+          "nombre": "Argumentos de Línea de Comandos",
+          "descripcion": "Parámetros --spring.property=value al ejecutar java -jar"
+        },
+        {
+          "nombre": "Prioridad de Configuración",
+          "descripcion": "Orden: argumentos CLI > variables entorno > application.properties"
+        },
+        {
+          "nombre": "Configuración Externa",
+          "descripcion": "Separar configuración del código para facilitar despliegues"
+        },
+        {
+          "nombre": "12-Factor Apps",
+          "descripcion": "Metodología que recomienda configuración via variables de entorno"
+        },
+        {
+          "nombre": "Portabilidad de Artefactos",
+          "descripcion": "Mismo JAR puede ejecutarse en diferentes entornos con config diferente"
+        },
+        {
+          "nombre": "Hardcodear",
+          "descripcion": "Escribir valores fijos en código (mala práctica para rutas/URLs)"
+        },
+        {
+          "nombre": "Flexibilidad de Despliegue",
+          "descripcion": "Cambiar comportamiento sin recompilar modificando configuración externa"
+        },
+        {
+          "nombre": "Configuración en Docker",
+          "descripcion": "Usar variables de entorno (-e) o archivos .env para configurar contenedores"
+        }
+      ],
+      "codigoEjemplo": "# application.properties del Config Server (sin hardcodear ruta)\nserver.port=8888\nspring.application.name=config-server\n# NO hardcodear:\n# spring.cloud.config.server.git.uri=file:///C:/config-repo\n\n# Opción 1: Variable de entorno (Linux/Mac)\nexport SPRING_CLOUD_CONFIG_SERVER_GIT_URI=file:///home/user/config-repo\njava -jar config-server.jar\n\n# Opción 1: Variable de entorno (Windows)\nset SPRING_CLOUD_CONFIG_SERVER_GIT_URI=file:///C:/config-repo\njava -jar config-server.jar\n\n# Opción 2: Argumento de línea de comandos\njava -jar config-server.jar \\\n  --spring.cloud.config.server.git.uri=file:///C:/config-repo\n\n# Opción 3: Repositorio remoto en producción\njava -jar config-server.jar \\\n  --spring.cloud.config.server.git.uri=https://github.com/company/config-repo.git \\\n  --spring.cloud.config.server.git.username=${GIT_USER} \\\n  --spring.cloud.config.server.git.password=${GIT_TOKEN}\n\n# Docker\ndocker run -e SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/... \\\n  config-server:latest\n\n# Kubernetes ConfigMap\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: config-server-config\ndata:\n  GIT_URI: \"https://github.com/company/config-repo.git\""
+    },
+    {
+      "numero": 10,
+      "archivo": "10__Cambiar_perfiles_propiedades_sin_recopilar.srt",
+      "titulo": "Cambiar Perfiles y Propiedades sin Recompilar Microservicios",
+      "resumen": "Demostración práctica del poder de Config Server: modificar propiedades en Git, hacer commit/push, y ver cambios reflejados en microservicios sin recompilar. Se introduce @RefreshScope para refrescar beans con nuevas propiedades y endpoint /actuator/refresh para aplicar cambios en caliente.",
+      "puntosClave": [
+        "Ventaja principal: cambiar configuración sin recompilar ni redesplegar",
+        "Modificar archivo en repositorio Git (cambiar puerto, BD, logs)",
+        "Git commit y push de cambios",
+        "Config Server detecta cambios automáticamente al consultar",
+        "Microservicios obtienen nuevas propiedades al reiniciar",
+        "Para aplicar sin reiniciar: usar @RefreshScope + /actuator/refresh",
+        "@RefreshScope en beans que usan @Value o @ConfigurationProperties",
+        "POST a /actuator/refresh fuerza recarga de propiedades",
+        "Actuator debe estar habilitado con spring-boot-starter-actuator",
+        "Cambiar perfil: solo modificar spring.profiles.active y reiniciar",
+        "Útil para: cambiar logs, timeouts, feature flags, URLs",
+        "En producción: cambios graduales sin downtime"
+      ],
+      "conceptos": [
+        {
+          "nombre": "@RefreshScope",
+          "descripcion": "Anotación que permite refrescar beans cuando propiedades cambian vía /actuator/refresh"
+        },
+        {
+          "nombre": "/actuator/refresh",
+          "descripcion": "Endpoint POST que recarga propiedades desde Config Server sin reiniciar"
+        },
+        {
+          "nombre": "Spring Boot Actuator",
+          "descripcion": "Módulo que expone endpoints de monitoreo y gestión (/health, /metrics, /refresh)"
+        },
+        {
+          "nombre": "Configuración Dinámica",
+          "descripcion": "Modificar comportamiento de aplicación en runtime sin recompilar"
+        },
+        {
+          "nombre": "Hot Reload",
+          "descripcion": "Aplicar cambios de configuración sin reiniciar la aplicación"
+        },
+        {
+          "nombre": "@Value",
+          "descripcion": "Anotación para inyectar propiedades en campos de beans Spring"
+        },
+        {
+          "nombre": "@ConfigurationProperties",
+          "descripcion": "Anotación para mapear grupo de propiedades a un objeto POJO"
+        },
+        {
+          "nombre": "Feature Flags",
+          "descripcion": "Propiedades booleanas que activan/desactivan funcionalidades sin código nuevo"
+        },
+        {
+          "nombre": "Despliegue sin Downtime",
+          "descripcion": "Cambiar configuración sin detener servicio en producción"
+        },
+        {
+          "nombre": "Git como Source of Truth",
+          "descripcion": "Repositorio Git es la única fuente de verdad para configuración"
+        }
+      ],
+      "codigoEjemplo": "<!-- Agregar Actuator en pom.xml -->\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-actuator</artifactId>\n</dependency>\n\n# application.properties - habilitar endpoint refresh\nmanagement.endpoints.web.exposure.include=refresh,health,info\n\n// Clase con propiedades refrescables\npackage com.paymentchange.customer.config;\n\nimport org.springframework.beans.factory.annotation.Value;\nimport org.springframework.cloud.context.config.annotation.RefreshScope;\nimport org.springframework.stereotype.Component;\n\n@Component\n@RefreshScope  // Permite refrescar bean\npublic class AppConfig {\n    \n    @Value(\"${app.feature.enabled:false}\")\n    private boolean featureEnabled;\n    \n    @Value(\"${app.timeout.seconds:30}\")\n    private int timeoutSeconds;\n    \n    public boolean isFeatureEnabled() {\n        return featureEnabled;\n    }\n}\n\n# Flujo de cambio sin reiniciar:\n# 1. Modificar en Git: app.feature.enabled=true\n# 2. Git commit y push\n# 3. POST http://localhost:8081/actuator/refresh\n# 4. Bean AppConfig tiene nuevos valores\n\n# Cambiar perfil requiere reiniciar:\n# 1. Modificar spring.profiles.active=prod\n# 2. Reiniciar microservicio\n\n# curl para refrescar\ncurl -X POST http://localhost:8081/actuator/refresh"
+    },
+    {
+      "numero": 11,
+      "archivo": "11__Registro_discovery_eureka.srt",
+      "titulo": "Registro y Descubrimiento de Servicios con Eureka",
+      "resumen": "Introducción al problema de descubrimiento de servicios en arquitecturas distribuidas y cómo Eureka Server lo resuelve. Se explica por qué hardcodear URLs (localhost:8082) no funciona en producción con múltiples instancias. Eureka permite descubrimiento dinámico de servicios por nombre en lugar de URL fija.",
+      "puntosClave": [
+        "Problema actual: URLs hardcodeadas en WebClient (http://localhost:8082)",
+        "En producción: múltiples instancias en diferentes servidores/IPs",
+        "Imposible saber de antemano todas las IPs de instancias",
+        "Solución: Service Registry (Eureka Server)",
+        "Eureka Server: directorio centralizado de microservicios",
+        "Microservicios se registran al iniciar (nombre + IP + puerto)",
+        "Otros servicios consultan Eureka para descubrir instancias",
+        "Client-side load balancing: cliente elige instancia disponible",
+        "Heartbeat: servicios envían pulso para indicar que están vivos",
+        "Eureka elimina servicios que no responden",
+        "Descubrimiento por nombre: product-service en vez de localhost:8082",
+        "Permite escalado horizontal transparente"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Service Registry",
+          "descripcion": "Servidor centralizado que mantiene directorio de todos los microservicios disponibles"
+        },
+        {
+          "nombre": "Eureka Server",
+          "descripcion": "Implementación de Netflix de Service Registry para Spring Cloud"
+        },
+        {
+          "nombre": "Service Discovery",
+          "descripcion": "Mecanismo para que servicios se encuentren dinámicamente sin URLs hardcodeadas"
+        },
+        {
+          "nombre": "Eureka Client",
+          "descripcion": "Microservicio que se registra en Eureka Server y consulta otros servicios"
+        },
+        {
+          "nombre": "Registro de Servicio",
+          "descripcion": "Proceso donde microservicio informa a Eureka su nombre, IP y puerto al iniciar"
+        },
+        {
+          "nombre": "Heartbeat",
+          "descripcion": "Señal periódica que servicio envía a Eureka indicando que está activo"
+        },
+        {
+          "nombre": "Client-Side Load Balancing",
+          "descripcion": "Cliente elige entre múltiples instancias disponibles (LoadBalancer de Spring)"
+        },
+        {
+          "nombre": "Health Check",
+          "descripcion": "Verificación automática de que servicios están respondiendo correctamente"
+        },
+        {
+          "nombre": "Escalado Horizontal",
+          "descripcion": "Agregar más instancias del mismo servicio para distribuir carga"
+        },
+        {
+          "nombre": "Descubrimiento Dinámico",
+          "descripcion": "Encontrar servicios en runtime sin configuración previa de IPs"
+        }
+      ]
+    },
+    {
+      "numero": 12,
+      "archivo": "12__Crear_configurar_servidor_registro_discovery_eureka.srt",
+      "titulo": "Crear y Configurar Servidor de Registro Eureka Server",
+      "resumen": "Creación del microservicio Eureka Server que actúa como registro central. Se configura @EnableEurekaServer, puerto 8761, y propiedades para evitar que se registre a sí mismo. Se accede a dashboard web de Eureka para visualizar servicios registrados. Base para implementar descubrimiento de servicios.",
+      "puntosClave": [
+        "Crear proyecto Eureka Server en infraestructure-domain",
+        "Starter: spring-cloud-starter-netflix-eureka-server",
+        "Clase principal: @EnableEurekaServer",
+        "Puerto convencional: server.port=8761",
+        "Configurar: eureka.client.register-with-eureka=false",
+        "Configurar: eureka.client.fetch-registry=false",
+        "Estas propiedades evitan que Eureka se registre a sí mismo",
+        "Dashboard web: http://localhost:8761",
+        "Interfaz muestra servicios registrados, instancias, estado",
+        "Sección 'Instances currently registered': lista de microservicios",
+        "Inicialmente vacío hasta que servicios se registren",
+        "Eureka Server debe iniciarse antes que los clientes"
+      ],
+      "conceptos": [
+        {
+          "nombre": "@EnableEurekaServer",
+          "descripcion": "Anotación que convierte aplicación Spring Boot en servidor Eureka"
+        },
+        {
+          "nombre": "Puerto 8761",
+          "descripcion": "Puerto convencional para Eureka Server"
+        },
+        {
+          "nombre": "eureka.client.register-with-eureka",
+          "descripcion": "Propiedad que indica si la app debe registrarse como cliente (false para server)"
+        },
+        {
+          "nombre": "eureka.client.fetch-registry",
+          "descripcion": "Propiedad que indica si debe obtener registro de otros Eureka (false para standalone)"
+        },
+        {
+          "nombre": "Dashboard Eureka",
+          "descripcion": "Interfaz web en /eureka que muestra servicios registrados y estado"
+        },
+        {
+          "nombre": "Instances Registered",
+          "descripcion": "Lista de microservicios actualmente registrados en Eureka"
+        },
+        {
+          "nombre": "Application Name",
+          "descripcion": "Nombre lógico del servicio usado para descubrimiento (ej: CUSTOMER-SERVICE)"
+        },
+        {
+          "nombre": "Status",
+          "descripcion": "Estado del servicio: UP (disponible), DOWN (no disponible)"
+        },
+        {
+          "nombre": "Standalone Mode",
+          "descripcion": "Configuración de Eureka Server único sin replicación"
+        },
+        {
+          "nombre": "Peer Awareness",
+          "descripcion": "Modo de alta disponibilidad con múltiples Eureka Servers sincronizados"
+        }
+      ],
+      "codigoEjemplo": "<!-- pom.xml del Eureka Server -->\n<dependencies>\n    <dependency>\n        <groupId>org.springframework.cloud</groupId>\n        <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>\n    </dependency>\n</dependencies>\n\n// EurekaServerApplication.java\npackage com.paymentchange.eurekaserver;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\nimport org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;\n\n@SpringBootApplication\n@EnableEurekaServer\npublic class EurekaServerApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(EurekaServerApplication.class, args);\n    }\n}\n\n# application.properties del Eureka Server\nserver.port=8761\nspring.application.name=eureka-server\n\n# No registrarse a sí mismo como cliente\neureka.client.register-with-eureka=false\neureka.client.fetch-registry=false\n\n# URL del dashboard\n# http://localhost:8761\n# Muestra:\n# - Instances currently registered with Eureka\n# - General Info\n# - Instance Info"
+    },
+    {
+      "numero": 13,
+      "archivo": "13__Registrar_microservicio_cliente_servidor_registry.srt",
+      "titulo": "Registrar Microservicios como Clientes de Eureka Server",
+      "resumen": "Configuración de microservicios business (Customer, Product, Transaction) como clientes Eureka. Se agrega dependencia eureka-client, se configura URL del servidor Eureka, y se valida registro exitoso en dashboard. Los servicios ahora se descubren dinámicamente entre sí.",
+      "puntosClave": [
+        "Agregar starter: spring-cloud-starter-netflix-eureka-client",
+        "Aplicar a customer-service, product-service, transaction-service",
+        "spring.application.name debe estar configurado correctamente",
+        "eureka.client.service-url.defaultZone=http://localhost:8761/eureka/",
+        "Al iniciar, microservicio se registra automáticamente en Eureka",
+        "Envía heartbeat cada 30 segundos (configurable)",
+        "Verificar en dashboard: http://localhost:8761",
+        "Sección 'Instances' muestra: CUSTOMER-SERVICE, PRODUCT-SERVICE, TRANSACTION-SERVICE",
+        "Estado debe ser UP con IP:puerto de cada instancia",
+        "Microservicios obtienen registro de Eureka para descubrir otros servicios",
+        "Cache local se actualiza cada 30 segundos",
+        "Base para implementar descubrimiento dinámico en WebClient"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Eureka Client",
+          "descripcion": "Microservicio que se registra en Eureka y puede descubrir otros servicios"
+        },
+        {
+          "nombre": "spring-cloud-starter-netflix-eureka-client",
+          "descripcion": "Starter que habilita funcionalidad de cliente Eureka"
+        },
+        {
+          "nombre": "eureka.client.service-url.defaultZone",
+          "descripcion": "URL del Eureka Server donde registrarse y obtener registro"
+        },
+        {
+          "nombre": "Registro Automático",
+          "descripcion": "Cliente se registra al iniciar sin código adicional"
+        },
+        {
+          "nombre": "Heartbeat Interval",
+          "descripcion": "Frecuencia con que cliente envía señal de vida (default: 30s)"
+        },
+        {
+          "nombre": "Lease Renewal",
+          "descripcion": "Renovación del registro que indica que servicio sigue activo"
+        },
+        {
+          "nombre": "Registry Fetch Interval",
+          "descripcion": "Frecuencia con que cliente actualiza lista de servicios (default: 30s)"
+        },
+        {
+          "nombre": "Instance ID",
+          "descripcion": "Identificador único de instancia: hostname:application-name:port"
+        },
+        {
+          "nombre": "Service ID",
+          "descripcion": "Nombre lógico del servicio (spring.application.name en mayúsculas)"
+        },
+        {
+          "nombre": "Metadata",
+          "descripcion": "Información adicional que servicio registra (zona, versión, tags)"
+        }
+      ],
+      "codigoEjemplo": "<!-- Agregar en pom.xml de customer, product, transaction -->\n<dependency>\n    <groupId>org.springframework.cloud</groupId>\n    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>\n</dependency>\n\n# application.properties (customer-service)\nspring.application.name=customer-service\nserver.port=8081\n\n# URL del Eureka Server\neureka.client.service-url.defaultZone=http://localhost:8761/eureka/\n\n# Opcional: configurar heartbeat e intervalos\neureka.instance.lease-renewal-interval-in-seconds=30\neureka.instance.lease-expiration-duration-in-seconds=90\neureka.client.registry-fetch-interval-seconds=30\n\n# Metadata adicional (opcional)\neureka.instance.metadata-map.zone=zone1\neureka.instance.metadata-map.version=1.0.0\n\n# Al iniciar, logs mostrarán:\n# DiscoveryClient: registering service CUSTOMER-SERVICE with eureka\n# Tomcat started on port(s): 8081\n\n# Dashboard Eureka mostrará:\n# Application: CUSTOMER-SERVICE\n# Status: UP (1) - hostname:customer-service:8081"
+    },
+    {
+      "numero": 14,
+      "archivo": "14__Agregar_configurar_Actuator_consultar_métricas.srt",
+      "titulo": "Agregar y Configurar Actuator para Consultar Métricas de Salud",
+      "resumen": "Implementación de Spring Boot Actuator para exponer endpoints de monitoreo y salud. Se configura exposición de endpoints, se consultan métricas vía REST, y se integra con Eureka para health checks. Base para implementar Spring Boot Admin en siguiente clase.",
+      "puntosClave": [
+        "Actuator: módulo de Spring Boot para monitoreo y gestión",
+        "Starter: spring-boot-starter-actuator",
+        "Endpoints principales: /health, /info, /metrics, /env, /refresh",
+        "Por defecto solo /health está expuesto vía web",
+        "management.endpoints.web.exposure.include=* para exponer todos",
+        "O especificar: health,info,metrics,env",
+        "GET /actuator/health retorna estado: {\"status\":\"UP\"}",
+        "GET /actuator/metrics lista métricas disponibles",
+        "GET /actuator/metrics/jvm.memory.used retorna uso de memoria",
+        "Eureka usa /actuator/health para verificar estado de servicios",
+        "management.endpoint.health.show-details=always muestra detalles",
+        "Preparación para Spring Boot Admin que visualiza estos endpoints"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Spring Boot Actuator",
+          "descripcion": "Módulo que expone endpoints HTTP para monitorear y gestionar aplicación"
+        },
+        {
+          "nombre": "/actuator/health",
+          "descripcion": "Endpoint que retorna estado de salud de la aplicación (UP, DOWN)"
+        },
+        {
+          "nombre": "/actuator/metrics",
+          "descripcion": "Endpoint que expone métricas de la aplicación (memoria, CPU, requests)"
+        },
+        {
+          "nombre": "/actuator/info",
+          "descripcion": "Endpoint con información de la aplicación (versión, descripción)"
+        },
+        {
+          "nombre": "/actuator/env",
+          "descripcion": "Endpoint que muestra propiedades de entorno y configuración"
+        },
+        {
+          "nombre": "management.endpoints.web.exposure.include",
+          "descripcion": "Propiedad que controla qué endpoints Actuator están disponibles vía HTTP"
+        },
+        {
+          "nombre": "Health Indicator",
+          "descripcion": "Componente que verifica salud de recursos (BD, disco, servicios externos)"
+        },
+        {
+          "nombre": "Métricas JVM",
+          "descripcion": "Estadísticas de memoria, threads, garbage collection de la JVM"
+        },
+        {
+          "nombre": "show-details",
+          "descripcion": "Configuración que muestra detalles internos de health checks"
+        },
+        {
+          "nombre": "Endpoints de Gestión",
+          "descripcion": "APIs REST para operaciones administrativas (/shutdown, /refresh, /env)"
+        }
+      ],
+      "codigoEjemplo": "<!-- Agregar Actuator en pom.xml -->\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-actuator</artifactId>\n</dependency>\n\n# application.properties - Configurar Actuator\n# Exponer todos los endpoints\nmanagement.endpoints.web.exposure.include=*\n\n# O exponer solo algunos\nmanagement.endpoints.web.exposure.include=health,info,metrics,env\n\n# Mostrar detalles de salud\nmanagement.endpoint.health.show-details=always\n\n# Info de la aplicación\ninfo.app.name=Customer Service\ninfo.app.description=Microservicio de gestión de clientes\ninfo.app.version=1.0.0\n\n# Endpoints disponibles:\n# GET http://localhost:8081/actuator\n# Retorna lista de endpoints disponibles\n\n# GET http://localhost:8081/actuator/health\n{\n  \"status\": \"UP\",\n  \"components\": {\n    \"diskSpace\": {\"status\": \"UP\"},\n    \"db\": {\"status\": \"UP\"},\n    \"ping\": {\"status\": \"UP\"}\n  }\n}\n\n# GET http://localhost:8081/actuator/metrics\n{\n  \"names\": [\n    \"jvm.memory.used\",\n    \"http.server.requests\",\n    \"system.cpu.usage\"\n  ]\n}\n\n# GET http://localhost:8081/actuator/metrics/jvm.memory.used\n{\n  \"name\": \"jvm.memory.used\",\n  \"measurements\": [{\"value\": 156789123}]\n}"
+    },
+    {
+      "numero": 15,
+      "archivo": "15__Descubrir_servicios_por_nombre_servidor_Registro.srt",
+      "titulo": "Descubrir Servicios por Nombre usando Servidor de Registro Eureka",
+      "resumen": "Modificación de WebClient para usar nombres de servicio en lugar de URLs hardcodeadas. Se configura WebClient para resolver nombres mediante Eureka, permitiendo descubrimiento dinámico y balanceo de carga automático. Customer ahora descubre Product usando 'product-service' en vez de 'localhost:8082'.",
+      "puntosClave": [
+        "Problema actual: WebClient usa http://localhost:8082 hardcodeado",
+        "Solución: usar nombre de servicio registrado en Eureka",
+        "Cambiar baseUrl de http://localhost:8082 a http://product-service",
+        "Spring Cloud LoadBalancer resuelve nombre a instancias reales",
+        "WebClient automáticamente consulta Eureka por product-service",
+        "Obtiene lista de instancias disponibles (IP + puerto)",
+        "Selecciona instancia usando round-robin (balanceo)",
+        "Si hay múltiples instancias de Product, distribuye carga",
+        "Tolerancia a fallos: si instancia cae, usa otra disponible",
+        "No requiere conocer IPs/puertos de antemano",
+        "Aplicar mismo patrón para Transaction → Customer y Transaction → Product",
+        "Escalado transparente: agregar instancias sin cambiar código"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Service Name Resolution",
+          "descripcion": "Convertir nombre lógico (product-service) a IP:puerto real mediante Eureka"
+        },
+        {
+          "nombre": "Spring Cloud LoadBalancer",
+          "descripcion": "Cliente que balancea carga entre múltiples instancias de un servicio"
+        },
+        {
+          "nombre": "Round-Robin",
+          "descripcion": "Algoritmo de balanceo que distribuye peticiones secuencialmente entre instancias"
+        },
+        {
+          "nombre": "Client-Side Load Balancing",
+          "descripcion": "Cliente decide a qué instancia llamar (vs server-side con load balancer externo)"
+        },
+        {
+          "nombre": "Service Discovery Integration",
+          "descripcion": "WebClient integrado con Eureka para resolver nombres automáticamente"
+        },
+        {
+          "nombre": "Failover",
+          "descripcion": "Capacidad de usar instancia alternativa si una falla"
+        },
+        {
+          "nombre": "Dynamic Scaling",
+          "descripcion": "Agregar/quitar instancias sin modificar configuración de clientes"
+        },
+        {
+          "nombre": "Location Transparency",
+          "descripcion": "Cliente no necesita saber dónde está físicamente el servicio"
+        },
+        {
+          "nombre": "Instance Metadata",
+          "descripcion": "Información adicional de cada instancia (zona, versión, peso)"
+        },
+        {
+          "nombre": "Health-Based Routing",
+          "descripcion": "Solo enviar tráfico a instancias marcadas como UP en Eureka"
+        }
+      ],
+      "codigoEjemplo": "// WebClientConfig.java - Antes (hardcodeado)\n@Configuration\npublic class WebClientConfig {\n    @Bean\n    public WebClient webClient() {\n        return WebClient.builder()\n            .baseUrl(\"http://localhost:8082\")  // ❌ Hardcodeado\n            .build();\n    }\n}\n\n// WebClientConfig.java - Después (descubrimiento dinámico)\n@Configuration\npublic class WebClientConfig {\n    @Bean\n    @LoadBalanced  // ✅ Habilita balanceo de carga\n    public WebClient.Builder webClientBuilder() {\n        return WebClient.builder();\n    }\n    \n    @Bean\n    public WebClient webClient(WebClient.Builder builder) {\n        return builder\n            .baseUrl(\"http://product-service\")  // ✅ Nombre lógico\n            .build();\n    }\n}\n\n// CustomerService.java - Uso sigue igual\npublic Product getProduct(Long productId) {\n    return webClient.get()\n        .uri(\"/product/{id}\", productId)  // Se resuelve a http://INSTANCE_IP:PORT/product/{id}\n        .retrieve()\n        .bodyToMono(Product.class)\n        .block();\n}\n\n// Spring Cloud LoadBalancer resuelve automáticamente:\n// http://product-service/product/1\n// ↓\n// Consulta Eureka por \"PRODUCT-SERVICE\"\n// ↓\n// Obtiene: [192.168.1.10:8082, 192.168.1.11:8082]\n// ↓\n// Selecciona: 192.168.1.10:8082 (round-robin)\n// ↓\n// Ejecuta: http://192.168.1.10:8082/product/1"
+    },
+    {
+      "numero": 16,
+      "archivo": "16__Balanceador_carga_cliente_Spring_cloud_LoadBalancer.srt",
+      "titulo": "Configurar Balanceador de Carga del Cliente con Spring Cloud LoadBalancer",
+      "resumen": "Implementación explícita de Spring Cloud LoadBalancer para gestionar múltiples instancias de un servicio. Se prueba escalado horizontal ejecutando múltiples instancias de Product en puertos diferentes, y se valida distribución de carga mediante logs. Se explica diferencia entre client-side y server-side load balancing.",
+      "puntosClave": [
+        "Spring Cloud LoadBalancer: solución de balanceo del lado del cliente",
+        "Reemplaza a Ribbon (deprecado) de Netflix",
+        "Requiere anotación @LoadBalanced en WebClient.Builder bean",
+        "Algoritmo por defecto: Round-Robin (secuencial)",
+        "Probar escalado: ejecutar Product en puertos 8082, 8083, 8084",
+        "Todas las instancias se registran en Eureka con mismo nombre",
+        "Customer distribuye peticiones entre las 3 instancias automáticamente",
+        "Verificar en logs qué instancia respondió cada petición",
+        "Si una instancia cae, LoadBalancer la excluye automáticamente",
+        "Client-side: cliente decide, Server-side: load balancer externo (nginx)",
+        "Ventaja client-side: no hay single point of failure",
+        "Configurar zona, peso, estrategia personalizada si es necesario"
+      ],
+      "conceptos": [
+        {
+          "nombre": "Spring Cloud LoadBalancer",
+          "descripcion": "Librería para balanceo de carga del lado del cliente integrada con Eureka"
+        },
+        {
+          "nombre": "@LoadBalanced",
+          "descripcion": "Anotación que habilita balanceo de carga en RestTemplate o WebClient.Builder"
+        },
+        {
+          "nombre": "Client-Side Load Balancing",
+          "descripcion": "Cliente obtiene lista de instancias y decide a cuál llamar"
+        },
+        {
+          "nombre": "Server-Side Load Balancing",
+          "descripcion": "Load balancer externo (nginx, HAProxy) distribuye tráfico"
+        },
+        {
+          "nombre": "Round-Robin Algorithm",
+          "descripcion": "Distribuye peticiones secuencialmente: instancia1 → instancia2 → instancia3 → instancia1..."
+        },
+        {
+          "nombre": "Ribbon (Deprecado)",
+          "descripcion": "Anterior solución de Netflix para balanceo, reemplazada por LoadBalancer"
+        },
+        {
+          "nombre": "Escalado Horizontal",
+          "descripcion": "Agregar más instancias del mismo servicio para manejar más carga"
+        },
+        {
+          "nombre": "Instance Health",
+          "descripcion": "LoadBalancer solo envía tráfico a instancias marcadas UP en Eureka"
+        },
+        {
+          "nombre": "Sticky Session",
+          "descripcion": "Dirigir peticiones del mismo cliente siempre a la misma instancia"
+        },
+        {
+          "nombre": "Weighted Load Balancing",
+          "descripcion": "Distribuir más tráfico a instancias con mayor capacidad (peso)"
+        }
+      ],
+      "codigoEjemplo": "// WebClientConfig.java - Configuración con LoadBalancer\n@Configuration\npublic class WebClientConfig {\n    \n    @Bean\n    @LoadBalanced  // ✅ CRÍTICO: habilita balanceo de carga\n    public WebClient.Builder webClientBuilder() {\n        return WebClient.builder();\n    }\n    \n    @Bean\n    public WebClient productWebClient(WebClient.Builder builder) {\n        return builder\n            .baseUrl(\"http://product-service\")\n            .build();\n    }\n}\n\n# Ejecutar múltiples instancias de Product:\n# Terminal 1:\njava -jar product-service.jar --server.port=8082\n\n# Terminal 2:\njava -jar product-service.jar --server.port=8083\n\n# Terminal 3:\njava -jar product-service.jar --server.port=8084\n\n# Eureka muestra:\n# PRODUCT-SERVICE: 3 instances\n# - instance1:8082 (UP)\n# - instance2:8083 (UP)\n# - instance3:8084 (UP)\n\n# Al llamar Customer → Product repetidamente:\n# Request 1 → product-service:8082\n# Request 2 → product-service:8083\n# Request 3 → product-service:8084\n# Request 4 → product-service:8082 (vuelta al inicio)\n\n# application.yml - Configuración avanzada de LoadBalancer\nspring:\n  cloud:\n    loadbalancer:\n      ribbon:\n        enabled: false  # Deshabilitar Ribbon\n      configurations: default\n      \n# Configurar zonas para preferencia\neureka:\n  instance:\n    metadata-map:\n      zone: zone1\n  client:\n    prefer-same-zone-eureka: true"
+    }
+  ],
+  "resumen_seccion": "Esta sección transforma los microservicios en un sistema productivo mediante Spring Cloud. Se implementa gestión de configuración centralizada con Config Server y Git, descubrimiento dinámico de servicios con Eureka, monitoreo con Actuator, y balanceo de carga automático con LoadBalancer. Los microservicios ahora se descubren por nombre, escalan horizontalmente, y obtienen configuración de fuentes externas sin recompilar.",
+  "tecnologias_cubiertas": [
+    "Spring Cloud Config Server/Client",
+    "Spring Cloud Netflix Eureka",
+    "Spring Cloud LoadBalancer",
+    "Spring Boot Actuator",
+    "Git como configuración externa",
+    "Perfiles de Spring Boot",
+    "YAML configuration",
+    "Service Discovery",
+    "Client-Side Load Balancing",
+    "Health Checks"
+  ],
+  "componentes_infraestructura": [
+    {
+      "nombre": "Config Server",
+      "puerto": 8888,
+      "proposito": "Centralizar configuración externa en repositorio Git"
+    },
+    {
+      "nombre": "Eureka Server",
+      "puerto": 8761,
+      "proposito": "Registro y descubrimiento dinámico de servicios"
+    },
+    {
+      "nombre": "Customer Service",
+      "puerto": 8081,
+      "proposito": "Microservicio de negocio (Eureka Client)"
+    },
+    {
+      "nombre": "Product Service",
+      "puerto": 8082,
+      "proposito": "Microservicio de negocio (Eureka Client)"
+    },
+    {
+      "nombre": "Transaction Service",
+      "puerto": 8083,
+      "proposito": "Microservicio de negocio (Eureka Client)"
+    }
+  ],
+  "mejores_practicas": [
+    "Usar perfiles (dev, test, prod) para separar configuraciones",
+    "Externalizar configuración en Git, no en código",
+    "No hardcodear URLs, usar descubrimiento de servicios",
+    "Configurar Config Server con repositorio Git remoto en producción",
+    "Usar variables de entorno para credenciales sensibles",
+    "Habilitar Actuator para monitoreo y health checks",
+    "Aplicar @LoadBalanced para balanceo automático",
+    "Usar @RefreshScope para propiedades dinámicas",
+    "Documentar puertos convencionales (8888, 8761)",
+    "Implementar heartbeats para detectar servicios caídos",
+    "Probar escalado horizontal con múltiples instancias",
+    "Usar YAML para configuraciones complejas de producción"
+  ],
+  "patrones_implementados": [
+    "Externalized Configuration - Config Server + Git",
+    "Service Registry - Eureka Server",
+    "Service Discovery - Eureka Client",
+    "Client-Side Load Balancing - Spring Cloud LoadBalancer",
+    "Health Check Pattern - Actuator endpoints",
+    "Configuration Profiles - dev, test, prod",
+    "Dynamic Configuration - @RefreshScope",
+    "Location Transparency - nombres vs URLs"
+  ]
+}

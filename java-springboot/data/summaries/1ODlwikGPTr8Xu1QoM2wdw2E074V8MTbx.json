@@ -1,0 +1,63 @@
+{
+  "titulo": "Configurar Puertos para Ejecutar Múltiples Microservicios Simultáneamente",
+  "resumen": "Configuración de puertos diferentes para cada microservicio para permitir ejecución simultánea. Se explica el conflicto de puerto 8080 por defecto y cómo asignar puertos únicos mediante application.properties. Incluye convenciones de numeración de puertos y verificación de disponibilidad en el sistema operativo.",
+  "puntosClave": [
+    "Problema: todos los microservicios usan puerto 8080 por defecto",
+    "Solución: configurar server.port en application.properties de cada uno",
+    "Convención de puertos sugerida:",
+    "- Customer: 8081",
+    "- Product: 8082",
+    "- Transaction: 8083",
+    "- Config Server: 8888 (convención estándar)",
+    "- Registry (Eureka): 8761 (convención estándar)",
+    "- Gateway: 8080 (punto de entrada único)",
+    "Verificar puertos disponibles antes de asignar",
+    "Windows: comando 'netstat -ano | findstr :8081'",
+    "Linux/Mac: comando 'lsof -i :8081'",
+    "Evitar conflictos con otros servicios del sistema",
+    "Documentar asignación de puertos para el equipo"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Puerto TCP",
+      "descripcion": "Número que identifica un punto de comunicación en un servidor (rango 0-65535)"
+    },
+    {
+      "nombre": "server.port",
+      "descripcion": "Propiedad de Spring Boot que define en qué puerto se ejecuta el servidor embebido"
+    },
+    {
+      "nombre": "application.properties",
+      "descripcion": "Archivo de configuración donde se definen propiedades de la aplicación Spring Boot"
+    },
+    {
+      "nombre": "Puerto por Defecto",
+      "descripcion": "Spring Boot usa 8080 si no se especifica otro puerto en configuración"
+    },
+    {
+      "nombre": "Conflicto de Puerto",
+      "descripcion": "Error cuando dos aplicaciones intentan usar el mismo puerto simultáneamente"
+    },
+    {
+      "nombre": "Puerto 8888",
+      "descripcion": "Puerto convencional para Spring Cloud Config Server"
+    },
+    {
+      "nombre": "Puerto 8761",
+      "descripcion": "Puerto convencional para Eureka Server (Registry)"
+    },
+    {
+      "nombre": "API Gateway",
+      "descripcion": "Punto de entrada único que típicamente usa puerto 8080 o 80/443"
+    },
+    {
+      "nombre": "netstat",
+      "descripcion": "Comando para verificar puertos en uso en Windows"
+    },
+    {
+      "nombre": "lsof",
+      "descripcion": "Comando para listar archivos/puertos abiertos en Linux/Mac"
+    }
+  ],
+  "codigoEjemplo": "# application.properties - Microservicio Customer\nserver.port=8081\nspring.application.name=customer-service\n\n# application.properties - Microservicio Product\nserver.port=8082\nspring.application.name=product-service\n\n# application.properties - Microservicio Transaction\nserver.port=8083\nspring.application.name=transaction-service\n\n# Verificar puerto disponible en Windows\nnetstat -ano | findstr :8081\n\n# Verificar puerto disponible en Linux/Mac\nlsof -i :8081"
+}

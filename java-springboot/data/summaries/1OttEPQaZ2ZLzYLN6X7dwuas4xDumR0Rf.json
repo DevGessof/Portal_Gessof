@@ -1,0 +1,61 @@
+{
+  "titulo": "Prueba Funcional End-to-End de Comunicación Customer-Product-Transaction",
+  "resumen": "Validación completa del sistema con los tres microservicios ejecutándose simultáneamente. Se prueba el flujo completo: crear productos, crear customer con productos, crear transacciones validando reglas de negocio, y consultar datos enriquecidos. Demostración de arquitectura de microservicios funcional.",
+  "puntosClave": [
+    "Ejecutar tres microservicios simultáneamente (8081, 8082, 8083)",
+    "Flujo completo: Product → Customer → Transaction",
+    "Paso 1: Crear productos en Product (IDs: 1, 2, 3)",
+    "Paso 2: Crear customer con productos [1, 2]",
+    "Paso 3: Crear transacción válida (customerId:1, productId:1)",
+    "Paso 4: Intentar transacción inválida (customer sin ese producto)",
+    "Paso 5: Consultar transaction con datos enriquecidos",
+    "Validar que todas las validaciones funcionan correctamente",
+    "Verificar agregación de datos de tres microservicios",
+    "Probar manejo de errores en cada capa",
+    "Demostrar independencia: cada servicio puede reiniciarse sin afectar otros",
+    "Sistema completo de microservicios comunicándose correctamente"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Prueba E2E (End-to-End)",
+      "descripcion": "Validación del flujo completo atravesando múltiples microservicios"
+    },
+    {
+      "nombre": "Orquestación de Microservicios",
+      "descripcion": "Coordinación de múltiples servicios para completar operación de negocio"
+    },
+    {
+      "nombre": "Validación Distribuida",
+      "descripcion": "Verificaciones ejecutadas en diferentes microservicios"
+    },
+    {
+      "nombre": "Consistencia Eventual",
+      "descripcion": "Datos pueden estar temporalmente inconsistentes entre servicios"
+    },
+    {
+      "nombre": "Agregación Multinivel",
+      "descripcion": "Transaction agrega datos de Customer que a su vez consulta Product"
+    },
+    {
+      "nombre": "Ejecución Concurrente",
+      "descripcion": "Múltiples microservicios ejecutándose al mismo tiempo en puertos diferentes"
+    },
+    {
+      "nombre": "Cadena de Llamadas",
+      "descripcion": "Transaction → Customer → Product (llamadas HTTP en cascada)"
+    },
+    {
+      "nombre": "Manejo de Errores Distribuido",
+      "descripcion": "Errores pueden originarse en cualquier punto de la cadena de servicios"
+    },
+    {
+      "nombre": "Validación Funcional Completa",
+      "descripcion": "Verificar que sistema cumple todos los requisitos de negocio"
+    },
+    {
+      "nombre": "Arquitectura Funcional",
+      "descripcion": "Sistema de microservicios operando correctamente como un todo"
+    }
+  ],
+  "codigoEjemplo": "// Flujo de prueba E2E completo\n\n// PASO 1: Crear productos (puerto 8082)\nPOST http://localhost:8082/product\n{\"name\": \"Cuenta Corriente\", \"price\": 0.0}\n// ID: 1\n\nPOST http://localhost:8082/product\n{\"name\": \"Cuenta Ahorros\", \"price\": 0.0}\n// ID: 2\n\n// PASO 2: Crear customer con productos (puerto 8081)\nPOST http://localhost:8081/customer\n{\n  \"name\": \"Carlos Ruiz\",\n  \"phoneNumber\": \"555-9999\",\n  \"productIds\": [1, 2]\n}\n// ID: 1\n\n// PASO 3: Crear transacción válida (puerto 8083)\nPOST http://localhost:8083/transaction\n{\n  \"customerId\": 1,\n  \"productId\": 1,\n  \"amount\": 1000.0\n}\n// Respuesta: {\"id\": 1, \"status\": \"COMPLETED\", ...}\n\n// PASO 4: Intentar transacción inválida\nPOST http://localhost:8083/transaction\n{\n  \"customerId\": 1,\n  \"productId\": 3, // Customer no tiene producto 3\n  \"amount\": 500.0\n}\n// Error: \"Customer no posee este producto\"\n\n// PASO 5: Consultar transaction con detalles\nGET http://localhost:8083/transaction/1\n// Respuesta con datos agregados:\n{\n  \"id\": 1,\n  \"amount\": 1000.0,\n  \"status\": \"COMPLETED\",\n  \"customer\": {\n    \"id\": 1,\n    \"name\": \"Carlos Ruiz\",\n    \"phoneNumber\": \"555-9999\"\n  },\n  \"product\": {\n    \"id\": 1,\n    \"name\": \"Cuenta Corriente\",\n    \"price\": 0.0\n  }\n}"
+}

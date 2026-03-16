@@ -1,0 +1,62 @@
+{
+  "titulo": "Enviar Header Authorization en Peticiones al API usando WebClient",
+  "resumen": "Configuración de WebClient para incluir header Authorization automáticamente al consumir APIs protegidas de otros microservicios. Se implementa interceptor que agrega credenciales Basic Auth en cada request, permitiendo comunicación segura entre microservicios.",
+  "puntosClave": [
+    "Problema: microservicios necesitan autenticarse entre sí",
+    "Customer llama Product con WebClient, Product está protegido",
+    "Solución: agregar header Authorization automáticamente en WebClient",
+    "Configurar defaultHeader con Authorization en WebClient.Builder",
+    "Usar filter() para interceptor personalizado",
+    "Codificar credenciales en Base64: username:password",
+    "Formato: Authorization: Basic <base64(username:password)>",
+    "Alternativa 1: default header estático",
+    "Alternativa 2: filtro que obtiene credenciales de configuración",
+    "Alternativa 3: usar OAuth2 client credentials grant (producción)",
+    "Buena práctica: almacenar credenciales en variables de entorno",
+    "Evitar hardcodear credenciales en código",
+    "Para producción: implementar OAuth2/JWT entre microservicios"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Service-to-Service Authentication",
+      "descripcion": "Autenticación entre microservicios en arquitectura distribuida"
+    },
+    {
+      "nombre": "WebClient Filter",
+      "descripcion": "Interceptor que modifica requests/responses de WebClient"
+    },
+    {
+      "nombre": "defaultHeader()",
+      "descripcion": "Método para agregar header estático a todas las peticiones WebClient"
+    },
+    {
+      "nombre": "filter()",
+      "descripcion": "Método para agregar lógica personalizada a cada request/response"
+    },
+    {
+      "nombre": "ExchangeFilterFunction",
+      "descripcion": "Función que intercepta y modifica exchange de WebClient"
+    },
+    {
+      "nombre": "Basic Auth Propagation",
+      "descripcion": "Propagar credenciales Basic Auth entre microservicios"
+    },
+    {
+      "nombre": "Client Credentials",
+      "descripcion": "Credenciales de aplicación (vs credenciales de usuario)"
+    },
+    {
+      "nombre": "OAuth2 Client Credentials Grant",
+      "descripcion": "Flujo OAuth2 para autenticación servicio-a-servicio"
+    },
+    {
+      "nombre": "Environment Variables",
+      "descripcion": "Variables externas para almacenar credenciales de forma segura"
+    },
+    {
+      "nombre": "Hardcoded Credentials",
+      "descripcion": "Credenciales en código fuente (NUNCA hacer en producción)"
+    }
+  ],
+  "codigoEjemplo": "// WebClientConfig.java - Con autenticación automática\n@Configuration\npublic class WebClientConfig {\n    \n    @Value(\"${service.product.username:admin}\")\n    private String productServiceUsername;\n    \n    @Value(\"${service.product.password:admin123}\")\n    private String productServicePassword;\n    \n    @Bean\n    @LoadBalanced\n    public WebClient.Builder webClientBuilder() {\n        return WebClient.builder();\n    }\n    \n    @Bean\n    public WebClient productWebClient(WebClient.Builder builder) {\n        // Opción 1: Header estático con credenciales\n        String credentials = productServiceUsername + \":\" + productServicePassword;\n        String base64Credentials = Base64.getEncoder()\n            .encodeToString(credentials.getBytes(StandardCharsets.UTF_8));\n        \n        return builder\n            .baseUrl(\"http://product-service/api/v1\")\n            .defaultHeader(HttpHeaders.AUTHORIZATION, \n                          \"Basic \" + base64Credentials)\n            .defaultHeader(HttpHeaders.CONTENT_TYPE, \n                          MediaType.APPLICATION_JSON_VALUE)\n            .build();\n    }\n    \n    // Opción 2: Usar filtro personalizado\n    @Bean\n    public WebClient productWebClientWithFilter(WebClient.Builder builder) {\n        return builder\n            .baseUrl(\"http://product-service/api/v1\")\n            .filter(addAuthenticationHeader())\n            .build();\n    }\n    \n    private ExchangeFilterFunction addAuthenticationHeader() {\n        return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {\n            String credentials = productServiceUsername + \":\" + \n                               productServicePassword;\n            String base64 = Base64.getEncoder()\n                .encodeToString(credentials.getBytes(StandardCharsets.UTF_8));\n            \n            ClientRequest authorizedRequest = ClientRequest.from(clientRequest)\n                .header(HttpHeaders.AUTHORIZATION, \"Basic \" + base64)\n                .build();\n            \n            return Mono.just(authorizedRequest);\n        });\n    }\n}\n\n# application.properties - Credenciales desde configuración\n# Credenciales para Product Service\nservice.product.username=admin\nservice.product.password=admin123\n\n# Mejor: usar variables de entorno\n# service.product.username=${PRODUCT_SERVICE_USER}\n# service.product.password=${PRODUCT_SERVICE_PASSWORD}\n\n// CustomerService.java - Uso normal, autenticación automática\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private WebClient productWebClient;\n    \n    public Product getProduct(Long productId) {\n        // WebClient incluye automáticamente header Authorization\n        return productWebClient.get()\n            .uri(\"/product/{id}\", productId)\n            .retrieve()\n            .bodyToMono(Product.class)\n            .block();\n        \n        // Header Authorization: Basic YWRtaW46YWRtaW4xMjM=\n        // se agrega automáticamente\n    }\n}\n\n// Alternativa producción: OAuth2 Client Credentials\n// (requiere servidor OAuth2/Authorization Server)\n@Bean\npublic WebClient productWebClientOAuth2(WebClient.Builder builder,\n                                       OAuth2AuthorizedClientManager clientManager) {\n    ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2 = \n        new ServletOAuth2AuthorizedClientExchangeFilterFunction(clientManager);\n    oauth2.setDefaultClientRegistrationId(\"product-service\");\n    \n    return builder\n        .baseUrl(\"http://product-service/api/v1\")\n        .filter(oauth2)\n        .build();\n}"
+}

@@ -1,0 +1,64 @@
+{
+  "titulo": "Crear Repositorio Git como Fuente de Configuración para Config Server",
+  "resumen": "Creación de repositorio Git que almacenará archivos de configuración de todos los microservicios. Se explica la estructura de archivos por servicio y perfil, nomenclatura estándar, y cómo Config Server leerá estas configuraciones. Se crea repositorio local o en GitHub y se agregan archivos properties/yml.",
+  "puntosClave": [
+    "Config Server lee configuración desde repositorio Git",
+    "Ventaja: versionado, auditoría, rollback de configuraciones",
+    "Crear repositorio Git: local o remoto (GitHub, GitLab, Bitbucket)",
+    "Nomenclatura: {application-name}-{profile}.properties o .yml",
+    "Ejemplos: customer-service-dev.yml, product-service-prod.yml",
+    "Archivo application.yml: configuración compartida por todos",
+    "Estructura del repositorio:",
+    "  - application.yml (común)",
+    "  - customer-service-dev.yml",
+    "  - customer-service-prod.yml",
+    "  - product-service-dev.yml",
+    "  - transaction-service-prod.yml",
+    "Git permite trabajo colaborativo en configuraciones",
+    "Config Server clonará/actualizará automáticamente el repositorio",
+    "Cambios en Git se reflejan en microservicios sin recompilar"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Repositorio de Configuración",
+      "descripcion": "Repositorio Git que almacena archivos de propiedades de todos los microservicios"
+    },
+    {
+      "nombre": "Configuración Centralizada",
+      "descripcion": "Todas las propiedades de microservicios en un único lugar versionado"
+    },
+    {
+      "nombre": "Versionado de Configuración",
+      "descripcion": "Git permite trackear cambios, hacer rollback y auditar modificaciones"
+    },
+    {
+      "nombre": "Nomenclatura de Archivos",
+      "descripcion": "Patrón {service-name}-{profile}.yml para identificar configuraciones"
+    },
+    {
+      "nombre": "application.yml Global",
+      "descripcion": "Archivo con propiedades compartidas por todos los servicios"
+    },
+    {
+      "nombre": "Repositorio Local vs Remoto",
+      "descripcion": "Local: carpeta Git en servidor. Remoto: GitHub, GitLab, Bitbucket"
+    },
+    {
+      "nombre": "Config Server como Cliente Git",
+      "descripcion": "Config Server clona repositorio y sirve archivos a microservicios"
+    },
+    {
+      "nombre": "Separación de Configuración",
+      "descripcion": "Código (JAR) separado de configuración (Git), facilita despliegues"
+    },
+    {
+      "nombre": "Configuración como Código",
+      "descripcion": "Tratar archivos de configuración como código con control de versiones"
+    },
+    {
+      "nombre": "Trabajo Colaborativo",
+      "descripcion": "Múltiples personas pueden modificar configuraciones vía Git"
+    }
+  ],
+  "codigoEjemplo": "# Estructura del repositorio Git de configuración\nconfig-repo/\n├── application.yml              # Configuración global\n├── customer-service-dev.yml    # Customer en desarrollo\n├── customer-service-prod.yml   # Customer en producción\n├── product-service-dev.yml     # Product en desarrollo\n├── product-service-prod.yml    # Product en producción\n└── transaction-service-dev.yml # Transaction en desarrollo\n\n# application.yml (configuración compartida)\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: '*'\n\nlogging:\n  pattern:\n    console: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'\n\n# customer-service-dev.yml\nserver:\n  port: 8081\n\nspring:\n  datasource:\n    url: jdbc:h2:mem:customerdb\n  h2:\n    console:\n      enabled: true\n\nspringdoc:\n  swagger-ui:\n    enabled: true\n\n# customer-service-prod.yml\nserver:\n  port: 8081\n\nspring:\n  datasource:\n    url: jdbc:postgresql://prod-db:5432/customers\n    username: ${DB_USER}\n    password: ${DB_PASSWORD}\n\nspringdoc:\n  swagger-ui:\n    enabled: false\n\n# Comandos Git\ngit init\ngit add .\ngit commit -m \"Initial configuration\"\ngit remote add origin https://github.com/user/config-repo.git\ngit push -u origin main"
+}

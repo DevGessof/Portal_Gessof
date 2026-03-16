@@ -1,0 +1,63 @@
+{
+  "titulo": "Documentar Clase Entidad y sus Atributos con Anotaciones Swagger",
+  "resumen": "Documentación de modelos de datos usando anotaciones @Schema de OpenAPI. Se documenta clase Customer con descripción general y cada atributo con @Schema individual (descripción, ejemplo, required, formato). Swagger genera esquemas JSON mejorados en documentación interactiva.",
+  "puntosClave": [
+    "Anotación @Schema a nivel de clase: descripción del modelo",
+    "@Schema(description = \"Modelo de Customer del dominio financiero\")",
+    "@Schema en cada atributo para documentar campos:",
+    "  - description: explicación del campo",
+    "  - example: valor de ejemplo para Swagger UI",
+    "  - required: si es obligatorio (true/false)",
+    "  - format: formato del dato (email, date, uuid, etc.)",
+    "  - minLength/maxLength: restricciones de longitud",
+    "  - minimum/maximum: valores numéricos min/max",
+    "Ejemplos aparecen en Swagger UI al hacer Try it out",
+    "Mejora experiencia de desarrolladores consumiendo API",
+    "Documentar enums con allowableValues",
+    "No confundir @Schema (documentación) con @NotNull (validación)",
+    "Aplicar en todas las entidades y DTOs"
+  ],
+  "conceptos": [
+    {
+      "nombre": "@Schema",
+      "descripcion": "Anotación OpenAPI para documentar clases y atributos de modelos"
+    },
+    {
+      "nombre": "description",
+      "descripcion": "Texto explicativo del propósito del modelo o campo"
+    },
+    {
+      "nombre": "example",
+      "descripcion": "Valor de ejemplo que aparece en Swagger UI"
+    },
+    {
+      "nombre": "required",
+      "descripcion": "Indica si campo es obligatorio en esquema OpenAPI"
+    },
+    {
+      "nombre": "format",
+      "descripcion": "Formato específico del dato (email, date-time, uuid, uri)"
+    },
+    {
+      "nombre": "minLength / maxLength",
+      "descripcion": "Restricciones de longitud para strings"
+    },
+    {
+      "nombre": "minimum / maximum",
+      "descripcion": "Valores mínimo y máximo para números"
+    },
+    {
+      "nombre": "allowableValues",
+      "descripcion": "Lista de valores permitidos para enums"
+    },
+    {
+      "nombre": "Schema Documentation",
+      "descripcion": "Documentación de estructura de datos en especificación OpenAPI"
+    },
+    {
+      "nombre": "Developer Experience",
+      "descripcion": "Experiencia mejorada con ejemplos y descripciones claras"
+    }
+  ],
+  "codigoEjemplo": "// Customer.java - Entidad documentada\npackage com.paymentchange.customer.entities;\n\nimport io.swagger.v3.oas.annotations.media.Schema;\nimport jakarta.persistence.*;\nimport lombok.Data;\nimport java.util.ArrayList;\nimport java.util.List;\n\n@Data\n@Entity\n@Schema(description = \"Modelo de Customer que representa un cliente del sistema financiero\")\npublic class Customer {\n    \n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    @Schema(\n        description = \"ID único del cliente\",\n        example = \"1\",\n        accessMode = Schema.AccessMode.READ_ONLY\n    )\n    private Long id;\n    \n    @Schema(\n        description = \"Nombre completo del cliente\",\n        example = \"Juan Pérez García\",\n        required = true,\n        minLength = 3,\n        maxLength = 100\n    )\n    private String name;\n    \n    @Schema(\n        description = \"Número de teléfono del cliente\",\n        example = \"+52-555-1234-5678\",\n        required = true,\n        pattern = \"^\\\\+?[0-9-]+$\"\n    )\n    private String phoneNumber;\n    \n    @Schema(\n        description = \"Correo electrónico del cliente\",\n        example = \"juan.perez@email.com\",\n        format = \"email\"\n    )\n    private String email;\n    \n    @Schema(\n        description = \"Estado del cliente en el sistema\",\n        example = \"ACTIVE\",\n        allowableValues = {\"ACTIVE\", \"INACTIVE\", \"SUSPENDED\"}\n    )\n    private String status;\n    \n    @ElementCollection\n    @CollectionTable(\n        name = \"customer_products\",\n        joinColumns = @JoinColumn(name = \"customer_id\")\n    )\n    @Column(name = \"product_id\")\n    @Schema(\n        description = \"IDs de productos asociados al cliente\",\n        example = \"[1, 2, 3]\"\n    )\n    private List<Long> productIds = new ArrayList<>();\n}"
+}

@@ -1,0 +1,61 @@
+{
+  "titulo": "Crear Servidor de Observabilidad con Spring Boot Admin Server",
+  "resumen": "Creación del microservicio Admin Server que actúa como servidor central de monitoreo. Se configura @EnableAdminServer, puerto 9090, y se accede a interfaz web para visualizar servicios. Se prepara infraestructura base para que microservicios se registren como clientes.",
+  "puntosClave": [
+    "Crear proyecto Admin Server en módulo infraestructure-domain",
+    "Starter principal: spring-boot-admin-starter-server",
+    "Versión compatible: 3.x para Spring Boot 3.x",
+    "Clase principal: @EnableAdminServer",
+    "Puerto recomendado: 9090 (evitar conflictos con otros servicios)",
+    "Interfaz web: http://localhost:9090",
+    "Dashboard muestra: Applications, Wallboard, Journal",
+    "Applications: lista de microservicios registrados",
+    "Wallboard: vista general de estado de todos los servicios",
+    "Journal: historial de eventos (registros, cambios de estado)",
+    "Inicialmente vacío hasta que servicios se registren",
+    "Admin Server consume endpoints /actuator de microservicios"
+  ],
+  "conceptos": [
+    {
+      "nombre": "@EnableAdminServer",
+      "descripcion": "Anotación que activa funcionalidad de servidor Spring Boot Admin"
+    },
+    {
+      "nombre": "spring-boot-admin-starter-server",
+      "descripcion": "Starter que incluye todas las dependencias para Admin Server"
+    },
+    {
+      "nombre": "Puerto 9090",
+      "descripcion": "Puerto convencional para Spring Boot Admin (evita conflictos con 8080-8083, 8761, 8888)"
+    },
+    {
+      "nombre": "Applications View",
+      "descripcion": "Vista que lista todos los microservicios registrados con su estado"
+    },
+    {
+      "nombre": "Wallboard",
+      "descripcion": "Panel tipo dashboard con vista general del estado de todos los servicios"
+    },
+    {
+      "nombre": "Journal",
+      "descripcion": "Registro cronológico de eventos: servicios registrados, cambios de estado, alertas"
+    },
+    {
+      "nombre": "Admin UI",
+      "descripcion": "Interfaz web de Spring Boot Admin accesible vía navegador"
+    },
+    {
+      "nombre": "Instance Registration",
+      "descripcion": "Proceso donde microservicios se registran en Admin Server"
+    },
+    {
+      "nombre": "Actuator Consumer",
+      "descripcion": "Admin Server consume y visualiza datos de endpoints /actuator"
+    },
+    {
+      "nombre": "Admin Server as Microservice",
+      "descripcion": "Admin Server es otro microservicio Spring Boot en la arquitectura"
+    }
+  ],
+  "codigoEjemplo": "<!-- pom.xml del Admin Server -->\n<dependencies>\n    <dependency>\n        <groupId>de.codecentric</groupId>\n        <artifactId>spring-boot-admin-starter-server</artifactId>\n        <version>3.2.0</version>\n    </dependency>\n    \n    <dependency>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-web</artifactId>\n    </dependency>\n</dependencies>\n\n// AdminServerApplication.java\npackage com.paymentchange.adminserver;\n\nimport de.codecentric.boot.admin.server.config.EnableAdminServer;\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\n\n@SpringBootApplication\n@EnableAdminServer\npublic class AdminServerApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(AdminServerApplication.class, args);\n    }\n}\n\n# application.properties del Admin Server\nserver.port=9090\nspring.application.name=admin-server\n\n# Interfaz web disponible en:\n# http://localhost:9090\n\n# Vistas principales:\n# - Applications: lista de servicios registrados\n# - Wallboard: estado general (UP/DOWN)\n# - Journal: historial de eventos"
+}

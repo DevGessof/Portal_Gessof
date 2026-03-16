@@ -1,0 +1,60 @@
+{
+  "titulo": "Agregar API REST Controller para Exponer Funcionalidad",
+  "resumen": "Creación del REST Controller para exponer el microservicio mediante APIs REST. Se implementan métodos HTTP (GET, POST, PUT, DELETE) usando anotaciones Spring (@RestController, @RequestMapping, @Autowired). Se inyecta CustomerRepository para realizar operaciones CRUD. Introducción a Swagger para facilitar pruebas de la API.",
+  "puntosClave": [
+    "Crear CustomerRestController en paquete controller",
+    "Anotaciones principales: @RestController y @RequestMapping(\"/customer\")",
+    "@RequestMapping define la URL base del recurso REST",
+    "@Autowired inyecta CustomerRepository automáticamente",
+    "Método findAll(): retorna List<Customer> usando repository.findAll()",
+    "Método create(): recibe Customer y usa repository.save()",
+    "ResponseEntity.ok() retorna respuesta HTTP 200 con la entidad",
+    "JpaRepository provee métodos sin necesidad de implementarlos",
+    "Swagger se añadirá para probar APIs sin Postman",
+    "El controlador expone funcionalidad del microservicio vía HTTP/REST",
+    "DevTools permite ver cambios sin reiniciar manualmente"
+  ],
+  "conceptos": [
+    {
+      "nombre": "@RestController",
+      "descripcion": "Anotación que marca la clase como controlador REST que retorna JSON automáticamente"
+    },
+    {
+      "nombre": "@RequestMapping",
+      "descripcion": "Define la URL base para acceder a los endpoints del controlador"
+    },
+    {
+      "nombre": "@Autowired",
+      "descripcion": "Inyección automática de dependencias sin necesidad de instanciar manualmente"
+    },
+    {
+      "nombre": "API REST",
+      "descripcion": "Interfaz que permite interactuar con el microservicio usando HTTP y métodos estándar"
+    },
+    {
+      "nombre": "ResponseEntity",
+      "descripcion": "Clase que permite controlar la respuesta HTTP (código de estado, headers, body)"
+    },
+    {
+      "nombre": "CRUD Operations",
+      "descripcion": "Create, Read, Update, Delete - operaciones básicas de persistencia de datos"
+    },
+    {
+      "nombre": "Inyección de Dependencias",
+      "descripcion": "Patrón donde Spring crea e inyecta objetos necesarios automáticamente"
+    },
+    {
+      "nombre": "Métodos HTTP",
+      "descripcion": "GET (consultar), POST (crear), PUT (actualizar), DELETE (eliminar)"
+    },
+    {
+      "nombre": "JSON",
+      "descripcion": "Formato de intercambio de datos entre cliente y servidor en APIs REST"
+    },
+    {
+      "nombre": "Swagger/OpenAPI",
+      "descripcion": "Herramienta que documenta y permite probar APIs REST interactivamente"
+    }
+  ],
+  "codigoEjemplo": "package com.paymentchange.customer.controller;\n\nimport com.paymentchange.customer.entities.Customer;\nimport com.paymentchange.customer.repositories.CustomerRepository;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.http.ResponseEntity;\nimport org.springframework.web.bind.annotation.*;\nimport java.util.List;\n\n@RestController\n@RequestMapping(\"/customer\")\npublic class CustomerRestController {\n    \n    @Autowired\n    private CustomerRepository customerRepository;\n    \n    @GetMapping\n    public List<Customer> findAll() {\n        return customerRepository.findAll();\n    }\n    \n    @PostMapping\n    public ResponseEntity<Customer> create(@RequestBody Customer input) {\n        Customer saved = customerRepository.save(input);\n        return ResponseEntity.ok(saved);\n    }\n}"
+}

@@ -1,0 +1,61 @@
+{
+  "titulo": "Configurar Spring Cloud Config Cliente en Todos los Microservicios",
+  "resumen": "Configuración de microservicios como clientes de Config Server para obtener propiedades desde Git. Se agrega dependencia spring-cloud-starter-config, se configura URL del Config Server, y se habilita importación de configuración externa. Los microservicios ahora obtienen propiedades de Git en lugar de archivos locales.",
+  "puntosClave": [
+    "Agregar starter: spring-cloud-starter-config a customer, product, transaction",
+    "Crear/actualizar application.properties con configuración de Config Client",
+    "spring.application.name: debe coincidir con nombre en Git (customer-service)",
+    "spring.config.import=optional:configserver:http://localhost:8888",
+    "optional: permite iniciar si Config Server no está disponible",
+    "URL del Config Server: http://localhost:8888 (puerto por defecto)",
+    "Al iniciar, microservicio consulta Config Server antes de cargar propiedades",
+    "Orden: 1) Config Server, 2) application.properties local",
+    "Propiedades de Config Server tienen mayor prioridad",
+    "spring.profiles.active=dev sigue funcionando normalmente",
+    "Beneficio: cambiar configuración en Git sin recompilar",
+    "Aplicar misma configuración en los 3 microservicios business"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Config Client",
+      "descripcion": "Microservicio que obtiene configuración desde Config Server en lugar de archivos locales"
+    },
+    {
+      "nombre": "spring-cloud-starter-config",
+      "descripcion": "Starter que habilita integración con Spring Cloud Config Server"
+    },
+    {
+      "nombre": "spring.config.import",
+      "descripcion": "Propiedad que indica de dónde importar configuración adicional"
+    },
+    {
+      "nombre": "optional:configserver:",
+      "descripcion": "Prefijo que permite iniciar aplicación aunque Config Server no esté disponible"
+    },
+    {
+      "nombre": "spring.application.name",
+      "descripcion": "Nombre de la aplicación que debe coincidir con archivos en Git"
+    },
+    {
+      "nombre": "Orden de Carga",
+      "descripcion": "Config Server → application.properties → application-{profile}.properties"
+    },
+    {
+      "nombre": "Prioridad de Propiedades",
+      "descripcion": "Config Server tiene mayor prioridad que archivos locales"
+    },
+    {
+      "nombre": "Bootstrap Context",
+      "descripcion": "Contexto temprano que carga configuración de Config Server antes de main context"
+    },
+    {
+      "nombre": "Configuración Dinámica",
+      "descripcion": "Modificar propiedades en Git sin recompilar ni redesplegar microservicios"
+    },
+    {
+      "nombre": "Fail-Fast vs Optional",
+      "descripcion": "Fail-fast falla si Config Server no responde, optional permite continuar"
+    }
+  ],
+  "codigoEjemplo": "<!-- Agregar en pom.xml de customer, product, transaction -->\n<dependency>\n    <groupId>org.springframework.cloud</groupId>\n    <artifactId>spring-cloud-starter-config</artifactId>\n</dependency>\n\n# application.properties (en cada microservicio)\n# Nombre debe coincidir con archivos en Git\nspring.application.name=customer-service\n\n# Importar configuración desde Config Server\nspring.config.import=optional:configserver:http://localhost:8888\n\n# Perfil activo\nspring.profiles.active=dev\n\n# El microservicio buscará en Config Server:\n# - application.yml (configuración global)\n# - customer-service.yml (específico del servicio)\n# - customer-service-dev.yml (específico del servicio y perfil)\n\n# Logs al iniciar mostrarán:\n# Fetching config from server at: http://localhost:8888\n# Located environment: name=customer-service, profiles=[dev]"
+}

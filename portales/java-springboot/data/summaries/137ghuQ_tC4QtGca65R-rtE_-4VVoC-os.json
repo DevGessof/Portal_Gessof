@@ -1,0 +1,61 @@
+{
+  "titulo": "Modificar Método para Guardar Customer y Persistir Productos Asociados",
+  "resumen": "Mejora del endpoint create de Customer para validar que los productos existen antes de asociarlos. Se implementa lógica que consulta el microservicio Product para cada productId, verifica existencia, y solo guarda el customer si todos los productos son válidos. Preparación para implementar WebClient en siguiente clase.",
+  "puntosClave": [
+    "Problema: Customer acepta cualquier productId sin validar existencia",
+    "Solución: validar que productos existen en microservicio Product",
+    "Crear capa de servicio: CustomerService entre controller y repository",
+    "Mover lógica de negocio de controller a service",
+    "@Service para marcar clase como componente de servicio",
+    "@Autowired para inyectar CustomerRepository en CustomerService",
+    "Lógica: antes de guardar, consultar API de Product para cada ID",
+    "Si producto no existe: lanzar excepción o retornar error",
+    "Solo persistir customer si TODOS los productos son válidos",
+    "Separación de responsabilidades: Controller → Service → Repository",
+    "Controller maneja HTTP, Service contiene lógica, Repository accede BD",
+    "Preparación para usar WebClient en CustomerService"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Capa de Servicio",
+      "descripcion": "Componente intermedio que contiene lógica de negocio entre controller y repository"
+    },
+    {
+      "nombre": "@Service",
+      "descripcion": "Anotación que marca una clase como servicio de Spring (componente de negocio)"
+    },
+    {
+      "nombre": "Validación de Integridad",
+      "descripcion": "Verificar que referencias a otros datos son válidas antes de persistir"
+    },
+    {
+      "nombre": "Separación de Responsabilidades",
+      "descripcion": "Principio que divide funciones: Controller (HTTP), Service (negocio), Repository (datos)"
+    },
+    {
+      "nombre": "Lógica de Negocio",
+      "descripcion": "Reglas y validaciones específicas del dominio (ej: verificar productos existen)"
+    },
+    {
+      "nombre": "Inyección de Dependencias",
+      "descripcion": "Spring inyecta automáticamente CustomerRepository y WebClient en CustomerService"
+    },
+    {
+      "nombre": "Validación Previa",
+      "descripcion": "Verificar condiciones antes de ejecutar operación principal"
+    },
+    {
+      "nombre": "Manejo de Errores",
+      "descripcion": "Lanzar excepciones o retornar mensajes cuando validación falla"
+    },
+    {
+      "nombre": "Cliente REST en Servicio",
+      "descripcion": "Service usa WebClient para consumir APIs de otros microservicios"
+    },
+    {
+      "nombre": "Patrón Tres Capas",
+      "descripcion": "Arquitectura: Presentation (Controller) → Business (Service) → Data (Repository)"
+    }
+  ],
+  "codigoEjemplo": "// CustomerService - Capa de servicio\npackage com.paymentchange.customer.services;\n\nimport com.paymentchange.customer.entities.Customer;\nimport com.paymentchange.customer.repositories.CustomerRepository;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class CustomerService {\n    \n    @Autowired\n    private CustomerRepository customerRepository;\n    \n    // TODO: Inyectar WebClient para consultar Product\n    \n    public Customer create(Customer customer) {\n        // Validar que todos los productos existen\n        for (Long productId : customer.getProductIds()) {\n            // TODO: Consultar Product API con WebClient\n            // Si no existe, lanzar excepción\n        }\n        \n        // Solo guardar si validación pasó\n        return customerRepository.save(customer);\n    }\n    \n    public List<Customer> findAll() {\n        return customerRepository.findAll();\n    }\n}\n\n// CustomerRestController actualizado\n@RestController\n@RequestMapping(\"/customer\")\npublic class CustomerRestController {\n    \n    @Autowired\n    private CustomerService customerService; // Usar Service en vez de Repository\n    \n    @PostMapping\n    public Customer create(@RequestBody Customer customer) {\n        return customerService.create(customer);\n    }\n}"
+}

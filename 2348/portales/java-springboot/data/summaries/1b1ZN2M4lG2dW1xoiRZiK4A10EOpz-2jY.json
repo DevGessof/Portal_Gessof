@@ -1,0 +1,62 @@
+{
+  "titulo": "Arquitectura Interna del Microservicio para Comprender Swagger",
+  "resumen": "Explicación de la arquitectura interna de un microservicio Spring Boot y cómo Swagger se integra. Se analizan las capas (Controller, Service, Repository, Entity) y cómo Swagger escanea controllers y modelos para generar documentación OpenAPI automáticamente. Fundamento para entender documentación de APIs.",
+  "puntosClave": [
+    "Arquitectura en capas de microservicio Spring Boot:",
+    "- Controller: expone endpoints REST (API pública)",
+    "- Service: lógica de negocio y validaciones",
+    "- Repository: acceso a base de datos (JPA)",
+    "- Entity: modelos de dominio mapeados a tablas",
+    "Swagger escanea @RestController para detectar endpoints",
+    "Lee anotaciones @RequestMapping, @GetMapping, @PostMapping, etc.",
+    "Inspecciona tipos de parámetros y retorno para generar esquemas",
+    "Genera especificación OpenAPI (JSON/YAML)",
+    "Swagger UI renderiza especificación en interfaz interactiva",
+    "Endpoints disponibles en /v3/api-docs (JSON) y /swagger-ui.html (UI)",
+    "Springdoc-openapi: librería que integra Swagger con Spring Boot",
+    "Documentación generada automáticamente pero mejorable con anotaciones"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Swagger",
+      "descripcion": "Conjunto de herramientas para diseñar, documentar y consumir APIs REST"
+    },
+    {
+      "nombre": "OpenAPI Specification",
+      "descripcion": "Estándar para describir APIs REST de forma agnóstica al lenguaje"
+    },
+    {
+      "nombre": "Springdoc-OpenAPI",
+      "descripcion": "Librería que integra OpenAPI 3 con Spring Boot automáticamente"
+    },
+    {
+      "nombre": "Swagger UI",
+      "descripcion": "Interfaz web interactiva generada a partir de especificación OpenAPI"
+    },
+    {
+      "nombre": "/v3/api-docs",
+      "descripcion": "Endpoint que expone especificación OpenAPI en formato JSON"
+    },
+    {
+      "nombre": "Controller Layer",
+      "descripcion": "Capa que expone APIs REST y es escaneada por Swagger"
+    },
+    {
+      "nombre": "API Schema",
+      "descripcion": "Definición estructurada de modelos de entrada/salida de API"
+    },
+    {
+      "nombre": "Auto-Documentation",
+      "descripcion": "Documentación generada automáticamente analizando código"
+    },
+    {
+      "nombre": "Interactive Documentation",
+      "descripcion": "Documentación que permite probar endpoints directamente desde UI"
+    },
+    {
+      "nombre": "Contract-First vs Code-First",
+      "descripcion": "Code-first: generar spec desde código (Swagger). Contract-first: código desde spec"
+    }
+  ],
+  "codigoEjemplo": null
+}

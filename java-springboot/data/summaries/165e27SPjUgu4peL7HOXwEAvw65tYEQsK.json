@@ -1,0 +1,64 @@
+{
+  "titulo": "Instalación de Keycloak y Configuración Inicial",
+  "resumen": "Instalación de Keycloak usando Docker y configuración inicial. Se descarga imagen oficial, se ejecuta contenedor, se accede a Admin Console, se configura admin user, y se explora interfaz de administración. Base para configurar realms y usuarios.",
+  "puntosClave": [
+    "Keycloak disponible como imagen Docker oficial",
+    "Versión recomendada: quay.io/keycloak/keycloak:latest",
+    "Ejecutar Keycloak en dev mode:",
+    "  docker run -p 8180:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:latest start-dev",
+    "Puerto: 8180 (evitar conflicto con Gateway en 8080)",
+    "Acceder a Admin Console: http://localhost:8180",
+    "Login con admin/admin (configurado vía env vars)",
+    "Secciones principales de Admin UI:",
+    "  - Realms: ambientes aislados de configuración",
+    "  - Clients: aplicaciones que usan Keycloak",
+    "  - Users: usuarios del sistema",
+    "  - Roles: roles asignables a usuarios",
+    "  - Groups: agrupaciones de usuarios",
+    "Master realm: realm administrativo (no usar para apps)",
+    "Crear realm propio para aplicación"
+  ],
+  "conceptos": [
+    {
+      "nombre": "Keycloak Docker Image",
+      "descripcion": "Imagen oficial de Keycloak para contenedores"
+    },
+    {
+      "nombre": "Dev Mode",
+      "descripcion": "Modo desarrollo de Keycloak (HTTP, sin config compleja)"
+    },
+    {
+      "nombre": "Admin Console",
+      "descripcion": "Interfaz web para administrar Keycloak"
+    },
+    {
+      "nombre": "Master Realm",
+      "descripcion": "Realm administrativo predeterminado de Keycloak"
+    },
+    {
+      "nombre": "KEYCLOAK_ADMIN",
+      "descripcion": "Variable de entorno para usuario administrador inicial"
+    },
+    {
+      "nombre": "Admin User",
+      "descripcion": "Usuario con privilegios completos en Keycloak"
+    },
+    {
+      "nombre": "Realm",
+      "descripcion": "Espacio aislado de configuración (tenancy)"
+    },
+    {
+      "nombre": "Client",
+      "descripcion": "Aplicación registrada que puede obtener tokens"
+    },
+    {
+      "nombre": "Production Mode",
+      "descripcion": "Modo producción con HTTPS, BD externa, clustering"
+    },
+    {
+      "nombre": "Keycloak Themes",
+      "descripcion": "Personalización de UI de login y admin console"
+    }
+  ],
+  "codigoEjemplo": null
+}
